@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.BoardMapper">
+
+    <select id="getTime" resultType="String">
+        select NOW();
+    </select>
+
+    <select id="selectBoardList" resultType="org.zerock.domain.BoardVO">
+        select bno, title, content, writer, regdate, updatedate
+        from board;
+    </select>
+
+    <select id="selectBoard" resultType="org.zerock.domain.BoardVO">
+        select *
+        from board
+        where bno = #{bno};
+    </select>
+
+    <select id="searchBoard" resultType="org.zerock.domain.BoardVO">
+        select *
+        from board
+        where title like concat('%', #{keyword}, '%')
+           or content like concat('%', #{keyword}, '%')
+           or writer like concat('%', #{keyword}, '%');
+    </select>
+
+    <insert id="insertBoard" parameterType="org.zerock.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
+        insert into board (title, content, writer)
+        values (#{title}, #{content}, #{writer});
+    </insert>
+
+    <update id="updateBoard">
+        update board
+        set title = #{title},
+            content = #{content},
+            writer = #{writer},
+            updatedate = NOW()
+        where bno = #{bno}
+    </update>
+
+    <delete id="deleteBoard">
+        delete from board where bno = #{bno}
+    </delete>
+</mapper>
