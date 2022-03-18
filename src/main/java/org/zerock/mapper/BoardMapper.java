@@ -9,13 +9,12 @@ import java.util.List;
 @Repository
 @Mapper
 public interface BoardMapper {
-    String getTime();
 
     List<BoardVO> selectBoardList();
 
     BoardVO selectBoard(long bno);
 
-    BoardVO searchBoard(String keyword);
+    BoardVO selectBoardByKeyword(String keyword);
 
     int insertBoard(BoardVO board);
 

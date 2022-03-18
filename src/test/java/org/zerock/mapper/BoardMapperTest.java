@@ -29,11 +29,6 @@ class BoardMapperTest {
     }
 
     @Test
-    void testGetTime() {
-        logger.info(mapper.getTime());
-    }
-
-    @Test
     void testSelectBoardList() {
         mapper.selectBoardList().forEach(board -> logger.info(board));
     }
@@ -49,7 +44,7 @@ class BoardMapperTest {
 
     @Test
     void testSearchBoard() {
-        BoardVO board = mapper.searchBoard("Tester");
+        BoardVO board = mapper.selectBoardByKeyword("Tester");
         logger.info(board);
         logger.info(board.getRegDate());
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
