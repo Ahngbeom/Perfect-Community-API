@@ -8,9 +8,9 @@ public interface BoardService {
 
     List<BoardVO> getBoardList();
 
-    BoardVO getBoard(long bno);
+    BoardVO getBoardByBno(long bno);
 
-    BoardVO searchBoardByKeyword(String keyword);
+    List<BoardVO> searchBoardByKeyword(String keyword);
 
     int registerBoard(BoardVO board);
 

@@ -12,9 +12,9 @@ public interface BoardMapper {
 
     List<BoardVO> selectBoardList();
 
-    BoardVO selectBoard(long bno);
+    BoardVO selectBoardByBno(long bno);
 
-    BoardVO selectBoardByKeyword(String keyword);
+    List<BoardVO> selectBoardByKeyword(String keyword);
 
     int insertBoard(BoardVO board);
 

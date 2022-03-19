@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.domain.BoardVO;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +36,7 @@ class BoardMapperTest {
 
     @Test
     void testSelectBoard() {
-        BoardVO board = mapper.selectBoard(1);
+        BoardVO board = mapper.selectBoardByBno(1);
         logger.info(board);
         logger.info(board.getRegDate());
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
@@ -44,33 +45,29 @@ class BoardMapperTest {
 
     @Test
     void testSearchBoard() {
-        BoardVO board = mapper.selectBoardByKeyword("Tester");
-        logger.info(board);
-        logger.info(board.getRegDate());
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
-        logger.info(formatDate.format(board.getRegDate()));
+        logger.info(mapper.selectBoardByKeyword("Te"));
     }
 
     @Test
     void testInsertBoard() {
         BoardVO board = new BoardVO("아", "잠깐만", "기둘");
         mapper.insertBoard(board);
-        logger.info(mapper.selectBoard(board.getBno()));
+        logger.info(mapper.selectBoardByBno(board.getBno()));
     }
 
     @Test
     void testUpdateBoard() {
-        BoardVO board = mapper.selectBoard(6);
+        BoardVO board = mapper.selectBoardByBno(6);
         board.setTitle("다시다시");
         board.setContent("해볼게게");
         board.setWriter("잠깐만만");
         logger.info(mapper.updateBoard(board));
-        logger.info(mapper.selectBoard(board.getBno()));
+        logger.info(mapper.selectBoardByBno(board.getBno()));
     }
 
     @Test
     void testDeleteBoard() {
-        BoardVO board = mapper.selectBoard(6);
+        BoardVO board = mapper.selectBoardByBno(6);
 
         logger.info(mapper.deleteBoard(board.getBno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }

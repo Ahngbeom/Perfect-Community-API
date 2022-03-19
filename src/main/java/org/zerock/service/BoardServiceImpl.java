@@ -1,6 +1,5 @@
 package org.zerock.service;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.BoardVO;
@@ -20,12 +19,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardVO getBoard(long bno) {
-        return mapper.selectBoard(bno);
+    public BoardVO getBoardByBno(long bno) {
+        return mapper.selectBoardByBno(bno);
     }
 
     @Override
-    public BoardVO searchBoardByKeyword(String keyword) {
+    public List<BoardVO> searchBoardByKeyword(String keyword) {
         return mapper.selectBoardByKeyword(keyword);
     }
 

@@ -9,7 +9,7 @@
         from board;
     </select>
 
-    <select id="selectBoard" resultType="org.zerock.domain.BoardVO">
+    <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
         select *
         from board
         where bno = #{bno};
