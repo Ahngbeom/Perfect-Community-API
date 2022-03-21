@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.zerock.domain.BoardVO;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -66,5 +67,24 @@ class BoardControllerTest {
                 .andDo(print())
                 .andReturn();
         logger.info(mvcResult.getModelAndView().getModel().get("posts"));
+    }
+
+    @Test
+    void registerGet() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/board/register"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void registerPost() throws Exception {
+        BoardVO board = new BoardVO("안녕하세요", "신입생 안범준입니다.", "안범준");
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
+                        .param("title", board.getTitle())
+                        .param("content", board.getContent())
+                        .param("writer", board.getWriter()))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
     }
 }

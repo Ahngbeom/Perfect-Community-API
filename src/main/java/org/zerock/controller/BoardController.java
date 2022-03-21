@@ -49,11 +49,12 @@ public class BoardController {
             if (service.registerBoard(board) != 1) {
                 throw new Exception("Registration Failed");
             }
-            redirectAttributes.addAttribute("registeredBno", board.getBno());
-            mv.setViewName("redirect:/list");
+            redirectAttributes.addAttribute("result", board.getBno());
+            mv.setViewName("redirect:/board/list");
         } catch (Exception e) {
             logger.error(e);
-            mv.setViewName("redirect:/register");
+            redirectAttributes.addAttribute("result", e);
+            mv.setViewName("redirect:/board/register");
         }
         return mv;
     }
