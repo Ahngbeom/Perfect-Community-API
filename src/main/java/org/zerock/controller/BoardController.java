@@ -16,7 +16,7 @@ import org.zerock.service.BoardService;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/board/**")
 public class BoardController {
 
     private static final Logger logger = LogManager.getLogger();
@@ -50,7 +50,7 @@ public class BoardController {
                 throw new Exception("Registration Failed");
             }
             redirectAttributes.addAttribute("result", board.getBno());
-            mv.setViewName("redirect:/board/list");
+            mv.setViewName("redirect:/board/posts");
         } catch (Exception e) {
             logger.error(e);
             redirectAttributes.addAttribute("result", e);
