@@ -34,6 +34,11 @@ class BoardServiceTest {
     }
 
     @Test
+    void testCountBoard() {
+        logger.info(service.countBoard());
+    }
+
+    @Test
     void getBoardList() {
         service.getBoardList().forEach(board -> logger.info(board));
     }

@@ -14,6 +14,11 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper mapper;
 
     @Override
+    public long countBoard() {
+        return mapper.countBoard();
+    }
+
+    @Override
     public List<BoardVO> getBoardList() {
         return mapper.selectBoardList();
     }
@@ -41,5 +46,15 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int removeBoard(long bno) {
         return mapper.deleteBoard(bno);
+    }
+
+    @Override
+    public int removeAllBoard() {
+        return mapper.deleteAllBoard();
+    }
+
+    @Override
+    public long initBnoValue() {
+        return mapper.initAutoIncrement();
     }
 }

@@ -31,7 +31,7 @@ public class BoardController {
     }
 
     @GetMapping("/posts")
-    public ModelAndView getPosts(ModelAndView mv, @RequestParam long bno) {
+    public ModelAndView getPosts(ModelAndView mv, long bno) {
         mv.addObject("posts", service.getBoardByBno(bno));
         mv.setViewName("board/posts");
         return mv;
@@ -57,6 +57,49 @@ public class BoardController {
             mv.setViewName("redirect:/board/register");
         }
         return mv;
+    }
+
+    @PostMapping("/removeAll") // 관리자 권한
+    public ModelAndView removeAllPost(RedirectAttributes redirectAttributes, ModelAndView mv) throws Exception{
+        String  message;
+        try {
+            if (service.countBoard() <= 0) {
+                message = "Board is Empty.";
+                redirectAttributes.addAttribute("result", "WARNING");
+            }
+            else {
+                if (service.removeAllBoard() == 0)
+                    throw new Exception("Board All Remove Failed");
+                if (service.initBnoValue() == 0)
+                    throw new Exception("Initialize bno value of Board Failed");
+                message = "Board Remove All Success.";
+                redirectAttributes.addAttribute("result", "SUCCESS");
+            }
+            logger.info(message);
+            redirectAttributes.addAttribute("message", message);
+        } catch (Exception e) {
+            redirectAttributes.addAttribute("result", "FAILURE");
+            redirectAttributes.addAttribute("message", e.getMessage());
+            e.printStackTrace();
+        }
+        mv.setViewName("redirect:/board/list");
+        return (mv);
+    }
+
+    @PostMapping("/remove")
+    public ModelAndView removePost(RedirectAttributes redirectAttributes, ModelAndView mv, int bno) throws Exception {
+        try {
+            if (service.removeBoard(bno) == 0)
+                throw new Exception("Board Remove Failed");
+            redirectAttributes.addAttribute("result", "SUCCESS");
+            mv.setViewName("redirect:/board/list");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addAttribute("result", "FAILURE");
+            redirectAttributes.addAttribute("bno", bno);
+            mv.setViewName("redirect:/board/posts");
+        }
+        return (mv);
     }
 
 }

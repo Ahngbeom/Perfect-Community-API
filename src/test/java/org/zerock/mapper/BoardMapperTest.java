@@ -71,4 +71,9 @@ class BoardMapperTest {
 
         logger.info(mapper.deleteBoard(board.getBno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }
+
+    @Test
+    void initBno() {
+        logger.info(mapper.initAutoIncrement());
+    }
 }

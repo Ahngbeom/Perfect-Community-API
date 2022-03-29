@@ -3,6 +3,7 @@ package org.zerock.domain;
 import lombok.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -21,8 +22,13 @@ public class BoardVO {
     @NonNull
     private String  writer;
 
-    private Date    regDate;
-    private Date    updateDate;
+// Java 8 이전
+//    private Date    regDate;
+//    private Date    updateDate;
+
+// Java 8 이후
+    private LocalDateTime   regDate;
+    private LocalDateTime   updateDate;
 
     public void setTitle(String title) {
         this.title = title;

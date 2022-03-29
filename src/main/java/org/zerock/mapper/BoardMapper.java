@@ -10,6 +10,8 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
 
+    long countBoard();
+
     List<BoardVO> selectBoardList();
 
     BoardVO selectBoardByBno(long bno);
@@ -21,4 +23,8 @@ public interface BoardMapper {
     int updateBoard(BoardVO board);
 
     int deleteBoard(long bno);
+
+    int deleteAllBoard();
+
+    long initAutoIncrement();
 }

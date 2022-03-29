@@ -22,7 +22,6 @@ import org.zerock.domain.BoardVO;
 import org.zerock.service.BoardService;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -61,16 +60,16 @@ class BoardControllerTest {
     }
 
     @Test
-    void board() throws Exception {
+    void testBoardList() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
                 .andExpect(status().isOk())
-                .andDo(print())
+//                .andDo(print())
                 .andReturn();
         logger.info(mvcResult.getModelAndView().getModel().get("list"));
     }
 
     @Test
-    void posts() throws Exception {
+    void testBoardPosts() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/posts")
                 .param("bno", String.valueOf(1)))
                 .andExpect(status().isOk())
@@ -114,5 +113,16 @@ class BoardControllerTest {
         assertNotNull(mvcResult);
 
         posts(Integer.parseInt(mvcResult.getModelAndView().getModel().get("result").toString()));
+    }
+
+    @Test
+    void testRemoveAll() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/removeAll"))
+                .andExpect(redirectedUrlPattern("/board/list*"))
+                .andExpect(status().is3xxRedirection())
+                .andReturn();
+        logger.info(mvcResult.getModelAndView().getModel().get("result"));
+        logger.info(mvcResult.getModelAndView().getModel().get("message"));
+        testBoardList();
     }
 }

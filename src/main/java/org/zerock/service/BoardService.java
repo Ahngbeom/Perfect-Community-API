@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface BoardService {
 
+    long    countBoard();
+
     List<BoardVO> getBoardList();
 
     BoardVO getBoardByBno(long bno);
@@ -17,4 +19,8 @@ public interface BoardService {
     int modifyBoard(BoardVO board);
 
     int removeBoard(long bno);
+
+    int removeAllBoard();
+
+    long initBnoValue();
 }
