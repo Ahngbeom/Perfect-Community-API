@@ -69,34 +69,34 @@ class BoardControllerTest {
     }
 
     @Test
-    void testBoardPosts() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/posts")
+    void testGetPosts() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/post")
                 .param("bno", String.valueOf(1)))
                 .andExpect(status().isOk())
-                .andDo(print())
+//                .andDo(print())
                 .andReturn();
-        logger.info(mvcResult.getModelAndView().getModel().get("posts"));
+        logger.info(mvcResult.getModelAndView().getModel().get("post"));
     }
 
     @Test
-    void posts(int bno) throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/posts")
+    void testGetPosts(int bno) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/post")
                         .param("bno", String.valueOf(bno)))
                 .andExpect(status().isOk())
-                .andDo(print())
+//                .andDo(print())
                 .andReturn();
-        logger.info(mvcResult.getModelAndView().getModel().get("posts"));
+        logger.info(mvcResult.getModelAndView().getModel().get("post"));
     }
 
     @Test
-    void registerGet() throws Exception {
+    void testRegisterPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/board/register"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
-    void registerPost() throws Exception {
+    void testRegistration() throws Exception {
         BoardVO board = new BoardVO("안녕하세요", "신입생 안범준입니다.", "안범준");
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
@@ -112,12 +112,47 @@ class BoardControllerTest {
         assertNotNull(board);
         assertNotNull(mvcResult);
 
-        posts(Integer.parseInt(mvcResult.getModelAndView().getModel().get("result").toString()));
+        testGetPosts(Integer.parseInt(mvcResult.getModelAndView().getModel().get("result").toString()));
+    }
+
+    @Test
+    void testModifyPage() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/modify")
+                        .param("bno", String.valueOf(1)))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void testModification() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/modify")
+                        .param("bno", String.valueOf(1))
+//                        .requestAttr("bno", 1)
+                        .param("title", "주니어 개발자 안범준입니다.")
+                        .param("content", "잘 부탁드립니다.")
+                        .param("writer", "Ahngbeom"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/board/post*"))
+                .andReturn();
+
+        testGetPosts(1);
     }
 
     @Test
     void testRemoveAll() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/removeAll"))
+                .andExpect(redirectedUrlPattern("/board/list*"))
+                .andExpect(status().is3xxRedirection())
+                .andReturn();
+        logger.info(mvcResult.getModelAndView().getModel().get("result"));
+        logger.info(mvcResult.getModelAndView().getModel().get("message"));
+        testBoardList();
+    }
+
+    @Test
+    void testRemove() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/remove")
+                        .param("bno", String.valueOf(1)))
                 .andExpect(redirectedUrlPattern("/board/list*"))
                 .andExpect(status().is3xxRedirection())
                 .andReturn();

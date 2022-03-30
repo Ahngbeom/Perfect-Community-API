@@ -30,6 +30,10 @@ public class BoardVO {
     private LocalDateTime   regDate;
     private LocalDateTime   updateDate;
 
+    public void setBno(long bno) { // Need when modifying post of board
+        this.bno = bno;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
