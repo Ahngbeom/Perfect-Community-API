@@ -30,7 +30,7 @@ public class BoardController {
 
     @GetMapping("/post")
     public ModelAndView getPosts(ModelAndView mv, long bno) {
-        mv.addObject("post", service.getBoardByBno(bno));
+        mv.addObject("Post", service.getBoardByBno(bno));
         mv.setViewName("board/post");
         return mv;
     }
@@ -60,6 +60,7 @@ public class BoardController {
 
     @GetMapping("/modify")
     public ModelAndView modifyPost(ModelAndView mv, int bno) {
+        mv.addObject("Post", service.getBoardByBno(bno));
         mv.setViewName("board/modify");
         return mv;
     }
@@ -69,7 +70,8 @@ public class BoardController {
         try {
             if (service.modifyBoard(board) == 0)
                 throw new Exception("Modify Board Failed.");
-            redirectAttributes.addAttribute("result", "SUCCESS");
+            redirectAttributes.addFlashAttribute("result", "SUCCESS");
+            redirectAttributes.addAttribute("bno", board.getBno());
             mv.setViewName("redirect:/board/post");
         } catch (Exception e) {
             e.printStackTrace();

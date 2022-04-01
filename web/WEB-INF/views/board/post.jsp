@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Board - ${post.title}</title>
+    <title>Board - ${Post.title}</title>
 </head>
 <body>
 <h1>Board Post</h1>
@@ -16,15 +16,15 @@
     <tbody>
     <tr>
         <td>작성자</td>
-        <td><input type="text" value="${post.writer}" readonly/></td>
+        <td><input type="text" value="${Post.writer}" readonly/></td>
     </tr>
     <tr>
         <td>제목</td>
-        <td><input type="text" value="${post.title}" readonly/></td>
+        <td><input type="text" value="${Post.title}" readonly/></td>
     </tr>
     <tr>
         <td>내용</td>
-        <td><textarea name="content" cols="30" rows="10" readonly>${post.content}</textarea></td>
+        <td><textarea name="content" cols="30" rows="10" readonly>${Post.content}</textarea></td>
     </tr>
     </tbody>
     <tfoot>
@@ -33,9 +33,9 @@
             <button onclick="location.href='/board/list'">목록</button>
         </td>
         <td align="right">
-            <button onclick="location.href='/board/modify?bno=${post.bno}'">수정</button>
+            <button onclick="location.href='/board/modify?bno=${Post.bno}'">수정</button>
             <form action="/board/remove" method="post">
-                <input type="hidden" name="bno" value="${post.bno}">
+                <input type="hidden" name="bno" value="${Post.bno}">
                 <input type="submit" value="삭제"/>
             </form>
         </td>
