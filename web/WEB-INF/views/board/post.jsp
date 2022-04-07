@@ -5,26 +5,36 @@
   Time: 오후 1:24
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Board - ${Post.title}</title>
 </head>
 <body>
 <h1>Board Post</h1>
+<h2 id="serverMsg"></h2>
 <table>
     <tbody>
     <tr>
         <td>작성자</td>
-        <td><input type="text" value="${Post.writer}" readonly/></td>
+        <td>
+            <label>
+                <input type="text" value="${Post.writer}" readonly/>
+            </label>
+        </td>
     </tr>
     <tr>
         <td>제목</td>
-        <td><input type="text" value="${Post.title}" readonly/></td>
+        <td><label>
+            <input type="text" value="${Post.title}" readonly/>
+        </label></td>
     </tr>
     <tr>
         <td>내용</td>
-        <td><textarea name="content" cols="30" rows="10" readonly>${Post.content}</textarea></td>
+        <td>
+            <label>
+                <textarea name="content" cols="30" rows="10" readonly>${Post.content}</textarea>
+            </label>
+        </td>
     </tr>
     </tbody>
     <tfoot>
@@ -32,9 +42,9 @@
         <td>
             <button onclick="location.href='/board/list'">목록</button>
         </td>
-        <td align="right">
+        <td>
             <button onclick="location.href='/board/modify?bno=${Post.bno}'">수정</button>
-            <form action="/board/remove" method="post">
+            <form method="post" action="${pageContext.request.contextPath}/board/remove">
                 <input type="hidden" name="bno" value="${Post.bno}">
                 <input type="submit" value="삭제"/>
             </form>
@@ -43,7 +53,4 @@
     </tfoot>
 </table>
 </body>
-<script type="text/javascript">
-
-</script>
 </html>

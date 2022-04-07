@@ -5,15 +5,11 @@
   Time: 오후 10:37
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>Title</title>
-</head>
 <body>
 <h1>Board Modify</h1>
-
-<form method="post" action="${pageContext.request.contextPath}/board/modify">
+<h2 id="serverMsg"></h2>
+<form action="${pageContext.request.contextPath}/board/modify" method="post">
     <input type="hidden" name="bno" value="${Post.bno}">
     <table>
         <thead>
@@ -22,21 +18,33 @@
         <tbody>
         <tr>
             <td>작성자</td>
-            <td><input type="text" name="writer" value="${Post.writer}"/></td>
+            <td>
+                <label>
+                    <input type="text" name="writer" value="${Post.writer}"/>
+                </label>
+            </td>
         </tr>
         <tr>
             <td>제목</td>
-            <td><input type="text" name="title" value="${Post.title}"/></td>
+            <td>
+                <label>
+                    <input type="text" name="title" value="${Post.title}"/>
+                </label>
+            </td>
         </tr>
         <tr>
             <td>내용</td>
-            <td><textarea name="content" cols="30" rows="10">${Post.content}</textarea></td>
+            <td>
+                <label>
+                    <textarea name="content" cols="30" rows="10">${Post.content}</textarea>
+                </label>
+            </td>
         </tr>
         </tbody>
         <tfoot>
         <tr>
             <td></td>
-            <td align="right"><input type="submit" value="수정"/></td>
+            <td><input type="submit" value="수정"/></td>
         </tr>
         </tfoot>
     </table>

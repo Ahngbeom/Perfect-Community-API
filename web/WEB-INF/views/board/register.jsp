@@ -5,7 +5,6 @@
   Time: 오후 10:37
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Board - Register</title>
@@ -18,7 +17,7 @@
 <body>
 
 <h1>Board Register</h1>
-
+<h2 id="serverMsg"></h2>
 <form method="post" action="${pageContext.request.contextPath}/board/register">
     <table>
         <thead>
@@ -27,24 +26,48 @@
         <tbody>
         <tr>
             <td>작성자</td>
-            <td><input type="text" name="writer"/></td>
+            <td><label>
+                <input type="text" name="writer" value=""/>
+            </label></td>
         </tr>
         <tr>
             <td>제목</td>
-            <td><input type="text" name="title"/></td>
+            <td><label>
+                <input type="text" name="title"/>
+            </label></td>
         </tr>
         <tr>
             <td>내용</td>
-            <td><textarea name="content" cols="30" rows="10"></textarea></td>
+            <td><label>
+                <textarea name="content" cols="30" rows="10"></textarea>
+            </label></td>
         </tr>
         </tbody>
         <tfoot>
         <tr>
             <td></td>
-            <td align="right"><input type="submit" value="등록"/></td>
+            <td><input id="postRegisterBtn" type="button" value="등록"/></td>
         </tr>
         </tfoot>
     </table>
 </form>
 </body>
+<script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', () => {
+        let formTag = document.querySelector('form');
+        // let registerBtn = document.getElementById("postRegisterBtn");
+        let registerBtn = formTag.querySelector('#postRegisterBtn');
+        registerBtn.addEventListener('click', () => {
+            // console.log(formTag.querySelector("input[name='writer']"));
+            // console.log(formTag.querySelector("input[name='title']"));
+            // console.log(formTag.querySelector("textarea[name='content']"));
+        });
+
+        formTag.querySelector("input[name='writer']").addEventListener('input', (evt) => {
+           console.log(evt.currentTarget.value);
+        });
+    });
+</script>
 </html>
+

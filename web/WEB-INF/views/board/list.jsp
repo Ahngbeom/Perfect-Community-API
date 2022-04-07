@@ -5,9 +5,7 @@
   Time: 오후 1:24
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--<%@ include file="../includes/header.jsp" %>--%>
 <html>
 <head>
     <title>Board</title>
@@ -20,8 +18,13 @@
 </style>
 <body>
 <h1>Board</h1>
+<h2 id="serverMsg"></h2>
 
-<button onclick="location.href='/board/register'">게시글 작성</button>
+<form method="post" action="${pageContext.request.contextPath}/board/removeAll">
+    <button>모든 게시물 삭제</button> <!-- 관리자 권한을 가지고있어야 함 -->
+</form>
+
+<button onclick="location.href='/board/register'">게시물 작성</button>
 
 <table>
     <thead>
@@ -37,7 +40,7 @@
     <c:forEach var="post" items="${BoardList}" varStatus="status">
         <tr>
             <td><c:out value="${post.bno}"/></td>
-            <td><a href="/board/post?bno=${post.bno}"><c:out value="${post.title}"/></a></td>
+            <td><a href="${pageContext.request.contextPath}/board/post?bno=${post.bno}"><c:out value="${post.title}"/></a></td>
             <td><c:out value="${post.writer}"/></td>
             <fmt:parseDate value="${post.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedRegDate" type="both" />
             <td><fmt:formatDate value="${parsedRegDate}" pattern="yyyy년 MM월 dd일" /></td>

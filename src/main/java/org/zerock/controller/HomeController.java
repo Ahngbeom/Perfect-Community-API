@@ -14,4 +14,10 @@ public class HomeController {
         mv.setViewName("index");
         return mv;
     }
+
+    @GetMapping("/error")
+    public ModelAndView error(ModelAndView mv) {
+        mv.setViewName("error");
+        return mv;
+    }
 }
