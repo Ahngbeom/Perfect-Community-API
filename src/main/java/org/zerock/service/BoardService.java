@@ -10,6 +10,8 @@ public interface BoardService {
 
     List<BoardVO> getBoardList();
 
+    List<BoardVO> getBoardListWithPage(int page);
+
     BoardVO getBoardByBno(long bno);
 
     List<BoardVO> searchBoardByKeyword(String keyword);

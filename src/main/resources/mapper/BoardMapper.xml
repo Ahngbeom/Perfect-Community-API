@@ -5,12 +5,19 @@
 <mapper namespace="org.zerock.mapper.BoardMapper">
 
     <select id="countBoard" resultType="long">
-        select count(*) as count from board;
+        select count(*) as count
+        from board;
     </select>
 
     <select id="selectBoardList" resultType="org.zerock.domain.BoardVO">
         select bno, title, content, writer, regdate, updatedate
         from board;
+    </select>
+
+    <select id="selectBoardListWithPage" resultType="org.zerock.domain.BoardVO">
+        select bno, title, content, writer, regdate, updatedate
+        from board
+        orders limit ${page * 10} offset ${page * 10 - 10};
     </select>
 
     <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
@@ -20,7 +27,7 @@
     </select>
 
     <select id="selectBoardByKeyword" resultType="org.zerock.domain.BoardVO">
-        select *
+        select bno, title, content, writer, regdate, updatedate
         from board
         where title like concat('%', #{keyword}, '%')
            or content like concat('%', #{keyword}, '%')
@@ -35,25 +42,35 @@
 
     <update id="updateBoard">
         update board
-        set title = #{title},
-            content = #{content},
-            writer = #{writer},
+        set title      = #{title},
+            content    = #{content},
+            writer     = #{writer},
             updatedate = NOW()
         where bno = #{bno}
     </update>
 
     <delete id="deleteBoard">
-        delete from board where bno = #{bno}
+        delete
+        from board
+        where bno = #{bno}
     </delete>
 
     <delete id="deleteAllBoard">
-        delete from board where bno > 0
+        delete
+        from board
+        where bno > 0
     </delete>
 
     <select id="initAutoIncrement" resultType="long">
-        alter table board auto_increment = 1;
+        alter table board
+            auto_increment = 1;
         set @COUNT = 0;
-        update board set bno = @COUNT:=@COUNT+1 where bno > 0;
-        select Auto_increment from information_schema.tables where TABLE_SCHEMA = 'BasicSpringMVC' and TABLE_NAME = 'board';
+        update board
+        set bno = @COUNT := @COUNT + 1
+        where bno > 0;
+        select Auto_increment
+        from information_schema.tables
+        where TABLE_SCHEMA = 'BasicSpringMVC'
+          and TABLE_NAME = 'board';
     </select>
 </mapper>

@@ -1,6 +1,0 @@
-GET http://localhost:8080/board/list
-Accept: text/html
-
-{"type": "Remove", "state": "SUCCESS"}
-
-###

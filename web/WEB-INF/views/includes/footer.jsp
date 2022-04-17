@@ -5,25 +5,14 @@
   Time: 오전 12:47
   To change this template use File | Settings | File Templates.
 --%>
-<%--<html>--%>
-<%--<head>--%>
-<%--    <meta charset="UTF-8">--%>
-<%--    <title>Title</title>--%>
-<%--    <style>--%>
-
-<%--    </style>--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--<h3>Footer</h3>--%>
-<%--</body>--%>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
         let serverType = '<c:out value="${type}" />';
         let serverState = '<c:out value="${state}" />';
         let serverMsgTag = document.querySelector('#serverMsg');
 
-        console.log('<c:out value="${Post.bno}" />');
-        console.log(serverState);
+        <%--console.log('<c:out value="${Post.bno}" />');--%>
+        <%--console.log(serverState);--%>
         if (serverState === "SUCCESS") {
             switch (serverType) {
                 case "Registration" :
@@ -54,7 +43,7 @@
                     serverMsgTag.textContent = "게시물 수정을 할 수 없습니다.";
                     break;
                 case "Remove ALL" :
-                    serverMsgTag.textContent = "모든 게시물 삭제를 할 수 없습니다.";
+                    serverMsgTag.textContent = "모든 게시물을 삭제할 수 없습니다.";
                     break;
                 case "Remove" :
                     serverMsgTag.textContent = "게시물 삭제를 할 수 없습니다.";

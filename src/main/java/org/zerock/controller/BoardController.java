@@ -7,10 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
 import org.zerock.service.BoardService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,8 +26,10 @@ public class BoardController {
     private final BoardService service;
 
     @GetMapping("/list")
-    public ModelAndView boardList(ModelAndView mv) {
-        mv.addObject("BoardList", service.getBoardList());
+    public ModelAndView boardList(ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
+        long postAmount = service.countBoard();
+        mv.addObject("BoardList", service.getBoardListWithPage(page));
+        mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
         mv.setViewName("board/list");
         return mv;
     }
@@ -140,4 +146,30 @@ public class BoardController {
         return (mv);
     }
 
+    @PostMapping("/createDummy")
+    public ModelAndView createDummy(ModelAndView mv, long dummyAmount) {
+        BoardVO board = new BoardVO("Test", "Test", "Administrator");
+        long    limit = service.countBoard() + dummyAmount;
+        long    number = service.countBoard();
+        while (number < limit) {
+            logger.info("Create Dummy : " + number);
+            board.setTitle("Test" + number);
+            board.setContent("Test" + number);
+            service.registerBoard(board);
+            number = service.countBoard();
+        }
+        mv.setViewName("redirect:/board/list");
+        return mv;
+    }
+
+    @GetMapping("/search")
+    public ModelAndView searchPost(ModelAndView mv, String keyword, @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<BoardVO> searchResult = service.searchBoardByKeyword(keyword);
+        int size = searchResult.size();
+        List<BoardVO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, size > page * 10 ? page * 10 : size));
+        mv.addObject("BoardList", specPagesResult);
+        mv.addObject("pageAmount", size % 10 == 0 ? size / 10 : size / 10 + 1);
+        mv.setViewName("board/list");
+        return mv;
+    }
 }

@@ -44,13 +44,18 @@ class BoardServiceTest {
     }
 
     @Test
+    void getBoardListWithPage() {
+        service.getBoardListWithPage(2).forEach(board -> logger.info(board));
+    }
+
+    @Test
     void getBoard() {
         logger.info(service.getBoardByBno(5));
     }
 
     @Test
     void searchBoardByKeyword() {
-        service.searchBoardByKeyword("잠깐만").forEach(board -> logger.info(board));
+        service.searchBoardByKeyword("20").forEach(board -> logger.info(board));
     }
 
     @Test

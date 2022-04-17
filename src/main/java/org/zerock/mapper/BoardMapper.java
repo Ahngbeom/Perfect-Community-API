@@ -1,6 +1,7 @@
 package org.zerock.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.zerock.domain.BoardVO;
 
@@ -13,6 +14,8 @@ public interface BoardMapper {
     long countBoard();
 
     List<BoardVO> selectBoardList();
+
+    List<BoardVO> selectBoardListWithPage(int page);
 
     BoardVO selectBoardByBno(long bno);
 

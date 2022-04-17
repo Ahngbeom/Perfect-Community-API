@@ -17,7 +17,7 @@
 <body>
 
 <h1>Board Register</h1>
-<h2 id="serverMsg"></h2>
+<h2 id="serverMsg" form-value-status="EMPTY"></h2>
 <form method="post" action="${pageContext.request.contextPath}/board/register">
     <table>
         <thead>
@@ -26,14 +26,19 @@
         <tbody>
         <tr>
             <td>작성자</td>
-            <td><label>
-                <input type="text" name="writer" value=""/>
-            </label></td>
+            <td>
+                <label>
+                    <input type="text" name="writer" />
+                </label>
+            </td>
+            <td class="message">
+
+            </td>
         </tr>
         <tr>
             <td>제목</td>
             <td><label>
-                <input type="text" name="title"/>
+                <input type="text" name="title" />
             </label></td>
         </tr>
         <tr>
@@ -52,22 +57,5 @@
     </table>
 </form>
 </body>
-<script type="text/javascript">
-
-    document.addEventListener('DOMContentLoaded', () => {
-        let formTag = document.querySelector('form');
-        // let registerBtn = document.getElementById("postRegisterBtn");
-        let registerBtn = formTag.querySelector('#postRegisterBtn');
-        registerBtn.addEventListener('click', () => {
-            // console.log(formTag.querySelector("input[name='writer']"));
-            // console.log(formTag.querySelector("input[name='title']"));
-            // console.log(formTag.querySelector("textarea[name='content']"));
-        });
-
-        formTag.querySelector("input[name='writer']").addEventListener('input', (evt) => {
-           console.log(evt.currentTarget.value);
-        });
-    });
-</script>
 </html>
 

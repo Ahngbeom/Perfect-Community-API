@@ -11,10 +11,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<%--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--%>
+<%--    <title>Title</title>--%>
+<%--    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>--%>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/boardForm.js"></script>
     <style>
+
+        .redText {
+
+        }
 
     </style>
 </head>

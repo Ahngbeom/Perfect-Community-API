@@ -35,6 +35,11 @@ class BoardMapperTest {
     }
 
     @Test
+    void testSelectBoardListWithPage() {
+        mapper.selectBoardListWithPage(2).forEach(board -> logger.info(board));
+    }
+
+    @Test
     void testSelectBoard() {
         BoardVO board = mapper.selectBoardByBno(1);
         logger.info(board);
@@ -45,7 +50,7 @@ class BoardMapperTest {
 
     @Test
     void testSearchBoard() {
-        logger.info(mapper.selectBoardByKeyword("Te"));
+        logger.info(mapper.selectBoardByKeyword("2"));
     }
 
     @Test

@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <html>
+<head>
+    <title>Board Modify - ${Post.title}</title>
+</head>
 <body>
 <h1>Board Modify</h1>
 <h2 id="serverMsg"></h2>
@@ -44,7 +47,7 @@
         <tfoot>
         <tr>
             <td></td>
-            <td><input type="submit" value="수정"/></td>
+            <td><input id="postRegisterBtn" type="button" value="수정"/></td>
         </tr>
         </tfoot>
     </table>

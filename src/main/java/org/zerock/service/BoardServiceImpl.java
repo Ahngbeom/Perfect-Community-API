@@ -24,6 +24,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public List<BoardVO> getBoardListWithPage(int page) {
+        return mapper.selectBoardListWithPage(page);
+    }
+
+    @Override
     public BoardVO getBoardByBno(long bno) {
         return mapper.selectBoardByBno(bno);
     }
