@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
 import org.zerock.service.BoardService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +23,14 @@ import java.util.List;
 @RequestMapping("/board/**")
 public class BoardController {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
     private final BoardService service;
 
-    @GetMapping("/list")
-    public ModelAndView boardList(ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
+    @GetMapping(value = {"/list", "/"})
+    public ModelAndView boardList(HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
+        HttpSession session = request.getSession();
+        log.info(session.getServletContext());
         long postAmount = service.countBoard();
         mv.addObject("BoardList", service.getBoardListWithPage(page));
         mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
@@ -68,7 +72,7 @@ public class BoardController {
             redirectAttributes.addAttribute("bno", board.getBno());
             mv.setViewName("redirect:/board/post");
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             redirectAttributes.addAttribute("state", "FAILURE");
             mv.setViewName("redirect:/board/register");
         }
@@ -116,7 +120,7 @@ public class BoardController {
                 message = "Board Remove All Success.";
                 redirectAttributes.addFlashAttribute("state", "SUCCESS");
             }
-            logger.info(message);
+            log.info(message);
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("state", "FAILURE");
@@ -152,7 +156,7 @@ public class BoardController {
         long    limit = service.countBoard() + dummyAmount;
         long    number = service.countBoard();
         while (number < limit) {
-            logger.info("Create Dummy : " + number);
+            log.info("Create Dummy : " + number);
             board.setTitle("Test" + number);
             board.setContent("Test" + number);
             service.registerBoard(board);

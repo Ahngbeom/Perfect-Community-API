@@ -10,7 +10,7 @@
     <title>Error</title>
 </head>
 <body>
-
+<h1>${serverMessage}</h1>
 <h2 id="errorMsg"></h2>
 <button onclick="location.href='/board/list'">돌아가기</button>
 

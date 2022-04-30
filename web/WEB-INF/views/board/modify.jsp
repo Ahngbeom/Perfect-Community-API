@@ -8,6 +8,7 @@
 <html>
 <head>
     <title>Board Modify - ${Post.title}</title>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/boardForm.js"></script>
 </head>
 <body>
 <h1>Board Modify</h1>

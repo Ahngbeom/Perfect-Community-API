@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>Board</title>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/boardForm.js"></script>
 </head>
 <style>
     table, td {

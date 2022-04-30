@@ -6,6 +6,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="BasicSpringMVC" />
+          <element id="library" level="application" name="jquery-3.6.0" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.19.RELEASE" />
@@ -40,6 +41,18 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.2.19.RELEASE" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.22" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy-agent:1.12.9" />
+          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.12.9" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.17.2" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.17.2" />
+          <element id="library" level="project" name="Maven: org.mockito:mockito-core:4.5.1" />
+          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.24" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:5.6.3" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.6.3" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.6.3" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:5.6.3" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:5.6.3" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.6.3" />
         </element>
       </element>
     </root>
