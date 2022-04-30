@@ -10,9 +10,11 @@
     <title>${title}</title>
 </head>
 <body>
-<h1>${serverMessage}</h1>
-<form action="/login" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<h1>Login</h1>
+<h2>${serverMessage}</h2>
+<form action="${pageContext.request.contextPath}/login" method="post">
+<%--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
+    <sec:csrfInput/>
     <div>
         <label>
             ID <input type="text" name="username"/>

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -12,15 +13,23 @@ public class LoginController {
     private static final Logger log = LogManager.getLogger();
 
     @GetMapping("/login")
-    public ModelAndView doLogin(ModelAndView mv) {
+    public ModelAndView doLogin(ModelAndView mv, String error, String logout) {
         log.info("Login");
+        log.info("Error: " + error);
+        log.info("Logout: " + logout);
+        if (error != null) {
+            mv.addObject("serverMessage", "Invalid Account");
+        }
+        if (logout != null) {
+            mv.addObject("serverMessage", "Logout.");
+        }
         mv.addObject("title", "Login");
-        mv.addObject("serverMessage", "Login");
+
         mv.setViewName("/login/login");
         return mv;
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public void doLogout() {
         log.info("Logout");
     }
