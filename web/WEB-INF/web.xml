@@ -7,8 +7,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/applicationContext.xml
-<!--            /WEB-INF/dispatcher-servlet.xml-->
+<!--            /WEB-INF/applicationContext.xml-->
+            /WEB-INF/dispatcher-servlet.xml
             /WEB-INF/securityContext.xml
         </param-value>
     </context-param>

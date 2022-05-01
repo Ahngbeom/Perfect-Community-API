@@ -170,7 +170,7 @@ public class BoardController {
     public ModelAndView searchPost(ModelAndView mv, String keyword, @RequestParam(value = "page", defaultValue = "1") int page) {
         List<BoardVO> searchResult = service.searchBoardByKeyword(keyword);
         int size = searchResult.size();
-        List<BoardVO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, size > page * 10 ? page * 10 : size));
+        List<BoardVO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, Math.min(size, page * 10)));
         mv.addObject("BoardList", specPagesResult);
         mv.addObject("pageAmount", size % 10 == 0 ? size / 10 : size / 10 + 1);
         mv.setViewName("board/list");

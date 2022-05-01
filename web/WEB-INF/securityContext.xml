@@ -4,9 +4,12 @@
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+<!--    <import resource="dispatcher-servlet.xml"/>-->
 
     <bean id="accessDenied" class="org.zerock.security.AccessDeniedHandler"/>
     <bean id="loginSuccess" class="org.zerock.security.LoginSuccessHandler"/>
+<!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomPasswordEncoder"/>-->
+    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
     <security:http auto-config="true" use-expressions="true">
         <security:intercept-url pattern="/all" access="permitAll()" />
@@ -23,10 +26,17 @@
 
     <security:authentication-manager>
         <security:authentication-provider>
-            <security:user-service>
-                <security:user name="member" password="{noop}member" authorities="ROLE_MEMBER" />
-                <security:user name="admin" password="{noop}1234" authorities="ROLE_MEMBER, ROLE_ADMIN" />
-            </security:user-service>
+<!--            <security:user-service>-->
+<!--                <security:user name="member" password="{noop}member" authorities="ROLE_MEMBER" />-->
+<!--                <security:user name="admin" password="{noop}1234" authorities="ROLE_MEMBER, ROLE_ADMIN" />-->
+<!--            </security:user-service>-->
+            <security:jdbc-user-service
+                data-source-ref="dataSource" users-by-username-query="select userid, password, username, enabled from users where userid = ?"
+                authorities-by-username-query="select username, authority from authorities where username = ?"
+            />
+
+<!--            <security:password-encoder ref="customPasswordEncoder" />-->
+            <security:password-encoder ref="bCryptPasswordEncoder" />
         </security:authentication-provider>
     </security:authentication-manager>
 
