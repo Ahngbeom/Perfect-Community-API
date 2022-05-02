@@ -12,28 +12,43 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <%--    <title>Title</title>--%>
+    <c:choose>
+        <c:when test="${not empty title}">
+            <title>${title}</title>
+        </c:when>
+        <c:otherwise>
+            <title>BasicSpringMVC</title>
+        </c:otherwise>
+    </c:choose>
     <%--    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>--%>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div>
-    <a href="/login">Login</a>
-    <form action="/logout" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-        <input type="submit" value="Logout">
-    </form>
+    <sec:authorize access="isAnonymous()">
+        <a href="${pageContext.request.contextPath}/login">Login</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <form action="${pageContext.request.contextPath}/logout" method="post">
+            <sec:csrfInput/>
+<%--            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">--%>
+            <input type="submit" value="Logout">
+        </form>
+    </sec:authorize>
 </div>
 <div>
-<%--    <p><sec:authentication property="principal" /></p>--%>
-<%--    <p><sec:authentication property="principal.member" /></p>--%>
-<%--    <p><sec:authentication property="principal" /></p>--%>
-<%--    <p><sec:authentication property="principal" /></p>--%>
+    <sec:authorize access="isAuthenticated()">
+        <p><sec:authentication property="principal"/></p>
+        <p><sec:authentication property="principal.member"/></p>
+        <p><sec:authentication property="principal.member.userName"/></p>
+        <p><sec:authentication property="principal.member.userId"/></p>
+        <p><sec:authentication property="principal.member.authList"/></p>
+    </sec:authorize>
 </div>
 <hr>
 <div>
-    <a href="/all">All</a>
-    <a href="/member">Member</a>
-    <a href="/admin">Admin</a>
+    <a href="${pageContext.request.contextPath}/all">All</a>
+    <a href="${pageContext.request.contextPath}/member">Member</a>
+    <a href="${pageContext.request.contextPath}/login/admin">Admin</a>
 </div>
 </body>

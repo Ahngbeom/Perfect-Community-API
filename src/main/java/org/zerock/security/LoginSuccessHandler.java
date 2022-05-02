@@ -18,22 +18,20 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.warn("Login Success");
         List<String> roleList = new ArrayList<>();
-        authentication.getAuthorities().forEach(grantedAuthority -> {
-            roleList.add(grantedAuthority.getAuthority());
-        });
+        authentication.getAuthorities().forEach(grantedAuthority -> roleList.add(grantedAuthority.getAuthority()));
 
-        log.warn("ROLE NAMES: " + roleList);
+        log.warn("Login Success - ROLE NAMES: " + roleList);
 
-        if (roleList.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/admin");
-            return;
-        }
-        else if (roleList.contains("ROLE_MEMBER")) {
-            response.sendRedirect("/member");
-            return;
-        }
+//        if (roleList.contains("ROLE_ADMIN")) {
+//            response.sendRedirect("/admin");
+//            return;
+//        }
+//        else if (roleList.contains("ROLE_MEMBER")) {
+//            response.sendRedirect("/member");
+//            return;
+//        }
         response.sendRedirect("/");
+
     }
 }

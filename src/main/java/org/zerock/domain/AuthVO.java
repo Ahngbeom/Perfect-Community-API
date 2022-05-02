@@ -11,12 +11,12 @@ import org.springframework.lang.NonNull;
 public class AuthVO {
 
     @NonNull
-    private String userName;
+    private String userId;
     @NonNull
     private String auth;
 
-    public void setUserName(@NonNull String userName) {
-        this.userName = userName;
+    public void setUserId(@NonNull String userId) {
+        this.userId = userId;
     }
 
     public void setAuth(@NonNull String auth) {

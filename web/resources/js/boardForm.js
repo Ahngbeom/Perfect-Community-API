@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (writerInput != null) {
         writerInput.addEventListener('input', (evt) => {
-            if (evt.currentTarget.value == "") {
+            if (evt.currentTarget.value === "") {
                 console.log(writerInput.closest('td'));
                 // HTMLTableElement.insertCell();
                 document.getElementById('serverMsg').innerHTML = '<p class="redText">작성자를 입력해주세요.</p>';
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (titleInput != null) {
         titleInput.addEventListener('input', (evt) => {
-            if (evt.currentTarget.value == "") {
+            if (evt.currentTarget.value === "") {
                 console.log(writerInput.closest('td'));
                 // HTMLTableElement.insertCell();
                 document.getElementById('serverMsg').innerHTML = '<p class="redText">제목을 입력해주세요.</p>';
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (contentInput != null) {
         contentInput.addEventListener('input', (evt) => {
-            if (evt.currentTarget.value.length == 0) {
+            if (evt.currentTarget.value.length === 0) {
                 console.log(writerInput.closest('td'));
                 // HTMLTableElement.insertCell();
                 document.getElementById('serverMsg').innerHTML = '<p class="redText">내용을 입력해주세요.</p>';
@@ -49,24 +49,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (submitBtn != null) {
-        submitBtn.addEventListener('click', (evt) => {
-            if (writerInput.value.length == 0)
+        submitBtn.addEventListener('click', () => {
+            if (writerInput.value.length === 0)
                 document.getElementById('serverMsg').innerHTML = '<p class="redText">작성자를 입력해주세요.</p>';
-            else if (titleInput.value.length == 0)
+            else if (titleInput.value.length === 0)
                 document.getElementById('serverMsg').innerHTML = '<p class="redText">제목을 입력해주세요.</p>';
-            else if (contentInput.value.length == 0)
+            else if (contentInput.value.length === 0)
                 document.getElementById('serverMsg').innerHTML = '<p class="redText">내용을 입력해주세요.</p>';
             else
                 formTag.submit();
         });
     }
 
-    let serverType = '<c:out value="${type}" />';
-    let serverState = '<c:out value="${state}" />';
+    const serverType = '<c:out value="${type}">';
+    const serverState = '<c:out value="${state}">';
     let serverMsgTag = document.querySelector('#serverMsg');
 
     // console.log('<c:out value="${Post.bno}" />');
-    // console.log(serverState);
+    console.log(serverType);
+    console.log(serverState);
+
     if (serverState === "SUCCESS") {
         switch (serverType) {
             case "Registration" :
@@ -129,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
         }
     }
-    else {
-        serverMsgTag.textContent = serverState;
-    }
+    // else {
+    //     serverMsgTag.textContent = serverState;
+    // }
 });

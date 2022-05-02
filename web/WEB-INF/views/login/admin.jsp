@@ -11,5 +11,9 @@
 </head>
 <body>
 Admin
+
+<p><sec:authentication property="principal" /></p>
+<p><sec:authentication property="principal.member" /></p>
+
 </body>
 </html>

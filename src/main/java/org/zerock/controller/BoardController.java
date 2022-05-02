@@ -32,7 +32,9 @@ public class BoardController {
         HttpSession session = request.getSession();
         log.info(session.getServletContext());
         long postAmount = service.countBoard();
-        mv.addObject("BoardList", service.getBoardListWithPage(page));
+        List<BoardVO> postsByPage = service.getBoardListWithPage(page);
+        postsByPage.forEach(posts -> log.info(posts));
+        mv.addObject("BoardList", postsByPage);
         mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
         mv.setViewName("board/list");
         return mv;

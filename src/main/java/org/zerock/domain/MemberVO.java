@@ -17,7 +17,6 @@ public class MemberVO {
     private String userId;
     @NonNull
     private String password;
-    @NonNull
     private String userName;
 
     private boolean enabled;

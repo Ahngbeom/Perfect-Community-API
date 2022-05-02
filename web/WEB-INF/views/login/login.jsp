@@ -17,12 +17,12 @@
     <sec:csrfInput/>
     <div>
         <label>
-            ID <input type="text" name="username"/>
+            ID <input type="text" name="username" value="admin"/>
         </label>
     </div>
     <div>
         <label>
-            PW <input type="password" name="password"/>
+            PW <input type="password" name="password" value="admin"/>
         </label>
     </div>
     <div>

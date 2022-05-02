@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper
 @Repository
 public interface MemberMapper {
-    List<MemberVO> readMemberList();
+    MemberVO readMember(String userId);
 }

@@ -1,9 +1,13 @@
 package org.zerock.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.zerock.domain.MemberVO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,12 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class HomeController {
 
+    private static final Logger log = LogManager.getLogger();
     private final BoardController boardController;
 //
     @GetMapping("/")
-    public ModelAndView home(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView();
-        return boardController.boardList(request, mv, 1);
+    public ModelAndView home(ModelAndView mv) {
+        mv.setViewName("redirect:/board/list");
+        return mv;
     }
 
     @GetMapping("/error")

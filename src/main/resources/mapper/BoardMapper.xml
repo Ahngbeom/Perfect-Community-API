@@ -11,13 +11,14 @@
 
     <select id="selectBoardList" resultType="org.zerock.domain.BoardVO">
         select bno, title, content, writer, regdate, updatedate
-        from board;
+        from board
+        order by updatedate DESC;
     </select>
 
     <select id="selectBoardListWithPage" resultType="org.zerock.domain.BoardVO">
         select bno, title, content, writer, regdate, updatedate
         from board
-        orders limit ${page * 10} offset ${page * 10 - 10};
+        order by updatedate desc limit ${(page - 1) * 10}, 10;
     </select>
 
     <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
@@ -31,7 +32,8 @@
         from board
         where title like concat('%', #{keyword}, '%')
            or content like concat('%', #{keyword}, '%')
-           or writer like concat('%', #{keyword}, '%');
+           or writer like concat('%', #{keyword}, '%')
+        order by updatedate DESC;
     </select>
 
     <insert id="insertBoard" parameterType="org.zerock.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
