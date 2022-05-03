@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Board</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/boardForm.js"></script>
+
 </head>
 <style>
     table, td {
@@ -18,34 +18,15 @@
     }
 </style>
 <body>
-<h1><a href="/board/list">Board</a></h1>
-<h2 id="serverMsg"></h2>
+<h1><a href="${pageContext.request.contextPath}/board/list">Board</a></h1>
 
-<form method="post" action="${pageContext.request.contextPath}/board/removeAll">
-    <button>모든 게시물 삭제</button> <!-- 관리자 권한을 가지고있어야 함 -->
-</form>
-
-<form method="post" action="${pageContext.request.contextPath}/board/createDummy">
-    <label>
-        개수 :
-        <select name="dummyAmount">
-            <option value="1">1</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-        </select>
-    </label>
-    <button>게시물 더미 생성</button> <!-- 관리자 권한을 가지고있어야 함 -->
-</form>
-
-<button onclick="location.href='/board/register'">게시물 작성</button>
-<form method="get" action="/board/search">
+<form method="get" action="${pageContext.request.contextPath}/board/search">
     <label>
         <input type="search" name="keyword"/>
     </label>
     <input type="submit" value="검색"/>
 </form>
+<button onclick="location.href='/board/register'">게시물 작성</button>
 <table>
     <thead>
     <tr>
@@ -75,7 +56,7 @@
     <tr>
         <td id="pageList" colspan="5">
             <c:forEach var="page" begin="1" end="${pageAmount}" varStatus="status">
-<%--                <a href="/board/list?page=${page}">${page}</a>--%>
+                <%--                <a href="/board/list?page=${page}">${page}</a>--%>
                 <a href="${pageContext.request.contextPath}?keyword=${param.keyword}&page=${page}">${page}</a>
             </c:forEach>
             <%-- 유효하지않은 page 번호를 담아 url 요청할 경우 예외 처리 필요 --%>
@@ -84,6 +65,6 @@
     </tr>
     </tfoot>
 </table>
-
 </body>
 </html>
+

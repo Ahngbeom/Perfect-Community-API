@@ -70,13 +70,14 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${org.spring-security-version}</version>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.security/spring-security-test &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-test</artifactId>-->
-<!--            <version>${org.spring-security-version}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-test -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${org.spring-security-version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.mybatis</groupId>

@@ -23,6 +23,8 @@
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.ico</url-pattern>
     </servlet-mapping>
 
     <filter>

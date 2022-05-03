@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.MemberVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,12 @@ public class HomeController {
     private final BoardController boardController;
 //
     @GetMapping("/")
-    public ModelAndView home(ModelAndView mv) {
+    public ModelAndView home(RedirectAttributes redirectAttributes, ModelAndView mv) {
+        if (redirectAttributes.getFlashAttributes().isEmpty()) {
+            redirectAttributes.addFlashAttribute("serverMessage", "Welcome!");
+        } else {
+            log.warn(redirectAttributes.getFlashAttributes());
+        }
         mv.setViewName("redirect:/board/list");
         return mv;
     }

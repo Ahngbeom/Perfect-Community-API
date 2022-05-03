@@ -24,7 +24,9 @@ public class LoginController {
         log.info("Error: " + error);
         log.info("Logout: " + logout);
         if (error != null) {
-            mv.addObject("serverMessage", "Invalid Account");
+            redirectAttributes.addFlashAttribute("serverMessage", "Invalid Account");
+            mv.setViewName("redirect:/login");
+            return mv;
         }
         if (logout != null) {
 //            mv.addObject("serverMessage", "Logout.");
@@ -44,24 +46,24 @@ public class LoginController {
         log.info("Logout");
     }
 
-    @GetMapping("/all")
-    public ModelAndView doAll(ModelAndView mv) {
-        log.info("All");
-        mv.setViewName("login/all");
-        return mv;
-    }
-
-    @GetMapping("/member")
-    public ModelAndView doMember(ModelAndView mv) {
-        log.info("Member");
-        mv.setViewName("login/member");
-        return mv;
-    }
-
-    @GetMapping("/login/admin")
-    public void doAdmin() {
-        log.info("Admin");
-    }
+//    @GetMapping("/all")
+//    public ModelAndView doAll(ModelAndView mv) {
+//        log.info("All");
+//        mv.setViewName("login/all");
+//        return mv;
+//    }
+//
+//    @GetMapping("/member")
+//    public ModelAndView doMember(ModelAndView mv) {
+//        log.info("Member");
+//        mv.setViewName("login/member");
+//        return mv;
+//    }
+//
+//    @GetMapping("/login/admin")
+//    public void doAdmin() {
+//        log.info("Admin");
+//    }
 
 //    @GetMapping("/admin")
 //    public ModelAndView doAdmin(ModelAndView mv, @AuthenticationPrincipal MemberVO member) {

@@ -3,6 +3,7 @@ package org.zerock.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.zerock.service.BoardService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,14 +30,17 @@ public class BoardController {
     private final BoardService service;
 
     @GetMapping(value = {"/list", "/"})
-    public ModelAndView boardList(HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
+    public ModelAndView boardList(@AuthenticationPrincipal Principal principal, HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
         HttpSession session = request.getSession();
-        log.info(session.getServletContext());
         long postAmount = service.countBoard();
         List<BoardVO> postsByPage = service.getBoardListWithPage(page);
-        postsByPage.forEach(posts -> log.info(posts));
         mv.addObject("BoardList", postsByPage);
         mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
+        if (principal != null) {
+            mv.addObject("serverMessage", "Hello " + principal.getName());
+//            request.getSession().removeAttribute("type");
+//            request.getSession().removeAttribute("state");
+        }
         mv.setViewName("board/list");
         return mv;
     }
