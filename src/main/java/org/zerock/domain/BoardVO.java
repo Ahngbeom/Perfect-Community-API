@@ -31,9 +31,9 @@ public class BoardVO {
 
     private String dateToToday;
 
-//    public void setBno(long bno) { // Need when modifying post of board
-//        this.bno = bno;
-//    }
+    public void setBno(long bno) { // Need when modifying posts of board
+        this.bno = bno;
+    }
 
     public void setTitle(String title) {
         this.title = title;
