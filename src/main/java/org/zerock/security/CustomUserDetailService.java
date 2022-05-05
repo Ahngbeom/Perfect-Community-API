@@ -6,9 +6,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.zerock.domain.MemberVO;
 import org.zerock.mapper.MemberMapper;
 
+import java.util.List;
+
+@Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
@@ -27,5 +31,6 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(userName);
         return new CustomUser(member);
     }
+
 
 }

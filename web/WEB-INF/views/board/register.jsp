@@ -10,15 +10,11 @@
     <title>Board - Register</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/boardForm.js"></script>
 </head>
-<style>
-    div {
-        margin: 10px;
-    }
-</style>
+
 <body>
 
 <h1>Board Register</h1>
-<h2 id="serverMsg" form-value-status="EMPTY"></h2>
+<%--<h2 id="serverMsg" form-value-status="EMPTY"></h2>--%>
 <form method="post" action="${pageContext.request.contextPath}/board/register">
     <table>
         <thead>
@@ -31,9 +27,6 @@
                 <label>
                     <input type="text" name="writer" />
                 </label>
-            </td>
-            <td class="message">
-
             </td>
         </tr>
         <tr>

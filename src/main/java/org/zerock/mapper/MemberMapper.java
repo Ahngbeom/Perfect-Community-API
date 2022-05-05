@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface MemberMapper {
     MemberVO readMember(String userId);
+
+    List<MemberVO> readAllMember();
 }

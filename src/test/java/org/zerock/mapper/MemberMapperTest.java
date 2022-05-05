@@ -29,4 +29,9 @@ class MemberMapperTest {
     void readMember() {
         log.info(mapper.readMember("admin"));
     }
+
+    @Test
+    void readAllMember() {
+        mapper.readAllMember().forEach(log::info);
+    }
 }

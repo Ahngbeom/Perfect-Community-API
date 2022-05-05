@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.BoardVO;
 import org.zerock.mapper.BoardMapper;
+import org.zerock.utils.DateUtility;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper mapper;
+    private final DateUtility dateUtility;
 
     @Override
     public long countBoard() {
@@ -25,7 +27,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardVO> getBoardListWithPage(int page) {
-        return mapper.selectBoardListWithPage(page);
+        List<BoardVO> boardList = mapper.selectBoardListWithPage(page);
+//        boardList.forEach(board -> board.dateToTodayCalculator());
+        boardList.forEach(board -> board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate())));
+        return boardList;
     }
 
     @Override

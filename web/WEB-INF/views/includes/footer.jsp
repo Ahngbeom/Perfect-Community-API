@@ -13,9 +13,7 @@
         let serverMsgTag = document.querySelector('#serverMessage');
 
         // console.log('<c:out value="${Post.bno}" />');
-        console.log(serverMessage);
-        console.log(processType);
-        console.log(processState);
+        console.log("SERVER: " + serverMessage + " (TYPE: " + processType + ", STATE" + processState + ")");
 
         document.getElementById('serverMessage').innerHTML = serverMessage;
 

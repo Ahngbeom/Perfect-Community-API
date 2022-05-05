@@ -1,0 +1,17 @@
+table, th, td {
+    border: 1px solid red;
+}
+
+.container {
+    flex-wrap: wrap;
+}
+
+.display-flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+#userLogBox {
+    display: flex;
+    justify-content: right;
+}

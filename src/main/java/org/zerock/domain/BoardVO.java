@@ -1,10 +1,9 @@
 package org.zerock.domain;
 
 import lombok.*;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @ToString
@@ -30,9 +29,11 @@ public class BoardVO {
     private LocalDateTime   regDate;
     private LocalDateTime   updateDate;
 
-    public void setBno(long bno) { // Need when modifying post of board
-        this.bno = bno;
-    }
+    private String dateToToday;
+
+//    public void setBno(long bno) { // Need when modifying post of board
+//        this.bno = bno;
+//    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -44,5 +45,9 @@ public class BoardVO {
 
     public void setWriter(String writer) {
         this.writer = writer;
+    }
+
+    public void setDateToToday(String dateToToday) {
+        this.dateToToday = dateToToday;
     }
 }

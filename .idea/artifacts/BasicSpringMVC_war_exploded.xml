@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="BasicSpringMVC">
-    <output-path>$PROJECT_DIR$/out/artifacts/BasicSpringMVC</output-path>
+  <artifact type="exploded-war" name="BasicSpringMVC:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/BasicSpringMVC_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -18,7 +18,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.3.19" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.3.19" />
           <element id="library" level="project" name="Maven: org.springframework:spring-test:5.3.19" />
-          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:4.0.1" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.6.3" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:5.6.3" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.6.3" />
@@ -45,6 +44,7 @@
           <element id="library" level="project" name="Maven: org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.24" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:4.0.1" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="BasicSpringMVC/web/Web" />

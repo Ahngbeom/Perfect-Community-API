@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.service.MemberService;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class MemberController {
     private static final Logger log = LogManager.getLogger();
 
     private final UserDetailsService userDetailsService;
+    private final MemberService memberService;
 
     @GetMapping("/info")
     public ModelAndView info(RedirectAttributes redirectAttributes, ModelAndView mv, @AuthenticationPrincipal Principal principal) {
@@ -46,6 +48,7 @@ public class MemberController {
             Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>(userDetailsService.loadUserByUsername(principal.getName()).getAuthorities());
             log.warn("UserDetails Auth: " + grantedAuthorities);
             if (grantedAuthorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+                mv.addObject("MemberList", memberService.getUserList());
                 mv.setViewName("/member/list");
             } else {
                 redirectAttributes.addFlashAttribute("type", "Account");
