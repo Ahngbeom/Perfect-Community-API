@@ -39,6 +39,9 @@
                 case "Logout" :
                     alert("정상적으로 로그아웃되었습니다.");
                     break;
+                case "Account Delete" :
+                    serverMsgTag.textContent = '<c:out value="${userId}" />' + " 계정이 정상적으로 삭제되었습니다.";
+                    break;
                 default :
                     serverMsgTag.textContent = "Fatal Error";
                     break;

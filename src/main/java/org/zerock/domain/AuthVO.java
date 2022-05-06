@@ -19,7 +19,7 @@ public class AuthVO {
         this.userId = userId;
     }
 
-    public void setAuth(@NonNull String auth) {
+    public void setAuth(String auth) {
         this.auth = auth;
     }
 }

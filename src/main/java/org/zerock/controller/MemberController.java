@@ -10,9 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.MemberVO;
+import org.zerock.security.CustomUser;
 import org.zerock.service.MemberService;
 
 import java.security.Principal;
@@ -60,6 +63,32 @@ public class MemberController {
             redirectAttributes.addFlashAttribute("state", "WARNING");
             mv.setViewName("redirect:/login");
         }
+        return mv;
+    }
+
+    @PostMapping("/remove")
+    public ModelAndView removeMember(RedirectAttributes redirectAttributes, ModelAndView mv, @AuthenticationPrincipal Principal principal, String userId) {
+        CustomUser user = (CustomUser) userDetailsService.loadUserByUsername(principal.getName());
+        if (user != null) {
+            if (user.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+                if (memberService.adminDeleteUser(userId)) {
+                    redirectAttributes.addFlashAttribute("type", "Account Delete");
+                    redirectAttributes.addFlashAttribute("state", "SUCCESS");
+                    redirectAttributes.addFlashAttribute("userId", userId);
+                }
+            } else {
+                log.warn("You don't have that [ADMIN] permission.");
+            }
+        } else {
+            log.warn("Login required.");
+        }
+        mv.setViewName("redirect:/member/list");
+        return mv;
+    }
+
+    @PostMapping("/create")
+    public ModelAndView createMember(RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member) {
+
         return mv;
     }
 }

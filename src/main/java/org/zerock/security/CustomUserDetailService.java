@@ -22,14 +22,17 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-
-        log.warn("Load User By Name:" + userName);
-        MemberVO member = mapper.readMember(userName);
-        log.warn("Queried By Member Mapper: " + member);
-
-        if (member == null)
-            throw new UsernameNotFoundException(userName);
-        return new CustomUser(member);
+        try {
+            log.warn("Load User By Name:" + userName);
+            MemberVO member = mapper.readMember(userName);
+            log.warn("Queried By Member Mapper: " + member);
+            if (member == null)
+                throw new UsernameNotFoundException(userName);
+            return new CustomUser(member);
+        } catch (UsernameNotFoundException e) {
+            e.printStackTrace();
+        }
+       return null;
     }
 
 

@@ -12,4 +12,11 @@ public interface MemberMapper {
     MemberVO readMember(String userId);
 
     List<MemberVO> readAllMember();
+
+    int deleteAuthOfSpecificMember(String userId);
+
+    int deleteMember(String userId);
+
+    int insertMember(MemberVO member);
+    int insertAuthorityToMember(MemberVO member);
 }

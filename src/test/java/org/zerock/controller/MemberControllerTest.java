@@ -79,4 +79,9 @@ class MemberControllerTest {
                 .andDo(print())
                 .andReturn();
     }
+
+    @Test
+    void adminDeleteMember() {
+        
+    }
 }

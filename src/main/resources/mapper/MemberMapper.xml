@@ -30,4 +30,25 @@
         select users.userid, password, username, enabled, regDate, updateDate, authority, authorities.userid
         from users LEFT OUTER JOIN authorities on users.userid = authorities.userid;
     </select>
+
+    <delete id="deleteAuthOfSpecificMember">
+        delete
+        from authorities
+        where authorities.userid like #{userId};
+    </delete>
+
+    <delete id="deleteMember">
+        delete
+        from users
+        where users.userid like #{userId};
+    </delete>
+
+    <insert id="insertMember" parameterType="org.zerock.domain.MemberVO" useGeneratedKeys="true" keyProperty="bno">
+        insert into users(userid, password, username) values(#{userId}, #{password}, #{userName});
+#         insert into authorities(userid, authority) values(#{userId}, #{authList.auth});
+    </insert>
+
+    <insert id="insertAuthorityToMember">
+        insert into authorities(userid, authority) values(#{userId}, #{auth});
+    </insert>
 </mapper>
