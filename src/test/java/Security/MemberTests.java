@@ -40,16 +40,16 @@ public class MemberTests {
                 con = ds.getConnection();
                 preparedStatement = con.prepareStatement(sql);
 
-                if (i < 9) {
+//                if (i < 10) {
                     preparedStatement.setString(1, "user" + i);
                     preparedStatement.setString(2, pwEncoder.encode("user" + i));
                     preparedStatement.setString(3, "user_" + i);
-                }
-                else {
-                    preparedStatement.setString(1, "admin");
-                    preparedStatement.setString(2, pwEncoder.encode("admin"));
-                    preparedStatement.setString(3, "Administrator");
-                }
+//                }
+//                else {
+//                    preparedStatement.setString(1, "admin");
+//                    preparedStatement.setString(2, pwEncoder.encode("admin"));
+//                    preparedStatement.setString(3, "Administrator");
+//                }
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -75,7 +75,7 @@ public class MemberTests {
 
     @Test
     public void testInsertAuth() {
-        String sql = "insert into authorities(username, authority) values(?,?)";
+        String sql = "insert into authorities(userid, authority) values(?,?)";
 
         for (int i = 0; i < 10; i++) {
             Connection con = null;

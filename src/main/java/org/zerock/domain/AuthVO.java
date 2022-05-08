@@ -15,7 +15,7 @@ public class AuthVO {
     @NonNull
     private String auth;
 
-    public void setUserId(@NonNull String userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

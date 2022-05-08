@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.domain.AuthVO;
@@ -30,6 +31,9 @@ class MemberMapperTest {
     @Autowired
     private BCryptPasswordEncoder bCryptEncoder;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @BeforeEach
     void setUp() {
         assertNotNull(mapper);
@@ -47,21 +51,41 @@ class MemberMapperTest {
 
     @Test
     void deleteMember() {
-        MemberVO member = mapper.readMember("user8");
+        MemberVO member = mapper.readMember("new");
         log.info(member);
 
-        log.warn(bCryptEncoder.matches("user8", member.getPassword()));
-
-        log.warn(mapper.deleteAuthOfSpecificMember(member.getUserId()));
-        log.warn(mapper.deleteMember(member.getUserId()));
+        if (bCryptEncoder.matches("1234", member.getPassword())) {
+            log.info("Passwords match.");
+            log.warn(mapper.deleteAuthOfSpecificMember(member.getUserId()));
+            log.warn(mapper.deleteMember(member.getUserId()));
+        }
     }
 
     @Test
     void insertMember() {
-        MemberVO member = new MemberVO("new1", "1234", "new_1");
-        List<AuthVO> authList = new ArrayList<>();
-        authList.add(new AuthVO("new1", "ROLE_USER"));
-        member.setAuthList(authList);
-        log.warn(mapper.insertMember(member));
+        encoder.encode("1234");
+        MemberVO member = new MemberVO("new", encoder.encode("1234"), "New Member");
+        log.info(member);
+        if (mapper.insertMember(member) == 1) {
+            log.info("success");
+            if (mapper.insertAuthorityToMember(new AuthVO(member.getUserId(), "ROLE_USER")) == 1) {
+                log.info("success");
+            } else {
+                log.error("failed");
+                mapper.deleteMember(member.getUserId());
+            }
+        } else {
+            log.error("failed");
+        }
+    }
+
+    @Test
+    void InsertAuthOfSpecificMember() {
+        AuthVO auth = new AuthVO("new", "ROLE_USER");
+        if (mapper.insertAuthorityToMember(auth) == 1) {
+            log.info("success");
+        } else {
+            log.error("failed");
+        }
     }
 }

@@ -13,7 +13,15 @@
 <sec:authorize access="hasRole('ROLE_ADMIN')">
     <div class="display-flex-between">
         <div>
-            <table>
+            <table width="100" style="table-layout: fixed">
+                <colgroup>
+                    <col width="120px">
+                    <col width="120px">
+                    <col width="150px">
+                    <col width="110px">
+                    <col width="50px">
+                    <col width="110px">
+                </colgroup>
                 <thead>
                 <tr>
                     <th>
@@ -25,7 +33,7 @@
                     <th>
                         마지막 수정 일자
                     </th>
-                    <th>
+                    <th style="width: 20px; white-space: nowrap;">
                         권한
                     </th>
                     <th>
@@ -60,10 +68,13 @@
                         </td>
                         <td>
                             <c:choose>
-                                <c:when test="${not empty Member.authList}">
+                                <c:when test="${not empty Member.authList or Member.authList ne null}">
                                     <c:forEach items="${Member.authList}" var="authList" varStatus="status">
                                         <c:choose>
-                                            <c:when test="${not empty authList.auth}">
+                                            <c:when test="${fn:length(authList.auth) gt 10}">
+                                                ${fn:substring(authList.auth, 0, 10)}
+                                            </c:when>
+                                            <c:when test="${not empty authList.auth or authList.auth ne null}">
                                                 ${authList.auth}
                                             </c:when>
                                             <c:otherwise>

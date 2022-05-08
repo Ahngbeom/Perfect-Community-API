@@ -43,12 +43,11 @@
         where users.userid like #{userId};
     </delete>
 
-    <insert id="insertMember" parameterType="org.zerock.domain.MemberVO" useGeneratedKeys="true" keyProperty="bno">
+    <insert id="insertMember" parameterType="org.zerock.domain.MemberVO">
         insert into users(userid, password, username) values(#{userId}, #{password}, #{userName});
-#         insert into authorities(userid, authority) values(#{userId}, #{authList.auth});
     </insert>
 
-    <insert id="insertAuthorityToMember">
+    <insert id="insertAuthorityToMember" parameterType="org.zerock.domain.AuthVO">
         insert into authorities(userid, authority) values(#{userId}, #{auth});
     </insert>
 </mapper>

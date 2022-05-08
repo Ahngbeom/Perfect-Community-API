@@ -12,7 +12,7 @@
 <body>
 <h1>Login</h1>
 <form action="${pageContext.request.contextPath}/login" method="post">
-<%--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
+    <%--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
     <sec:csrfInput/>
     <div>
         <label>
@@ -22,6 +22,11 @@
     <div>
         <label>
             PW <input type="password" name="password" value="admin"/>
+        </label>
+    </div>
+    <div>
+        <label>
+            <input type="checkbox" name="remember-me"> 자동로그인
         </label>
     </div>
     <div>

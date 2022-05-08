@@ -7,7 +7,7 @@
 <!--    <import resource="dispatcher-servlet.xml"/>-->
 
     <bean id="accessDenied" class="org.zerock.security.AccessDeniedHandler"/>
-    <bean id="loginSuccess" class="org.zerock.security.LoginSuccessHandler"/>
+    <bean id="loginSuccessHandler" class="org.zerock.security.LoginSuccessHandler"/>
 <!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomPasswordEncoder"/>-->
     <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <bean id="customUserDetailService" class="org.zerock.security.CustomUserDetailService"/>
@@ -17,8 +17,13 @@
         <security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')" />
         <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 
-        <security:form-login login-page="/login" authentication-success-handler-ref="loginSuccess"/>
-        <security:logout logout-url="/logout" invalidate-session="true" />
+        <security:form-login login-page="/login" authentication-success-handler-ref="loginSuccessHandler"/>
+        <security:logout logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"/>
+
+        <security:remember-me key="SpringSecurityRememberMe"
+                              token-validity-seconds="604800"
+                              authentication-success-handler-ref="loginSuccessHandler"
+                                user-service-ref="customUserDetailService"/>
 
 <!--        <security:access-denied-handler error-page="/accessError" />-->
         <security:access-denied-handler ref="accessDenied" />

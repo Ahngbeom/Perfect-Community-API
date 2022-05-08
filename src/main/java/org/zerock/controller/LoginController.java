@@ -32,7 +32,7 @@ public class LoginController {
 //            mv.addObject("serverMessage", "Logout.");
             redirectAttributes.addFlashAttribute("type", "Logout");
             redirectAttributes.addFlashAttribute("state", "SUCCESS");
-            mv.setViewName("redirect:/");
+            mv.setViewName("redirect:/board/list");
             return mv;
         }
         mv.addObject("title", "Login");
