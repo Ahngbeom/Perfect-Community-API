@@ -26,33 +26,24 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         log.warn("Login Success - ROLE NAMES: " + roleList);
 
-        RequestCache requestCache = new HttpSessionRequestCache();
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        RequestCache requestCache = new HttpSessionRequestCache(); // DefaultSavedRequest 객체를 세션에 저장
+        SavedRequest savedRequest = requestCache.getRequest(request, response); // 요청 및 응답 데이터를 대입? 복사?
 
         String prevPage = (String) request.getSession().getAttribute("prevPage");
         if (prevPage != null) {
             request.getSession().removeAttribute("prevPage");
+            log.info("Previous Page: " + prevPage);
         }
 
         String url = request.getContextPath();
         if (savedRequest != null) {
+            log.info("Saved Request: " + url);
             url = savedRequest.getRedirectUrl();
         } else if (prevPage != null) {
             url = prevPage;
         }
-
-
-
-//        if (roleList.contains("ROLE_ADMIN")) {
-//            response.sendRedirect("/admin");
-//            return;
-//        }
-//        else if (roleList.contains("ROLE_MEMBER")) {
-//            response.sendRedirect("/member");
-//            return;
-//        }
-//        request.getSession().setAttribute("type", "Login");
-//        request.getSession().setAttribute("state", "SUCCESS");
-        response.sendRedirect("/");
+        request.getSession().setAttribute("type", "Login");
+        request.getSession().setAttribute("state", "SUCCESS");
+        response.sendRedirect(url);
     }
 }

@@ -23,9 +23,10 @@ import org.zerock.service.BoardService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
@@ -81,7 +82,27 @@ class MemberControllerTest {
     }
 
     @Test
+    void createUser() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/member/create")
+                        .param("userId", "new")
+                        .param("password", "1234")
+                        .param("userName", "new")
+                        .param("auth", "ROLE_USER"))
+                .andExpect(status().is3xxRedirection())
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
     void adminDeleteMember() {
         
+    }
+
+    @Test
+    void userIdDuplicatesChecking() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/check/userid/duplicates")
+                        .param("userId", "new"))
+                .andDo(print())
+                .andReturn();
     }
 }

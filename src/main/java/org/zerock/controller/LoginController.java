@@ -2,16 +2,13 @@ package org.zerock.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.domain.MemberVO;
 
-import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class LoginController {
@@ -19,10 +16,10 @@ public class LoginController {
     private static final Logger log = LogManager.getLogger();
 
     @GetMapping("/login")
-    public ModelAndView doLogin(ModelAndView mv, RedirectAttributes redirectAttributes, String error, String logout) {
-        log.info("Login");
-        log.info("Error: " + error);
-        log.info("Logout: " + logout);
+    public ModelAndView doLogin(ModelAndView mv, HttpServletRequest request, RedirectAttributes redirectAttributes, String error, String logout) {
+//        log.info("Login");
+//        log.info("Error: " + error);
+//        log.info("Logout: " + logout);
         if (error != null) {
             redirectAttributes.addFlashAttribute("serverMessage", "Invalid Account");
             mv.setViewName("redirect:/login");
@@ -35,8 +32,8 @@ public class LoginController {
             mv.setViewName("redirect:/board/list");
             return mv;
         }
+        request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
         mv.addObject("title", "Login");
-
         mv.setViewName("/login/login");
         return mv;
     }

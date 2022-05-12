@@ -8,9 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.mapper.MemberMapper;
+import org.zerock.domain.AuthVO;
+import org.zerock.domain.MemberVO;
 
 import java.security.Principal;
 
@@ -26,6 +28,9 @@ class MemberServiceTest {
     @Autowired
     private MemberService service;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @Mock
     private Principal principal;
 
@@ -40,7 +45,19 @@ class MemberServiceTest {
     }
 
     @Test
+    void createUser() {
+        MemberVO member = new MemberVO("new", "1234", "new");
+        service.createUser(member, new AuthVO(member.getUserId(), "ROLE_USER"));
+//        service.authorizationToUser(new AuthVO(member.getUserId(), "ROLE_USER"));
+    }
+
+    @Test
     void adminDeleteUser() {
-        service.adminDeleteUser("user7");
+        service.deleteUser("new2");
+    }
+
+    @Test
+    void adminSingleAuthorityDelete() {
+
     }
 }

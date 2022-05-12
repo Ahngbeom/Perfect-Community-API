@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.security.CustomUser;
 import org.zerock.service.MemberService;
@@ -71,7 +72,7 @@ public class MemberController {
         CustomUser user = (CustomUser) userDetailsService.loadUserByUsername(principal.getName());
         if (user != null) {
             if (user.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
-                if (memberService.adminDeleteUser(userId)) {
+                if (memberService.deleteUser(userId)) {
                     redirectAttributes.addFlashAttribute("type", "Account Delete");
                     redirectAttributes.addFlashAttribute("state", "SUCCESS");
                     redirectAttributes.addFlashAttribute("userId", userId);
@@ -86,9 +87,25 @@ public class MemberController {
         return mv;
     }
 
-    @PostMapping("/create")
-    public ModelAndView createMember(RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member) {
+    @GetMapping("/create")
+    public ModelAndView createMemberPage(RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member) {
+        mv.setViewName("/member/create");
+        return mv;
+    }
 
+    @PostMapping("/create")
+    public ModelAndView createMember(RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member, AuthVO auth) {
+        log.warn(member);
+        log.warn(auth);
+        if (memberService.createUser(member, auth)) {
+            redirectAttributes.addFlashAttribute("type", "Create User");
+            redirectAttributes.addFlashAttribute("state", "SUCCESS");
+            mv.setViewName("redirect:/");
+        } else {
+            redirectAttributes.addFlashAttribute("type", "Create User");
+            redirectAttributes.addFlashAttribute("state", "FAILURE");
+            mv.setViewName("redirect:/member/create");
+        }
         return mv;
     }
 }

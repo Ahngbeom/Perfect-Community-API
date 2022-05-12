@@ -50,4 +50,5 @@
     <insert id="insertAuthorityToMember" parameterType="org.zerock.domain.AuthVO">
         insert into authorities(userid, authority) values(#{userId}, #{auth});
     </insert>
+
 </mapper>

@@ -63,9 +63,8 @@ class MemberMapperTest {
 
     @Test
     void insertMember() {
-        encoder.encode("1234");
-        MemberVO member = new MemberVO("new", encoder.encode("1234"), "New Member");
-        log.info(member);
+        MemberVO member = new MemberVO("new2", encoder.encode("1234"), "New Member");
+//        log.info(member);
         if (mapper.insertMember(member) == 1) {
             log.info("success");
             if (mapper.insertAuthorityToMember(new AuthVO(member.getUserId(), "ROLE_USER")) == 1) {

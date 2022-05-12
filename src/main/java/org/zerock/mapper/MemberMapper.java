@@ -21,4 +21,6 @@ public interface MemberMapper {
     int insertMember(MemberVO member);
 
     int insertAuthorityToMember(AuthVO auth);
+
+    int userIdDuplicatesChecker(String userId);
 }

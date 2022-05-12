@@ -107,13 +107,16 @@
                 </c:forEach>
                 </tbody>
             </table>
+            <div>
+                <input type="button" value="모든 계정 삭제"/>
+            </div>
         </div>
         <div>
             <div class="border-black">
-                <form>
+                <form method="post" action="${pageContext.request.contextPath}/member/create">
                     <div>
                         <label>
-                            ID: <input type="text" name="userId"/>
+                            ID: <input type="text" name="userId"/> <%-- ID 중복 검사 --%>
                         </label>
                     </div>
                     <div>
@@ -128,7 +131,7 @@
                     </div>
                     <div>
                         <label> Authority:
-                            <select name="">
+                            <select name="auth">
                                 <option value="ROLE_USER">
                                     USER
                                 </option>
@@ -139,13 +142,11 @@
                         </label>
                     </div>
                     <div>
-                        <input class="html-editor-align-right" type="button" value="계정 생성"/>
+                        <input class="html-editor-align-right" type="submit" value="계정 생성"/>
                     </div>
                 </form>
             </div>
-            <div>
-                <input type="button" value="모든 계정 삭제"/>
-            </div>
+
         </div>
     </div>
 </sec:authorize>

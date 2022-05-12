@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="f22eaf11-9a29-4c4f-8b20-6d8a30c1a321" name="root@localhost (DDL) Mapping">
+      <data-sources db="7d45f7ee-d980-41c0-829d-e21cdeddfaa2" ddl="7d9fdbde-4a44-463b-aa6a-ca3174078541" />
+      <scope>
+        <node kind="schema" qname="basicspringmvc" />
+      </scope>
+    </mapping>
+  </component>
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="7d9fdbde-4a44-463b-aa6a-ca3174078541" />
+          <option name="name" value="root@localhost (DDL)" />
+          <option name="languageId" value="MySQL" />
+          <option name="parent" value="7d45f7ee-d980-41c0-829d-e21cdeddfaa2" />
+          <option name="urls">
+            <array>
+              <option value="file://$PROJECT_DIR$/basicspringmvc/authorities.sql" />
+              <option value="file://$PROJECT_DIR$/basicspringmvc/board.sql" />
+              <option value="file://$PROJECT_DIR$/basicspringmvc/users.sql" />
+            </array>
+          </option>
+          <option name="outPath" value="G:\Spring2022\SpringMVC-Board-API" />
+        </State>
+      </list>
+    </option>
+  </component>
+</project>

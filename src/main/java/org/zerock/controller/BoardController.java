@@ -37,7 +37,7 @@ public class BoardController {
         mv.addObject("BoardList", postsByPage);
         mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
         if (principal != null) {
-            mv.addObject("serverMessage", "Hello " + principal.getName());
+//            mv.addObject("serverMessage", "Hello " + principal.getName());
 //            request.getSession().removeAttribute("type");
 //            request.getSession().removeAttribute("state");
         }

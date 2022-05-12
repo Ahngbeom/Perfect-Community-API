@@ -33,7 +33,8 @@
         <sec:authorize access="isAnonymous()">
             <button onclick="location.href='${pageContext.request.contextPath}/login'">Login</button>
         </sec:authorize>
-        <sec:authorize access="isAuthenticated()">
+        <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
+            <sec:authentication property="principal.member.userId" var="principalUserId"></sec:authentication>
             <form action="${pageContext.request.contextPath}/logout" method="post">
                 <sec:csrfInput/>
                 <input type="submit" value="Logout">

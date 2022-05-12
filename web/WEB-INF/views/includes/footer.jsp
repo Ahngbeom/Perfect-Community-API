@@ -12,8 +12,13 @@
         let processState = '<c:out value="${state}" />';
         let serverMsgTag = document.querySelector('#serverMessage');
 
-        // console.log('<c:out value="${Post.bno}" />');
-        console.log("SERVER: " + serverMessage + " (TYPE: " + processType + ", STATE" + processState + ")");
+        let principalUserId;
+
+        console.log("SERVER: " + serverMessage + " (TYPE: " + processType + ", STATE: " + processState + ")");
+        if (${isAuthorizeAny}) {
+            principalUserId = '${principalUserId}';
+            console.log("User ID: " + principalUserId);
+        }
 
         document.getElementById('serverMessage').innerHTML = serverMessage;
 
@@ -33,9 +38,9 @@
                 case "Remove" :
                     serverMsgTag.textContent = "게시물이 삭제되었습니다.";
                     break;
-                // case "Login" :
-                //     alert("로그인 성공");
-                //     break;
+                case "Login" :
+                    serverMsgTag.textContent = "Hello " + principalUserId;
+                    break;
                 case "Logout" :
                     alert("정상적으로 로그아웃되었습니다.");
                     break;
