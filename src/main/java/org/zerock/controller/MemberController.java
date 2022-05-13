@@ -97,6 +97,7 @@ public class MemberController {
     public ModelAndView createMember(RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member, AuthVO auth) {
         log.warn(member);
         log.warn(auth);
+        userDetailsService.loadUserByUsername(member.getUserId());
         if (memberService.createUser(member, auth)) {
             redirectAttributes.addFlashAttribute("type", "Create User");
             redirectAttributes.addFlashAttribute("state", "SUCCESS");
