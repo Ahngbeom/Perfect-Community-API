@@ -32,7 +32,8 @@ public class LoginController {
             mv.setViewName("redirect:/board/list");
             return mv;
         }
-        request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
+        if (!request.getHeader("Referer").contains("/login")) // 이전 페이지가 로그인 페이지일 경우(로그인 실패, 로그인 페이지 연속 이동 등) prevPage를 설정하지 않음
+            request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
         mv.addObject("title", "Login");
         mv.setViewName("/login/login");
         return mv;

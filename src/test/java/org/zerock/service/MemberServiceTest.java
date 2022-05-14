@@ -46,8 +46,8 @@ class MemberServiceTest {
 
     @Test
     void createUser() {
-        MemberVO member = new MemberVO("new", "1234", "new");
-        service.createUser(member, new AuthVO(member.getUserId(), "ROLE_USER"));
+        MemberVO member = new MemberVO("admin", "1234", "Administrator");
+        service.createUser(member, new AuthVO(member.getUserId(), "ROLE_ADMIN"));
 //        service.authorizationToUser(new AuthVO(member.getUserId(), "ROLE_USER"));
     }
 

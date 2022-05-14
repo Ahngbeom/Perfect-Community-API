@@ -30,7 +30,8 @@ public class CustomUserDetailService implements UserDetailsService {
                 throw new UsernameNotFoundException(userName);
             return new CustomUser(member);
         } catch (UsernameNotFoundException e) {
-            e.printStackTrace();
+            log.warn("\"" + e.getMessage() + "\" account does not exist.");
+//            e.printStackTrace();
         }
        return null;
     }

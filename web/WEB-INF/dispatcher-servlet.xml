@@ -21,6 +21,7 @@
     <mybatis:scan base-package="org.zerock.mapper" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
+<!--    <mvc:resources mapping="/favicon.ico" location="/resources/"/>-->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />

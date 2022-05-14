@@ -21,7 +21,7 @@
     </div>
     <div>
         <label>
-            PW <input type="password" name="password" value="admin"/>
+            PW <input type="password" name="password" value="1234"/>
         </label>
     </div>
     <div>

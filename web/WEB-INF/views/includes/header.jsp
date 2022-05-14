@@ -21,9 +21,9 @@
             <title>BasicSpringMVC</title>
         </c:otherwise>
     </c:choose>
-    <%--        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>--%>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/boardForm.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/MemberForm.js"/>"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/board.css"/>
 </head>
 <body>

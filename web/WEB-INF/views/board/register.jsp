@@ -14,8 +14,7 @@
 <body>
 
 <h1>Board Register</h1>
-<%--<h2 id="serverMsg" form-value-status="EMPTY"></h2>--%>
-<form method="post" action="${pageContext.request.contextPath}/board/register">
+<form method="post" action="${pageContext.request.contextPath}/board/register" id="boardForm">
     <table>
         <thead>
 
@@ -25,14 +24,27 @@
             <td>작성자</td>
             <td>
                 <label>
-                    <input type="text" name="writer" />
+                    <sec:authorize access="isAuthenticated()" var="isAuthenticated"/>
+                    <c:choose>
+                        <c:when test="${isAuthenticated}">
+                            <sec:authentication property="principal.member" var="memberInfo"/>
+                            <input type="text" name="writer" value="${memberInfo.userName}" readonly/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" name="writer"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <label>
+                        <input type="checkbox"> <%-- 익명으로 게시글 등록 처리 --%>
+                        익명
+                    </label>
                 </label>
             </td>
         </tr>
         <tr>
             <td>제목</td>
             <td><label>
-                <input type="text" name="title" />
+                <input type="text" name="title"/>
             </label></td>
         </tr>
         <tr>

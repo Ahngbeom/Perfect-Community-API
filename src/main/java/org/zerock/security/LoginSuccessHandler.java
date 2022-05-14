@@ -41,6 +41,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             url = savedRequest.getRedirectUrl();
         } else if (prevPage != null) {
             url = prevPage;
+        } else {
+            url = "/";
         }
         request.getSession().setAttribute("type", "Login");
         request.getSession().setAttribute("state", "SUCCESS");

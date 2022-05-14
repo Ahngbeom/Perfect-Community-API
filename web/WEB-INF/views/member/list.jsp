@@ -11,15 +11,15 @@
 </head>
 <body>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
-    <div class="display-flex-between">
-        <div>
-            <table width="100" style="table-layout: fixed">
+    <div class="display-flex-between" style="width:100%">
+        <div style="width:60%">
+            <table style="table-layout: fixed">
                 <colgroup>
-                    <col width="120px">
+                    <col width="70px">
                     <col width="120px">
                     <col width="150px">
                     <col width="110px">
-                    <col width="50px">
+                    <col width="70px">
                     <col width="110px">
                 </colgroup>
                 <thead>
@@ -111,42 +111,62 @@
                 <input type="button" value="모든 계정 삭제"/>
             </div>
         </div>
-        <div>
+        <div class="" style="width:40%">
             <div class="border-black">
-                <form method="post" action="${pageContext.request.contextPath}/member/create">
-                    <div>
-                        <label>
-                            ID: <input type="text" name="userId"/> <%-- ID 중복 검사 --%>
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            PW: <input type="password" name="password"/>
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            Name: <input type="text" name="userName"/>
-                        </label>
-                    </div>
-                    <div>
-                        <label> Authority:
-                            <select name="auth">
-                                <option value="ROLE_USER">
-                                    USER
-                                </option>
-                                <option value="ROLE_ADMIN">
-                                    ADMIN
-                                </option>
-                            </select>
-                        </label>
-                    </div>
-                    <div>
-                        <input class="html-editor-align-right" type="submit" value="계정 생성"/>
+                <h5>Member Register</h5>
+                <form method="post" action="${pageContext.request.contextPath}/member/create" id="MemberRegisterForm">
+                    <table width="100%">
+                        <tbody>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <td>
+                                <input type="text" name="userId" value-status="error" class="input-w100"/>
+                                <p id="member-form-userId-status" class="" style="font-size: x-small;"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                PW
+                            </th>
+                            <td>
+                                <input type="password" name="password" value-status="error" class="input-w100"/>
+                                <input type="hidden" id="passwordReconfirm" value-status="ERROR" class="input-w100"/>
+                                <p id="member-form-password-status" class="" style="font-size: x-small;"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <td>
+                                <input type="text" name="userName" value-status="error" class="input-w100"/>
+                                <p id="member-form-userName-status" class="" style="font-size: x-small;"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Authority
+                            </th>
+                            <td>
+                                <select name="auth" class="input-w100">
+                                    <option value="ROLE_USER">
+                                        USER
+                                    </option>
+                                    <option value="ROLE_ADMIN">
+                                        ADMIN
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="display-flex-center" style="margin: 10px">
+                        <input type="button" value="계정 생성"/>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </sec:authorize>

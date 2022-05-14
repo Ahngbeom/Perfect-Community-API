@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', () => {
+    function serverMessageListener() {
         let serverMessage = '<c:out value="${serverMessage}" />';
         let processType = '<c:out value="${type}" />';
         let processState = '<c:out value="${state}" />';
@@ -100,5 +100,11 @@
         // else {
         //     serverMsgTag.textContent = serverState;
         // }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        serverMessageListener();
+        boardFormChangeDetector();
+        memberFormChangeDetector();
     });
 </script>
