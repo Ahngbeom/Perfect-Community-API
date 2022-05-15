@@ -21,44 +21,43 @@
             <title>BasicSpringMVC</title>
         </c:otherwise>
     </c:choose>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="<c:url value="/resources/js/boardForm.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/resources/js/MemberForm.js"/>"></script>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/board.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/board.css"/>--%>
 </head>
 <body>
-<div class="display-flex-between">
-    <h3><a href="${pageContext.request.contextPath}/">Home</a></h3>
-    <div>
-        <sec:authorize access="isAnonymous()">
-            <button onclick="location.href='${pageContext.request.contextPath}/login'">Login</button>
-        </sec:authorize>
-        <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
-            <sec:authentication property="principal.member.userId" var="principalUserId"></sec:authentication>
-            <form action="${pageContext.request.contextPath}/logout" method="post">
-                <sec:csrfInput/>
-                <input type="submit" value="Logout">
-            </form>
-            <a href="${pageContext.request.contextPath}/member/info">My Account</a>
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h3><a class="page-link" href="${pageContext.request.contextPath}/">Home</a></h3>
+        <div>
+            <sec:authorize access="isAnonymous()">
+                <button class="btn btn-info" onclick="location.href='${pageContext.request.contextPath}/login'">Login
+                </button>
+                <br><a href="${pageContext.request.contextPath}/member/create">Sign Up</a>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
+                <sec:authentication property="principal.member.userId" var="principalUserId"></sec:authentication>
+                <form action="${pageContext.request.contextPath}/logout" method="post">
+                    <sec:csrfInput/>
+                    <input class="btn btn-warning" type="submit" value="Logout">
+                </form>
+                <a class="page-link" href="${pageContext.request.contextPath}/member/info">My Account</a>
+            </sec:authorize>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <h2 class="text-capitalize" id="serverMessage"></h2>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <button class="page-link" onclick="location.href='/member/list'">회원 목록 보기</button>
         </sec:authorize>
     </div>
-</div>
 
-<div>
-    <h2 id="serverMessage"></h2>
-</div>
+    <div>
 
-<div>
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <button onclick="location.href='/member/list'">회원 목록 보기</button>
-    </sec:authorize>
+    </div>
+    <hr>
 </div>
-<hr>
-<%--<div>--%>
-<%--    <a href="${pageContext.request.contextPath}/all">All</a>--%>
-<%--    <a href="${pageContext.request.contextPath}/member">Member</a>--%>
-<%--    <a href="${pageContext.request.contextPath}/login/admin">Admin</a>--%>
-<%--</div>--%>
-<%--<hr>--%>
-
 </body>
+</html>

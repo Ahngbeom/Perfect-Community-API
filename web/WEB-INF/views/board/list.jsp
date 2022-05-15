@@ -13,8 +13,8 @@
 <body>
 <h1>Board</h1>
 
-<div class="container display-flex-between">
-    <div>
+<div class="container-fluid">
+    <div class="justify-content-between">
         <form method="get" action="${pageContext.request.contextPath}/board/search">
             <label>
                 <input type="search" name="keyword"/>

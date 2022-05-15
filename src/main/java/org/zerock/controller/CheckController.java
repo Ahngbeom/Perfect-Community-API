@@ -17,14 +17,4 @@ public class CheckController {
         return userDetailsService.loadUserByUsername(userId) != null ? true : false;
     }
 
-//    @GetMapping("/userid/duplicates")
-//    public UserDetails userIdDuplicatesChecking(String userId) throws UsernameNotFoundException {
-//        UserDetails userDetails;
-//        try {
-//            userDetails = userDetailsService.loadUserByUsername(userId);
-//        } catch (UsernameNotFoundException e) {
-//            return null;
-//        }
-//        return userDetails;
-//    }
 }

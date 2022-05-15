@@ -11,17 +11,9 @@
 </head>
 <body>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
-    <div class="display-flex-between" style="width:100%">
-        <div style="width:60%">
-            <table style="table-layout: fixed">
-                <colgroup>
-                    <col width="70px">
-                    <col width="120px">
-                    <col width="150px">
-                    <col width="110px">
-                    <col width="70px">
-                    <col width="110px">
-                </colgroup>
+    <div>
+        <div>
+            <table>
                 <thead>
                 <tr>
                     <th>
@@ -33,7 +25,7 @@
                     <th>
                         마지막 수정 일자
                     </th>
-                    <th style="width: 20px; white-space: nowrap;">
+                    <th>
                         권한
                     </th>
                     <th>
@@ -95,13 +87,48 @@
                                 ${Member.enabled}
                         </td>
                         <td>
+                            <c:forEach items="${Member.authList}" var="authList">
+                                <c:if test="${authList.auth == 'ROLE_ADMIN'}">
+                                    <c:set var="isAdmin" value="${authList.auth eq 'ROLE_ADMIN'}"/>
+                                </c:if>
+                            </c:forEach>
                             <form method="post" action="">
                                 <sec:csrfInput/>
                                 <input type="hidden" value="${Member.userId}" name="userId"/>
                                 <input type="button" class="admin-delete-auth-btn" value="특정 권한 삭제"/>
                                 <input type="button" class="admin-deleteAll-auth-btn" value="모든 권한 삭제"/>
-                                <input type="button" class="admin-delete-member-btn" value="계정 삭제"/>
+                                <c:choose>
+                                    <c:when test="${isAdmin}">
+                                        <input type="button" class="admin-delete-member-btn" value="계정 삭제" disabled/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="button" class="admin-delete-member-btn" value="계정 삭제"/>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ...
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
+                            <c:remove var="isAdmin"/>
+
                         </td>
                     </tr>
                 </c:forEach>
@@ -111,7 +138,7 @@
                 <input type="button" value="모든 계정 삭제"/>
             </div>
         </div>
-        <div class="" style="width:40%">
+        <div class="">
             <div class="border-black">
                 <h5>Member Register</h5>
                 <form method="post" action="${pageContext.request.contextPath}/member/create" id="MemberRegisterForm">
@@ -123,7 +150,7 @@
                             </th>
                             <td>
                                 <input type="text" name="userId" value-status="error" class="input-w100"/>
-                                <p id="member-form-userId-status" class="" style="font-size: x-small;"></p>
+                                <p id="member-form-userId-status" class=""></p>
                             </td>
                         </tr>
                         <tr>
@@ -133,7 +160,7 @@
                             <td>
                                 <input type="password" name="password" value-status="error" class="input-w100"/>
                                 <input type="hidden" id="passwordReconfirm" value-status="ERROR" class="input-w100"/>
-                                <p id="member-form-password-status" class="" style="font-size: x-small;"></p>
+                                <p id="member-form-password-status" class="" ></p>
                             </td>
                         </tr>
                         <tr>
@@ -142,7 +169,7 @@
                             </th>
                             <td>
                                 <input type="text" name="userName" value-status="error" class="input-w100"/>
-                                <p id="member-form-userName-status" class="" style="font-size: x-small;"></p>
+                                <p id="member-form-userName-status" class="" ></p>
                             </td>
                         </tr>
                         <tr>
@@ -162,7 +189,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div class="display-flex-center" style="margin: 10px">
+                    <div class="display-flex-center" >
                         <input type="button" value="계정 생성"/>
                     </div>
                 </form>
@@ -172,20 +199,3 @@
 </sec:authorize>
 </body>
 </html>
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", () => {
-        const adminDeleteAuthBtn = document.querySelectorAll(".admin-delete-auth-btn");
-        const adminDeleteAllAuthBtn = document.querySelectorAll(".admin-deleteAll-auth-btn");
-        const adminDeleteMemBtnCollect = document.querySelectorAll(".admin-delete-member-btn");
-
-
-        adminDeleteMemBtnCollect.forEach(adminDeleteMemBtn => {
-            adminDeleteMemBtn.addEventListener("click", evt => {
-                let form = adminDeleteMemBtn.closest("form");
-                form.action = "/member/remove";
-                form.submit();
-            });
-        })
-
-    });
-</script>

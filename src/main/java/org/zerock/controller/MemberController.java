@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.security.CustomUser;
+import org.zerock.security.CustomUserDetailService;
 import org.zerock.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,7 +31,7 @@ public class MemberController {
 
     private static final Logger log = LogManager.getLogger();
 
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailService userDetailsService;
     private final MemberService memberService;
 
     @GetMapping("/info")
@@ -88,22 +89,40 @@ public class MemberController {
     }
 
     @GetMapping("/create")
-    public ModelAndView createMemberPage(RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member) {
-        mv.setViewName("/member/create");
+    public ModelAndView createMemberPage(@AuthenticationPrincipal Principal principal, HttpServletRequest request, RedirectAttributes redirectAttributes, ModelAndView mv) {
+        if (principal != null &&
+                !((CustomUser)userDetailsService.loadUserByUsername(
+                        principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
+            redirectAttributes.addFlashAttribute("type", "Logout Required");
+            redirectAttributes.addFlashAttribute("state", "WARNING");
+            if (request.getHeader("Referer") != null && !request.getHeader("Referer").contains("/login")) // 이전 페이지가 로그인 페이지일 경우(로그인 실패, 로그인 페이지 연속 이동 등) prevPage를 설정하지 않음
+                request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
+            else
+                request.getSession().setAttribute("prevPage", "/board/list");
+            mv.setViewName("redirect:" + request.getSession().getAttribute("prevPage"));
+        } else {
+            mv.setViewName("/member/create");
+        }
         return mv;
     }
 
     @PostMapping("/create")
-    public ModelAndView createMember(RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member, AuthVO auth) {
+    public ModelAndView createMember(@AuthenticationPrincipal Principal principal, RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member, AuthVO auth) {
         log.warn(member);
         log.warn(auth);
-        userDetailsService.loadUserByUsername(member.getUserId());
         if (memberService.createUser(member, auth)) {
-            redirectAttributes.addFlashAttribute("type", "Create User");
-            redirectAttributes.addFlashAttribute("state", "SUCCESS");
-            mv.setViewName("redirect:/");
+            if (principal != null &&
+                    ((CustomUser)userDetailsService.loadUserByUsername(principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
+                redirectAttributes.addFlashAttribute("type", "Account Create");
+                redirectAttributes.addFlashAttribute("state", "WARNING");
+                mv.setViewName("redirect:/member/list");
+            } else {
+                redirectAttributes.addFlashAttribute("type", "Account Create");
+                redirectAttributes.addFlashAttribute("state", "SUCCESS");
+                mv.setViewName("redirect:/login");
+            }
         } else {
-            redirectAttributes.addFlashAttribute("type", "Create User");
+            redirectAttributes.addFlashAttribute("type", "Account Create");
             redirectAttributes.addFlashAttribute("state", "FAILURE");
             mv.setViewName("redirect:/member/create");
         }

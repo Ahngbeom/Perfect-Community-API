@@ -5,6 +5,12 @@
   Time: 오전 12:47
   To change this template use File | Settings | File Templates.
 --%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/boardForm.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/MemberForm.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/MemberControl.js"/>"></script>
 <script type="text/javascript">
     function serverMessageListener() {
         let serverMessage = '<c:out value="${serverMessage}" />';
@@ -47,6 +53,9 @@
                 case "Account Delete" :
                     serverMsgTag.textContent = '<c:out value="${userId}" />' + " 계정이 정상적으로 삭제되었습니다.";
                     break;
+                case "Account Create" :
+                    serverMsgTag.textContent = '<c:out value="${userId}" />' + " 계정이 정상적으로 등록되었습니다. \n해당 계정으로 로그인해주세요.";
+                    break;
                 default :
                     serverMsgTag.textContent = "Fatal Error";
                     break;
@@ -67,6 +76,12 @@
                     break;
                 case "Account" :
                     serverMsgTag.textContent = "접근 권한이 없습니다.";
+                    break;
+                case "Account Create" :
+                    serverMsgTag.textContent = '<c:out value="${userId}" />' + " 계정이 정상적으로 등록되었습니다.";
+                    break;
+                case "Logout Required" :
+                    serverMsgTag.textContent = "로그아웃 후 진행해주세요.";
                     break;
                 default :
                     serverMsgTag.textContent = "Fatal Error";
@@ -106,5 +121,6 @@
         serverMessageListener();
         boardFormChangeDetector();
         memberFormChangeDetector();
+        memberControl();
     });
 </script>

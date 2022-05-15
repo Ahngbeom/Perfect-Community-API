@@ -18,7 +18,7 @@
         <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 
         <security:form-login login-page="/login" authentication-success-handler-ref="loginSuccessHandler"/>
-        <security:logout logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE"/>
+        <security:logout logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />
 
         <security:remember-me key="SpringSecurityRememberMe"
                               token-validity-seconds="604800"
