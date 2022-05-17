@@ -48,7 +48,7 @@
         <tfoot>
         <tr>
             <td></td>
-            <td><input id="postRegisterBtn" type="button" value="수정"/></td>
+            <td><input id="postRegisterBtn" type="submit" value="수정"/></td>
         </tr>
         </tfoot>
     </table>

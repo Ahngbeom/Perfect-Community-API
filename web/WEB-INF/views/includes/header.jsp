@@ -13,51 +13,73 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <c:choose>
-        <c:when test="${not empty title}">
-            <title>${title}</title>
-        </c:when>
-        <c:otherwise>
-            <title>BasicSpringMVC</title>
-        </c:otherwise>
-    </c:choose>
+    <title>BasicSpringMVC</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/board.css"/>--%>
 </head>
 <body>
-<div class="container">
-    <div class="d-flex justify-content-between">
-        <h3><a class="page-link" href="${pageContext.request.contextPath}/">Home</a></h3>
-        <div>
-            <sec:authorize access="isAnonymous()">
-                <button class="btn btn-info" onclick="location.href='${pageContext.request.contextPath}/login'">Login
-                </button>
-                <br><a href="${pageContext.request.contextPath}/member/create">Sign Up</a>
-            </sec:authorize>
-            <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
-                <sec:authentication property="principal.member.userId" var="principalUserId"></sec:authentication>
-                <form action="${pageContext.request.contextPath}/logout" method="post">
-                    <sec:csrfInput/>
-                    <input class="btn btn-warning" type="submit" value="Logout">
-                </form>
-                <a class="page-link" href="${pageContext.request.contextPath}/member/info">My Account</a>
-            </sec:authorize>
-        </div>
-    </div>
-
-    <div class="d-flex justify-content-between">
-        <h2 class="text-capitalize" id="serverMessage"></h2>
-        <sec:authorize access="hasRole('ROLE_ADMIN')">
-            <button class="page-link" onclick="location.href='/member/list'">회원 목록 보기</button>
+<div class="container-fluid">
+    <nav class="nav nav-pills nav-fill w-100 font-weight-bold">
+        <a class="nav-item nav-link active w-25" href="${pageContext.request.contextPath}/">Home</a>
+        <div class="nav-item nav-link alert-primary w-50" role="alert" id="serverMessage"></div>
+        <sec:authorize access="isAnonymous()">
+            <button class="nav-item nav-link w-25 btn btn-info font-weight-bold"
+                    onclick="location.href='${pageContext.request.contextPath}/login'">
+                Login
+            </button>
         </sec:authorize>
-    </div>
-
-    <div>
-
-    </div>
-    <hr>
+        <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
+            <sec:authentication property="principal.member.userId" var="principalUserId"/>
+            <button class="nav-item nav-link w-25 btn btn-warning font-weight-bold"
+                    onclick="requestLogout()">
+                Logout
+            </button>
+        </sec:authorize>
+    </nav>
+    <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
+        <div class="d-flex justify-content-center w-100">
+            <div class="w-100">
+                <button class="btn btn-secondary w-100" type="button" data-toggle="collapse"
+                        data-target="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                        <path fill-rule="evenodd"
+                              d="M12.78 6.22a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 7.28a.75.75 0 011.06-1.06L8 9.94l3.72-3.72a.75.75 0 011.06 0z"></path>
+                    </svg>
+                </button>
+                <div class="collapse" id="collapseExample">
+                    <sec:authentication property="principal.member.userId" var="principalUserId"/>
+                    <button class="btn btn-dark w-100"
+                            onclick="location.href='${pageContext.request.contextPath}/member/info'">My Account
+                    </button>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin">
+                        <button class="btn btn-dark w-100" onclick="location.href='/member/list'">회원 목록 보기</button>
+                    </sec:authorize>
+                </div>
+            </div>
+        </div>
+    </sec:authorize>
+</div>
+<hr>
+<div class="container-fluid w-100">
+    <c:if test="${not empty pageHeader}">
+        <a class="h1 page-link w-25" href="${pageContext.request.contextPath}${pageHeader.link}">${pageHeader.title}</a>
+        <h3>${pageHeader.message}</h3>
+    </c:if>
 </div>
 </body>
 </html>
+<script type="text/javascript">
+    let serverMsgTag = document.querySelector('#serverMessage');
+
+    function requestLogout() {
+        let logoutForm = document.createElement('form');
+        logoutForm.method = 'POST';
+        logoutForm.action = '/logout';
+        document.body.appendChild(logoutForm);
+        logoutForm.submit();
+        sessionStorage.setItem("type", "Logout");
+        sessionStorage.setItem("state", "SUCCESS");
+    }
+</script>

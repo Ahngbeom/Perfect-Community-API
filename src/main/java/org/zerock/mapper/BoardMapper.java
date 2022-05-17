@@ -3,6 +3,7 @@ package org.zerock.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface BoardMapper {
 
     BoardVO selectBoardByBno(long bno);
 
-    List<BoardVO> selectBoardByKeyword(String keyword);
+    List<BoardVO> selectBoardByKeyword(BoardSearchVO searchVO);
 
     int insertBoard(BoardVO board);
 

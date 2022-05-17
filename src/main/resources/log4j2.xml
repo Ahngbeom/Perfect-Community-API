@@ -15,16 +15,39 @@
 
 <Configuration status="INFO">
     <Properties>
-        <Property name="LOG_PATTERN">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan}%highlight{[%level]} [%C] %style{[%t]}{yellow}- %m%n -</Property>
+        <Property name="LOG_PATTERN">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan}%highlight{[%level]} [%C] %style{[%t]}{yellow} %m%n
+        </Property>
     </Properties>
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
+        <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8" disableAnsi="false"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="info">
-            <AppenderRef ref="Console" />
+<!--        &lt;!&ndash; SQL Logger &ndash;&gt;-->
+<!--        <logger name="jdbc.sqltiming" >-->
+<!--            <level value="WARN"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.sqlonly" additivity="false">-->
+<!--            <level value="INFO"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.audit" additivity="false">-->
+<!--            <level value="WARN"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.resultset" additivity="false">-->
+<!--            <level value="WARN"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.resultsettable" additivity="false">-->
+<!--            <level value="INFO"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+
+        <Root level="INFO">
+            <AppenderRef ref="console"/>
         </Root>
     </Loggers>
 </Configuration>

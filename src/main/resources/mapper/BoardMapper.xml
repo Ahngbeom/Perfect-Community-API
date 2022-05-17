@@ -12,13 +12,14 @@
     <select id="selectBoardList" resultType="org.zerock.domain.BoardVO">
         select bno, title, content, writer, regdate, updatedate
         from board
-        order by updatedate DESC;
+        order by updatedate, bno DESC;
     </select>
 
     <select id="selectBoardListWithPage" resultType="org.zerock.domain.BoardVO">
         select bno, title, content, writer, regdate, updatedate
         from board
-        order by updatedate desc limit ${(page - 1) * 10}, 10;
+        order by updatedate desc
+        limit ${(page - 1) * 10}, 10;
     </select>
 
     <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
@@ -30,16 +31,32 @@
     <select id="selectBoardByKeyword" resultType="org.zerock.domain.BoardVO">
         select bno, title, content, writer, regdate, updatedate
         from board
-        where title like concat('%', #{keyword}, '%')
-           or content like concat('%', #{keyword}, '%')
-           or writer like concat('%', #{keyword}, '%')
+        <choose>
+            <when test="checkTitle">
+                where title like concat('%', #{keyword}, '%')
+                <if test="checkContent">
+                    or content like concat('%', #{keyword}, '%')
+                </if>
+                <if test="checkWriter">
+                    or writer like concat('%', #{keyword}, '%')
+                </if>
+            </when>
+            <when test="checkContent">
+                where content like concat('%', #{keyword}, '%')
+                <if test="checkWriter">
+                    or writer like concat('%', #{keyword}, '%')
+                </if>
+            </when>
+            <when test="checkWriter">
+                where writer like concat('%', #{keyword}, '%')
+            </when>
+        </choose>
         order by updatedate DESC;
     </select>
 
     <insert id="insertBoard" parameterType="org.zerock.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
         insert into board (title, content, writer)
         values (#{title}, #{content}, #{writer});
-#         selectKey
     </insert>
 
     <update id="updateBoard">

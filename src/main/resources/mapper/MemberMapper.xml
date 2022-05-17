@@ -28,7 +28,8 @@
 
     <select id="readAllMember" resultMap="memberMap">
         select users.userid, password, username, enabled, regDate, updateDate, authority, authorities.userid
-        from users LEFT OUTER JOIN authorities on users.userid = authorities.userid;
+        from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
+        order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.userid asc;
     </select>
 
     <delete id="deleteAuthOfSpecificMember">

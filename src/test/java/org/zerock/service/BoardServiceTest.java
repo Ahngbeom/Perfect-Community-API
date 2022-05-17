@@ -9,12 +9,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")
+@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
 class BoardServiceTest {
 
     private static final Logger logger = LogManager.getLogger();
@@ -55,7 +56,11 @@ class BoardServiceTest {
 
     @Test
     void searchBoardByKeyword() {
-        service.searchBoardByKeyword("20").forEach(board -> logger.info(board));
+        BoardSearchVO searchVO = new BoardSearchVO("가나다");
+        searchVO.setCheckTitle(true);
+        searchVO.setCheckContent(false);
+        searchVO.setCheckWriter(false);
+        service.searchBoardByKeyword(searchVO).forEach(board -> logger.info(board));
     }
 
     @Test

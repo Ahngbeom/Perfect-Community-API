@@ -11,6 +11,7 @@
 <!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomPasswordEncoder"/>-->
     <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <bean id="customUserDetailService" class="org.zerock.security.CustomUserDetailService"/>
+    <bean id="logoutSuccessHandler" class="org.zerock.security.CustomLogoutSuccessHandler"/>
 
     <security:http auto-config="true" use-expressions="true">
         <security:intercept-url pattern="/all" access="permitAll()" />
@@ -18,8 +19,8 @@
         <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 
         <security:form-login login-page="/login" authentication-success-handler-ref="loginSuccessHandler"/>
-        <security:logout logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />
-
+<!--        <security:logout logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />-->
+        <security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
         <security:remember-me key="SpringSecurityRememberMe"
                               token-validity-seconds="604800"
                               authentication-success-handler-ref="loginSuccessHandler"

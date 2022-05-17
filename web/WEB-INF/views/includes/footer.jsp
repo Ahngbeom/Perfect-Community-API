@@ -45,10 +45,10 @@
                     serverMsgTag.textContent = "게시물이 삭제되었습니다.";
                     break;
                 case "Login" :
-                    serverMsgTag.textContent = "Hello " + principalUserId;
-                    break;
-                case "Logout" :
-                    alert("정상적으로 로그아웃되었습니다.");
+                    if (${isAdmin})
+                        serverMsgTag.textContent = "Hello 👑[" + principalUserId + "]👑";
+                    else
+                        serverMsgTag.textContent = "Hello [" + principalUserId + "]";
                     break;
                 case "Account Delete" :
                     serverMsgTag.textContent = '<c:out value="${userId}" />' + " 계정이 정상적으로 삭제되었습니다.";
@@ -112,9 +112,24 @@
                     break;
             }
         }
-        // else {
-        //     serverMsgTag.textContent = serverState;
-        // }
+        else {
+            serverMsgTag.textContent = "";
+        }
+    }
+
+    function logoutListener() {
+        let serverMsgTag = document.querySelector('#serverMessage');
+        if (sessionStorage.getItem("type") != null && sessionStorage.getItem("type") === 'Logout') {
+            if (sessionStorage.getItem("state") != null && sessionStorage.getItem("state") === 'SUCCESS') {
+                serverMsgTag.textContent = "정상적으로 로그아웃되었습니다.";
+                sessionStorage.removeItem("type");
+                sessionStorage.removeItem("state");
+            } else {
+                serverMsgTag.textContent = "로그아웃을 실패했습니다.";
+                sessionStorage.removeItem("type");
+                sessionStorage.removeItem("state");
+            }
+        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -122,5 +137,6 @@
         boardFormChangeDetector();
         memberFormChangeDetector();
         memberControl();
+        logoutListener();
     });
 </script>

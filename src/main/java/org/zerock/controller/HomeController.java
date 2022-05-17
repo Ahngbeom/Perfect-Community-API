@@ -21,12 +21,7 @@ public class HomeController {
 //
     @GetMapping("/")
     public ModelAndView home(RedirectAttributes redirectAttributes, ModelAndView mv) {
-        if (redirectAttributes.getFlashAttributes().isEmpty()) {
-            redirectAttributes.addFlashAttribute("serverMessage", "Welcome!");
-        } else {
-            log.warn(redirectAttributes.getFlashAttributes());
-        }
-        mv.setViewName("redirect:/board/list");
+        mv.setViewName("/index");
         return mv;
     }
 

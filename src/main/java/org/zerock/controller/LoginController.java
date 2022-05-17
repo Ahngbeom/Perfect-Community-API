@@ -32,7 +32,7 @@ public class LoginController {
             mv.setViewName("redirect:/board/list");
             return mv;
         }
-        if (!request.getHeader("Referer").contains("/login")) // 이전 페이지가 로그인 페이지일 경우(로그인 실패, 로그인 페이지 연속 이동 등) prevPage를 설정하지 않음
+        if (request.getHeader("Referer") != null && !request.getHeader("Referer").contains("/login")) // 이전 페이지가 로그인 페이지일 경우(로그인 실패, 로그인 페이지 연속 이동 등) prevPage를 설정하지 않음
             request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
         mv.addObject("title", "Login");
         mv.setViewName("/login/login");
@@ -44,35 +44,4 @@ public class LoginController {
         log.info("Logout");
     }
 
-//    @GetMapping("/all")
-//    public ModelAndView doAll(ModelAndView mv) {
-//        log.info("All");
-//        mv.setViewName("login/all");
-//        return mv;
-//    }
-//
-//    @GetMapping("/member")
-//    public ModelAndView doMember(ModelAndView mv) {
-//        log.info("Member");
-//        mv.setViewName("login/member");
-//        return mv;
-//    }
-//
-//    @GetMapping("/login/admin")
-//    public void doAdmin() {
-//        log.info("Admin");
-//    }
-
-//    @GetMapping("/admin")
-//    public ModelAndView doAdmin(ModelAndView mv, @AuthenticationPrincipal MemberVO member) {
-//        log.info("Admin");
-//        if (member == null) {
-//            log.error("Invalid Member");
-//        }
-//        else {
-//            log.info(member);
-//        }
-//        mv.setViewName("login/admin");
-//        return mv;
-//    }
 }

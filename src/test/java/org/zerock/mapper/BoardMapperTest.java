@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 
 import java.text.SimpleDateFormat;
@@ -16,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")
+@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
 class BoardMapperTest {
 
     private static final Logger logger = LogManager.getLogger();
@@ -31,12 +32,12 @@ class BoardMapperTest {
 
     @Test
     void testSelectBoardList() {
-        mapper.selectBoardList().forEach(board -> logger.info(board));
+        mapper.selectBoardList().forEach(logger::info);
     }
 
     @Test
     void testSelectBoardListWithPage() {
-        mapper.selectBoardListWithPage(2).forEach(board -> logger.info(board));
+        mapper.selectBoardListWithPage(2).forEach(logger::info);
     }
 
     @Test
@@ -50,7 +51,11 @@ class BoardMapperTest {
 
     @Test
     void testSearchBoard() {
-        logger.info(mapper.selectBoardByKeyword("2"));
+        BoardSearchVO searchVO = new BoardSearchVO("가나다");
+        searchVO.setCheckTitle(true);
+        searchVO.setCheckContent(true);
+        searchVO.setCheckWriter(true);
+        logger.info(mapper.selectBoardByKeyword(searchVO));
     }
 
     @Test

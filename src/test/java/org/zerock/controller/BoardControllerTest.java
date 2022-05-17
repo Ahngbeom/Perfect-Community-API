@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")
+@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
 @WebAppConfiguration
 @RequiredArgsConstructor
 class BoardControllerTest {
@@ -55,17 +55,43 @@ class BoardControllerTest {
         assertNotNull(mockMvc);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void testBoardList() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list").
+                        param("page", "1"))
                 .andExpect(status().isOk())
-//                .andDo(print())
                 .andReturn();
-        logger.info(mvcResult.getModelAndView().getModel().get("list"));
+        logger.info(mvcResult.getModelAndView().getModel().get("pagination"));
+
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list").
+                        param("page", "5"))
+                .andExpect(status().isOk())
+                .andReturn();
+        logger.info(mvcResult.getModelAndView().getModel().get("pagination"));
+
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list").
+                        param("page", "10"))
+                .andExpect(status().isOk())
+                .andReturn();
+        logger.info(mvcResult.getModelAndView().getModel().get("pagination"));
+
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list").
+                        param("page", "12"))
+                .andExpect(status().isOk())
+                .andReturn();
+        logger.info(mvcResult.getModelAndView().getModel().get("pagination"));
+
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list").
+                        param("page", "15"))
+                .andExpect(status().isOk())
+                .andReturn();
+        logger.info(mvcResult.getModelAndView().getModel().get("pagination"));
+
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/list").
+                        param("page", "20"))
+                .andExpect(status().isOk())
+                .andReturn();
+        logger.info(mvcResult.getModelAndView().getModel().get("pagination"));
     }
 
     @Test

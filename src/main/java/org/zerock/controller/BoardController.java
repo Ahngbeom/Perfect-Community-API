@@ -3,7 +3,6 @@ package org.zerock.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.PageHeaderVO;
+import org.zerock.domain.PaginationVO;
 import org.zerock.service.BoardService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,21 +29,35 @@ public class BoardController {
 
     private final BoardService service;
 
+    private static final PageHeaderVO pageHeader = new PageHeaderVO("Board", "/board/list", null);
+
+    private static PaginationVO pagination = new PaginationVO();
+
     @GetMapping(value = {"/list", "/"})
-    public ModelAndView boardList(@AuthenticationPrincipal Principal principal, HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
-        HttpSession session = request.getSession();
-        long postAmount = service.countBoard();
-        List<BoardVO> postsByPage = service.getBoardListWithPage(page);
-        mv.addObject("BoardList", postsByPage);
-        mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
-        if (principal != null) {
-//            mv.addObject("serverMessage", "Hello " + principal.getName());
-//            request.getSession().removeAttribute("type");
-//            request.getSession().removeAttribute("state");
-        }
+    public ModelAndView boardList(HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
+//        long postAmount = service.countBoard();
+
+        List<BoardVO> boardListByPage = service.getBoardListWithPage(page);
+        mv.addObject("pageHeader", pageHeader);
+        mv.addObject("BoardList", boardListByPage);
+//        mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
+//        if (page <= 10)
+//            mv.addObject("pageAmount", 10);
+//        else
+//            mv.addObject("pageAmount", ((page / 10) + 1) * 10 <= postAmount / 10 ? ((page / 10) + 1) * 10 : postAmount / 10 + 1);
+        pagination.setPostsAmount(service.countBoard());
+        pagination.setPageAmount(service.countBoard() / 10 + 1);
+        pagination.setPageMin(page % 10 == 0 ? page - 9 : page / 10 * 10 + 1);
+        pagination.setPageMax(
+                page % 10 > 0
+                ? (page + 10) / 10 * 10 < pagination.getPageAmount() ? (page + 10) / 10 * 10 : pagination.getPageAmount()
+                : page < pagination.getPageAmount() ? page : pagination.getPageAmount());
+//        log.warn(pagination);
+        mv.addObject("pagination", pagination);
         mv.setViewName("board/list");
         return mv;
     }
+
 
     @GetMapping("/post")
     public ModelAndView getPosts(RedirectAttributes redirectAttributes, ModelAndView mv, long bno) {
@@ -112,14 +126,13 @@ public class BoardController {
 
     @PostMapping("/removeAll") // 관리자 권한
     public ModelAndView removeAllPost(RedirectAttributes redirectAttributes, ModelAndView mv) {
-        String  message;
+        String message;
         redirectAttributes.addFlashAttribute("type", "Remove ALL");
         try {
             if (service.countBoard() <= 0) {
                 redirectAttributes.addFlashAttribute("state", "WARNING");
                 message = "Board is Empty.";
-            }
-            else {
+            } else {
                 if (service.removeAllBoard() == 0)
                     throw new Exception("Board All Remove Failed");
                 if (service.initBnoValue() == 0)
@@ -160,8 +173,8 @@ public class BoardController {
     @PostMapping("/createDummy")
     public ModelAndView createDummy(ModelAndView mv, long dummyAmount) {
         BoardVO board = new BoardVO("Test", "Test", "Administrator");
-        long    limit = service.countBoard() + dummyAmount;
-        long    number = service.countBoard();
+        long limit = service.countBoard() + dummyAmount;
+        long number = service.countBoard();
         while (number < limit) {
             log.info("Create Dummy : " + number);
             board.setTitle("Test" + number);
@@ -174,12 +187,18 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public ModelAndView searchPost(ModelAndView mv, String keyword, @RequestParam(value = "page", defaultValue = "1") int page) {
-        List<BoardVO> searchResult = service.searchBoardByKeyword(keyword);
+    public ModelAndView searchPost(ModelAndView mv, BoardSearchVO searchVO, @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<BoardVO> searchResult = service.searchBoardByKeyword(searchVO);
         int size = searchResult.size();
         List<BoardVO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, Math.min(size, page * 10)));
         mv.addObject("BoardList", specPagesResult);
         mv.addObject("pageAmount", size % 10 == 0 ? size / 10 : size / 10 + 1);
+        String checkedType = "";
+        checkedType += searchVO.isCheckTitle() ? "제목, " : "";
+        checkedType += searchVO.isCheckContent() ? "내용, " : "";
+        checkedType += searchVO.isCheckWriter() ? "작성자, " : "";
+        checkedType = checkedType.substring(0, checkedType.length() - 2);
+        mv.addObject("pageMessage", "[" + checkedType + "] \"" + searchVO.getKeyword() + "\"에 대한 검색 결과 입니다.");
         mv.setViewName("board/list");
         return mv;
     }

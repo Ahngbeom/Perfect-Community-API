@@ -1,5 +1,6 @@
 package org.zerock.service;
 
+import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface BoardService {
 
     BoardVO getBoardByBno(long bno);
 
-    List<BoardVO> searchBoardByKeyword(String keyword);
+    List<BoardVO> searchBoardByKeyword(BoardSearchVO searchVO);
 
     int registerBoard(BoardVO board);
 

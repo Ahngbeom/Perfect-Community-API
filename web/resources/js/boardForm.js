@@ -66,8 +66,6 @@
 // });
 
 function boardFormChangeDetector() {
-    console.log("Change Detector for Board Form");
-
     let formTag = document.querySelector('#boardForm');
     let writerInput = null;
     let titleInput = null;

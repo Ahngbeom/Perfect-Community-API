@@ -2,6 +2,7 @@ package org.zerock.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.mapper.BoardMapper;
 import org.zerock.utils.DateUtility;
@@ -39,8 +40,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardVO> searchBoardByKeyword(String keyword) {
-        return mapper.selectBoardByKeyword(keyword);
+    public List<BoardVO> searchBoardByKeyword(BoardSearchVO searchVO) {
+        List<BoardVO> searchResult = mapper.selectBoardByKeyword(searchVO);
+        searchResult.forEach(board -> {
+            board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate()));
+        });
+        return searchResult;
     }
 
     @Override
