@@ -7,61 +7,59 @@
 --%>
 <html>
 <head>
-    <title>Board - Register</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/boardForm.js"></script>
 </head>
-
 <body>
-
-<h1>Board Register</h1>
-<form method="post" action="${pageContext.request.contextPath}/board/register" id="boardForm">
-    <table>
-        <thead>
-
-        </thead>
-        <tbody>
-        <tr>
-            <td>작성자</td>
-            <td>
-                <label>
-                    <sec:authorize access="isAuthenticated()" var="isAuthenticated"/>
+<div class="container-fluid w-100">
+    <div class="d-flex justify-content-center">
+        <form method="post" action="/board/register" class="w-75" id="boardForm">
+            <div class="form-group">
+                <label>작성자</label>
+                <div class="d-flex justify-content-between w-100">
                     <c:choose>
                         <c:when test="${isAuthenticated}">
                             <sec:authentication property="principal.member" var="memberInfo"/>
-                            <input type="text" name="writer" value="${memberInfo.userName}" readonly/>
+                            <div class="w-75">
+                                <input type="text" name="writer" value="${memberInfo.userName}" class="form-control"
+                                       placeholder="Writer" readonly/>
+                                <p></p>
+                            </div>
+                            <div class="form-check w-25 text-center">
+                                <input class="form-check-input" type="checkbox" id="boardRegisterFormWriterIsAnonymous">
+                                <label class="form-check-label" for="boardRegisterFormWriterIsAnonymous">
+                                    익명
+                                </label>
+                            </div>
+
                         </c:when>
                         <c:otherwise>
-                            <input type="text" name="writer"/>
+                            <div class="w-100">
+                                <input type="text" name="writer" class="form-control"
+                                       placeholder="Writer"/>
+                                <p></p>
+                            </div>
                         </c:otherwise>
                     </c:choose>
-                    <label>
-                        <input type="checkbox"> <%-- 익명으로 게시글 등록 처리 --%>
-                        익명
-                    </label>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>제목</td>
-            <td><label>
-                <input type="text" name="title"/>
-            </label></td>
-        </tr>
-        <tr>
-            <td>내용</td>
-            <td><label>
-                <textarea name="content" cols="30" rows="10"></textarea>
-            </label></td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-            <td></td>
-            <td><input id="postRegisterBtn" type="button" value="등록"/></td>
-        </tr>
-        </tfoot>
-    </table>
-</form>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="boardRegisterFormTitle">제목</label>
+                <div class="w-100">
+                    <input type="text" name="title" class="form-control"
+                           placeholder="Title" id="boardRegisterFormTitle"/>
+                    <p></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="boardRegisterFormContent">내용</label>
+                <textarea class="form-control" name="content" id="boardRegisterFormContent" rows="5"
+                          placeholder="Please enter your content"></textarea>
+                <p></p>
+            </div>
+            <input id="postRegisterBtn" type="button" class="btn btn-secondary float-right w-25" value="등록"/>
+        </form>
+    </div>
+</div>
 </body>
 </html>
 

@@ -12,6 +12,32 @@
 <script type="text/javascript" src="<c:url value="/resources/js/MemberForm.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/MemberControl.js"/>"></script>
 <script type="text/javascript">
+
+    function serverAlertListener(type, alertLevelMap) {
+        let serverMessage = '<c:out value="${serverMessage}" />';
+        let processType = '<c:out value="${type}" />';
+        let processState = '<c:out value="${state}" />';
+        let serverMsgTag = document.querySelector('#serverMessage');
+
+        let principalUserId;
+
+        console.log("SERVER: " + serverMessage + " (TYPE: " + processType + ", STATE: " + processState + ")");
+        if (${isAuthorizeAny}) {
+            principalUserId = '${principalUserId}';
+            console.log("User ID: " + principalUserId);
+        }
+
+        if (processType === type) {
+            for (let i = 0; i < alertLevelMap.length; i++) {
+                if (processState === alertLevelMap.at(i).level) {
+                    serverMsgTag.textContent = alertLevelMap.at(i).message;
+                    console.log(alertLevelMap.at(i).message);
+                }
+            }
+        }
+
+    }
+
     function serverMessageListener() {
         let serverMessage = '<c:out value="${serverMessage}" />';
         let processType = '<c:out value="${type}" />';
@@ -45,7 +71,7 @@
                     serverMsgTag.textContent = "게시물이 삭제되었습니다.";
                     break;
                 case "Login" :
-                    if (${isAdmin})
+                    if (${not empty isAdmin})
                         serverMsgTag.textContent = "Hello 👑[" + principalUserId + "]👑";
                     else
                         serverMsgTag.textContent = "Hello [" + principalUserId + "]";
@@ -117,6 +143,10 @@
         }
     }
 
+    function loginListener() {
+
+    }
+
     function logoutListener() {
         let serverMsgTag = document.querySelector('#serverMessage');
         if (sessionStorage.getItem("type") != null && sessionStorage.getItem("type") === 'Logout') {
@@ -132,8 +162,32 @@
         }
     }
 
+    function putMessage(type, inputSelector, message) {
+        inputSelector.setAttribute("value-status", type);
+        inputSelector.nextElementSibling.classList.add("text-" + type);
+        switch (type) {
+            case "danger" :
+                inputSelector.classList.remove("is-valid");
+                inputSelector.classList.add("is-invalid");
+                break;
+            case "success" :
+                inputSelector.classList.remove("is-invalid");
+                inputSelector.classList.add("is-valid");
+                break;
+            default :
+                break;
+        }
+        inputSelector.nextElementSibling.innerHTML = message;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-        serverMessageListener();
+        let principalUserId = ${isAuthorizeAny} ? `${principalUserId}` : null;
+
+        serverAlertListener("Login", [
+            { level: "SUCCESS", message: ${not empty isAdmin} ? "Hello 👑[" + principalUserId + "]👑" : "" },
+            { level: "INFO", message: "정상적으로 로그인?"}
+        ]);
+        // serverMessageListener();
         boardFormChangeDetector();
         memberFormChangeDetector();
         memberControl();

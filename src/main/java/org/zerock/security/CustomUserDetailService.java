@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.zerock.domain.MemberVO;
 import org.zerock.mapper.MemberMapper;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
@@ -28,8 +26,8 @@ public class CustomUserDetailService implements UserDetailsService {
             log.warn("Queried By Member Mapper: " + member);
             if (member == null)
                 throw new UsernameNotFoundException(userName);
-            return new CustomUser(member);
-        } catch (UsernameNotFoundException e) {
+            return new CustomUserDetails(member);
+        } catch (Exception e) {
             log.warn("\"" + e.getMessage() + "\" account does not exist.");
 //            e.printStackTrace();
         }

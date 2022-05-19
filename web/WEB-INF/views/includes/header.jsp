@@ -49,7 +49,6 @@
                     </svg>
                 </button>
                 <div class="collapse" id="collapseExample">
-                    <sec:authentication property="principal.member.userId" var="principalUserId"/>
                     <button class="btn btn-dark w-100"
                             onclick="location.href='${pageContext.request.contextPath}/member/info'">My Account
                     </button>
@@ -62,11 +61,15 @@
     </sec:authorize>
 </div>
 <hr>
-<div class="container-fluid w-100">
-    <c:if test="${not empty pageHeader}">
-        <a class="h1 page-link w-25" href="${pageContext.request.contextPath}${pageHeader.link}">${pageHeader.title}</a>
-        <h3>${pageHeader.message}</h3>
-    </c:if>
+<div class="container-fluid">
+    <div class="nav">
+        <c:if test="${not empty pageHeader}">
+            <a class="h1 nav-link active"
+               href="${pageContext.request.contextPath}${pageHeader.link}">${pageHeader.title}</a>
+            <h3 class="text-justify">${pageHeader.message}</h3>
+        </c:if>
+    </div>
+    <sec:authorize access="isAuthenticated()" var="isAuthenticated"/>
 </div>
 </body>
 </html>

@@ -22,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board/**")
+@RequestMapping("/board/")
 public class BoardController {
 
     private static final Logger log = LogManager.getLogger();
@@ -52,7 +52,7 @@ public class BoardController {
                 page % 10 > 0
                 ? (page + 10) / 10 * 10 < pagination.getPageAmount() ? (page + 10) / 10 * 10 : pagination.getPageAmount()
                 : page < pagination.getPageAmount() ? page : pagination.getPageAmount());
-//        log.warn(pagination);
+        log.warn(pagination);
         mv.addObject("pagination", pagination);
         mv.setViewName("board/list");
         return mv;
@@ -61,6 +61,7 @@ public class BoardController {
 
     @GetMapping("/post")
     public ModelAndView getPosts(RedirectAttributes redirectAttributes, ModelAndView mv, long bno) {
+        mv.addObject("pageHeader", pageHeader);
         redirectAttributes.addFlashAttribute("type", "Read");
         try {
             if (service.getBoardByBno(bno) == null)
@@ -78,6 +79,7 @@ public class BoardController {
 
     @GetMapping("/register")
     public ModelAndView register(ModelAndView mv) {
+        mv.addObject("pageHeader", pageHeader);
         mv.setViewName("board/register");
         return mv;
     }
@@ -102,6 +104,7 @@ public class BoardController {
 
     @GetMapping("/modify")
     public ModelAndView modifyPost(ModelAndView mv, int bno) {
+        mv.addObject("pageHeader", pageHeader);
         mv.addObject("Post", service.getBoardByBno(bno));
         mv.setViewName("board/modify");
         return mv;
@@ -188,6 +191,7 @@ public class BoardController {
 
     @GetMapping("/search")
     public ModelAndView searchPost(ModelAndView mv, BoardSearchVO searchVO, @RequestParam(value = "page", defaultValue = "1") int page) {
+        mv.addObject("pageHeader", pageHeader);
         List<BoardVO> searchResult = service.searchBoardByKeyword(searchVO);
         int size = searchResult.size();
         List<BoardVO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, Math.min(size, page * 10)));

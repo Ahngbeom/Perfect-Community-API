@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
-import org.zerock.security.CustomUser;
+import org.zerock.security.CustomUserDetails;
 import org.zerock.security.CustomUserDetailService;
 import org.zerock.service.MemberService;
 
@@ -70,7 +70,7 @@ public class MemberController {
 
     @PostMapping("/remove")
     public ModelAndView removeMember(RedirectAttributes redirectAttributes, ModelAndView mv, @AuthenticationPrincipal Principal principal, String userId) {
-        CustomUser user = (CustomUser) userDetailsService.loadUserByUsername(principal.getName());
+        CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(principal.getName());
         if (user != null) {
             if (user.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
                 if (memberService.deleteUser(userId)) {
@@ -91,7 +91,7 @@ public class MemberController {
     @GetMapping("/create")
     public ModelAndView createMemberPage(@AuthenticationPrincipal Principal principal, HttpServletRequest request, RedirectAttributes redirectAttributes, ModelAndView mv) {
         if (principal != null &&
-                !((CustomUser)userDetailsService.loadUserByUsername(
+                !((CustomUserDetails)userDetailsService.loadUserByUsername(
                         principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
             redirectAttributes.addFlashAttribute("type", "Logout Required");
             redirectAttributes.addFlashAttribute("state", "WARNING");
@@ -112,7 +112,7 @@ public class MemberController {
         log.warn(auth);
         if (memberService.createUser(member, auth)) {
             if (principal != null &&
-                    ((CustomUser)userDetailsService.loadUserByUsername(principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
+                    ((CustomUserDetails)userDetailsService.loadUserByUsername(principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
                 redirectAttributes.addFlashAttribute("type", "Account Create");
                 redirectAttributes.addFlashAttribute("state", "WARNING");
                 mv.setViewName("redirect:/member/list");

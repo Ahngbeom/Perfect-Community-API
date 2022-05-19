@@ -1,90 +1,31 @@
-// document.addEventListener('DOMContentLoaded', () => {
-//     let formTag = document.querySelector('form');
-//     let writerInput = null;
-//     let titleInput = null;
-//     let contentInput = null;
-//     let submitBtn = null;
-//     if (formTag != null) {
-//         writerInput = formTag.querySelector("input[name='writer']");
-//         titleInput = formTag.querySelector("input[name='title']");
-//         contentInput = formTag.querySelector("textarea[name='content']");
-//         submitBtn = formTag.querySelector("#postRegisterBtn");
-//     }
-//     // console.log(writerInput);
-//     if (writerInput != null) {
-//         writerInput.addEventListener('input', (evt) => {
-//             if (evt.currentTarget.value === "") {
-//                 console.log(writerInput.closest('td'));
-//                 // HTMLTableElement.insertCell();
-//                 document.getElementById('serverMessage').innerHTML = '<p class="redText">작성자를 입력해주세요.</p>';
-//                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
-//             } else {
-//                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
-//             }
-//         });
-//     }
-//
-//     if (titleInput != null) {
-//         titleInput.addEventListener('input', (evt) => {
-//             if (evt.currentTarget.value === "") {
-//                 console.log(writerInput.closest('td'));
-//                 // HTMLTableElement.insertCell();
-//                 document.getElementById('serverMessage').innerHTML = '<p class="redText">제목을 입력해주세요.</p>';
-//                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
-//             } else {
-//                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
-//             }
-//         });
-//     }
-//     if (contentInput != null) {
-//         contentInput.addEventListener('input', (evt) => {
-//             if (evt.currentTarget.value.length === 0) {
-//                 console.log(writerInput.closest('td'));
-//                 // HTMLTableElement.insertCell();
-//                 document.getElementById('serverMessage').innerHTML = '<p class="redText">내용을 입력해주세요.</p>';
-//                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
-//             } else {
-//                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
-//             }
-//         });
-//     }
-//
-//     if (submitBtn != null) {
-//         submitBtn.addEventListener('click', () => {
-//             console.log("submit");
-//             if (writerInput.value.length === 0)
-//                 document.getElementById('serverMessage').innerHTML = '<p class="redText">작성자를 입력해주세요.</p>';
-//             else if (titleInput.value.length === 0)
-//                 document.getElementById('serverMessage').innerHTML = '<p class="redText">제목을 입력해주세요.</p>';
-//             else if (contentInput.value.length === 0)
-//                 document.getElementById('serverMessage').innerHTML = '<p class="redText">내용을 입력해주세요.</p>';
-//             else
-//                 formTag.submit();
-//         });
-//     }
-//
-// });
-
 function boardFormChangeDetector() {
     let formTag = document.querySelector('#boardForm');
-    let writerInput = null;
+    let writerInput = {
+        selector : null,
+        value : null
+    };
     let titleInput = null;
     let contentInput = null;
+    let isAnonymous = null;
     let submitBtn = null;
     if (formTag != null) {
-        writerInput = formTag.querySelector("input[name='writer']");
+        writerInput.selector = formTag.querySelector("input[name='writer']");
+        writerInput.value = writerInput.selector.value;
         titleInput = formTag.querySelector("input[name='title']");
         contentInput = formTag.querySelector("textarea[name='content']");
+        isAnonymous = formTag.querySelector("#boardRegisterFormWriterIsAnonymous");
         submitBtn = formTag.querySelector("#postRegisterBtn");
     }
-    if (writerInput != null) {
-        writerInput.addEventListener('input', (evt) => {
+    if (writerInput.selector != null) {
+        writerInput.selector.addEventListener('input', (evt) => {
             if (evt.currentTarget.value === "") {
-                console.log(writerInput.closest('td'));
+                console.log(writerInput.nextElementSibling);
                 // HTMLTableElement.insertCell();
-                document.getElementById('serverMessage').innerHTML = '<p class="redText">작성자를 입력해주세요.</p>';
+                putMessage('danger', writerInput, '작성자를 입력해주세요.');
+                document.getElementById('serverMessage').innerHTML = '작성자를 입력해주세요.';
                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
             } else {
+                putMessage('success', writerInput, '');
                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
             }
         });
@@ -93,11 +34,12 @@ function boardFormChangeDetector() {
     if (titleInput != null) {
         titleInput.addEventListener('input', (evt) => {
             if (evt.currentTarget.value === "") {
-                console.log(writerInput.closest('td'));
                 // HTMLTableElement.insertCell();
-                document.getElementById('serverMessage').innerHTML = '<p class="redText">제목을 입력해주세요.</p>';
+                putMessage('danger', titleInput, '제목을 입력해주세요.');
+                document.getElementById('serverMessage').innerHTML = '제목을 입력해주세요.';
                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
             } else {
+                putMessage('success', titleInput, '');
                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
             }
         });
@@ -105,13 +47,24 @@ function boardFormChangeDetector() {
     if (contentInput != null) {
         contentInput.addEventListener('input', (evt) => {
             if (evt.currentTarget.value.length === 0) {
-                console.log(writerInput.closest('td'));
+                putMessage('danger', contentInput, '내용을 입력해주세요.');
                 // HTMLTableElement.insertCell();
-                document.getElementById('serverMessage').innerHTML = '<p class="redText">내용을 입력해주세요.</p>';
+                document.getElementById('serverMessage').innerHTML = '내용을 입력해주세요.';
                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
             } else {
+                putMessage('success', contentInput, '');
                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
             }
+        });
+    }
+
+    if (isAnonymous != null) {
+        isAnonymous.addEventListener('input', () => {
+           if (isAnonymous.checked) {
+               writerInput.selector.value = '익명';
+           } else {
+               writerInput.selector.value = writerInput.value;
+           }
         });
     }
 
@@ -119,11 +72,11 @@ function boardFormChangeDetector() {
         submitBtn.addEventListener('click', () => {
             console.log("submit");
             if (writerInput.value.length === 0)
-                document.getElementById('serverMessage').innerHTML = '<p class="redText">작성자를 입력해주세요.</p>';
+                document.getElementById('serverMessage').innerHTML = '작성자를 입력해주세요.';
             else if (titleInput.value.length === 0)
-                document.getElementById('serverMessage').innerHTML = '<p class="redText">제목을 입력해주세요.</p>';
+                document.getElementById('serverMessage').innerHTML = '제목을 입력해주세요.';
             else if (contentInput.value.length === 0)
-                document.getElementById('serverMessage').innerHTML = '<p class="redText">내용을 입력해주세요.</p>';
+                document.getElementById('serverMessage').innerHTML = '내용을 입력해주세요.';
             else
                 formTag.submit();
         });

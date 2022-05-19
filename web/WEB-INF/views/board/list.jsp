@@ -79,7 +79,7 @@
                     <c:if test="${pagination.pageMin - 1 gt 0}">
                         <li class="page-item">
                             <a class="page-link"
-                               href="${pageContext.request.contextPath}/board/list?page=${pageMin - 1}">Previous</a>
+                               href="${pageContext.request.contextPath}/board/list?page=${pagination.pageMin - 1}">Previous</a>
                         </li>
                     </c:if>
                     <c:forEach var="page" begin="${pagination.pageMin}" end="${pagination.pageMax}" varStatus="status">

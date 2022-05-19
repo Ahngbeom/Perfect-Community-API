@@ -31,7 +31,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
                 log.info("Logout Success - " + authentication.getName());
                 log.info("Previous Page: " + prevPage);
                 response.setStatus(HttpServletResponse.SC_OK);
-
                 response.sendRedirect(prevPage);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -15,7 +15,7 @@ function memberFormChangeDetector() {
         if (bool !== 'true') {
             putMessage("success", userIdInput, "사용 가능한 ID입니다.");
         } else {
-            putMessage("error", userIdInput, "중복된 ID입니다.");
+            putMessage("danger", userIdInput, "중복된 ID입니다.");
         }
     }
 
@@ -59,11 +59,7 @@ function memberFormChangeDetector() {
         }
     }
 
-    function putMessage(type, inputSelector, message) {
-        inputSelector.setAttribute("value-status", type);
-        inputSelector.nextElementSibling.setAttribute("class", "text-" + type);
-        inputSelector.nextElementSibling.innerHTML = message;
-    }
+
 
     let httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = () => {

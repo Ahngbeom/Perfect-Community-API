@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
-class CustomUserDetailServiceTest {
+class CustomUserDetailsDetailServiceTest {
 
     private static final Logger log = LogManager.getLogger();
 
