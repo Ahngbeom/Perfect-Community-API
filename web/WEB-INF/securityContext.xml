@@ -9,12 +9,15 @@
     <bean id="accessDenied" class="org.zerock.security.AccessDeniedHandler"/>
     <bean id="loginSuccessHandler" class="org.zerock.security.LoginSuccessHandler"/>
     <bean id="loginFailureHandler" class="org.zerock.security.LoginFailureHandler"/>
+
     <bean id="CustomAuthenticationProcessingFilter" class="org.zerock.security.CustomAuthenticationProcessingFilter">
         <constructor-arg ref="CustomAuthenticationManager" />
     </bean>
     <bean id="CustomAuthenticationManager" class="org.zerock.security.CustomAuthenticationManager" >
         <constructor-arg ref="customUserDetailService" />
     </bean>
+    <bean id="FilterExceptionHandler" class="org.zerock.security.FilterExceptionHandler" />
+
     <!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomPasswordEncoder"/>-->
     <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <bean id="customUserDetailService" class="org.zerock.security.CustomUserDetailService"/>
@@ -29,10 +32,11 @@
         <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
 
 <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
+<!--        <security:custom-filter ref="FilterExceptionHandler" before="FORM_LOGIN_FILTER"/>-->
         <security:form-login login-page="/login" login-processing-url="/login" authentication-success-handler-ref="loginSuccessHandler"
-                             authentication-failure-handler-ref="loginFailureHandler" authentication-failure-url="/login"/>
-        <!--        <security:logout logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />-->
-        <security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
+                             authentication-failure-handler-ref="loginFailureHandler" authentication-failure-url="/login" />
+        <security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />
+<!--        <security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>-->
         <security:remember-me key="SpringSecurityRememberMe"
                               token-validity-seconds="604800"
                               authentication-success-handler-ref="loginSuccessHandler"

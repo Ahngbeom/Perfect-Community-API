@@ -39,9 +39,4 @@ public class LoginController {
         return mv;
     }
 
-    @PostMapping("/logout")
-    public void doLogout() {
-        log.info("Logout");
-    }
-
 }

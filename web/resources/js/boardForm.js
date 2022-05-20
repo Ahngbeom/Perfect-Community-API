@@ -21,11 +21,11 @@ function boardFormChangeDetector() {
             if (evt.currentTarget.value === "") {
                 console.log(writerInput.nextElementSibling);
                 // HTMLTableElement.insertCell();
-                putMessage('danger', writerInput, '작성자를 입력해주세요.');
+                putMessage('danger', writerInput.selector, '작성자를 입력해주세요.');
                 document.getElementById('serverMessage').innerHTML = '작성자를 입력해주세요.';
                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
             } else {
-                putMessage('success', writerInput, '');
+                putMessage('success', writerInput.selector, '');
                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
             }
         });

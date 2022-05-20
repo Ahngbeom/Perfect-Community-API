@@ -52,7 +52,7 @@ public class BoardController {
                 page % 10 > 0
                 ? (page + 10) / 10 * 10 < pagination.getPageAmount() ? (page + 10) / 10 * 10 : pagination.getPageAmount()
                 : page < pagination.getPageAmount() ? page : pagination.getPageAmount());
-        log.warn(pagination);
+//        log.warn(pagination);
         mv.addObject("pagination", pagination);
         mv.setViewName("board/list");
         return mv;

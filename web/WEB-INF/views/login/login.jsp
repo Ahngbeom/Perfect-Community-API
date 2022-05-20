@@ -13,7 +13,7 @@
 <div class="container">
     <h1 class="ml-lg-5">Login</h1>
     <div class="d-flex justify-content-center">
-        <form action="${pageContext.request.contextPath}/login" method="post">
+        <form action="${pageContext.request.contextPath}/login" method="post" id="requestLoginForm">
             <%--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
             <sec:csrfInput/>
             <div class="form-group">
@@ -34,7 +34,7 @@
                     자동로그인
                 </label>
             </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            <button type="button" class="btn btn-primary" id="requestLoginBtn" onclick="requestLogin()">Sign in</button>
             <button type="button" class="btn btn-secondary"
                     onclick="location.href='${pageContext.request.contextPath}/member/create'">
                 Sign Up

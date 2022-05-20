@@ -44,12 +44,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             } else if (prevPage != null) {
                 url = prevPage;
             } else {
-                url = "/";
+                url = "/board/list";
             }
-            request.getSession().setAttribute("type", "Login");
-            request.getSession().setAttribute("state", "SUCCESS");
-//            request.getSession().setAttribute("principal", authentication.getDetails());
-            log.warn("Session: " + request.getSession().getAttribute("principal"));
+            request.getSession().setAttribute("alertType", "Login");
+            request.getSession().setAttribute("alertStatus", "SUCCESS");
             response.sendRedirect(url);
         } catch (Exception e) {
             log.error(e.getMessage());

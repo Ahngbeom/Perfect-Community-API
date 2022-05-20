@@ -2,6 +2,8 @@ package org.zerock.security;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -20,13 +22,18 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 //            log.warn(request.getParameter("username"));
 //            log.warn(request.getParameter("password"));
 
-            log.error("Login Failed: " + exception.getMessage());
-            request.getSession().setAttribute("type", "Login");
-            request.getSession().setAttribute("state", exception.getMessage());
+            log.error("Login Failed: " + exception.getLocalizedMessage());
+            request.getSession().setAttribute("alertType", "Login");
+            if (exception instanceof InternalAuthenticationServiceException || exception instanceof BadCredentialsException)
+                request.getSession().setAttribute("alertStatus", "Invalid Accounts | Bad Credentials");
+            else
+                request.getSession().setAttribute("alertStatus", "FAILURE");
             response.sendRedirect("/login");
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
     }
+
+
 }
