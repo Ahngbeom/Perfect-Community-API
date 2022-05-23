@@ -4,7 +4,12 @@ function memberControl(Member) {
     const adminDeleteMemBtnCollect = document.querySelectorAll(".admin-delete-member-btn");
 
     const centerModal = $("#centerModal");
-    // const centerModal = document.querySelectorAll("#centerModal");
+
+    centerModal.on('hide.bs.modal', function (e) {
+       window.location.reload();
+    });
+
+        // const centerModal = document.querySelectorAll("#centerModal");
 
     adminUpdateAuthBtnCollect.forEach(adminAddAuthBtn => {
         adminAddAuthBtn.addEventListener('click', evt => {
@@ -64,13 +69,11 @@ function memberControl(Member) {
                             type: "POST",
                             dataType: "JSON",
                             data: ajaxData,
-                            success: function () {
+                            success: function (data) {
                                 window.location.reload();
                             }
                         });
                     });
-
-
                 });
             });
             centerModal.modal();
@@ -93,9 +96,7 @@ function memberControl(Member) {
                     dataType: "JSON",
                     data: {userId: USER_ID},
                     success: function (data) {
-                        if (!alert("[" + USER_ID + "] 계정의 모든 권한을 철회하였습니다.")) {
                             window.location.reload();
-                        }
                     }
                 });
             });

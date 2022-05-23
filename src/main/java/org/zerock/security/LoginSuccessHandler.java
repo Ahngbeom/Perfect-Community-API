@@ -49,6 +49,8 @@ public class LoginSuccessHandler extends JSONConverterForAJAX implements Authent
 //            url = "/board/list";
         }
 
+        response.sendRedirect(url);
+
 //        Cookie[] cookies = request.getCookies();
 //        if (cookies != null) {
 //            for (Cookie c : cookies) {
@@ -63,8 +65,6 @@ public class LoginSuccessHandler extends JSONConverterForAJAX implements Authent
 //        map.put("redirectURL", url);
 //        map.put("userID", authentication != null ? authentication.getName() : null);
 //        JSONConverter(response, authentication, map);
-
-        response.sendRedirect(url);
 
     }
 }
