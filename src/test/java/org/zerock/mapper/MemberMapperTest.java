@@ -12,10 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
-import org.zerock.security.CustomPasswordEncoder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,7 +37,7 @@ class MemberMapperTest {
 
     @Test
     void readMember() {
-        log.info(mapper.readMember("admin"));
+        log.info(mapper.readMember("aa"));
     }
 
     @Test
@@ -86,5 +82,10 @@ class MemberMapperTest {
         } else {
             log.error("failed");
         }
+    }
+
+    @Test
+    void deleteAuthTests() {
+        log.warn(mapper.deleteOneAuthorityToMember(new AuthVO("aa", "ROLE_ADMIN")));
     }
 }

@@ -6,7 +6,7 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
     <!--    <import resource="dispatcher-servlet.xml"/>-->
 
-    <bean id="accessDenied" class="org.zerock.security.AccessDeniedHandler"/>
+    <bean id="accessDeniedHandler" class="org.zerock.security.AccessDeniedHandler"/>
     <bean id="loginSuccessHandler" class="org.zerock.security.LoginSuccessHandler"/>
     <bean id="loginFailureHandler" class="org.zerock.security.LoginFailureHandler"/>
 
@@ -30,12 +30,13 @@
         <security:intercept-url pattern="/all" access="permitAll()"/>
         <security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>
         <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/**/json" access="hasRole('ROLE_ADMIN')"/>
 
 <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
 <!--        <security:custom-filter ref="FilterExceptionHandler" before="FORM_LOGIN_FILTER"/>-->
         <security:form-login login-page="/login" login-processing-url="/login" authentication-success-handler-ref="loginSuccessHandler"
                              authentication-failure-handler-ref="loginFailureHandler" authentication-failure-url="/login" />
-        <security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />
+        <security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false" delete-cookies="JSESSIONID,remember-me" />
 <!--        <security:logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>-->
         <security:remember-me key="SpringSecurityRememberMe"
                               token-validity-seconds="604800"
@@ -43,7 +44,7 @@
                               user-service-ref="customUserDetailService"/>
 
         <!--        <security:access-denied-handler error-page="/accessError" />-->
-        <security:access-denied-handler ref="accessDenied"/>
+        <security:access-denied-handler ref="accessDeniedHandler"/>
 
     </security:http>
 

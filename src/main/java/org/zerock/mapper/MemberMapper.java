@@ -14,6 +14,8 @@ public interface MemberMapper {
 
     List<MemberVO> readAllMember();
 
+    List<AuthVO> readAuthMember(String userId);
+
     int deleteAuthOfSpecificMember(String userId);
 
     int deleteMember(String userId);
@@ -22,5 +24,7 @@ public interface MemberMapper {
 
     int insertAuthorityToMember(AuthVO auth);
 
-    int userIdDuplicatesChecker(String userId);
+    int deleteOneAuthorityToMember(AuthVO auth);
+
+    int deleteAllAuthorityToMember(String userId);
 }

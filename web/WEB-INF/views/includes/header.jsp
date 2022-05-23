@@ -16,26 +16,35 @@
     <title>BasicSpringMVC</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/board.css"/>--%>
+    <%--    <link rel="stylesheet" boardAlertType="text/css" href="${pageContext.request.contextPath}/resources/css/board.css"/>--%>
 </head>
 <body>
 <div class="container-fluid">
     <nav class="nav nav-pills nav-fill w-100 font-weight-bold">
         <a class="nav-item nav-link active w-25" href="${pageContext.request.contextPath}/">Home</a>
-        <div class="nav-item nav-link alert-primary w-50" role="alert" id="serverMessage"></div>
-        <sec:authorize access="isAnonymous()">
-            <button class="nav-item nav-link w-25 btn btn-info font-weight-bold"
-                    onclick="location.href='${pageContext.request.contextPath}/login'">
-                Login
-            </button>
-        </sec:authorize>
         <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
+            <sec:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin"/>
             <sec:authentication property="principal.member.userId" var="principalUserId"/>
-            <button class="nav-item nav-link w-25 btn btn-warning font-weight-bold"
-                    onclick="requestLogout()">
-                Logout
-            </button>
         </sec:authorize>
+        <div class="nav-item nav-link alert-primary w-50" role="alert" id="serverMessage">
+            <c:if test="${isAdmin}">
+                Hello 👑[${principalUserId}]👑
+            </c:if>
+        </div>
+        <c:choose>
+            <c:when test="${isAuthorizeAny}">
+                <button class="nav-item nav-link w-25 btn btn-warning font-weight-bold"
+                        onclick="requestLogout()">
+                    Logout
+                </button>
+            </c:when>
+            <c:otherwise>
+                <button class="nav-item nav-link w-25 btn btn-info font-weight-bold"
+                        onclick="location.href='${pageContext.request.contextPath}/login'">
+                    Login
+                </button>
+            </c:otherwise>
+        </c:choose>
     </nav>
     <sec:authorize access="isAuthenticated()" var="isAuthorizeAny">
         <div class="d-flex justify-content-center w-100">
@@ -52,9 +61,11 @@
                     <button class="btn btn-dark w-100"
                             onclick="location.href='${pageContext.request.contextPath}/member/info'">My Account
                     </button>
-                    <sec:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin">
+                        <%--                    <sec:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin">--%>
+                    <c:if test="${isAdmin}">
                         <button class="btn btn-dark w-100" onclick="location.href='/member/list'">회원 목록 보기</button>
-                    </sec:authorize>
+                    </c:if>
+                        <%--                    </sec:authorize>--%>
                 </div>
             </div>
         </div>
@@ -70,6 +81,28 @@
         </c:if>
     </div>
     <sec:authorize access="isAuthenticated()" var="isAuthenticated"/>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="centerModal" tabindex="-1" role="dialog"
+     aria-labelledby="centerModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="centerModalTitle" >Undefined</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="centerModalSubmit">Undefined</button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

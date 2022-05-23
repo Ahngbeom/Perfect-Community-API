@@ -29,7 +29,6 @@
                                     익명
                                 </label>
                             </div>
-
                         </c:when>
                         <c:otherwise>
                             <div class="w-100">

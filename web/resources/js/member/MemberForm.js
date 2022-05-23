@@ -13,9 +13,9 @@ function memberFormChangeDetector() {
 
     function UserIdNotDuplicates(bool) {
         if (bool !== 'true') {
-            putMessage("success", userIdInput, "사용 가능한 ID입니다.");
+            putMessageForInputTag("success", userIdInput, "사용 가능한 ID입니다.");
         } else {
-            putMessage("danger", userIdInput, "중복된 ID입니다.");
+            putMessageForInputTag("danger", userIdInput, "중복된 ID입니다.");
         }
     }
 
@@ -78,11 +78,11 @@ function memberFormChangeDetector() {
         userIdInput.addEventListener('input', (evt) => {
             const inputValue = evt.currentTarget.value;
             if (formatValidator("ID", inputValue)) {
-                putMessage("danger", userIdInput, "아이디는 영문자, 숫자, \'_\' 만 입력 가능합니다.")
+                putMessageForInputTag("danger", userIdInput, "아이디는 영문자, 숫자, \'_\' 만 입력 가능합니다.")
             } else if (inputValue.length < 2) {
-                putMessage("danger", userIdInput, "아이디는 최소 2자 이상이어야 합니다.");
+                putMessageForInputTag("danger", userIdInput, "아이디는 최소 2자 이상이어야 합니다.");
             } else {
-                putMessage("success", userIdInput, "");
+                putMessageForInputTag("success", userIdInput, "");
                 httpRequest.open('GET', '/check/userid/duplicates?userId=' + encodeURIComponent(inputValue));
                 httpRequest.send(null);
             }
@@ -95,23 +95,23 @@ function memberFormChangeDetector() {
             if (evt.currentTarget.value.length < 4) {
                 passwordInput.nextElementSibling.setAttribute("type", "hidden");
                 passwordInput.nextElementSibling.value = "";
-                putMessage("danger", passwordInput.nextElementSibling, "패스워드는 최소 4자 이상이어야 합니다.");
+                putMessageForInputTag("danger", passwordInput.nextElementSibling, "패스워드는 최소 4자 이상이어야 합니다.");
                 // formTag.querySelector("#member-form-userId-status").setAttribute("class", "color-error");
                 // userIdInput.setAttribute("value-status", "ERROR");
                 // formTag.querySelector("#member-form-userId-status").innerHTML = "패스워드는 최소 10자 이상이어야 합니다.";
             } else {
                 if (/\s/g.test(inputValue)) {
-                    putMessage("danger", passwordInput.nextElementSibling, "패스워드는 공백이 포함될 수 없습니다.");
+                    putMessageForInputTag("danger", passwordInput.nextElementSibling, "패스워드는 공백이 포함될 수 없습니다.");
                 } else {
                     passwordInput.nextElementSibling.setAttribute("type", "password")
                     passwordInput.nextElementSibling.value = "";
-                    putMessage("info", passwordInput.nextElementSibling, "패스워드를 다시 입력해주세요.");
+                    putMessageForInputTag("info", passwordInput.nextElementSibling, "패스워드를 다시 입력해주세요.");
                     passwordInput.nextElementSibling.addEventListener('input', (evt2) => {
                         if (inputValue === evt2.currentTarget.value) {
                             passwordInput.setAttribute("value-status", "success");
-                            putMessage("success", passwordInput.nextElementSibling, "패스워드가 일치합니다.");
+                            putMessageForInputTag("success", passwordInput.nextElementSibling, "패스워드가 일치합니다.");
                         } else
-                            putMessage("danger", passwordInput.nextElementSibling, "패스워드가 일치하지 않습니다.");
+                            putMessageForInputTag("danger", passwordInput.nextElementSibling, "패스워드가 일치하지 않습니다.");
                     });
                 }
             }
@@ -121,15 +121,15 @@ function memberFormChangeDetector() {
         userNameInput.addEventListener('input', (evt) => {
             let inputValue = evt.currentTarget.value;
             if (formatValidator("NAME", inputValue)) {
-                putMessage("danger", userNameInput, "이름은 한글, 영문, 숫자, \'_\' 만을 포함할 수 있습니다.");
+                putMessageForInputTag("danger", userNameInput, "이름은 한글, 영문, 숫자, \'_\' 만을 포함할 수 있습니다.");
             } else if (evt.currentTarget.value.length < 2) {
                 userNameInput.nextElementSibling.value = "";
-                putMessage("danger", userNameInput, "이름은 최소 2자 이상이어야 합니다.");
+                putMessageForInputTag("danger", userNameInput, "이름은 최소 2자 이상이어야 합니다.");
                 // formTag.querySelector("#member-form-userId-status").setAttribute("class", "color-error");
                 // userIdInput.setAttribute("value-status", "ERROR");
                 // formTag.querySelector("#member-form-userId-status").innerHTML = "패스워드는 최소 10자 이상이어야 합니다.";
             } else {
-                putMessage("success", userNameInput, "올바른 형식입니다.");
+                putMessageForInputTag("success", userNameInput, "올바른 형식입니다.");
             }
         });
     }

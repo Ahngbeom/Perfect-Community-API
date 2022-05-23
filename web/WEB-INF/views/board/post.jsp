@@ -8,7 +8,7 @@
 <html>
 <head>
     <title>Board - ${Post.title}</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/boardForm.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/board/boardForm.js"></script>
 </head>
 <body>
 <h1>Board Post</h1>

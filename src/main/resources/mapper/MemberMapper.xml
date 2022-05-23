@@ -16,12 +16,12 @@
     </resultMap>
 
     <resultMap id="authMap" type="org.zerock.domain.AuthVO">
-        <result property="userId" column="userid"/>
-        <result property="auth" column="authority"/>
+<!--        <result property="userId" column="userid"/>-->
+        <result property="auth" column="authority" />
     </resultMap>
 
     <select id="readMember" resultMap="memberMap">
-        select users.userid, password, username, enabled, regDate, updateDate, authority, authorities.userid
+        select users.userid, password, username, enabled, regDate, updateDate, authority
         from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
         where users.userid = #{userId};
     </select>
@@ -30,6 +30,12 @@
         select users.userid, password, username, enabled, regDate, updateDate, authority, authorities.userid
         from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
         order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.userid asc;
+    </select>
+
+    <select id="readAuthMember" resultType="org.zerock.domain.AuthVO">
+        select userid, authority
+        from authorities
+        where userid like #{userId};
     </select>
 
     <delete id="deleteAuthOfSpecificMember">
@@ -51,5 +57,13 @@
     <insert id="insertAuthorityToMember" parameterType="org.zerock.domain.AuthVO">
         insert into authorities(userid, authority) values(#{userId}, #{auth});
     </insert>
+
+    <delete id="deleteOneAuthorityToMember">
+        delete from authorities where userid like #{userId} and authority like #{auth};
+    </delete>
+
+    <delete id="deleteAllAuthorityToMember">
+        delete from authorities where userid like #{userId};
+    </delete>
 
 </mapper>

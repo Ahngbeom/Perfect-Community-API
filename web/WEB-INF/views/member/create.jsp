@@ -51,20 +51,20 @@
 <%--        <form>--%>
 <%--            <div class="form-group">--%>
 <%--                <label for="exampleInputEmail1">Email address</label>--%>
-<%--                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"--%>
+<%--                <input boardAlertType="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"--%>
 <%--                       placeholder="Enter email">--%>
 <%--                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone--%>
 <%--                    else.</small>--%>
 <%--            </div>--%>
 <%--            <div class="form-group">--%>
 <%--                <label for="exampleInputPassword1">Password</label>--%>
-<%--                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">--%>
+<%--                <input boardAlertType="password" class="form-control" id="exampleInputPassword1" placeholder="Password">--%>
 <%--            </div>--%>
 <%--            <div class="form-check">--%>
-<%--                <input type="checkbox" class="form-check-input" id="exampleCheck1">--%>
+<%--                <input boardAlertType="checkbox" class="form-check-input" id="exampleCheck1">--%>
 <%--                <label class="form-check-label" for="exampleCheck1">Check me out</label>--%>
 <%--            </div>--%>
-<%--            <button type="submit" class="btn btn-primary">Submit</button>--%>
+<%--            <button boardAlertType="submit" class="btn btn-primary">Submit</button>--%>
 <%--        </form>--%>
 <%--        <form method="post" action="${pageContext.request.contextPath}/member/create" id="MemberRegisterForm">--%>
 <%--            <table width="1000px">--%>
@@ -74,7 +74,7 @@
 <%--                        ID--%>
 <%--                    </th>--%>
 <%--                    <td>--%>
-<%--                        <input type="text" name="userId" value-status="error" class="input-w100"/>--%>
+<%--                        <input boardAlertType="text" name="userId" value-status="error" class="input-w100"/>--%>
 <%--                        <p id="member-form-userId-status" class="" style="font-size: x-small;"></p>--%>
 <%--                    </td>--%>
 <%--                </tr>--%>
@@ -83,8 +83,8 @@
 <%--                        PW--%>
 <%--                    </th>--%>
 <%--                    <td>--%>
-<%--                        <input type="password" name="password" value-status="error" class="input-w100"/>--%>
-<%--                        <input type="hidden" id="passwordReconfirm" value-status="ERROR" class="input-w100"/>--%>
+<%--                        <input boardAlertType="password" name="password" value-status="error" class="input-w100"/>--%>
+<%--                        <input boardAlertType="hidden" id="passwordReconfirm" value-status="ERROR" class="input-w100"/>--%>
 <%--                        <p id="member-form-password-status" class="" style="font-size: x-small;"></p>--%>
 <%--                    </td>--%>
 <%--                </tr>--%>
@@ -93,7 +93,7 @@
 <%--                        Name--%>
 <%--                    </th>--%>
 <%--                    <td>--%>
-<%--                        <input type="text" name="userName" value-status="error" class="input-w100"/>--%>
+<%--                        <input boardAlertType="text" name="userName" value-status="error" class="input-w100"/>--%>
 <%--                        <p id="member-form-userName-status" class="" style="font-size: x-small;"></p>--%>
 <%--                    </td>--%>
 <%--                </tr>--%>
@@ -115,7 +115,7 @@
 <%--                </tbody>--%>
 <%--            </table>--%>
 <%--            <div class="display-flex-center" style="margin: 10px">--%>
-<%--                <input type="button" value="계정 생성"/>--%>
+<%--                <input boardAlertType="button" value="계정 생성"/>--%>
 <%--            </div>--%>
 <%--        </form>--%>
 <%--    </div>--%>

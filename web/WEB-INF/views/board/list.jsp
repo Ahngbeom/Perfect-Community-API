@@ -57,10 +57,10 @@
 
                         <td>${post.dateToToday}</td>
                             <%--                    <fmt:parseDate value="${post.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedRegDate"--%>
-                            <%--                                   type="both"/>--%>
+                            <%--                                   boardAlertType="both"/>--%>
                             <%--                    <td><fmt:formatDate value="${parsedRegDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss"/></td>--%>
                             <%--                    <fmt:parseDate value="${post.updateDate}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedUpdateDate"--%>
-                            <%--                                   type="both"/>--%>
+                            <%--                                   boardAlertType="both"/>--%>
                             <%--                    <td><fmt:formatDate value="${parsedUpdateDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss"/></td>--%>
                     </tr>
                 </c:forEach>

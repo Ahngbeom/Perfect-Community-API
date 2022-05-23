@@ -62,16 +62,16 @@ public class BoardController {
     @GetMapping("/post")
     public ModelAndView getPosts(RedirectAttributes redirectAttributes, ModelAndView mv, long bno) {
         mv.addObject("pageHeader", pageHeader);
-        redirectAttributes.addFlashAttribute("type", "Read");
+        redirectAttributes.addFlashAttribute("boardAlertType", "Board Read");
         try {
             if (service.getBoardByBno(bno) == null)
                 throw new NullPointerException("Invalid Board Post.");
-            redirectAttributes.addFlashAttribute("state", "SUCCESS");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
             mv.addObject("Post", service.getBoardByBno(bno));
             mv.setViewName("board/post");
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("state", "FAILURE");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
             mv.setViewName("redirect:/error");
         }
         return mv;
@@ -86,17 +86,17 @@ public class BoardController {
 
     @PostMapping("/register")
     public ModelAndView register(RedirectAttributes redirectAttributes, ModelAndView mv, BoardVO board) {
-        redirectAttributes.addFlashAttribute("type", "Registration");
+        redirectAttributes.addFlashAttribute("boardAlertType", "Board Registration");
         try {
             if (service.registerBoard(board) != 1) {
                 throw new Exception("Registration Failed");
             }
-            redirectAttributes.addFlashAttribute("state", "SUCCESS");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
             redirectAttributes.addAttribute("bno", board.getBno());
             mv.setViewName("redirect:/board/post");
         } catch (Exception e) {
             log.error(e);
-            redirectAttributes.addAttribute("state", "FAILURE");
+            redirectAttributes.addAttribute("boardAlertStatus", "FAILURE");
             mv.setViewName("redirect:/board/register");
         }
         return mv;
@@ -112,16 +112,16 @@ public class BoardController {
 
     @PostMapping("/modify")
     public ModelAndView modifyPost(RedirectAttributes redirectAttributes, ModelAndView mv, BoardVO board) {
-        redirectAttributes.addFlashAttribute("type", "Modify");
+        redirectAttributes.addFlashAttribute("boardAlertType", "Board Modify");
         try {
             if (service.modifyBoard(board) == 0)
                 throw new Exception("Modify Board Failed.");
-            redirectAttributes.addFlashAttribute("state", "SUCCESS");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
             redirectAttributes.addAttribute("bno", board.getBno());
             mv.setViewName("redirect:/board/post");
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("state", "FAILURE");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
             mv.setViewName("redirect:/board/modify");
         }
         return mv;
@@ -130,10 +130,10 @@ public class BoardController {
     @PostMapping("/removeAll") // 관리자 권한
     public ModelAndView removeAllPost(RedirectAttributes redirectAttributes, ModelAndView mv) {
         String message;
-        redirectAttributes.addFlashAttribute("type", "Remove ALL");
+        redirectAttributes.addFlashAttribute("boardAlertType", "Board Remove ALL");
         try {
             if (service.countBoard() <= 0) {
-                redirectAttributes.addFlashAttribute("state", "WARNING");
+                redirectAttributes.addFlashAttribute("boardAlertStatus", "WARNING");
                 message = "Board is Empty.";
             } else {
                 if (service.removeAllBoard() == 0)
@@ -141,12 +141,12 @@ public class BoardController {
                 if (service.initBnoValue() == 0)
                     throw new Exception("Initialize bno value of Board Failed");
                 message = "Board Remove All Success.";
-                redirectAttributes.addFlashAttribute("state", "SUCCESS");
+                redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
             }
             log.info(message);
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("state", "FAILURE");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
         }
         mv.setViewName("redirect:/board/list");
         return (mv);
@@ -154,7 +154,7 @@ public class BoardController {
 
     @PostMapping("/remove")
     public ModelAndView removePost(RedirectAttributes redirectAttributes, ModelAndView mv, int bno) {
-        redirectAttributes.addFlashAttribute("type", "Remove");
+        redirectAttributes.addFlashAttribute("boardAlertType", "Board Remove");
         try {
             if (service.removeBoard(bno) == 0)
                 throw new Exception("Board Remove Failed");
@@ -162,11 +162,11 @@ public class BoardController {
                 if (service.initBnoValue() == 0)
                     throw new Exception("Initialize bno value of Board Failed");
             }
-            redirectAttributes.addFlashAttribute("state", "SUCCESS");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
             mv.setViewName("redirect:/board/list");
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("state", "FAILURE");
+            redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
             redirectAttributes.addAttribute("bno", bno);
             mv.setViewName("redirect:/board/post");
         }

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
-@RequestMapping("/member/**")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -37,8 +37,8 @@ public class MemberController {
     @GetMapping("/info")
     public ModelAndView info(RedirectAttributes redirectAttributes, ModelAndView mv, @AuthenticationPrincipal Principal principal) {
         if (principal == null) {
-            redirectAttributes.addFlashAttribute("type", "Account");
-            redirectAttributes.addFlashAttribute("state", "WARNING");
+            redirectAttributes.addFlashAttribute("memberAlertType", "Account Access");
+            redirectAttributes.addFlashAttribute("memberAlertStatus", "FAILURE");
             mv.setViewName("redirect:/login");
         } else {
             mv.setViewName("/member/info");
@@ -56,13 +56,13 @@ public class MemberController {
                 mv.addObject("MemberList", memberService.getUserList());
                 mv.setViewName("/member/list");
             } else {
-                redirectAttributes.addFlashAttribute("type", "Account");
-                redirectAttributes.addFlashAttribute("state", "FAILURE");
+                redirectAttributes.addFlashAttribute("memberAlertType", "Account Access");
+                redirectAttributes.addFlashAttribute("memberAlertStatus", "FAILURE");
                 mv.setViewName("redirect:/board/list");
             }
         } else {
-            redirectAttributes.addFlashAttribute("type", "Account");
-            redirectAttributes.addFlashAttribute("state", "WARNING");
+            redirectAttributes.addFlashAttribute("memberAlertType", "Account Access");
+            redirectAttributes.addFlashAttribute("memberAlertStatus", "FAILURE");
             mv.setViewName("redirect:/login");
         }
         return mv;
@@ -73,10 +73,10 @@ public class MemberController {
         CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(principal.getName());
         if (user != null) {
             if (user.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
-                if (memberService.deleteUser(userId)) {
-                    redirectAttributes.addFlashAttribute("type", "Account Delete");
-                    redirectAttributes.addFlashAttribute("state", "SUCCESS");
-                    redirectAttributes.addFlashAttribute("userId", userId);
+                if (memberService.revokeAllAuthorityToUser(userId) && memberService.deleteUser(userId)) {
+                    redirectAttributes.addFlashAttribute("memberAlertType", "Account Delete");
+                    redirectAttributes.addFlashAttribute("memberAlertStatus", "SUCCESS");
+//                    redirectAttributes.addFlashAttribute("userId", userId);
                 }
             } else {
                 log.warn("You don't have that [ADMIN] permission.");
@@ -93,8 +93,8 @@ public class MemberController {
         if (principal != null &&
                 !((CustomUserDetails)userDetailsService.loadUserByUsername(
                         principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
-            redirectAttributes.addFlashAttribute("type", "Logout Required");
-            redirectAttributes.addFlashAttribute("state", "WARNING");
+            redirectAttributes.addFlashAttribute("memberAlertType", "Logout Required");
+            redirectAttributes.addFlashAttribute("memberAlertStatus", "WARNING");
             if (request.getHeader("Referer") != null && !request.getHeader("Referer").contains("/login")) // 이전 페이지가 로그인 페이지일 경우(로그인 실패, 로그인 페이지 연속 이동 등) prevPage를 설정하지 않음
                 request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
             else
@@ -113,17 +113,17 @@ public class MemberController {
         if (memberService.createUser(member, auth)) {
             if (principal != null &&
                     ((CustomUserDetails)userDetailsService.loadUserByUsername(principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
-                redirectAttributes.addFlashAttribute("type", "Account Create");
-                redirectAttributes.addFlashAttribute("state", "WARNING");
+                redirectAttributes.addFlashAttribute("memberAlertType", "Account Create");
+                redirectAttributes.addFlashAttribute("memberAlertStatus", "WARNING");
                 mv.setViewName("redirect:/member/list");
             } else {
-                redirectAttributes.addFlashAttribute("type", "Account Create");
-                redirectAttributes.addFlashAttribute("state", "SUCCESS");
+                redirectAttributes.addFlashAttribute("memberAlertType", "Account Create");
+                redirectAttributes.addFlashAttribute("memberAlertStatus", "SUCCESS");
                 mv.setViewName("redirect:/login");
             }
         } else {
-            redirectAttributes.addFlashAttribute("type", "Account Create");
-            redirectAttributes.addFlashAttribute("state", "FAILURE");
+            redirectAttributes.addFlashAttribute("memberAlertType", "Account Create");
+            redirectAttributes.addFlashAttribute("memberAlertStatus", "FAILURE");
             mv.setViewName("redirect:/member/create");
         }
         return mv;

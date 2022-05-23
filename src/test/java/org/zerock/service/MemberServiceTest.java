@@ -60,4 +60,9 @@ class MemberServiceTest {
     void adminSingleAuthorityDelete() {
 
     }
+
+    @Test
+    void revokeAuthTests() {
+        log.warn(service.revokeOneAuthorityToUser(new AuthVO("aa", "ROLE_ADMIN")));
+    }
 }

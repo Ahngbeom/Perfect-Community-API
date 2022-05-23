@@ -27,6 +27,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public List<AuthVO> getAuthList(String userId) {
+        return mapper.readAuthMember(userId);
+    }
+
+    @Override
     public boolean createUser(MemberVO member, AuthVO auth) {
         boolean status = false;
         member.setPassword(encoder.encode(member.getPassword()));
@@ -44,24 +49,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean deleteUser(String userId) {
-        if (mapper.deleteAuthOfSpecificMember(userId) == 1) {
-            if (mapper.deleteMember(userId) == 1)
-                return true;
-            else {
-                log.error("Delete Member Failed");
-            }
-        } else {
-            if (mapper.deleteMember(userId) == 1)
-                return true;
-            else
-                log.error("Delete Authority of Member Failed. Please make sure this account is valid");
-        }
-        return false;
+    public boolean revokeOneAuthorityToUser(AuthVO auth) {
+        return mapper.deleteOneAuthorityToMember(auth) == 1 ? true : false;
     }
 
     @Override
-    public boolean adminSingleAuthorityDeleteUser() {
-        return false;
+    public boolean revokeAllAuthorityToUser(String userId) {
+        return mapper.deleteAllAuthorityToMember((userId)) == 1 ? true : false;
     }
+
+    @Override
+    public boolean deleteUser(String userId) {
+        if (mapper.deleteMember(userId) == 1)
+            return true;
+        else {
+            log.error("Delete Member Failed");
+            return false;
+        }
+    }
+
 }

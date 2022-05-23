@@ -14,7 +14,7 @@
     <h1 class="ml-lg-5">Login</h1>
     <div class="d-flex justify-content-center">
         <form action="${pageContext.request.contextPath}/login" method="post" id="requestLoginForm">
-            <%--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
+            <%--    <input boardAlertType="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
             <sec:csrfInput/>
             <div class="form-group">
                 <label>
@@ -34,7 +34,9 @@
                     자동로그인
                 </label>
             </div>
-            <button type="button" class="btn btn-primary" id="requestLoginBtn" onclick="requestLogin()">Sign in</button>
+<%--                <button type="button" class="btn btn-primary" id="requestLoginBtn" onclick="requestLogin()">Sign in</button>--%>
+                <button type="submit" class="btn btn-primary" id="requestLoginBtn">Sign in</button>
+<%--                <button boardAlertType="submit" class="btn btn-primary" id="requestLoginBtn">Sign in</button>--%>
             <button type="button" class="btn btn-secondary"
                     onclick="location.href='${pageContext.request.contextPath}/member/create'">
                 Sign Up

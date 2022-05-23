@@ -21,11 +21,11 @@ function boardFormChangeDetector() {
             if (evt.currentTarget.value === "") {
                 console.log(writerInput.nextElementSibling);
                 // HTMLTableElement.insertCell();
-                putMessage('danger', writerInput.selector, '작성자를 입력해주세요.');
+                putMessageForInputTag('danger', writerInput.selector, '작성자를 입력해주세요.');
                 document.getElementById('serverMessage').innerHTML = '작성자를 입력해주세요.';
                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
             } else {
-                putMessage('success', writerInput.selector, '');
+                putMessageForInputTag('success', writerInput.selector, '');
                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
             }
         });
@@ -35,11 +35,11 @@ function boardFormChangeDetector() {
         titleInput.addEventListener('input', (evt) => {
             if (evt.currentTarget.value === "") {
                 // HTMLTableElement.insertCell();
-                putMessage('danger', titleInput, '제목을 입력해주세요.');
+                putMessageForInputTag('danger', titleInput, '제목을 입력해주세요.');
                 document.getElementById('serverMessage').innerHTML = '제목을 입력해주세요.';
                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
             } else {
-                putMessage('success', titleInput, '');
+                putMessageForInputTag('success', titleInput, '');
                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
             }
         });
@@ -47,12 +47,12 @@ function boardFormChangeDetector() {
     if (contentInput != null) {
         contentInput.addEventListener('input', (evt) => {
             if (evt.currentTarget.value.length === 0) {
-                putMessage('danger', contentInput, '내용을 입력해주세요.');
+                putMessageForInputTag('danger', contentInput, '내용을 입력해주세요.');
                 // HTMLTableElement.insertCell();
                 document.getElementById('serverMessage').innerHTML = '내용을 입력해주세요.';
                 document.getElementById('serverMessage').setAttribute("form-value-status", "EMPTY");
             } else {
-                putMessage('success', contentInput, '');
+                putMessageForInputTag('success', contentInput, '');
                 document.getElementById('serverMessage').setAttribute("form-value-status", "");
             }
         });
@@ -71,7 +71,7 @@ function boardFormChangeDetector() {
     if (submitBtn != null) {
         submitBtn.addEventListener('click', () => {
             console.log("submit");
-            if (writerInput.value.length === 0)
+            if (writerInput.selector.value.length === 0)
                 document.getElementById('serverMessage').innerHTML = '작성자를 입력해주세요.';
             else if (titleInput.value.length === 0)
                 document.getElementById('serverMessage').innerHTML = '제목을 입력해주세요.';
