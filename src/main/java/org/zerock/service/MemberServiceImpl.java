@@ -68,4 +68,13 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public boolean disableUser(String userId) {
+        return mapper.disableMember(userId) == 1 ? true : false;
+    }
+
+    @Override
+    public boolean enableUser(String userId) {
+        return mapper.enableMember(userId) == 1 ? true : false;
+    }
 }

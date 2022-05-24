@@ -35,4 +35,5 @@ public class AuthController {
     public boolean revokeAllAuthority(String userId) {
         return memberService.revokeAllAuthorityToUser(userId);
     }
+
 }

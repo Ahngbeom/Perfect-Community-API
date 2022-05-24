@@ -11,8 +11,8 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div class="d-flex justify-content-between w-100">
-        <div class="w-75">
+    <div class="d-block w-100">
+        <div class="w-100">
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -99,7 +99,22 @@
                                 <button type="button" class="btn btn-outline-danger admin-deleteAll-auth-btn">모든 권한 삭제
                                 </button>
                                 <c:if test="${isUser}">
-                                    <button type="button" class="btn btn-outline-warning">비활성화</button>
+
+                                    <c:choose>
+                                        <c:when test="${Member.enabled}">
+                                            <button type="button" class="btn btn-outline-warning admin-able-member-btn"
+                                                    enabled="${Member.enabled}">
+                                                비활성화
+                                            </button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="button" class="btn btn-outline-success admin-able-member-btn"
+                                                    enabled="${Member.enabled}">
+                                                활성화
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                     <input type="button" class="btn btn-outline-danger admin-delete-member-btn"
                                            value="계정 삭제"/>
                                 </c:if>
@@ -110,112 +125,67 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <div class="display-flex-right">
-                <input type="button" value="모든 계정 삭제"/>
+            <div class="float-right">
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modalMemberCreate">
+                    계정 추가
+                </button>
+                <button type="button" class="btn btn-danger">모든 계정 삭제</button>
             </div>
         </div>
-        <div class="w-25 p-xl-5">
-            <h5>Member Register</h5>
-            <%--                <form method="post" action="${pageContext.request.contextPath}/member/create"--%>
-            <%--                      id="MemberRegisterForm">--%>
-            <%--                    <table>--%>
-            <%--                        <tbody>--%>
-            <%--                        <tr>--%>
-            <%--                            <th>--%>
-            <%--                                ID--%>
-            <%--                            </th>--%>
-            <%--                            <td>--%>
-            <%--                                <input boardAlertType="text" name="userId" value-status="error" class=""/>--%>
-            <%--                                <p id="member-form-userId-status" class=""></p>--%>
-            <%--                            </td>--%>
-            <%--                        </tr>--%>
-            <%--                        <tr>--%>
-            <%--                            <th>--%>
-            <%--                                PW--%>
-            <%--                            </th>--%>
-            <%--                            <td>--%>
-            <%--                                <input boardAlertType="password" name="password" value-status="error" class=""/>--%>
-            <%--                                <input boardAlertType="hidden" id="passwordReconfirm" value-status="ERROR"--%>
-            <%--                                       class="input-w100"/>--%>
-            <%--                                <p id="member-form-password-status" class=""></p>--%>
-            <%--                            </td>--%>
-            <%--                        </tr>--%>
-            <%--                        <tr>--%>
-            <%--                            <th>--%>
-            <%--                                Name--%>
-            <%--                            </th>--%>
-            <%--                            <td>--%>
-            <%--                                <input boardAlertType="text" name="userName" value-status="error" class=""/>--%>
-            <%--                                <p id="member-form-userName-status" class=""></p>--%>
-            <%--                            </td>--%>
-            <%--                        </tr>--%>
-            <%--                        <tr>--%>
-            <%--                            <th>--%>
-            <%--                                Authority--%>
-            <%--                            </th>--%>
-            <%--                            <td>--%>
-            <%--                                <select name="auth" class="">--%>
-            <%--                                    <option value="ROLE_USER">--%>
-            <%--                                        USER--%>
-            <%--                                    </option>--%>
-            <%--                                    <option value="ROLE_ADMIN">--%>
-            <%--                                        ADMIN--%>
-            <%--                                    </option>--%>
-            <%--                                </select>--%>
-            <%--                            </td>--%>
-            <%--                        </tr>--%>
-            <%--                        </tbody>--%>
-            <%--                    </table>--%>
-            <%--                    <div class="display-flex-center">--%>
-            <%--                        <input boardAlertType="button" value="계정 생성"/>--%>
-            <%--                    </div>--%>
-            <%--                </form>--%>
-            <form method="post" action="${pageContext.request.contextPath}/member/create" id="MemberRegisterForm">
-                <div class="form-group">
-                    <label>ID</label>
-                    <input type="text" name="userId" value-status="error" class="form-control" placeholder="User ID"/>
-                    <p id="member-form-userId-status" class=""></p>
+        <!-- Modal -->
+        <div class="modal fade" id="modalMemberCreate" tabindex="-1" role="dialog"
+             aria-labelledby="modalMemberCreateTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form method="post" action="${pageContext.request.contextPath}/member/create"
+                          id="MemberRegisterForm">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalMemberCreateTitle">Member Register</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>ID</label>
+                                <input type="text" name="userId" value-status="error" class="form-control"
+                                       placeholder="User ID"/>
+                                <p id="member-form-userId-status" class=""></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Password">
+                                <input type="hidden" id="passwordReconfirm" value-status="error" class="form-control"
+                                       placeholder="Password Reconfirm"/>
+                                <p id="member-form-password-status" class=""></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="userName" class="form-control" value-status="error"
+                                       placeholder="User Name">
+                                <p id="member-form-userName-status" class=""></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Authority</label>
+                                <select name="auth" class="form-control">
+                                    <option value="ROLE_USER">
+                                        USER
+                                    </option>
+                                    <option value="ROLE_ADMIN">
+                                        ADMIN
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" id="MemberCreateSubmitBtn">계정 생성</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Password">
-                    <input type="hidden" id="passwordReconfirm" value-status="error" class="form-control"
-                           placeholder="Password Reconfirm"/>
-                    <p id="member-form-password-status" class=""></p>
-                </div>
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" name="userName" class="form-control" value-status="error"
-                           placeholder="User Name">
-                    <p id="member-form-userName-status" class=""></p>
-                </div>
-                <div class="form-group">
-                    <label>Authority</label>
-                    <select name="auth" class="form-control">
-                        <option value="ROLE_USER">
-                            USER
-                        </option>
-                        <option value="ROLE_ADMIN">
-                            ADMIN
-                        </option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-info" id="MemberCreateSubmitBtn">계정 생성</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 </body>
 </html>
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', () => {
-        $.ajax({
-            url: "/member/list/json",
-            type: "GET",
-            dataType: "JSON",
-            success: function (data) {
-                console.log(data);
-            }
-        });
-    });
-</script>

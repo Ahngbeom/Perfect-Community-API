@@ -27,4 +27,8 @@ public interface MemberMapper {
     int deleteOneAuthorityToMember(AuthVO auth);
 
     int deleteAllAuthorityToMember(String userId);
+
+    int disableMember(String userId);
+
+    int enableMember(String userId);
 }

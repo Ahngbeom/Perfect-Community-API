@@ -66,4 +66,12 @@
         delete from authorities where userid like #{userId};
     </delete>
 
+    <update id="disableMember">
+        update users set enabled = false where userid like #{userId};
+    </update>
+
+    <update id="enableMember">
+        update users set enabled = true where userid like #{userId};
+    </update>
+
 </mapper>

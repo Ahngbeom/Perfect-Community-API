@@ -1,4 +1,4 @@
-package org.zerock.security;
+package org.zerock.security.filter;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
+import org.zerock.security.CustomUserDetailService;
 
 @RequiredArgsConstructor
 public class CustomAuthenticationManager implements AuthenticationManager {

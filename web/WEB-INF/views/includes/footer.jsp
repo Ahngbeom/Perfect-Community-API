@@ -45,25 +45,33 @@
         console.log("Server Alert: " + "(TYPE: " + sessionStorage.getItem("boardAlertType") + ", STATUS: " + sessionStorage.getItem("alertStatus") + ")");
 
         let serverAlertTag = document.querySelector('#serverMessage');
-        serverAlertListener(serverAlertTag, "Login", [
-            {
-                level: "SUCCESS",
-                message: null,
-                flash: true
-            },
-            {level: "FAILURE", message: "존재하지 않는 계정이거나 비밀번호가 틀렸습니다.", flash: true}
-        ]);
+        // serverAlertListener(serverAlertTag, "Login", [
+        //     {
+        //         level: "SUCCESS",
+        //         message: null,
+        //         flash: true
+        //     },
+        //     {level: "FAILURE", message: "존재하지 않는 계정이거나 비밀번호가 틀렸습니다.", flash: true}
+        // ]);
+        //
+        // serverAlertListener(serverAlertTag, "Logout", [
+        //     {level: "SUCCESS", message: "정상적으로 로그아웃되었습니다.", flash: true},
+        //     {level: "FAILURE", message: "로그아웃을 실패했습니다.", flash: true}
+        // ]);
 
-        serverAlertListener(serverAlertTag, "Logout", [
-            {level: "SUCCESS", message: "정상적으로 로그아웃되었습니다.", flash: true},
-            {level: "FAILURE", message: "로그아웃을 실패했습니다.", flash: true}
-        ]);
-
+        if (signListener(serverAlertTag, `${signAlertType}`, `${signAlertStatus}`)) {
+            <% session.removeAttribute("signAlertType"); %>
+            <% session.removeAttribute("signAlertStatus"); %>
+        }
         boardFormChangeDetector();
         boardAlert(serverAlertTag, `${boardAlertType}`, `${boardAlertStatus}`);
         memberFormChangeDetector();
         memberControl(`${MemberList}`);
         memberAlert(serverAlertTag, `${memberAlertType}`, `${memberAlertStatus}`);
+
+        // $("#centerModal").on('hide.bs.modal', function (e) {
+        //     window.location.reload();
+        // });
 
     });
 

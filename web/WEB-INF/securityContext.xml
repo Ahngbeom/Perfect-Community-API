@@ -10,13 +10,13 @@
     <bean id="loginSuccessHandler" class="org.zerock.security.LoginSuccessHandler"/>
     <bean id="loginFailureHandler" class="org.zerock.security.LoginFailureHandler"/>
 
-    <bean id="CustomAuthenticationProcessingFilter" class="org.zerock.security.CustomAuthenticationProcessingFilter">
+    <bean id="CustomAuthenticationProcessingFilter" class="org.zerock.security.filter.CustomAuthenticationProcessingFilter">
         <constructor-arg ref="CustomAuthenticationManager" />
     </bean>
-    <bean id="CustomAuthenticationManager" class="org.zerock.security.CustomAuthenticationManager" >
+    <bean id="CustomAuthenticationManager" class="org.zerock.security.filter.CustomAuthenticationManager" >
         <constructor-arg ref="customUserDetailService" />
     </bean>
-    <bean id="FilterExceptionHandler" class="org.zerock.security.FilterExceptionHandler" />
+    <bean id="FilterExceptionHandler" class="org.zerock.security.filter.FilterExceptionHandler" />
 
     <!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomPasswordEncoder"/>-->
     <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>

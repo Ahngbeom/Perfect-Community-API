@@ -20,6 +20,8 @@ public interface MemberService {
 
     boolean deleteUser(String userId);
 
+    boolean disableUser(String userId);
 
+    boolean enableUser(String userId);
 
 }

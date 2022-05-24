@@ -36,18 +36,19 @@ public class LoginSuccessHandler extends JSONConverterForAJAX implements Authent
             log.info("Previous Page: " + prevPage);
         }
 
-
-
         String url = request.getContextPath();
         if (savedRequest != null) {
             log.info("Saved Request: " + url);
             url = savedRequest.getRedirectUrl();
         } else if (prevPage != null) {
             url = prevPage;
+//            response.sendRedirect(prevPage);
         } else {
             url = "/";
 //            url = "/board/list";
         }
+
+        log.warn(authentication);
 
         response.sendRedirect(url);
 

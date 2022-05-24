@@ -2,14 +2,9 @@ function memberControl(Member) {
     const adminUpdateAuthBtnCollect = document.querySelectorAll(".admin-update-auth-btn");
     const adminDeleteAllAuthBtnCollect = document.querySelectorAll(".admin-deleteAll-auth-btn");
     const adminDeleteMemBtnCollect = document.querySelectorAll(".admin-delete-member-btn");
+    const adminAbleMemBtnCollect = document.querySelectorAll(".admin-able-member-btn");
 
     const centerModal = $("#centerModal");
-
-    centerModal.on('hide.bs.modal', function (e) {
-       window.location.reload();
-    });
-
-        // const centerModal = document.querySelectorAll("#centerModal");
 
     adminUpdateAuthBtnCollect.forEach(adminAddAuthBtn => {
         adminAddAuthBtn.addEventListener('click', evt => {
@@ -64,13 +59,17 @@ function memberControl(Member) {
                 $(this).find("#centerModalSubmit")[0].addEventListener('click', () => {
                     formData.forEach((value, key) => {
                         let ajaxData = {userId: userID, auth: key, isAdd: value};
+                        let test;
                         $.ajax({
                             url: "/member/auth/update",
                             type: "POST",
                             dataType: "JSON",
                             data: ajaxData,
                             success: function (data) {
-                                window.location.reload();
+                                centerModal.modal('hide');
+                                putServerAlert("권한이 변경되었습니다. 새로고침 해주세요.");
+                                // window.location.reload();
+                                // JSON 데이터 타입으로 멤버 목록을 받아오는 방식으로 전환을 해야하나?
                             }
                         });
                     });
@@ -96,7 +95,7 @@ function memberControl(Member) {
                     dataType: "JSON",
                     data: {userId: USER_ID},
                     success: function (data) {
-                            window.location.reload();
+                        // window.location.reload();
                     }
                 });
             });
@@ -106,8 +105,45 @@ function memberControl(Member) {
     adminDeleteMemBtnCollect.forEach(adminDeleteMemBtn => {
         adminDeleteMemBtn.addEventListener("click", (evt) => {
             const form = evt.currentTarget.closest("form");
-            form.action = "/member/remove";
-            form.submit();
+
+            centerModal.find("#centerModalTitle").text("계정 삭제");
+            centerModal.find(".modal-body").html(
+                "<span class='text-danger font-weight-bold'>해당 계정을 삭제하시겠습니까?</span>");
+            centerModal.find("#centerModalSubmit").removeClass("btn-info").addClass("btn-danger").text("Accept");
+            centerModal.modal();
+
+            $("#centerModalSubmit")[0].addEventListener('click', () => {
+                form.action = "/member/remove";
+                form.method = "POST";
+                form.submit();
+            });
+        });
+    });
+
+    adminAbleMemBtnCollect.forEach(adminAbleMemBtn => {
+        let form = adminAbleMemBtn.parentElement;
+        adminAbleMemBtn.addEventListener('click', evt => {
+            console.log(adminAbleMemBtn.getAttribute("enabled"));
+            if (adminAbleMemBtn.getAttribute("enabled") === "true") {
+                centerModal.find("#centerModalTitle").text("계정 비활성화");
+                centerModal.find(".modal-body").html("<span class='text-warning font-weight-bold'>해당 계정을 비활성화하시겠습니까?</span>");
+                $("#centerModalSubmit")[0].addEventListener('click', () => {
+                    form.action = "/member/disable";
+                    form.method = "POST";
+                    form.submit();
+                });
+            }
+            else {
+                centerModal.find("#centerModalTitle").text("계정 활성화");
+                centerModal.find(".modal-body").html("<span class='text-success font-weight-bold'>해당 계정을 활성화하시겠습니까?</span>");
+                $("#centerModalSubmit")[0].addEventListener('click', () => {
+                    form.action = "/member/enable";
+                    form.method = "POST";
+                    form.submit();
+                });
+            }
+            centerModal.find("#centerModalSubmit").removeClass("btn-info").addClass("btn-danger").text("Accept");
+            centerModal.modal();
         });
     });
 }

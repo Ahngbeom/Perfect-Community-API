@@ -3,9 +3,12 @@ package org.zerock.security;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.MemberVO;
 import org.zerock.mapper.MemberMapper;
@@ -20,19 +23,20 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        UserCache userCache = new NullUserCache();
         try {
+            log.warn(userCache.getUserFromCache(userName));
             log.warn("Load User By Name:" + userName);
             MemberVO member = mapper.readMember(userName);
             log.warn("Queried By Member Mapper: " + member);
             if (member == null)
                 throw new UsernameNotFoundException(userName);
             return new CustomUserDetails(member);
+        } catch (UsernameNotFoundException usernameNotFoundException) {
+            log.error("\"" + usernameNotFoundException.getMessage() + "\" account does not exist.");
         } catch (Exception e) {
-            log.warn("\"" + e.getMessage() + "\" account does not exist.");
-//            e.printStackTrace();
+            e.printStackTrace();
         }
-       return null;
+        return null;
     }
-
-
 }

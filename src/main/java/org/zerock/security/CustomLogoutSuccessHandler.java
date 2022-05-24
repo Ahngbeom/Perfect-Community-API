@@ -34,16 +34,16 @@ public class CustomLogoutSuccessHandler extends JSONConverterForAJAX implements 
 
             log.info("Logout Success - " + authentication.getName());
             log.info("Previous Page: " + prevPage);
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            request.getSession().setAttribute("boardAlertType", "Logout");
-//            request.getSession().setAttribute("alertStatus", "SUCCESS");
-//            response.sendRedirect(prevPage);
+            response.setStatus(HttpServletResponse.SC_OK);
+            request.getSession().setAttribute("signAlertType", "Logout");
+            request.getSession().setAttribute("signAlertStatus", "SUCCESS");
+            response.sendRedirect(prevPage);
 
-            Map<String, Object> map = new HashMap<>();
-            map.put("status", "SUCCESS");
-            map.put("redirectURL", prevPage);
-
-            JSONConverter(response, authentication, map);
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("status", "SUCCESS");
+//            map.put("redirectURL", prevPage);
+//
+//            JSONConverter(response, authentication, map);
 
         }
     }
