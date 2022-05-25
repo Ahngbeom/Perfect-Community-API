@@ -4,7 +4,6 @@
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
-    <!--    <import resource="dispatcher-servlet.xml"/>-->
 
     <bean id="accessDeniedHandler" class="org.zerock.security.AccessDeniedHandler"/>
     <bean id="loginSuccessHandler" class="org.zerock.security.LoginSuccessHandler"/>
@@ -23,6 +22,29 @@
     <bean id="customUserDetailService" class="org.zerock.security.CustomUserDetailService"/>
     <bean id="logoutSuccessHandler" class="org.zerock.security.CustomLogoutSuccessHandler"/>
 
+
+
+    <security:client-registrations>
+        <security:client-registration registration-id="google"
+                                      client-id="701605057235-h15lm743tsj3pmgl05pa53mtgpk3jb2l.apps.googleusercontent.com"
+                                      client-secret="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"
+                                      provider-id="google"
+                                      scope="profile,email"
+        />
+
+    </security:client-registrations>
+    <bean id="authorizedClientService" class="org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService" autowire="constructor">
+<!--        <constructor-arg ref="authorizedClientRepository"/>-->
+    </bean>
+
+    <bean id="authorizedClientRepository" class="org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository">
+        <constructor-arg ref="authorizedClientService"/>
+    </bean>
+<!--    <bean id="auth2AuthorizedClientManager" class="org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager">-->
+<!--        <constructor-arg index="0" ref=""/>-->
+<!--        <constructor-arg index="1" ref=""/>-->
+<!--    </bean>-->
+
     <security:http auto-config="true" use-expressions="true" >
 <!--    <security:http auto-config="true" use-expressions="true" authentication-manager-ref="CustomAuthenticationManager" >-->
         <security:csrf disabled="true"/>
@@ -31,6 +53,7 @@
         <security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>
         <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
         <security:intercept-url pattern="/**/json" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
 
 <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
 <!--        <security:custom-filter ref="FilterExceptionHandler" before="FORM_LOGIN_FILTER"/>-->
@@ -42,6 +65,14 @@
                               token-validity-seconds="604800"
                               authentication-success-handler-ref="loginSuccessHandler"
                               user-service-ref="customUserDetailService"/>
+
+        <security:oauth2-login login-processing-url="/login/oauth2/code/google"
+                               authorized-client-repository-ref="authorizedClientRepository"
+                               authorized-client-service-ref="authorizedClientService"
+                                authentication-failure-handler-ref="loginFailureHandler"/>
+
+
+
 
         <!--        <security:access-denied-handler error-page="/accessError" />-->
         <security:access-denied-handler ref="accessDeniedHandler"/>

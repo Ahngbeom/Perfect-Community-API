@@ -13,6 +13,9 @@
 <div class="container">
     <h1 class="ml-lg-5">Login</h1>
     <div class="d-flex justify-content-center">
+        <form action="/login/oauth2/code/google" method="get">
+            <button type="submit">Google</button>
+        </form>
         <form action="${pageContext.request.contextPath}/login" method="post" id="requestLoginForm">
             <%--    <input boardAlertType="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
             <sec:csrfInput/>
@@ -34,9 +37,9 @@
                     자동로그인
                 </label>
             </div>
-<%--                <button type="button" class="btn btn-primary" id="requestLoginBtn" onclick="requestLogin()">Sign in</button>--%>
-                <button type="submit" class="btn btn-primary" id="requestLoginBtn">Sign in</button>
-<%--                <button boardAlertType="submit" class="btn btn-primary" id="requestLoginBtn">Sign in</button>--%>
+            <%--                <button type="button" class="btn btn-primary" id="requestLoginBtn" onclick="requestLogin()">Sign in</button>--%>
+            <button type="submit" class="btn btn-primary" id="requestLoginBtn">Sign in</button>
+            <%--                <button boardAlertType="submit" class="btn btn-primary" id="requestLoginBtn">Sign in</button>--%>
             <button type="button" class="btn btn-secondary"
                     onclick="location.href='${pageContext.request.contextPath}/member/create'">
                 Sign Up
@@ -44,6 +47,22 @@
         </form>
     </div>
 </div>
-
 </body>
 </html>
+<%--<script src="https://accounts.google.com/gsi/client" async defer>--%>
+<%--    function handleCredentialResponse(response) {--%>
+<%--        console.log("Encoded JWT ID token: " + response.credential);--%>
+<%--    }--%>
+<%--    window.onload = function () {--%>
+<%--        google.accounts.id.initialize({--%>
+<%--            client_id: "YOUR_GOOGLE_CLIENT_ID",--%>
+<%--            callback: handleCredentialResponse--%>
+<%--        });--%>
+<%--        google.accounts.id.renderButton(--%>
+<%--            document.getElementById("buttonDiv"),--%>
+<%--            { theme: "outline", size: "large" }  // customization attributes--%>
+<%--        );--%>
+<%--        google.accounts.id.prompt(); // also display the One Tap dialog--%>
+<%--    }--%>
+<%--</script>--%>
+
