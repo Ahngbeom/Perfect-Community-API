@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/utils/utilsFunction.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/server/serverAlert.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/logInOut/Login.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/logInOut/Logout.js"/>"></script>
@@ -45,26 +46,13 @@
         console.log("Server Alert: " + "(TYPE: " + sessionStorage.getItem("boardAlertType") + ", STATUS: " + sessionStorage.getItem("alertStatus") + ")");
 
         let serverAlertTag = document.querySelector('#serverMessage');
-        // serverAlertListener(serverAlertTag, "Login", [
-        //     {
-        //         level: "SUCCESS",
-        //         message: null,
-        //         flash: true
-        //     },
-        //     {level: "FAILURE", message: "존재하지 않는 계정이거나 비밀번호가 틀렸습니다.", flash: true}
-        // ]);
-        //
-        // serverAlertListener(serverAlertTag, "Logout", [
-        //     {level: "SUCCESS", message: "정상적으로 로그아웃되었습니다.", flash: true},
-        //     {level: "FAILURE", message: "로그아웃을 실패했습니다.", flash: true}
-        // ]);
 
         if (signListener(serverAlertTag, `${signAlertType}`, `${signAlertStatus}`)) {
             <% session.removeAttribute("signAlertType"); %>
             <% session.removeAttribute("signAlertStatus"); %>
         }
         boardFormChangeDetector();
-        boardAlert(serverAlertTag, `${boardAlertType}`, `${boardAlertStatus}`);
+        boardAlert(serverAlertTag, `${boardAlertType}`, `${boardAlertStatus}`, `${boardAlertMessage}`);
         memberFormChangeDetector();
         memberControl(`${MemberList}`);
         memberAlert(serverAlertTag, `${memberAlertType}`, `${memberAlertStatus}`);

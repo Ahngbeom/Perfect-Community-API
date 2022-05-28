@@ -3,8 +3,6 @@ package org.zerock.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,16 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
-import org.zerock.security.CustomUserDetailService;
-import org.zerock.security.CustomUserDetails;
+import org.zerock.security.detail.CustomUserDetailService;
 import org.zerock.service.MemberService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -57,6 +50,18 @@ public class RESTMemberController {
         }
         return null;
     }
+
+    @PostMapping("/userId-duplicatesCheck")
+    public boolean userIdDuplicatesChecking(String userId) {
+        UserDetails user = userDetailsService.loadUserByUsername(userId);
+        return user != null ? true : false;
+    }
+
+//    @PostMapping("/username-duplicatesCheck")
+//    public boolean usernameDuplicatesChecking(String username) {
+//        UserDetails user = userDetailsService.loadUserByUsername(username);
+//        return user != null ? true : false;
+//    }
 //
 //    @PostMapping("/remove")
 //    public ModelAndView removeMember(RedirectAttributes redirectAttributes, ModelAndView mv, @AuthenticationPrincipal Principal principal, String userId) {

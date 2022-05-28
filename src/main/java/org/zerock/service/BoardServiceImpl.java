@@ -1,6 +1,7 @@
 package org.zerock.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
@@ -14,7 +15,11 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper mapper;
+
     private final DateUtility dateUtility;
+
+    private final PasswordEncoder passwordEncoder;
+
 
     @Override
     public long countBoard() {
@@ -50,6 +55,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int registerBoard(BoardVO board) {
+        if (board.getBoardPassword() != null)
+            board.setBoardPassword(passwordEncoder.encode(board.getBoardPassword()));
         return mapper.insertBoard(board);
     }
 

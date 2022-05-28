@@ -1,4 +1,4 @@
-function boardAlert(serverAlertTag, type, status) {
+function boardAlert(serverAlertTag, type, status, message) {
     if (status === "SUCCESS") {
         switch (type) {
             case "Board Registration" :
@@ -15,12 +15,15 @@ function boardAlert(serverAlertTag, type, status) {
             case "Board Remove" :
                 serverAlertTag.textContent = "게시물이 정상적으로 삭제되었습니다.";
                 break;
+            case "Board Search" :
+                serverAlertTag.textContent = message;
+                break;
             default :
                 serverAlertTag.textContent = "Fatal Error";
                 break;
         }
-    } else if (type === "WARNING") {
-        switch (status) {
+    } else if (status === "WARNING") {
+        switch (type) {
             case "Board Registration" :
                 serverAlertTag.textContent = "게시물 등록을 할 수 없습니다.";
                 break;
@@ -37,8 +40,8 @@ function boardAlert(serverAlertTag, type, status) {
                 serverAlertTag.textContent = "Fatal Error";
                 break;
         }
-    } else if (type === "FAILURE") {
-        switch (status) {
+    } else if (status === "FAILURE") {
+        switch (type) {
             case "Board Registration" :
                 serverAlertTag.textContent = "게시물 등록을 실패했습니다.";
                 break;
@@ -53,6 +56,9 @@ function boardAlert(serverAlertTag, type, status) {
                 break;
             case "Board Remove" :
                 serverAlertTag.textContent = "게시물 삭제를 실패했습니다.";
+                break;
+            case "Board Search" :
+                serverAlertTag.textContent = message;
                 break;
             default :
                 serverAlertTag.textContent = "Fatal Error";

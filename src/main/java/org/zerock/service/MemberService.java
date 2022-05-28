@@ -12,15 +12,17 @@ public interface MemberService {
 
     boolean createUser(MemberVO member, AuthVO auth);
 
+    MemberVO readUser(String userId);
+
+    boolean deleteUser(String userId);
+
+    boolean disableUser(String userId);
+
     boolean authorizationToUser(AuthVO auth);
 
     boolean revokeOneAuthorityToUser(AuthVO auth);
 
     boolean revokeAllAuthorityToUser(String userId);
-
-    boolean deleteUser(String userId);
-
-    boolean disableUser(String userId);
 
     boolean enableUser(String userId);
 

@@ -1,9 +1,8 @@
 package org.zerock.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.zerock.security.CustomUserDetailService;
+import org.zerock.security.detail.CustomUserDetailService;
 
 @RestController
 @RequestMapping("/check")

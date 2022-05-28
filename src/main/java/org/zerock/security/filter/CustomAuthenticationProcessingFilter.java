@@ -7,8 +7,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.zerock.security.LoginFailureHandler;
-import org.zerock.security.LoginSuccessHandler;
+import org.zerock.security.login.LoginFailureHandler;
+import org.zerock.security.login.LoginSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -12,6 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 
+import java.security.Principal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -65,7 +67,7 @@ class BoardServiceTest {
 
     @Test
     void registerBoard() {
-        BoardVO board = new BoardVO("짜잔", "내가", "돌아왔다");
+        BoardVO board = new BoardVO("짜잔", "내가", "돌아왔다", null);
         service.registerBoard(board);
         logger.info(service.getBoardByBno(board.getBno()));
     }

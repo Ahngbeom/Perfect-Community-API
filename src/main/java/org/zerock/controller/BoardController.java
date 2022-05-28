@@ -3,6 +3,7 @@ package org.zerock.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +15,11 @@ import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.PageHeaderVO;
 import org.zerock.domain.PaginationVO;
+import org.zerock.security.CustomPasswordEncoder;
 import org.zerock.service.BoardService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class BoardController {
     private static final PageHeaderVO pageHeader = new PageHeaderVO("Board", "/board/list", null);
 
     private static PaginationVO pagination = new PaginationVO();
+
 
     @GetMapping(value = {"/list", "/"})
     public ModelAndView boardList(HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -59,7 +63,7 @@ public class BoardController {
     }
 
 
-    @GetMapping("/post")
+    @GetMapping("/posts")
     public ModelAndView getPosts(RedirectAttributes redirectAttributes, ModelAndView mv, long bno) {
         mv.addObject("pageHeader", pageHeader);
         redirectAttributes.addFlashAttribute("boardAlertType", "Board Read");
@@ -67,8 +71,9 @@ public class BoardController {
             if (service.getBoardByBno(bno) == null)
                 throw new NullPointerException("Invalid Board Post.");
             redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
-            mv.addObject("Post", service.getBoardByBno(bno));
-            mv.setViewName("board/post");
+            log.warn(service.getBoardByBno(bno));
+            mv.addObject("Posts", service.getBoardByBno(bno));
+            mv.setViewName("board/posts");
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
@@ -85,7 +90,8 @@ public class BoardController {
     }
 
     @PostMapping("/register")
-    public ModelAndView register(RedirectAttributes redirectAttributes, ModelAndView mv, BoardVO board) {
+    public ModelAndView register(RedirectAttributes redirectAttributes, ModelAndView mv, BoardVO board, Principal principal) {
+        board.setUserId(principal != null ? principal.getName() : null);
         redirectAttributes.addFlashAttribute("boardAlertType", "Board Registration");
         try {
             if (service.registerBoard(board) != 1) {
@@ -93,7 +99,7 @@ public class BoardController {
             }
             redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
             redirectAttributes.addAttribute("bno", board.getBno());
-            mv.setViewName("redirect:/board/post");
+            mv.setViewName("redirect:/board/posts");
         } catch (Exception e) {
             log.error(e);
             redirectAttributes.addAttribute("boardAlertStatus", "FAILURE");
@@ -118,7 +124,7 @@ public class BoardController {
                 throw new Exception("Modify Board Failed.");
             redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
             redirectAttributes.addAttribute("bno", board.getBno());
-            mv.setViewName("redirect:/board/post");
+            mv.setViewName("redirect:/board/posts");
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
@@ -168,14 +174,14 @@ public class BoardController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
             redirectAttributes.addAttribute("bno", bno);
-            mv.setViewName("redirect:/board/post");
+            mv.setViewName("board/posts");
         }
         return (mv);
     }
 
     @PostMapping("/createDummy")
     public ModelAndView createDummy(ModelAndView mv, long dummyAmount) {
-        BoardVO board = new BoardVO("Test", "Test", "Administrator");
+        BoardVO board = new BoardVO("Test", "Test", "Administrator", null);
         long limit = service.countBoard() + dummyAmount;
         long number = service.countBoard();
         while (number < limit) {
@@ -197,12 +203,20 @@ public class BoardController {
         List<BoardVO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, Math.min(size, page * 10)));
         mv.addObject("BoardList", specPagesResult);
         mv.addObject("pageAmount", size % 10 == 0 ? size / 10 : size / 10 + 1);
-        String checkedType = "";
-        checkedType += searchVO.isCheckTitle() ? "제목, " : "";
+        String checkedType = searchVO.isCheckTitle() ? "제목, " : "";
         checkedType += searchVO.isCheckContent() ? "내용, " : "";
         checkedType += searchVO.isCheckWriter() ? "작성자, " : "";
         checkedType = checkedType.substring(0, checkedType.length() - 2);
-        mv.addObject("pageMessage", "[" + checkedType + "] \"" + searchVO.getKeyword() + "\"에 대한 검색 결과 입니다.");
+//        log.info("Requested Search Type: " + checkedType);
+        if (size > 0) {
+            mv.addObject("boardAlertType", "Board Search");
+            mv.addObject("boardAlertStatus", "SUCCESS");
+            mv.addObject("boardAlertMessage", "[" + checkedType + "] \"" + searchVO.getKeyword() + "\"에 대한 " + size + "개의 검색 결과 입니다.");
+        } else {
+            mv.addObject("boardAlertType", "Board Search");
+            mv.addObject("boardAlertStatus", "FAILURE");
+            mv.addObject("boardAlertMessage", "조건에 해당하는 게시물이 없습니다.");
+        }
         mv.setViewName("board/list");
         return mv;
     }

@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
-import org.zerock.security.CustomUserDetails;
-import org.zerock.security.CustomUserDetailService;
+import org.zerock.security.detail.CustomUserDetails;
+import org.zerock.security.detail.CustomUserDetailService;
 import org.zerock.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.mapper.MemberMapper;
-import org.zerock.security.CustomUserDetailService;
+import org.zerock.security.detail.CustomUserDetailService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

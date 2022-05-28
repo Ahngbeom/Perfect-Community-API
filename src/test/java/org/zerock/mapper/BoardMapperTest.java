@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -60,7 +61,7 @@ class BoardMapperTest {
 
     @Test
     void testInsertBoard() {
-        BoardVO board = new BoardVO("아", "잠깐만", "기둘");
+        BoardVO board = new BoardVO("아", "잠깐만", "기둘", null);
         mapper.insertBoard(board);
         logger.info(mapper.selectBoardByBno(board.getBno()));
     }

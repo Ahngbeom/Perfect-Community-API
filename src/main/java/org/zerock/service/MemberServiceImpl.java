@@ -44,6 +44,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberVO readUser(String userId) {
+        return null;
+    }
+
+    @Override
     public boolean authorizationToUser(AuthVO auth) {
         return mapper.insertAuthorityToMember(auth) == 1 ? true : false;
     }

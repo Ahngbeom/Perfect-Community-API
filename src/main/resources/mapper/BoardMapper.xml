@@ -10,26 +10,26 @@
     </select>
 
     <select id="selectBoardList" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, content, writer, userid, boardPassword, regdate, updatedate
         from board
         order by updatedate, bno DESC;
     </select>
 
     <select id="selectBoardListWithPage" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, content, writer, userid, boardPassword, regdate, updatedate
         from board
         order by updatedate desc
         limit ${(page - 1) * 10}, 10;
     </select>
 
     <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
-        select *
+        select bno, title, content, writer, userid, boardPassword, regdate, updatedate
         from board
         where bno = #{bno};
     </select>
 
     <select id="selectBoardByKeyword" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, content, writer, userid, boardPassword, regdate, updatedate
         from board
         <choose>
             <when test="checkTitle">
@@ -55,8 +55,8 @@
     </select>
 
     <insert id="insertBoard" parameterType="org.zerock.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
-        insert into board (title, content, writer)
-        values (#{title}, #{content}, #{writer});
+        insert into board (title, content, writer, userid, boardPassword)
+        values (#{title}, #{content}, #{writer}, #{userId}, #{boardPassword});
     </insert>
 
     <update id="updateBoard">
@@ -64,6 +64,7 @@
         set title      = #{title},
             content    = #{content},
             writer     = #{writer},
+            boardPassword = #{boardPassword},
             updatedate = NOW()
         where bno = #{bno}
     </update>

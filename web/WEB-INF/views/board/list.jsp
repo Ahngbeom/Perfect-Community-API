@@ -12,7 +12,8 @@
         <div class="w-100">
             <nav class="navbar navbar-light bg-light justify-content-between">
                 <form method="get" action="${pageContext.request.contextPath}/board/search"
-                      class="form-inline">
+                      class="form-inline" id="boardSearchForm">
+
                     <div class="mr-lg-3">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" name="checkTitle" class="custom-control-input" id="checkTitle"
@@ -31,7 +32,7 @@
                     <div class="form-inline">
                         <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Search"
                                aria-label="Search" required>
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
                     </div>
                 </form>
                 <button type="button" onclick="location.href='/board/register'" class="btn btn-outline-secondary">게시물
@@ -51,10 +52,9 @@
                 <c:forEach var="post" items="${BoardList}" varStatus="status">
                     <tr>
                         <td><c:out value="${post.bno}"/></td>
-                        <td><a href="${pageContext.request.contextPath}/board/post?bno=${post.bno}"><c:out
+                        <td><a href="${pageContext.request.contextPath}/board/posts?bno=${post.bno}"><c:out
                                 value="${post.title}"/></a></td>
                         <td><c:out value="${post.writer}"/></td>
-
                         <td>${post.dateToToday}</td>
                             <%--                    <fmt:parseDate value="${post.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedRegDate"--%>
                             <%--                                   boardAlertType="both"/>--%>
@@ -124,4 +124,35 @@
 </div>
 </body>
 </html>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        const boardSearchForm = document.querySelector("#boardSearchForm");
+        const checkTitleInput = document.querySelector("input[name='checkTitle']");
+        const checkWriterInput = document.querySelector("input[name='checkWriter']");
+        const checkContentInput = document.querySelector("input[name='checkContent']");
+        const checkKeywordInput = document.querySelector("input[name='keyword']");
+        const boardSearchBtn = boardSearchForm.querySelector("button");
+
+        if (${not empty param.checkTitle}) {
+            checkTitleInput.setAttribute("checked", true);
+        }
+        if (${not empty param.checkWriter}) {
+            checkWriterInput.setAttribute("checked", true);
+        }
+        if (${not empty param.checkContent}) {
+            checkContentInput.setAttribute("checked", true);
+        }
+        if (${not empty param.keyword}) {
+            checkKeywordInput.value = `${param.keyword}`;
+        }
+
+        boardSearchBtn.addEventListener('click', () => {
+            if (checkTitleInput.checked || checkWriterInput.checked || checkContentInput.checked)
+                boardSearchForm.submit();
+            else
+                putServerAlert("검색 조건을 하나 이상 선택해주세요.");
+        });
+    });
+</script>
 

@@ -13,9 +13,14 @@
 <div class="container">
     <h1 class="ml-lg-5">Login</h1>
     <div class="d-flex justify-content-center">
-        <form action="/login/oauth2/code/google" method="get">
-            <button type="submit">Google</button>
-        </form>
+    <a href="/oauth2/authorization/google" class="">
+        <img src="/resources/google_signin_buttons/web/1x/btn_google_signin_dark_normal_web.png"/>
+    </a>
+    </div>
+    <div class="d-flex justify-content-center">
+<%--        <form action="/oauth2/authorization/google" method="get">--%>
+
+<%--        </form>--%>
         <form action="${pageContext.request.contextPath}/login" method="post" id="requestLoginForm">
             <%--    <input boardAlertType="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
             <sec:csrfInput/>

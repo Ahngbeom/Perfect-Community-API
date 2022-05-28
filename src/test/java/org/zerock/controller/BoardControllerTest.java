@@ -3,7 +3,6 @@ package org.zerock.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -96,7 +95,7 @@ class BoardControllerTest {
 
     @Test
     void testGetPosts() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/post")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/posts")
                 .param("bno", String.valueOf(1)))
                 .andExpect(status().isOk())
 //                .andDo(print())
@@ -106,7 +105,7 @@ class BoardControllerTest {
 
     @Test
     void testGetPosts(int bno) throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/post")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/posts")
                         .param("bno", String.valueOf(bno)))
                 .andExpect(status().isOk())
 //                .andDo(print())
@@ -123,7 +122,7 @@ class BoardControllerTest {
 
     @Test
     void testRegistration() throws Exception {
-        BoardVO board = new BoardVO("안녕하세요", "신입생 안범준입니다.", "안범준");
+        BoardVO board = new BoardVO("안녕하세요", "신입생 안범준입니다.", "안범준", (String) null);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
                         .param("title", board.getTitle())

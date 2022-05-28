@@ -33,8 +33,8 @@
         </div>
         <c:choose>
             <c:when test="${isAuthorizeAny}">
-                <button class="nav-item nav-link w-25 btn btn-warning font-weight-bold"
-                        onclick="requestLogout()">
+<%--                <button class="nav-item nav-link w-25 btn btn-warning font-weight-bold" onclick="requestLogout()">--%>
+                <button class="nav-item nav-link w-25 btn btn-warning font-weight-bold" onclick="location.href='/logout'">
                     Logout
                 </button>
             </c:when>

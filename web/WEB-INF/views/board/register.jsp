@@ -55,6 +55,14 @@
                           placeholder="Please enter your content"></textarea>
                 <p></p>
             </div>
+            <c:if test="${!isAdmin}">
+                <div class="form-group">
+                    <label for="boardRegisterFormContent">비밀번호</label>
+                    <input class="form-control w-75" name="boardPassword" id="boardRegisterFormPassword"
+                           placeholder="If you are not signed in, you must set a password for the posts."/>
+                    <p></p>
+                </div>
+            </c:if>
             <input id="postRegisterBtn" type="button" class="btn btn-secondary float-right w-25" value="등록"/>
         </form>
     </div>
