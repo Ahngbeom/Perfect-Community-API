@@ -1,5 +1,7 @@
 # BasicSpringMVC
 
+[![Java CI with Maven](https://github.com/Ahngbeom/BasicSpringMVC/actions/workflows/maven.yml/badge.svg)](https://github.com/Ahngbeom/BasicSpringMVC/actions/workflows/maven.yml)
+
 ---
 
 
