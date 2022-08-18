@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.MemberVO;
 import org.zerock.mapper.BoardMapper;
 import org.zerock.utils.DateUtility;
 
@@ -19,7 +20,6 @@ public class BoardServiceImpl implements BoardService {
     private final DateUtility dateUtility;
 
     private final PasswordEncoder passwordEncoder;
-
 
     @Override
     public long countBoard() {
@@ -55,9 +55,14 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int registerBoard(BoardVO board) {
-        if (board.getBoardPassword() != null)
-            board.setBoardPassword(passwordEncoder.encode(board.getBoardPassword()));
-        return mapper.insertBoard(board);
+        if (mapper.insertBoard(board) == 1) {
+            if (board.getBoardPassword() != null) {
+                return mapper.insertBoardWithPassword(board.getBno(), passwordEncoder.encode(board.getBoardPassword()));
+            }
+        } else {
+            return 0;
+        }
+        return 1;
     }
 
     @Override
@@ -71,6 +76,15 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public int removePostWithPassword(BoardVO board) {
+        String encodePassword = mapper.postHasPassword(board.getBno());
+        if (encodePassword != null && passwordEncoder.matches(board.getBoardPassword(), encodePassword)) {
+            return mapper.deletePasswordForPost(board.getBno()) & mapper.deleteBoard(board.getBno());
+        }
+        return mapper.deleteBoard(board.getBno());
+    }
+
+    @Override
     public int removeAllBoard() {
         return mapper.deleteAllBoard();
     }
@@ -78,5 +92,15 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public long initBnoValue() {
         return mapper.initAutoIncrement();
+    }
+
+    @Override
+    public BoardVO authenticateForPosts(BoardVO board, MemberVO member) {
+        return mapper.authenticateForPosts(board, member);
+    }
+
+    @Override
+    public boolean postHasPassword(long bno) {
+        return mapper.postHasPassword(bno) != null;
     }
 }

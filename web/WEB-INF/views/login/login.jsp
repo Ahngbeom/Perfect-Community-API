@@ -34,7 +34,7 @@
                 <label>
                     PW
                 </label>
-                <input type="password" name="password" value="1234" placeholder="Password" class="form-control"/>
+                <input type="password" name="password" value="admin" placeholder="Password" class="form-control"/>
             </div>
             <div class="form-check">
                 <input type="checkbox" name="remember-me" class="form-check-input">

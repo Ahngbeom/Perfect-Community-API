@@ -83,7 +83,7 @@ class BoardServiceTest {
 
     @Test
     void removeBoard() {
-        logger.info(service.removeBoard(5));
+//        logger.info(service.removeBoard(5));
         service.getBoardList().forEach(board -> logger.info(board));
     }
 }

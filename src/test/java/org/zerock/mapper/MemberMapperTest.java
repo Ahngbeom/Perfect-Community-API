@@ -47,7 +47,7 @@ class MemberMapperTest {
 
     @Test
     void deleteMember() {
-        MemberVO member = mapper.readMember("new");
+        MemberVO member = mapper.readMember("new2");
         log.info(member);
 
         if (bCryptEncoder.matches("1234", member.getPassword())) {
@@ -64,6 +64,23 @@ class MemberMapperTest {
         if (mapper.insertMember(member) == 1) {
             log.info("success");
             if (mapper.insertAuthorityToMember(new AuthVO(member.getUserId(), "ROLE_USER")) == 1) {
+                log.info("success");
+            } else {
+                log.error("failed");
+                mapper.deleteMember(member.getUserId());
+            }
+        } else {
+            log.error("failed");
+        }
+    }
+
+    @Test
+    void insertAdmin() {
+        MemberVO member = new MemberVO("admin", encoder.encode("admin"), "Administrator");
+//        log.info(member);
+        if (mapper.insertMember(member) == 1) {
+            log.info("success");
+            if (mapper.insertAuthorityToMember(new AuthVO(member.getUserId(), "ROLE_ADMIN")) == 1) {
                 log.info("success");
             } else {
                 log.error("failed");

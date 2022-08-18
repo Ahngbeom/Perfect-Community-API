@@ -10,10 +10,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.MemberVO;
 
-import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,26 +23,29 @@ class BoardMapperTest {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
-    private BoardMapper mapper;
+    private BoardMapper boardMapper;
+
+    @Autowired
+    private MemberMapper memberMapper;
 
     @BeforeEach
     void setUp() {
-        assertNotNull(mapper);
+        assertNotNull(boardMapper);
     }
 
     @Test
     void testSelectBoardList() {
-        mapper.selectBoardList().forEach(logger::info);
+        boardMapper.selectBoardList().forEach(logger::info);
     }
 
     @Test
     void testSelectBoardListWithPage() {
-        mapper.selectBoardListWithPage(2).forEach(logger::info);
+        boardMapper.selectBoardListWithPage(2).forEach(logger::info);
     }
 
     @Test
     void testSelectBoard() {
-        BoardVO board = mapper.selectBoardByBno(1);
+        BoardVO board = boardMapper.selectBoardByBno(1);
         logger.info(board);
         logger.info(board.getRegDate());
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
@@ -56,35 +58,47 @@ class BoardMapperTest {
         searchVO.setCheckTitle(true);
         searchVO.setCheckContent(true);
         searchVO.setCheckWriter(true);
-        logger.info(mapper.selectBoardByKeyword(searchVO));
+        logger.info(boardMapper.selectBoardByKeyword(searchVO));
     }
 
     @Test
     void testInsertBoard() {
         BoardVO board = new BoardVO("아", "잠깐만", "기둘", null);
-        mapper.insertBoard(board);
-        logger.info(mapper.selectBoardByBno(board.getBno()));
+        boardMapper.insertBoard(board);
+        logger.info(boardMapper.selectBoardByBno(board.getBno()));
     }
 
     @Test
     void testUpdateBoard() {
-        BoardVO board = mapper.selectBoardByBno(6);
+        BoardVO board = boardMapper.selectBoardByBno(6);
         board.setTitle("다시다시");
         board.setContent("해볼게게");
         board.setWriter("잠깐만만");
-        logger.info(mapper.updateBoard(board));
-        logger.info(mapper.selectBoardByBno(board.getBno()));
+        logger.info(boardMapper.updateBoard(board));
+        logger.info(boardMapper.selectBoardByBno(board.getBno()));
     }
 
     @Test
     void testDeleteBoard() {
-        BoardVO board = mapper.selectBoardByBno(6);
+        BoardVO board = boardMapper.selectBoardByBno(6);
 
-        logger.info(mapper.deleteBoard(board.getBno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
+        logger.info(boardMapper.deleteBoard(board.getBno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }
 
     @Test
     void initBno() {
-        logger.info(mapper.initAutoIncrement());
+        logger.info(boardMapper.initAutoIncrement());
+    }
+
+    @Test
+    void testAuthenticateForPosts() {
+        BoardVO board = boardMapper.selectBoardByBno(1);
+        MemberVO member = memberMapper.readMember("tester2");
+        logger.info(boardMapper.authenticateForPosts(board, member));
+    }
+
+    @Test
+    void testPostHasPassword() {
+        logger.info(boardMapper.postHasPassword(3));
     }
 }

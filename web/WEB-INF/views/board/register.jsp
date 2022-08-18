@@ -55,7 +55,7 @@
                           placeholder="Please enter your content"></textarea>
                 <p></p>
             </div>
-            <c:if test="${!isAdmin}">
+            <c:if test="${!isAuthorizeAny}">
                 <div class="form-group">
                     <label for="boardRegisterFormContent">비밀번호</label>
                     <input class="form-control w-75" name="boardPassword" id="boardRegisterFormPassword"

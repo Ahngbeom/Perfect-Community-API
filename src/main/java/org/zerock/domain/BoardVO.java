@@ -21,7 +21,6 @@ public class BoardVO {
     @NonNull
     private String  writer;
 
-    private String userId;
     private String boardPassword;
 
 // Java 8 이전
@@ -34,6 +33,8 @@ public class BoardVO {
 
 
     private String dateToToday;
+
+    private MemberVO writtenByMember;
 
     public BoardVO() {    }
 
@@ -68,10 +69,6 @@ public class BoardVO {
 
     public void setWriter(String writer) {
         this.writer = writer;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public void setBoardPassword(String boardPassword) {

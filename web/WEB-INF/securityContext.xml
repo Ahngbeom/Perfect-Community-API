@@ -9,20 +9,18 @@
     <bean id="loginSuccessHandler" class="org.zerock.security.login.LoginSuccessHandler"/>
     <bean id="loginFailureHandler" class="org.zerock.security.login.LoginFailureHandler"/>
 
-    <bean id="CustomAuthenticationProcessingFilter" class="org.zerock.security.filter.CustomAuthenticationProcessingFilter">
-        <constructor-arg ref="CustomAuthenticationManager" />
+    <bean id="customAuthenticationProcessingFilter" class="org.zerock.security.filter.CustomAuthenticationProcessingFilter">
+        <constructor-arg ref="customAuthenticationManager" />
     </bean>
-    <bean id="CustomAuthenticationManager" class="org.zerock.security.filter.CustomAuthenticationManager" >
+    <bean id="customAuthenticationManager" class="org.zerock.security.filter.CustomAuthenticationManager" >
         <constructor-arg ref="customUserDetailService" />
     </bean>
-    <bean id="FilterExceptionHandler" class="org.zerock.security.filter.FilterExceptionHandler" />
+    <bean id="filterExceptionHandler" class="org.zerock.security.filter.FilterExceptionHandler" />
 
     <!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomPasswordEncoder"/>-->
     <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <bean id="customUserDetailService" class="org.zerock.security.detail.CustomUserDetailService"/>
     <bean id="logoutSuccessHandler" class="org.zerock.security.logout.CustomLogoutSuccessHandler"/>
-
-
 
     <security:client-registrations>
         <security:client-registration registration-id="google"

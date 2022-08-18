@@ -1,4 +1,4 @@
-package org.zerock.controller;
+package org.zerock.controller.REST;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -29,13 +29,13 @@ public class RESTMemberController {
     private final MemberService memberService;
 
     @GetMapping("/info/json")
-    public UserDetails info(@AuthenticationPrincipal Principal principal, RedirectAttributes redirectAttributes, String userId) {
+    public UserDetails info(@AuthenticationPrincipal Principal principal, RedirectAttributes redirectAttributes) {
         if (principal == null) {
             redirectAttributes.addFlashAttribute("memberAlertType", "Account Access");
             redirectAttributes.addFlashAttribute("memberAlertStatus", "FAILURE");
             return null;
         } else {
-            return userDetailsService.loadUserByUsername(userId);
+            return userDetailsService.loadUserByUsername(principal.getName());
         }
     }
 

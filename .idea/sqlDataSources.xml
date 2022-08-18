@@ -12,12 +12,12 @@
     <option name="dataSources">
       <list>
         <State>
-          <option name="id" value="61fdeb85-6d55-4887-a129-d4dbb61e1e97" />
-          <option name="name" value="root@localhost (DDL)" />
+          <option name="id" value="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
+          <option name="name" value="DDL data source" />
           <option name="languageId" value="MySQL" />
           <option name="urls">
             <array>
-              <option value="file://$PROJECT_DIR$/basicspringmvc" />
+              <option value="file://$PROJECT_DIR$/db_ddl" />
             </array>
           </option>
         </State>

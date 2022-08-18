@@ -1,5 +1,6 @@
 package org.zerock.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
 
@@ -25,5 +26,9 @@ public interface MemberService {
     boolean revokeAllAuthorityToUser(String userId);
 
     boolean enableUser(String userId);
+
+    boolean hasAdminRole(String userId);
+
+    MemberVO dtoConverter(UserDetails userDetails);
 
 }

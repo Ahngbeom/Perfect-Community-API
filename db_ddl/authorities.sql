@@ -6,5 +6,6 @@ create table authorities
         unique (userid, authority),
     constraint fk_authorities_users
         foreign key (userid) references users (userid)
+
 );
 

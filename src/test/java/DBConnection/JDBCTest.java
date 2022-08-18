@@ -14,8 +14,8 @@ public class JDBCTest {
     @Test
     void JDBCTester() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/basicspringmvc", "root", "1234");
+            Class.forName("org.mariadb.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true", "root", "1234");
             logger.info(conn);
         } catch (Exception e) {
             logger.error(e);

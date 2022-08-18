@@ -39,3 +39,18 @@ function requestLogin() {
     // sessionStorage.setItem("boardAlertType", "Login");
     // sessionStorage.setItem("alertStatus", "SUCCESS");
 }
+
+const loggedInStatus = function () {
+    let result = false;
+    $.ajax({
+        type: 'GET',
+        url: '/check/logged-in',
+        async: false,
+        success: function (data) {
+            console.log(data);
+            result = data !== null;
+        }
+    });
+    console.log(result);
+    return result;
+}

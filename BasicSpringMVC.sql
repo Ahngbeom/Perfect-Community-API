@@ -1,8 +1,8 @@
 show databases;
 
-create database BasicSpringMVC;
+create database board_db;
 
-use BasicSpringMVC;
+use board_db;
 
 create table board
 (

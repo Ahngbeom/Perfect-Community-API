@@ -3,6 +3,7 @@ package org.zerock.service;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.AuthVO;
@@ -10,6 +11,7 @@ import org.zerock.domain.MemberVO;
 import org.zerock.mapper.MemberMapper;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberVO readUser(String userId) {
-        return null;
+        return mapper.readMember(userId);
     }
 
     @Override
@@ -81,5 +83,20 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean enableUser(String userId) {
         return mapper.enableMember(userId) == 1 ? true : false;
+    }
+
+    @Override
+    public boolean hasAdminRole(String userId) {
+        AtomicBoolean result = new AtomicBoolean(false);
+        readUser(userId).getAuthList().forEach(auth -> {
+            if (auth.getAuth().equals("ROLE_ADMIN"))
+                result.set(true);
+        });
+        return result.get();
+    }
+
+    @Override
+    public MemberVO dtoConverter(UserDetails userDetails) {
+        return null;
     }
 }

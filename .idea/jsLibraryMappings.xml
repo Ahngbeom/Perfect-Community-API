@@ -4,6 +4,6 @@
     <file url="file://$PROJECT_DIR$" libraries="{bootstrap, popper.js}" />
     <file url="file://$PROJECT_DIR$/web/resources/js/logInOut/Login.js" libraries="{jquery-3.6.0}" />
     <file url="file://$PROJECT_DIR$/web/resources/js/logInOut/Logout.js" libraries="{jquery-3.6.0}" />
-    <file url="PROJECT" libraries="{jquery-3.6.0}" />
+    <file url="PROJECT" libraries="{bootstrap, jquery-3.6.0, popper.js}" />
   </component>
 </project>
