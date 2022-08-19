@@ -39,5 +39,5 @@ public interface BoardMapper {
 
     BoardVO authenticateForPosts(@Param("board") BoardVO board, @Param("member") MemberVO member);
 
-    String postHasPassword(long bno);
+    String getPostPassword(long bno);
 }

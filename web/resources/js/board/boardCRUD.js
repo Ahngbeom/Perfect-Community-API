@@ -14,58 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 contentType: 'application/json; charset=utf-8',
                 data: {bno: postsForm.querySelector("input[name='bno']").value},
                 success: function (data) {
-                    if (data) {
-                        $("#centerModal").find("#centerModalTitle").text("비밀번호 확인");
-                        $("#centerModal").find(".modal-body").html("<input type='password' name='password' placeholder='Password' class='form-control'/><p></p>");
-                        $("#centerModal").find("#centerModalSubmit").text("확인");
-                        $("#centerModal").modal();
-
-                        $("#centerModal").find("#centerModalSubmit")[0].addEventListener('click', () => {
-                            ajaxPostDelete({
-                                bno: postsForm.querySelector("input[name='bno']").value,
-                                boardPassword: document.querySelector(".modal-body input[name='password']").value
-                            });
-
-                            // if (boardPasswordMatches(postsForm.querySelector("input[name='bno']").value, document.querySelector(".modal-body input[name='password']").value)) {
-                            //     postsForm.setAttribute("method", "POST");
-                            //     postsForm.setAttribute("action", "/board/remove");
-                            //     postsForm.submit();
-                            // } else {
-                            //     putMessageForInputTag("danger", $("#centerModal").find(".modal-body input[name='password']")[0], "비밀번호가 일치하지않습니다.");
-                            // }
-                        });
-
+                    if (data === "isAdmin")
+                        ajaxPostDelete({bno: document.querySelector("#postsForm").querySelector("input[name='bno']").value});
+                    if (data === true) {
+                        switchToPasswordInputModal();
                     }
                 },
                 error: function (data) {
                     console.error(data);
+                    putServerAlert("게시물 삭제 권한이 없습니다.");
                 }
             });
-
-            // if (loggedInStatus()) {
-            //     postsForm.setAttribute("method", "POST");
-            //     postsForm.setAttribute("action", "/board/remove");
-            //     postsForm.submit();
-            // } else if (existBoardPasswordCheck(postsForm.querySelector("input[name='bno']").value)) {
-            //     $("#centerModal").find("#centerModalTitle").text("비밀번호 확인");
-            //     $("#centerModal").find(".modal-body").html("<input type='password' name='password' placeholder='Password' class='form-control'/><p></p>");
-            //     $("#centerModal").find("#centerModalSubmit").text("확인");
-            //     $("#centerModal").modal();
-            //
-            //     $("#centerModal").find("#centerModalSubmit")[0].addEventListener('click', () => {
-            //
-            //
-            //         if (boardPasswordMatches(postsForm.querySelector("input[name='bno']").value, document.querySelector(".modal-body input[name='password']").value)) {
-            //             postsForm.setAttribute("method", "POST");
-            //             postsForm.setAttribute("action", "/board/remove");
-            //             postsForm.submit();
-            //         } else {
-            //             putMessageForInputTag("danger", $("#centerModal").find(".modal-body input[name='password']")[0], "비밀번호가 일치하지않습니다.");
-            //         }
-            //     });
-            // } else {
-            //     putServerAlert("로그인 후 진행해주세요.");
-            // }
         });
     }
 
@@ -78,24 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // } else {
             //     putServerAlert("게시물 수정 권한이 없습니다.");
             // }
-        });
-    }
-
-    const ajaxPostDelete = function (data) {
-        $.ajax({
-            type: 'POST',
-            url: '/rest/board/remove',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'JSON',
-            data: JSON.stringify(data),
-            success: function (data, status) {
-                console.log(data);
-                console.log(status);
-            },
-            error: function (data) {
-                console.error(data.responseText);
-                putServerAlert("게시물 삭제 권한이 없습니다.");
-            }
         });
     }
 
@@ -130,4 +71,38 @@ document.addEventListener('DOMContentLoaded', () => {
         return result;
     }
 });
+
+const ajaxPostDelete = function (data) {
+    $.ajax({
+        type: 'POST',
+        url: '/rest/board/remove',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'JSON',
+        data: JSON.stringify(data),
+        success: function (data, status) {
+            console.log(data);
+            console.log(status);
+            centerModalElem.querySelector('.modal-title').innerHTML = "Alert";
+            centerModalElem.querySelector('.modal-body').innerHTML = "게시물이 삭제되었습니다.";
+            centerModalSubmit.innerHTML = "확인";
+            centerModal.show();
+            centerModalSubmit.addEventListener('click', function () {
+                location.assign("/board/list");
+            }, {once: true});
+        },
+        error: function (data) {
+            if (data.responseText === 'Incorrect Password') {
+                centerModalElem.querySelector('.modal-title').innerHTML = "Alert";
+                centerModalElem.querySelector('.modal-body').innerHTML = "비밀번호가 일치하지않습니다.";
+                centerModalElem.querySelector('#centerModalSubmit').classList.remove('btn-info');
+                centerModalElem.querySelector('#centerModalSubmit').classList.add('btn-danger');
+                centerModalElem.querySelector('#centerModalSubmit').innerHTML = "다시시도";
+                centerModalSubmit.addEventListener('click', function () {
+                    switchToPasswordInputModal();
+                }, {once: true});
+            } else
+                putServerAlert("게시물 삭제 권한이 없습니다.");
+        }
+    });
+}
 

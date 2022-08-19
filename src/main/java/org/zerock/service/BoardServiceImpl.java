@@ -7,6 +7,7 @@ import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.mapper.BoardMapper;
+import org.zerock.mapper.MemberMapper;
 import org.zerock.utils.DateUtility;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-    private final BoardMapper mapper;
+    private final BoardMapper boardMapper;
 
     private final DateUtility dateUtility;
 
@@ -23,17 +24,17 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public long countBoard() {
-        return mapper.countBoard();
+        return boardMapper.countBoard();
     }
 
     @Override
     public List<BoardVO> getBoardList() {
-        return mapper.selectBoardList();
+        return boardMapper.selectBoardList();
     }
 
     @Override
     public List<BoardVO> getBoardListWithPage(int page) {
-        List<BoardVO> boardList = mapper.selectBoardListWithPage(page);
+        List<BoardVO> boardList = boardMapper.selectBoardListWithPage(page);
 //        boardList.forEach(board -> board.dateToTodayCalculator());
         boardList.forEach(board -> board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate())));
         return boardList;
@@ -41,12 +42,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardVO getBoardByBno(long bno) {
-        return mapper.selectBoardByBno(bno);
+        return boardMapper.selectBoardByBno(bno);
     }
 
     @Override
     public List<BoardVO> searchBoardByKeyword(BoardSearchVO searchVO) {
-        List<BoardVO> searchResult = mapper.selectBoardByKeyword(searchVO);
+        List<BoardVO> searchResult = boardMapper.selectBoardByKeyword(searchVO);
         searchResult.forEach(board -> {
             board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate()));
         });
@@ -55,9 +56,9 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int registerBoard(BoardVO board) {
-        if (mapper.insertBoard(board) == 1) {
+        if (boardMapper.insertBoard(board) == 1) {
             if (board.getBoardPassword() != null) {
-                return mapper.insertBoardWithPassword(board.getBno(), passwordEncoder.encode(board.getBoardPassword()));
+                return boardMapper.insertBoardWithPassword(board.getBno(), passwordEncoder.encode(board.getBoardPassword()));
             }
         } else {
             return 0;
@@ -67,40 +68,43 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int modifyBoard(BoardVO board) {
-        return mapper.updateBoard(board);
+        return boardMapper.updateBoard(board);
     }
 
     @Override
     public int removeBoard(long bno) {
-        return mapper.deleteBoard(bno);
+        return boardMapper.deleteBoard(bno);
     }
 
     @Override
-    public int removePostWithPassword(BoardVO board) {
-        String encodePassword = mapper.postHasPassword(board.getBno());
-        if (encodePassword != null && passwordEncoder.matches(board.getBoardPassword(), encodePassword)) {
-            return mapper.deletePasswordForPost(board.getBno()) & mapper.deleteBoard(board.getBno());
+    public int removePostWithPassword(BoardVO board, boolean isAdmin) throws RuntimeException {
+        if (!isAdmin) {
+            String encodePassword = boardMapper.getPostPassword(board.getBno());
+            if (encodePassword != null) {
+                if (!passwordEncoder.matches(board.getBoardPassword(), encodePassword))
+                    throw new RuntimeException("Incorrect Password");
+            }
         }
-        return mapper.deleteBoard(board.getBno());
+        return boardMapper.deletePasswordForPost(board.getBno()) & boardMapper.deleteBoard(board.getBno());
     }
 
     @Override
     public int removeAllBoard() {
-        return mapper.deleteAllBoard();
+        return boardMapper.deleteAllBoard();
     }
 
     @Override
     public long initBnoValue() {
-        return mapper.initAutoIncrement();
+        return boardMapper.initAutoIncrement();
     }
 
     @Override
     public BoardVO authenticateForPosts(BoardVO board, MemberVO member) {
-        return mapper.authenticateForPosts(board, member);
+        return boardMapper.authenticateForPosts(board, member);
     }
 
     @Override
     public boolean postHasPassword(long bno) {
-        return mapper.postHasPassword(bno) != null;
+        return boardMapper.getPostPassword(bno) != null;
     }
 }

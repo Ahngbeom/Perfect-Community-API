@@ -23,3 +23,7 @@ function formatValidator(type, target) {
         return true;
     }
 }
+
+const jsRedirect = function (url) {
+    location.href = url;
+}

@@ -13,6 +13,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/utils/utilsFunction.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/utils/modal.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/server/serverAlert.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/logInOut/Login.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/logInOut/Logout.js"/>"></script>

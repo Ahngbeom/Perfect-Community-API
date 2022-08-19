@@ -99,6 +99,6 @@ class BoardMapperTest {
 
     @Test
     void testPostHasPassword() {
-        logger.info(boardMapper.postHasPassword(3));
+        logger.info(boardMapper.getPostPassword(3));
     }
 }

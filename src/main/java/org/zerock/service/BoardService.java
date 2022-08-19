@@ -24,7 +24,7 @@ public interface BoardService {
 
     int removeBoard(long bno);
 
-    int removePostWithPassword(BoardVO board);
+    int removePostWithPassword(BoardVO board, boolean isAdmin);
 
     int removeAllBoard();
 

@@ -129,7 +129,7 @@
         where bno = #{board.bno} and userid = #{member.userId};
     </select>
     
-    <select id="postHasPassword" resultType="String">
+    <select id="getPostPassword" resultType="String">
         select password from board_password where bno = #{bno};
     </select>
 </mapper>
