@@ -6,8 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <html>
-<head>
-</head>
 <body>
 <div class="container-fluid">
     <div class="d-flex justify-content-center">
@@ -19,12 +17,13 @@
                 <label>작성자</label>
                 <div class="d-flex justify-content-between w-100">
                     <div class="w-100">
-                        <input type="text" name="writer" value="${Posts.writer}" class="form-control"
-                               placeholder="Writer" readonly/>
+                        <label>
+                            <input type="text" name="writer" value="${Posts.writer}" class="form-control"
+                                   placeholder="Writer" readonly/>
+                        </label>
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="boardRegisterFormTitle">제목</label>
                 <div class="w-100">

@@ -3,7 +3,6 @@ package org.zerock.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +14,8 @@ import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.PageHeaderVO;
 import org.zerock.domain.PaginationVO;
-import org.zerock.security.detail.CustomUserDetailService;
 import org.zerock.service.BoardService;
-import org.zerock.service.MemberService;
 
-import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -32,15 +28,11 @@ public class BoardController {
 
     private static final Logger log = LogManager.getLogger();
 
-    private final CustomUserDetailService userDetailService;
-
     private final BoardService boardService;
-
-    private final MemberService memberService;
 
     private static final PageHeaderVO pageHeader = new PageHeaderVO("Board", "/board/list", null);
 
-    private static PaginationVO pagination = new PaginationVO();
+    private static final PaginationVO pagination = new PaginationVO();
 
 
     @GetMapping(value = {"/list", "/"})
@@ -122,22 +114,22 @@ public class BoardController {
         return mv;
     }
 
-    @PostMapping("/modify")
-    public ModelAndView modifyPost(RedirectAttributes redirectAttributes, ModelAndView mv, BoardVO board) {
-        redirectAttributes.addFlashAttribute("boardAlertType", "Board Modify");
-        try {
-            if (boardService.modifyBoard(board) == 0)
-                throw new Exception("Modify Board Failed.");
-            redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
-            redirectAttributes.addAttribute("bno", board.getBno());
-            mv.setViewName("redirect:/board/posts");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
-            mv.setViewName("redirect:/board/modify");
-        }
-        return mv;
-    }
+//    @PostMapping("/modify")
+//    public ModelAndView modifyPost(RedirectAttributes redirectAttributes, ModelAndView mv, BoardVO board) {
+//        redirectAttributes.addFlashAttribute("boardAlertType", "Board Modify");
+//        try {
+//            if (boardService.modifyBoard(board) == 0)
+//                throw new Exception("Modify Board Failed.");
+//            redirectAttributes.addFlashAttribute("boardAlertStatus", "SUCCESS");
+//            redirectAttributes.addAttribute("bno", board.getBno());
+//            mv.setViewName("redirect:/board/posts");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            redirectAttributes.addFlashAttribute("boardAlertStatus", "FAILURE");
+//            mv.setViewName("redirect:/board/modify");
+//        }
+//        return mv;
+//    }
 
     @PostMapping("/removeAll") // 관리자 권한
     public ModelAndView removeAllPost(RedirectAttributes redirectAttributes, ModelAndView mv) {

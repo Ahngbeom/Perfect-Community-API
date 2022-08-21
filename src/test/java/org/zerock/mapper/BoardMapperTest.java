@@ -74,7 +74,7 @@ class BoardMapperTest {
         board.setTitle("다시다시");
         board.setContent("해볼게게");
         board.setWriter("잠깐만만");
-        logger.info(boardMapper.updateBoard(board));
+        logger.info(boardMapper.updatePost(board));
         logger.info(boardMapper.selectBoardByBno(board.getBno()));
     }
 

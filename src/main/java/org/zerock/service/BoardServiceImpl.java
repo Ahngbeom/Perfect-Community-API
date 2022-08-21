@@ -7,7 +7,6 @@ import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.MemberVO;
 import org.zerock.mapper.BoardMapper;
-import org.zerock.mapper.MemberMapper;
 import org.zerock.utils.DateUtility;
 
 import java.util.List;
@@ -48,9 +47,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<BoardVO> searchBoardByKeyword(BoardSearchVO searchVO) {
         List<BoardVO> searchResult = boardMapper.selectBoardByKeyword(searchVO);
-        searchResult.forEach(board -> {
-            board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate()));
-        });
+        searchResult.forEach(board -> board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate())));
         return searchResult;
     }
 
@@ -67,8 +64,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int modifyBoard(BoardVO board) {
-        return boardMapper.updateBoard(board);
+    public int modifyPost(BoardVO board) {
+        return boardMapper.updatePost(board);
+    }
+
+    @Override
+    public int modifyPostWithPassword(BoardVO board, boolean isAdmin) {
+        return boardMapper.updatePasswordForPost(board.getBno(), passwordEncoder.encode(board.getBoardPassword()));
     }
 
     @Override
@@ -106,5 +108,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean postHasPassword(long bno) {
         return boardMapper.getPostPassword(bno) != null;
+    }
+
+    @Override
+    public boolean postPasswordMatches(long bno, String password) {
+        String encodePassword = boardMapper.getPostPassword(bno);
+        if (encodePassword != null) {
+            return passwordEncoder.matches(password, encodePassword);
+        }
+        return false;
     }
 }

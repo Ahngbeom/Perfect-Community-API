@@ -20,7 +20,9 @@ public interface BoardService {
 
     int registerBoard(BoardVO board);
 
-    int modifyBoard(BoardVO board);
+    int modifyPost(BoardVO board);
+
+    int modifyPostWithPassword(BoardVO board, boolean isAdmin);
 
     int removeBoard(long bno);
 
@@ -33,4 +35,6 @@ public interface BoardService {
     BoardVO authenticateForPosts(BoardVO board, MemberVO member);
 
     boolean postHasPassword(long bno);
+
+    boolean postPasswordMatches(long bno, String password);
 }

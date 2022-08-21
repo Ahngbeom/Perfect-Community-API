@@ -64,12 +64,18 @@
         values (#{bno}, #{password});
     </insert>
 
-    <update id="updateBoard">
+    <update id="updatePost">
         update board
         set title      = #{title},
             content    = #{content},
             writer     = #{writer},
             updatedate = NOW()
+        where bno = #{bno}
+    </update>
+
+    <update id="updatePasswordForPost">
+        update board_password
+        set password   = #{password}
         where bno = #{bno}
     </update>
 

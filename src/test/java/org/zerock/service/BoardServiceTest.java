@@ -12,8 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.domain.BoardSearchVO;
 import org.zerock.domain.BoardVO;
 
-import java.security.Principal;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -43,12 +41,12 @@ class BoardServiceTest {
 
     @Test
     void getBoardList() {
-        service.getBoardList().forEach(board -> logger.info(board));
+        service.getBoardList().forEach(logger::info);
     }
 
     @Test
     void getBoardListWithPage() {
-        service.getBoardListWithPage(2).forEach(board -> logger.info(board));
+        service.getBoardListWithPage(2).forEach(logger::info);
     }
 
     @Test
@@ -62,7 +60,7 @@ class BoardServiceTest {
         searchVO.setCheckTitle(true);
         searchVO.setCheckContent(false);
         searchVO.setCheckWriter(false);
-        service.searchBoardByKeyword(searchVO).forEach(board -> logger.info(board));
+        service.searchBoardByKeyword(searchVO).forEach(logger::info);
     }
 
     @Test
@@ -77,13 +75,13 @@ class BoardServiceTest {
         BoardVO board = service.getBoardByBno(7);
         board.setContent("내가 돌아왔다");
         board.setWriter("잭스");
-        service.modifyBoard(board);
+        service.modifyPost(board);
         logger.info(service.getBoardByBno(board.getBno()));
     }
 
     @Test
     void removeBoard() {
 //        logger.info(service.removeBoard(5));
-        service.getBoardList().forEach(board -> logger.info(board));
+        service.getBoardList().forEach(logger::info);
     }
 }

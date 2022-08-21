@@ -8,13 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.zerock.domain.BoardVO;
 import org.zerock.service.BoardService;
 import org.zerock.service.MemberService;
 
 import javax.naming.AuthenticationException;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
 
@@ -27,7 +25,6 @@ public class RESTBoardController {
 
     private final BoardService boardService;
     private final MemberService memberService;
-    private final PasswordEncoder passwordEncoder;
 
     @GetMapping(value = {"/list", "/"})
     public List<BoardVO> boardList(@RequestParam(defaultValue = "1") int page) {
@@ -58,14 +55,17 @@ public class RESTBoardController {
             if (principal == null && boardService.postHasPassword(board.getBno())) {
                 if (boardService.removePostWithPassword(board, false) == 0)
                     throw new RuntimeException("Board Remove Failed");
-            } else if (boardService.authenticateForPosts(boardService.getBoardByBno(board.getBno()), memberService.readUser(principal.getName())) != null) {
-                if (boardService.removeBoard(board.getBno()) == 0)
-                    throw new RuntimeException("Board Remove Failed");
-            } else if (memberService.hasAdminRole(principal.getName())) {
-                if (boardService.removePostWithPassword(board, true) == 0)
-                    throw new RuntimeException("Board Remove Failed");
             } else {
-                throw new AuthenticationException("Permission Denied.");
+                assert principal != null;
+                if (boardService.authenticateForPosts(boardService.getBoardByBno(board.getBno()), memberService.readUser(principal.getName())) != null) {
+                    if (boardService.removeBoard(board.getBno()) == 0)
+                        throw new RuntimeException("Board Remove Failed");
+                } else if (memberService.hasAdminRole(principal.getName())) {
+                    if (boardService.removePostWithPassword(board, true) == 0)
+                        throw new RuntimeException("Board Remove Failed");
+                } else {
+                    throw new AuthenticationException("Permission Denied.");
+                }
             }
             if (boardService.countBoard() == 0) { // 삭제된 게시물 이외에 다른 게시물이 존재할 경우 bno를 초기화 하지않는다. (사용자가 게시물을 스크랩한 기록이 있을 경우, 추후 조회 오류 가능성)
                 if (boardService.initBnoValue() == 0)
@@ -84,21 +84,43 @@ public class RESTBoardController {
         return ResponseEntity.ok(true);
     }
 
+    @PostMapping("/modify")
+    public ResponseEntity<?> modifyPost(@AuthenticationPrincipal Principal principal, BoardVO board) throws RuntimeException {
+        try {
+            log.warn(board);
+            if (principal == null && boardService.postHasPassword(board.getBno())) {
+                if (boardService.modifyPostWithPassword(board, false) == 0)
+                    throw new RuntimeException("Modify Board Failed");
+            }
+            else {
+                assert principal != null;
+                if (boardService.authenticateForPosts(boardService.getBoardByBno(board.getBno()), memberService.readUser(principal.getName())) != null) {
+                    if (boardService.modifyPost(board) == 0)
+                        throw new RuntimeException("Modify Board Failed");
+                } else {
+                    throw new RuntimeException("Permission Denied");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+        }
+        return ResponseEntity.ok(true);
+    }
+
     @PostMapping("/passwordCheck")
     public boolean passwordCheck(long bno) {
         log.warn(boardService.getBoardByBno(bno).getBoardPassword());
-        if (boardService.getBoardByBno(bno).getBoardPassword() != null) {
-            return true;
-        }
-        return false;
+        return boardService.getBoardByBno(bno).getBoardPassword() != null;
     }
 
     @PostMapping("/passwordMatches")
-    public boolean passwordMatches(long bno, String password) {
-        BoardVO board = boardService.getBoardByBno(bno);
-        if (board.getBoardPassword() != null) {
-            return passwordEncoder.matches(password, board.getBoardPassword());
-        }
-        return false;
+    public ResponseEntity<?> passwordMatches(@RequestBody BoardVO board) {
+//        BoardVO board = boardService.getBoardByBno(bno);
+//        if (board.getBoardPassword() != null) {
+//            return passwordEncoder.matches(password, board.getBoardPassword());
+//        }
+        log.warn(board);
+        return ResponseEntity.ok(boardService.postPasswordMatches(board.getBno(), board.getBoardPassword()));
     }
 }

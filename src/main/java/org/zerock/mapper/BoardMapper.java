@@ -27,7 +27,9 @@ public interface BoardMapper {
 
     int insertBoardWithPassword(@Param("bno") long bno, @Param("password") String password);
 
-    int updateBoard(BoardVO board);
+    int updatePost(BoardVO board);
+
+    int updatePasswordForPost(@Param("bno") long bno, @Param("password") String password);
 
     int deleteBoard(long bno);
 

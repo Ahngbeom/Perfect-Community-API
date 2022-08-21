@@ -8,13 +8,17 @@ const switchToPasswordInputModal = function () {
     centerModalSubmit.classList.remove('btn-danger');
     centerModalSubmit.classList.add('btn-info');
     centerModalSubmit.textContent = "확인";
-    // $("#centerModal").modal();
     centerModal.show();
+}
 
+const switchRetryModal = function (callback) {
+    centerModalElem.querySelector('.modal-title').innerHTML = "Alert";
+    centerModalElem.querySelector('.modal-body').innerHTML = "비밀번호가 일치하지않습니다.";
+    centerModalElem.querySelector('#centerModalSubmit').classList.remove('btn-info');
+    centerModalElem.querySelector('#centerModalSubmit').classList.add('btn-danger');
+    centerModalElem.querySelector('#centerModalSubmit').innerHTML = "다시시도";
     centerModalSubmit.addEventListener('click', function () {
-        ajaxPostDelete({
-            bno: document.querySelector("#postsForm").querySelector("input[name='bno']").value,
-            boardPassword: centerModalElem.querySelector(".modal-body input[name='password']").value
-        });
+        switchToPasswordInputModal();
+        callback();
     }, {once: true});
 }
