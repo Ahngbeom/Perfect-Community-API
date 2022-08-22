@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.domain.BoardVO;
 import org.zerock.service.BoardService;
@@ -85,7 +84,7 @@ public class RESTBoardController {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> modifyPost(@AuthenticationPrincipal Principal principal, BoardVO board) throws RuntimeException {
+    public ResponseEntity<?> modifyPost(@AuthenticationPrincipal Principal principal, @RequestBody BoardVO board) throws RuntimeException {
         try {
             log.warn(board);
             if (principal == null && boardService.postHasPassword(board.getBno())) {

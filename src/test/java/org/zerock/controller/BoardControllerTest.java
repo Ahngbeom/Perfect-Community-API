@@ -8,7 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -18,11 +23,18 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.zerock.domain.BoardVO;
+import org.zerock.security.detail.CustomUserDetailService;
+import org.zerock.security.detail.CustomUserDetails;
 import org.zerock.service.BoardService;
+import org.zerock.service.MemberService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
@@ -34,19 +46,22 @@ class BoardControllerTest {
 
     private final WebApplicationContext ctx;
 
+    private final CustomUserDetailService customUserDetailService;
+
     @InjectMocks
     @Autowired
     private BoardController controller;
 
     @Mock
-    private BoardService service;
+    private BoardService boardService;
+
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-//        mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
+//        mockMvc = MockMvcBuilders.standaloneSetup(controller).apply(springSecurity()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(ctx).apply(springSecurity()).build();
 
         assertNotNull(logger);
         assertNotNull(controller);
@@ -96,7 +111,7 @@ class BoardControllerTest {
     @Test
     void testGetPosts() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/board/posts")
-                .param("bno", String.valueOf(1)))
+                        .param("bno", String.valueOf(1)))
                 .andExpect(status().isOk())
 //                .andDo(print())
                 .andReturn();
@@ -150,17 +165,32 @@ class BoardControllerTest {
 
     @Test
     void testModification() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/modify")
-                        .param("bno", String.valueOf(1))
+        CustomUserDetails userDetails = (CustomUserDetails) customUserDetailService.loadUserByUsername("admin");
+
+        Authentication authentication = Mockito.mock(Authentication.class);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        Mockito.when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/rest/board/modify")
+                                .with(user("admin").password("admin").roles("ADMIN"))
+                                .param("bno", String.valueOf(11))
 //                        .requestAttr("bno", 1)
-                        .param("title", "주니어 개발자 안범준입니다.")
-                        .param("content", "잘 부탁드립니다.")
-                        .param("writer", "Ahngbeom"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/board/post*"))
+                                .param("title", "주니어 개발자 안범준입니다.")
+                                .param("content", "잘 부탁드립니다.")
+                                .param("writer", "Ahngbeom")
+                                .param("boardPassword", "aa")
+                )
+                .andExpect(authenticated())
+                .andExpect(status().isOk())
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrlPattern("/board/post*"))
                 .andReturn();
 
-        testGetPosts(1);
+        testGetPosts(11);
     }
 
     @Test

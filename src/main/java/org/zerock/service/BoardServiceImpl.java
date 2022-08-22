@@ -70,7 +70,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int modifyPostWithPassword(BoardVO board, boolean isAdmin) {
-        return boardMapper.updatePasswordForPost(board.getBno(), passwordEncoder.encode(board.getBoardPassword()));
+        return boardMapper.updatePasswordForPost(board.getBno(), passwordEncoder.encode(board.getBoardPassword())) |
+                boardMapper.updatePost(board);
     }
 
     @Override

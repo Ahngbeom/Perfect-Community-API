@@ -63,10 +63,11 @@ if (postsModifyBtn) {
                             centerModal.hide();
                             postsModifyBtn.addEventListener('click', () => {
                                 ajaxPostModify({
-                                    bno: document.querySelector("#postsForm").querySelector("input[name='bno']").value,
+                                    bno: postsForm.querySelector("input[name='bno']").value,
                                     writer: postsWriterInput.value,
                                     title: postsTitleInput.value,
-                                    content: postsContentInput.value
+                                    content: postsContentInput.value,
+                                    boardPassword: postsForm.querySelector("input[name='boardPassword']").value
                                 });
                             }, {once: true});
                         } else {
@@ -84,7 +85,7 @@ if (postsModifyBtn) {
                 putServerAlert("게시물 수정 권한이 없습니다.");
             }
         });
-    });
+    }, {once: true});
 }
 
 const existBoardPasswordCheck = function (bno) {
@@ -148,9 +149,11 @@ const ajaxPostDelete = function (data) {
 }
 
 const ajaxPostModify = function (data) {
+    console.log("ajaxPostModify", data);
     $.ajax({
         type: 'POST',
         url: '/rest/board/modify',
+        async: false,
         contentType: 'application/json; charset=utf-8',
         dataType: 'JSON',
         data: JSON.stringify(data),
@@ -166,10 +169,7 @@ const ajaxPostModify = function (data) {
             }, {once: true});
         },
         error: function (data) {
-            if (data.responseText === 'Incorrect Password') {
-                switchRetryModal();
-            } else
-                putServerAlert("게시물 삭제 권한이 없습니다.");
+            console.error(data);
         }
     });
 }

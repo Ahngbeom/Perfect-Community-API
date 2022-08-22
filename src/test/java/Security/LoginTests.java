@@ -60,7 +60,7 @@ public class LoginTests {
     void login() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .param("username", "admin")
-                        .param("password", "12345"))
+                        .param("password", "admin"))
                 .andExpect(status().is3xxRedirection())
                 .andReturn();
         log.warn("Type: " + mvcResult.getRequest().getAttribute("type"));

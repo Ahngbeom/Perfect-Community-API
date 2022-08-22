@@ -68,7 +68,7 @@ class MemberControllerTest {
     @Test
     void listAuthAdmin() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/member/list")
-                        .with(user("admin").password("1234").roles("ADMIN")))
+                        .with(user("admin").password("4444").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andReturn();
     }
