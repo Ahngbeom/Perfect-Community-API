@@ -42,9 +42,19 @@ if (postsModifyBtn) {
             contentType: 'application/json; charset=utf-8',
             data: {bno: postsForm.querySelector("input[name='bno']").value},
             success: function (data) {
-                if (data === "isAdmin")
-                    ajaxPostModify({bno: document.querySelector("#postsForm").querySelector("input[name='bno']").value});
-                if (data === true) {
+                if (data === "isAdmin") {
+                    // ajaxPostModify({bno: document.querySelector("#postsForm").querySelector("input[name='bno']").value});
+                    releasePostInput();
+                    postsModifyBtn.addEventListener('click', () => {
+                        ajaxPostModify({
+                            bno: postsForm.querySelector("input[name='bno']").value,
+                            writer: postsWriterInput.value,
+                            title: postsTitleInput.value,
+                            content: postsContentInput.value,
+                        });
+                    }, {once: true});
+                }
+                else if (data === true) {
                     switchToPasswordInputModal();
                     centerModalSubmit.addEventListener('click', function () {
                         if (boardPasswordMatches({
@@ -178,5 +188,6 @@ const releasePostInput = function () {
     postsWriterInput.removeAttribute("readonly");
     postsTitleInput.removeAttribute("readonly");
     postsContentInput.removeAttribute("readonly");
+    postsModifyBtn.textContent = "변경 사항 적용";
 }
 

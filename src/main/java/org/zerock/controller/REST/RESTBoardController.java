@@ -21,7 +21,6 @@ import java.util.List;
 public class RESTBoardController {
 
     private static final Logger log = LogManager.getLogger();
-
     private final BoardService boardService;
     private final MemberService memberService;
 
