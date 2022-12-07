@@ -93,6 +93,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int removeAllBoard() {
+        boardMapper.deleteBoardPassword();
         return boardMapper.deleteAllBoard();
     }
 

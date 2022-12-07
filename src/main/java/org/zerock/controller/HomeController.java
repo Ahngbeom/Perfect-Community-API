@@ -19,12 +19,6 @@ public class HomeController {
     private static final Logger log = LogManager.getLogger();
     private final BoardController boardController;
 //
-    @GetMapping("/")
-    public ModelAndView home(RedirectAttributes redirectAttributes, ModelAndView mv) {
-        mv.setViewName("/index");
-        return mv;
-    }
-
     @GetMapping("/error")
     public ModelAndView error(ModelAndView mv) {
         mv.addObject("serverMessage", "ERROR");

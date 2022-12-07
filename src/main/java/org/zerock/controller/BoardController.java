@@ -23,7 +23,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board/")
 public class BoardController {
 
     private static final Logger log = LogManager.getLogger();
@@ -35,9 +34,9 @@ public class BoardController {
     private static final PaginationVO pagination = new PaginationVO();
 
 
-    @GetMapping(value = {"/list", "/"})
+    @GetMapping(value = {"/board/list", "/"})
     public ModelAndView boardList(HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
-//        long postAmount = service.countBoard();
+        //        long postAmount = service.countBoard();
 
         List<BoardVO> boardListByPage = boardService.getBoardListWithPage(page);
         mv.addObject("pageHeader", pageHeader);
@@ -61,7 +60,7 @@ public class BoardController {
     }
 
 
-    @GetMapping("/posts")
+    @GetMapping("/board/posts")
     public ModelAndView getPosts(RedirectAttributes redirectAttributes, ModelAndView mv, long bno) {
         mv.addObject("pageHeader", pageHeader);
         redirectAttributes.addFlashAttribute("boardAlertType", "Board Read");
@@ -80,14 +79,14 @@ public class BoardController {
         return mv;
     }
 
-    @GetMapping("/register")
+    @GetMapping("/board/register")
     public ModelAndView register(ModelAndView mv) {
         mv.addObject("pageHeader", pageHeader);
         mv.setViewName("board/register");
         return mv;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/board/register")
     public ModelAndView register(RedirectAttributes redirectAttributes, ModelAndView mv, BoardVO board, Principal principal) {
         redirectAttributes.addFlashAttribute("boardAlertType", "Board Registration");
         try {
@@ -106,7 +105,7 @@ public class BoardController {
         return mv;
     }
 
-    @GetMapping("/modify")
+    @GetMapping("/board/modify")
     public ModelAndView modifyPost(ModelAndView mv, int bno) {
         mv.addObject("pageHeader", pageHeader);
         mv.addObject("Post", boardService.getBoardByBno(bno));
@@ -131,7 +130,7 @@ public class BoardController {
 //        return mv;
 //    }
 
-    @PostMapping("/removeAll") // 관리자 권한
+    @PostMapping("/board/removeAll") // 관리자 권한
     public ModelAndView removeAllPost(RedirectAttributes redirectAttributes, ModelAndView mv) {
         String message;
         redirectAttributes.addFlashAttribute("boardAlertType", "Board Remove ALL");
@@ -182,7 +181,7 @@ public class BoardController {
 //        return (mv);
 //    }
 
-    @PostMapping("/createDummy")
+    @PostMapping("/board/createDummy")
     public ModelAndView createDummy(ModelAndView mv, long dummyAmount) {
         BoardVO board = new BoardVO("Test", "Test", "Administrator", null);
         long limit = boardService.countBoard() + dummyAmount;
@@ -198,7 +197,7 @@ public class BoardController {
         return mv;
     }
 
-    @GetMapping("/search")
+    @GetMapping("/board/search")
     public ModelAndView searchPost(ModelAndView mv, BoardSearchVO searchVO, @RequestParam(value = "page", defaultValue = "1") int page) {
         mv.addObject("pageHeader", pageHeader);
         List<BoardVO> searchResult = boardService.searchBoardByKeyword(searchVO);

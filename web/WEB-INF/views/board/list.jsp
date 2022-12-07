@@ -10,36 +10,35 @@
 <div class="container-fluid w-100">
     <div class="d-flex justify-content-between w-100">
         <div class="w-100">
-            <nav class="navbar navbar-light bg-light justify-content-between">
-                <form method="get" action="${pageContext.request.contextPath}/board/search"
-                      class="form-inline" id="boardSearchForm">
+            <form method="get" action="${pageContext.request.contextPath}/board/search"
+                  class="form-inline" id="boardSearchForm">
 
-                    <div class="mr-lg-3">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="checkTitle" class="custom-control-input" id="checkTitle"
-                                   checked>
-                            <label class="custom-control-label" for="checkTitle">제목</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="checkContent" class="custom-control-input" id="checkContent">
-                            <label class="custom-control-label" for="checkContent">내용</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="checkWriter" class="custom-control-input" id="checkWriter">
-                            <label class="custom-control-label" for="checkWriter">작성자</label>
-                        </div>
+                <div class="d-flex">
+                    <div class="form-check">
+                        <input type="checkbox" name="checkTitle" class="form-check-input" id="checkTitle"
+                               checked>
+                        <label class="form-check-label" for="checkTitle">제목</label>
                     </div>
-                    <div class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Search"
-                               aria-label="Search" required>
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
+                    <div class="form-check">
+                        <input type="checkbox" name="checkContent" class="form-check-input" id="checkContent">
+                        <label class="form-check-label" for="checkContent">내용</label>
                     </div>
-                </form>
+                    <div class="form-check">
+                        <input type="checkbox" name="checkWriter" class="form-check-input" id="checkWriter">
+                        <label class="form-check-label" for="checkWriter">작성자</label>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Search"
+                           aria-label="Search" required>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
+                </div>
+            </form>
+
+            <table class="table table-striped">
                 <button type="button" onclick="location.href='/board/register'" class="btn btn-outline-secondary">게시물
                     작성
                 </button>
-            </nav>
-            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>번호</th>
@@ -51,7 +50,16 @@
                 <tbody>
                 <c:forEach var="post" items="${BoardList}" varStatus="status">
                     <tr>
-                        <td><c:out value="${post.bno}"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${post.type eq 'NOTICE'}">
+                                    공지
+                                </c:when>
+                                <c:otherwise>
+                                    <c:out value="${post.bno}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td><a href="${pageContext.request.contextPath}/board/posts?bno=${post.bno}"><c:out
                                 value="${post.title}"/></a></td>
                         <td><c:out value="${post.writer}"/></td>

@@ -5,6 +5,22 @@ import lombok.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
+enum BoardType {
+    NOTICE( "NOTICE" ),
+    POPULAR( "POPULAR" ),
+    COMMON( "COMMON" );
+
+    private final String type;
+
+    BoardType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+}
+
 @Getter
 @ToString
 @RequiredArgsConstructor
@@ -22,6 +38,8 @@ public class BoardVO {
     private String  writer;
 
     private String boardPassword;
+
+    private BoardType type;
 
 // Java 8 이전
 //    private Date    regDate;
@@ -45,12 +63,13 @@ public class BoardVO {
         this.boardPassword = boardPassword;
     }
 
-    public BoardVO(long bno, @NonNull String title, @NonNull String content, @NonNull String writer, String boardPassword, LocalDateTime regDate, LocalDateTime updateDate) {
+    public BoardVO(long bno, @NonNull String title, @NonNull String content, @NonNull String writer, String boardPassword, BoardType type, LocalDateTime regDate, LocalDateTime updateDate) {
         this.bno = bno;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.boardPassword = boardPassword;
+        this.type = type;
         this.regDate = regDate;
         this.updateDate = updateDate;
     }
@@ -73,6 +92,10 @@ public class BoardVO {
 
     public void setBoardPassword(String boardPassword) {
         this.boardPassword = boardPassword;
+    }
+
+    public void setType(BoardType type) {
+        this.type = type;
     }
 
     public void setDateToToday(String dateToToday) {

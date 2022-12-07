@@ -42,6 +42,16 @@
             </div>
 
             <div class="form-group">
+                <label>유형</label>
+                <div class="w-100">
+                    <select class="form-select" name="type" aria-label="Default select example">
+                        <option value="COMMON" selected>일반</option>
+                        <option value="NOTICE">공지</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="boardRegisterFormTitle">제목</label>
                 <div class="w-100">
                     <input type="text" name="title" class="form-control"
@@ -58,7 +68,7 @@
             <c:if test="${!isAuthorizeAny}">
                 <div class="form-group">
                     <label for="boardRegisterFormContent">비밀번호</label>
-                    <input class="form-control w-75" name="boardPassword" id="boardRegisterFormPassword"
+                    <input type="password" class="form-control w-75" name="boardPassword" id="boardRegisterFormPassword"
                            placeholder="If you are not signed in, you must set a password for the posts."/>
                     <p></p>
                 </div>

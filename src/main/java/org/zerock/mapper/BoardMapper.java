@@ -35,6 +35,8 @@ public interface BoardMapper {
 
     int deleteAllBoard();
 
+    int deleteBoardPassword();
+
     int deletePasswordForPost(long bno);
 
     long initAutoIncrement();

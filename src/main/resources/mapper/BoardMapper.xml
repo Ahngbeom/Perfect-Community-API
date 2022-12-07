@@ -16,20 +16,20 @@
     </select>
 
     <select id="selectBoardListWithPage" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, content, writer, type, regdate, updatedate
         from board
         order by updatedate desc
         limit ${(page - 1) * 10}, 10;
     </select>
 
     <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, content, writer, type, regdate, updatedate
         from board
         where bno = #{bno};
     </select>
 
     <select id="selectBoardByKeyword" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, content, writer, type, regdate, updatedate
         from board
         <choose>
             <when test="checkTitle">
@@ -55,8 +55,8 @@
     </select>
 
     <insert id="insertBoard" parameterType="org.zerock.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
-        insert into board (title, content, writer)
-        values (#{title}, #{content}, #{writer});
+        insert into board (title, content, writer, type)
+        values (#{title}, #{content}, #{writer}, #{type});
     </insert>
 
     <insert id="insertBoardWithPassword">
@@ -89,6 +89,11 @@
         delete
         from board
         where bno > 0
+    </delete>
+
+    <delete id="deleteBoardPassword">
+        delete from board_password
+        where bno > 0;
     </delete>
 
     <delete id="deletePasswordForPost">
