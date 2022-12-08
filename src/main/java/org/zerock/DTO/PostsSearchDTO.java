@@ -1,4 +1,4 @@
-package org.zerock.domain;
+package org.zerock.DTO;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class BoardSearchVO {
+public class PostsSearchDTO {
 
     @NonNull
     private String keyword;

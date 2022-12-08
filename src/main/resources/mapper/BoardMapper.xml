@@ -9,26 +9,26 @@
         from board;
     </select>
 
-    <select id="selectBoardList" resultType="org.zerock.domain.BoardVO">
+    <select id="selectBoardList" resultType="org.zerock.DTO.PostsDTO">
         select bno, title, contents, writer, regdate, updatedate
         from board
         order by updatedate, bno DESC;
     </select>
 
-    <select id="selectBoardListWithPage" resultType="org.zerock.domain.BoardVO">
+    <select id="selectBoardListWithPage" resultType="org.zerock.DTO.PostsDTO">
         select bno, title, contents, writer, regdate, updatedate
         from board
         order by updatedate desc
         limit ${(page - 1) * 10}, 10;
     </select>
 
-    <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
+    <select id="selectBoardByBno" resultType="org.zerock.DTO.PostsDTO">
         select bno, title, contents, writer, regdate, updatedate
         from board
         where bno = #{bno};
     </select>
 
-    <select id="selectBoardByKeyword" resultType="org.zerock.domain.BoardVO">
+    <select id="selectBoardByKeyword" resultType="org.zerock.DTO.PostsDTO">
         select bno, title, contents, writer, regdate, updatedate
         from board
         <choose>
@@ -54,7 +54,7 @@
         order by updatedate DESC;
     </select>
 
-    <insert id="insertBoard" parameterType="org.zerock.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
+    <insert id="insertBoard" parameterType="org.zerock.DTO.PostsDTO" useGeneratedKeys="true" keyProperty="bno">
         insert into board (title, contents, writer)
         values (#{title}, #{contents}, #{writer});
     </insert>
@@ -109,7 +109,7 @@
           and TABLE_NAME = 'board';
     </select>
 
-    <resultMap id="boardMap" type="org.zerock.domain.BoardVO">
+    <resultMap id="boardMap" type="org.zerock.DTO.PostsDTO">
         <id property="bno" column="bno"/>
         <result property="bno" column="bno"/>
         <result property="title" column="title"/>
@@ -120,7 +120,7 @@
         <collection property="writtenByMember" resultMap="memberMap"/>
     </resultMap>
 
-    <resultMap id="memberMap" type="org.zerock.domain.MemberVO">
+    <resultMap id="memberMap" type="org.zerock.DTO.UserDTO">
         <id property="userId" column="userid"/>
         <result property="userId" column="userid"/>
         <result property="password" column="password"/>

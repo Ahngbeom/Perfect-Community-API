@@ -1,4 +1,4 @@
-package org.zerock.domain;
+package org.zerock.DTO;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class PaginationVO {
+public class PaginationDTO {
     private long postAmount;
 
     private long pageAmount;

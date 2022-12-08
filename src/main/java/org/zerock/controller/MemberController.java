@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.domain.AuthVO;
-import org.zerock.domain.MemberVO;
 import org.zerock.security.detail.CustomUserDetails;
 import org.zerock.security.detail.CustomUserDetailService;
 import org.zerock.service.MemberService;
@@ -67,28 +65,6 @@ public class MemberController {
         return mv;
     }
 
-    @PostMapping("/remove")
-    public ModelAndView removeMember(RedirectAttributes redirectAttributes, ModelAndView mv, @AuthenticationPrincipal Principal principal, String userId) {
-        CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(principal.getName());
-        if (user != null) {
-            if (user.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
-                if (memberService.revokeAllAuthorityToUser(userId) && memberService.deleteUser(userId)) {
-                    redirectAttributes.addFlashAttribute("memberAlertType", "Account Delete");
-                    redirectAttributes.addFlashAttribute("memberAlertStatus", "SUCCESS");
-//                    redirectAttributes.addFlashAttribute("userId", userId);
-                    mv.setViewName("redirect:/member/list");
-                }
-            } else {
-                log.warn("You don't have that [ADMIN] permission.");
-                mv.setViewName("redirect:/");
-            }
-        } else {
-            log.warn("Login required.");
-            mv.setViewName("redirect:/login");
-        }
-        return mv;
-    }
-
     @GetMapping("/create")
     public ModelAndView createMemberPage(@AuthenticationPrincipal Principal principal, HttpServletRequest request, RedirectAttributes redirectAttributes, ModelAndView mv) {
         if (isAdmin(principal)) {
@@ -101,29 +77,6 @@ public class MemberController {
             mv.setViewName("redirect:" + request.getSession().getAttribute("prevPage"));
         } else {
             mv.setViewName("/member/create");
-        }
-        return mv;
-    }
-
-    @PostMapping("/create")
-    public ModelAndView createMember(@AuthenticationPrincipal Principal principal, RedirectAttributes redirectAttributes, ModelAndView mv, MemberVO member, AuthVO auth) {
-        log.warn(member);
-        log.warn(auth);
-        if (memberService.createUser(member, auth)) {
-            if (principal != null &&
-                    ((CustomUserDetails) userDetailsService.loadUserByUsername(principal.getName())).getAuthorities().stream().anyMatch(authentic -> authentic.getAuthority().equals("ROLE_ADMIN"))) {
-                redirectAttributes.addFlashAttribute("memberAlertType", "Account Create");
-                redirectAttributes.addFlashAttribute("memberAlertStatus", "WARNING");
-                mv.setViewName("redirect:/member/list");
-            } else {
-                redirectAttributes.addFlashAttribute("memberAlertType", "Account Create");
-                redirectAttributes.addFlashAttribute("memberAlertStatus", "SUCCESS");
-                mv.setViewName("redirect:/login");
-            }
-        } else {
-            redirectAttributes.addFlashAttribute("memberAlertType", "Account Create");
-            redirectAttributes.addFlashAttribute("memberAlertStatus", "FAILURE");
-            mv.setViewName("redirect:/member/create");
         }
         return mv;
     }

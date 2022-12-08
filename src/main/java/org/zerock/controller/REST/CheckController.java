@@ -1,11 +1,9 @@
 package org.zerock.controller.REST;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.zerock.domain.MemberVO;
 import org.zerock.security.detail.CustomUserDetailService;
 
 import java.security.Principal;

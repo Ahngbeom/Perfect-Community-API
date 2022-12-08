@@ -2,15 +2,13 @@ package org.zerock.dummy;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.domain.BoardSearchVO;
-import org.zerock.domain.BoardVO;
+import org.zerock.DTO.PostsDTO;
 import org.zerock.service.BoardService;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,7 +32,7 @@ class BoardPosts {
     @Test
     void registerPostsDummy() {
         for (int i = 0; i < 100; i++) {
-            BoardVO board = new BoardVO("TEST " + i, "TEST " + i, "TESTER", null);
+            PostsDTO board = new PostsDTO("TEST " + i, "TEST " + i, "TESTER", null);
             service.registerBoard(board);
 //            logger.info(service.getBoardByBno(board.getBno()));
             logger.info(board);

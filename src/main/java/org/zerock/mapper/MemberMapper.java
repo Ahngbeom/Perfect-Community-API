@@ -2,29 +2,30 @@ package org.zerock.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import org.zerock.domain.AuthVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.AuthorityDTO;
+import org.zerock.DTO.UserDTO;
 
 import java.util.List;
 
 @Repository
 @Mapper
 public interface MemberMapper {
-    MemberVO readMember(String userId);
+    UserDTO readMemberByUserId(String userId);
+    UserDTO readMemberByUserName(String userName);
 
-    List<MemberVO> readAllMember();
+    List<UserDTO> readAllMember();
 
-    List<AuthVO> readAuthMember(String userId);
+    List<AuthorityDTO> readAuthMember(String userId);
 
     int deleteAuthOfSpecificMember(String userId);
 
     int deleteMember(String userId);
 
-    int insertMember(MemberVO member);
+    int insertMember(UserDTO member);
 
-    int insertAuthorityToMember(AuthVO auth);
+    int insertAuthorityToMember(AuthorityDTO auth);
 
-    int deleteOneAuthorityToMember(AuthVO auth);
+    int deleteOneAuthorityToMember(AuthorityDTO auth);
 
     int deleteAllAuthorityToMember(String userId);
 

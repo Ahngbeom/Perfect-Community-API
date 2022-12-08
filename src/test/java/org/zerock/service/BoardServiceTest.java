@@ -9,8 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.domain.BoardSearchVO;
-import org.zerock.domain.BoardVO;
+import org.zerock.DTO.PostsSearchDTO;
+import org.zerock.DTO.PostsDTO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,7 +56,7 @@ class BoardServiceTest {
 
     @Test
     void searchBoardByKeyword() {
-        BoardSearchVO searchVO = new BoardSearchVO("가나다");
+        PostsSearchDTO searchVO = new PostsSearchDTO("가나다");
         searchVO.setCheckTitle(true);
         searchVO.setCheckContent(false);
         searchVO.setCheckWriter(false);
@@ -65,14 +65,14 @@ class BoardServiceTest {
 
     @Test
     void registerBoard() {
-        BoardVO board = new BoardVO("짜잔", "내가", "돌아왔다", null);
+        PostsDTO board = new PostsDTO("짜잔", "내가", "돌아왔다", null);
         service.registerBoard(board);
         logger.info(service.getBoardByBno(board.getBno()));
     }
 
     @Test
     void modifyBoard() {
-        BoardVO board = service.getBoardByBno(7);
+        PostsDTO board = service.getBoardByBno(7);
         board.setContents("내가 돌아왔다");
         board.setWriter("잭스");
         service.modifyPost(board);

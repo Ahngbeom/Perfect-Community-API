@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.zerock.domain.BoardSearchVO;
-import org.zerock.domain.BoardVO;
-import org.zerock.domain.PageHeaderVO;
-import org.zerock.domain.PaginationVO;
+import org.zerock.DTO.PostsSearchDTO;
+import org.zerock.DTO.PostsDTO;
+import org.zerock.DTO.PageHeaderDTO;
+import org.zerock.DTO.PaginationDTO;
 import org.zerock.service.BoardService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,16 +28,16 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    private static final PageHeaderVO pageHeader = new PageHeaderVO("Board", "/board/list", null);
+    private static final PageHeaderDTO pageHeader = new PageHeaderDTO("Board", "/board/list", null);
 
-    private static final PaginationVO pagination = new PaginationVO();
+    private static final PaginationDTO pagination = new PaginationDTO();
 
 
     @GetMapping(value = {"/list", "/"})
     public ModelAndView boardList(HttpServletRequest request, ModelAndView mv, @RequestParam(value = "page", defaultValue = "1") int page) {
 //        long postAmount = service.countBoard();
 
-        List<BoardVO> boardListByPage = boardService.getBoardListWithPage(page);
+        List<PostsDTO> boardListByPage = boardService.getBoardListWithPage(page);
         mv.addObject("pageHeader", pageHeader);
         mv.addObject("BoardList", boardListByPage);
 //        mv.addObject("pageAmount", postAmount % 10 == 0 ? postAmount / 10 : postAmount / 10 + 1);
@@ -75,7 +75,7 @@ public class BoardController {
 
     @PostMapping("/createDummy")
     public ModelAndView createDummy(ModelAndView mv, long dummyAmount) {
-        BoardVO board = new BoardVO("Test", "Test", "Administrator", null);
+        PostsDTO board = new PostsDTO("Test", "Test", "Administrator", null);
         long limit = boardService.countPosts() + dummyAmount;
         long number = boardService.countPosts();
         while (number < limit) {
@@ -90,11 +90,11 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public ModelAndView searchPost(ModelAndView mv, BoardSearchVO searchVO, @RequestParam(value = "page", defaultValue = "1") int page) {
+    public ModelAndView searchPost(ModelAndView mv, PostsSearchDTO searchVO, @RequestParam(value = "page", defaultValue = "1") int page) {
         mv.addObject("pageHeader", pageHeader);
-        List<BoardVO> searchResult = boardService.searchBoardByKeyword(searchVO);
+        List<PostsDTO> searchResult = boardService.searchBoardByKeyword(searchVO);
         int size = searchResult.size();
-        List<BoardVO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, Math.min(size, page * 10)));
+        List<PostsDTO> specPagesResult = new ArrayList<>(searchResult.subList(page * 10 - 10, Math.min(size, page * 10)));
         mv.addObject("BoardList", specPagesResult);
         mv.addObject("pageAmount", size % 10 == 0 ? size / 10 : size / 10 + 1);
         String checkedType = searchVO.isCheckTitle() ? "제목, " : "";

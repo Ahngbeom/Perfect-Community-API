@@ -66,8 +66,8 @@
                                             <%--                                            <c:when test="${fn:length(authList.auth) gt 10}">--%>
                                             <%--                                                ${fn:substring(authList.auth, 0, 10)}--%>
                                             <%--                                            </c:when>--%>
-                                            <c:when test="${not empty authList.auth or authList.auth ne null}">
-                                                ${authList.auth}
+                                            <c:when test="${not empty authList.authority or authList.authority ne null}">
+                                                ${authList.authority}
                                             </c:when>
                                             <c:otherwise>
                                                 권한 없음
@@ -88,8 +88,8 @@
                         </td>
                         <td>
                             <c:forEach items="${Member.authList}" var="authList">
-                                <c:if test="${authList.auth == 'ROLE_USER'}">
-                                    <c:set var="isUser" value="${authList.auth ne 'ROLE_ADMIN'}"/>
+                                <c:if test="${authList.authority == 'ROLE_USER'}">
+                                    <c:set var="isUser" value="${authList.authority ne 'ROLE_ADMIN'}"/>
                                 </c:if>
                             </c:forEach>
                             <form method="post" action="">

@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.zerock.domain.BoardVO;
+import org.zerock.DTO.PostsDTO;
 import org.zerock.security.detail.CustomUserDetailService;
 import org.zerock.security.detail.CustomUserDetails;
 import org.zerock.service.BoardService;
@@ -135,7 +135,7 @@ class BoardControllerTest {
 
     @Test
     void testRegistration() throws Exception {
-        BoardVO board = new BoardVO("안녕하세요", "신입생 안범준입니다.", "안범준", (String) null);
+        PostsDTO board = new PostsDTO("안녕하세요", "신입생 안범준입니다.", "안범준", (String) null);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
                         .param("title", board.getTitle())

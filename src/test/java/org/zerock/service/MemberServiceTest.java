@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.domain.AuthVO;
-import org.zerock.domain.MemberVO;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
+import org.zerock.DTO.AuthorityDTO;
+import org.zerock.DTO.UserDTO;
 
 import java.security.Principal;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,14 +49,19 @@ class MemberServiceTest {
 
     @Test
     void createUser() {
-        MemberVO member = new MemberVO("admin", "1234", "Administrator");
-        service.createUser(member, new AuthVO(member.getUserId(), "ROLE_ADMIN"));
-//        service.authorizationToUser(new AuthVO(member.getUserId(), "ROLE_USER"));
+        UserDTO member = UserDTO.builder()
+                .userId("aaa")
+                .password("aaaa")
+                .userName("AAA")
+                .authList(Collections.singletonList(AuthorityDTO.builder().authority("ROLE_USER").build()))
+                .build();
+        service.createUser(member);
+        log.info(member);
     }
 
     @Test
     void adminDeleteUser() {
-        service.deleteUser("new2");
+        service.deleteUser("aaa");
     }
 
     @Test
@@ -63,6 +71,6 @@ class MemberServiceTest {
 
     @Test
     void revokeAuthTests() {
-        log.warn(service.revokeOneAuthorityToUser(new AuthVO("aa", "ROLE_ADMIN")));
+        log.warn(service.revokeOneAuthorityToUser(new AuthorityDTO("aa", "ROLE_ADMIN")));
     }
 }

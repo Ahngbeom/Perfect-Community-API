@@ -3,9 +3,9 @@ package org.zerock.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import org.zerock.domain.BoardSearchVO;
-import org.zerock.domain.BoardVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.PostsSearchDTO;
+import org.zerock.DTO.PostsDTO;
+import org.zerock.DTO.UserDTO;
 
 import java.util.List;
 
@@ -15,19 +15,19 @@ public interface BoardMapper {
 
     long countBoard();
 
-    List<BoardVO> selectBoardList();
+    List<PostsDTO> selectBoardList();
 
-    List<BoardVO> selectBoardListWithPage(int page);
+    List<PostsDTO> selectBoardListWithPage(int page);
 
-    BoardVO selectBoardByBno(long bno);
+    PostsDTO selectBoardByBno(long bno);
 
-    List<BoardVO> selectBoardByKeyword(BoardSearchVO searchVO);
+    List<PostsDTO> selectBoardByKeyword(PostsSearchDTO searchVO);
 
-    int insertBoard(BoardVO board);
+    int insertBoard(PostsDTO board);
 
     int insertBoardWithPassword(@Param("bno") long bno, @Param("password") String password);
 
-    int updatePost(BoardVO board);
+    int updatePost(PostsDTO board);
 
     int updatePasswordForPost(@Param("bno") long bno, @Param("password") String password);
 
@@ -39,7 +39,7 @@ public interface BoardMapper {
 
     long initAutoIncrement();
 
-    BoardVO authenticateForPosts(@Param("board") BoardVO board, @Param("member") MemberVO member);
+    PostsDTO authenticateForPosts(@Param("board") PostsDTO board, @Param("member") UserDTO member);
 
     String getPostPassword(long bno);
 }

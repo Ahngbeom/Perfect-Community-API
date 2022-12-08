@@ -8,9 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.domain.BoardSearchVO;
-import org.zerock.domain.BoardVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.PostsSearchDTO;
+import org.zerock.DTO.PostsDTO;
+import org.zerock.DTO.UserDTO;
 
 import java.text.SimpleDateFormat;
 
@@ -45,7 +45,7 @@ class BoardMapperTest {
 
     @Test
     void testSelectBoard() {
-        BoardVO board = boardMapper.selectBoardByBno(1);
+        PostsDTO board = boardMapper.selectBoardByBno(1);
         logger.info(board);
         logger.info(board.getRegDate());
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
@@ -54,7 +54,7 @@ class BoardMapperTest {
 
     @Test
     void testSearchBoard() {
-        BoardSearchVO searchVO = new BoardSearchVO("가나다");
+        PostsSearchDTO searchVO = new PostsSearchDTO("가나다");
         searchVO.setCheckTitle(true);
         searchVO.setCheckContent(true);
         searchVO.setCheckWriter(true);
@@ -63,14 +63,14 @@ class BoardMapperTest {
 
     @Test
     void testInsertBoard() {
-        BoardVO board = new BoardVO("아", "잠깐만", "기둘", null);
+        PostsDTO board = new PostsDTO("아", "잠깐만", "기둘", null);
         boardMapper.insertBoard(board);
         logger.info(boardMapper.selectBoardByBno(board.getBno()));
     }
 
     @Test
     void testUpdateBoard() {
-        BoardVO board = boardMapper.selectBoardByBno(6);
+        PostsDTO board = boardMapper.selectBoardByBno(6);
         board.setTitle("다시다시");
         board.setContents("해볼게게");
         board.setWriter("잠깐만만");
@@ -80,7 +80,7 @@ class BoardMapperTest {
 
     @Test
     void testDeleteBoard() {
-        BoardVO board = boardMapper.selectBoardByBno(6);
+        PostsDTO board = boardMapper.selectBoardByBno(6);
 
         logger.info(boardMapper.deleteBoard(board.getBno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }
@@ -92,8 +92,8 @@ class BoardMapperTest {
 
     @Test
     void testAuthenticateForPosts() {
-        BoardVO board = boardMapper.selectBoardByBno(1);
-        MemberVO member = memberMapper.readMember("tester2");
+        PostsDTO board = boardMapper.selectBoardByBno(1);
+        UserDTO member = memberMapper.readMemberByUserId("tester2");
         logger.info(boardMapper.authenticateForPosts(board, member));
     }
 

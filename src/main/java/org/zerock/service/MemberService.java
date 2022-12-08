@@ -1,27 +1,29 @@
 package org.zerock.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import org.zerock.domain.AuthVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.AuthorityDTO;
+import org.zerock.DTO.UserDTO;
 
 import java.util.List;
 
 public interface MemberService {
-    List<MemberVO> getUserList();
+    List<UserDTO> getUserList();
 
-    List<AuthVO> getAuthList(String userId);
+    List<AuthorityDTO> getAuthList(String userId);
 
-    boolean createUser(MemberVO member, AuthVO auth);
+    void createUser(UserDTO member);
 
-    MemberVO readUser(String userId);
+    UserDTO readUserById(String userId);
 
-    boolean deleteUser(String userId);
+    UserDTO readUserByName(String userName);
+
+    void deleteUser(String userId);
 
     boolean disableUser(String userId);
 
-    boolean authorizationToUser(AuthVO auth);
+    boolean authorizationToUser(AuthorityDTO auth);
 
-    boolean revokeOneAuthorityToUser(AuthVO auth);
+    boolean revokeOneAuthorityToUser(AuthorityDTO auth);
 
     boolean revokeAllAuthorityToUser(String userId);
 
@@ -29,6 +31,6 @@ public interface MemberService {
 
     boolean hasAdminRole(String userId);
 
-    MemberVO dtoConverter(UserDetails userDetails);
+    UserDTO dtoConverter(UserDetails userDetails);
 
 }

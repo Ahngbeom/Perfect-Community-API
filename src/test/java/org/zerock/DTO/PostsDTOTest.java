@@ -1,4 +1,4 @@
-package org.zerock.domain;
+package org.zerock.DTO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")
-class BoardVOTest {
+class PostsDTOTest {
 
     private static final Logger log = LogManager.getLogger();
 
@@ -26,7 +26,7 @@ class BoardVOTest {
 
     @Test
     void dateToTodayCalculator() {
-        List<BoardVO> boardList = service.getBoardList();
+        List<PostsDTO> boardList = service.getBoardList();
         boardList.forEach(board -> {
             log.info(board.getRegDate() + ", " + board.getUpdateDate());
             log.info(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate()));

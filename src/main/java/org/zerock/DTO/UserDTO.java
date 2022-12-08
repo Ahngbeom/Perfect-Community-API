@@ -1,17 +1,16 @@
-package org.zerock.domain;
+package org.zerock.DTO;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-@RequiredArgsConstructor
-public class MemberVO {
+public class UserDTO {
 
     @NonNull
     private String userId;
@@ -25,7 +24,7 @@ public class MemberVO {
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 
-    private List<AuthVO> authList;
+    private List<AuthorityDTO> authList;
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -51,7 +50,7 @@ public class MemberVO {
         this.updateDate = updateDate;
     }
 
-    public void setAuthList(List<AuthVO> authList) {
+    public void setAuthList(List<AuthorityDTO> authList) {
         this.authList = authList;
     }
 }

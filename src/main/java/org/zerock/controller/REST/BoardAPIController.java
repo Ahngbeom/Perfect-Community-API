@@ -7,17 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.zerock.domain.BoardVO;
+import org.zerock.DTO.PostsDTO;
 import org.zerock.service.BoardService;
 import org.zerock.service.MemberService;
 
-import javax.naming.AuthenticationException;
 import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/board")
-public class RESTBoardController {
+public class BoardAPIController {
 
     private static final Logger log = LogManager.getLogger();
     private final BoardService boardService;
@@ -44,7 +43,7 @@ public class RESTBoardController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> register(BoardVO board) {
+    public ResponseEntity<?> register(PostsDTO board) {
         try {
             boardService.registerBoard(board);
         } catch (Exception e) {
@@ -55,14 +54,14 @@ public class RESTBoardController {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> modification(BoardVO boardVO) {
+    public ResponseEntity<?> modification(PostsDTO postsDTO) {
         try {
-            boardService.modifyPost(boardVO);
+            boardService.modifyPost(postsDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(boardVO.getBno());
+        return ResponseEntity.ok(postsDTO.getBno());
     }
 
     @PostMapping("/remove")
@@ -168,7 +167,7 @@ public class RESTBoardController {
     }
 
     @PostMapping("/passwordMatches")
-    public ResponseEntity<?> passwordMatches(@RequestBody BoardVO board) {
+    public ResponseEntity<?> passwordMatches(@RequestBody PostsDTO board) {
 //        BoardVO board = boardService.getBoardByBno(bno);
 //        if (board.getBoardPassword() != null) {
 //            return passwordEncoder.matches(password, board.getBoardPassword());

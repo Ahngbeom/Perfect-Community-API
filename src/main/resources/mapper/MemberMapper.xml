@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zerock.mapper.MemberMapper">
-    <resultMap id="memberMap" type="org.zerock.domain.MemberVO">
+    <resultMap id="memberMap" type="org.zerock.DTO.UserDTO">
         <id property="userId" column="userid"/>
         <result property="userId" column="userid"/>
         <result property="password" column="password"/>
@@ -15,15 +15,21 @@
         </collection>
     </resultMap>
 
-    <resultMap id="authMap" type="org.zerock.domain.AuthVO">
-<!--        <result property="userId" column="userid"/>-->
-        <result property="auth" column="authority" />
+    <resultMap id="authMap" type="org.zerock.DTO.AuthorityDTO">
+        <result property="userId" column="userid"/>
+        <result property="authority" column="authority" />
     </resultMap>
 
-    <select id="readMember" resultMap="memberMap">
+    <select id="readMemberByUserId" resultMap="memberMap">
         select users.userid, password, username, enabled, regDate, updateDate, authority
         from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
         where users.userid = #{userId};
+    </select>
+
+    <select id="readMemberByUserName" resultMap="memberMap">
+        select users.userid, password, username, enabled, regDate, updateDate, authority
+        from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
+        where users.username = #{userName};
     </select>
 
     <select id="readAllMember" resultMap="memberMap">
@@ -32,7 +38,7 @@
         order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.userid asc;
     </select>
 
-    <select id="readAuthMember" resultType="org.zerock.domain.AuthVO">
+    <select id="readAuthMember" resultType="org.zerock.DTO.AuthorityDTO">
         select userid, authority
         from authorities
         where userid like #{userId};
@@ -50,16 +56,16 @@
         where users.userid like #{userId};
     </delete>
 
-    <insert id="insertMember" parameterType="org.zerock.domain.MemberVO">
+    <insert id="insertMember" parameterType="org.zerock.DTO.UserDTO">
         insert into users(userid, password, username) values(#{userId}, #{password}, #{userName});
     </insert>
 
-    <insert id="insertAuthorityToMember" parameterType="org.zerock.domain.AuthVO">
-        insert into authorities(userid, authority) values(#{userId}, #{auth});
+    <insert id="insertAuthorityToMember" parameterType="org.zerock.DTO.AuthorityDTO">
+        insert into authorities(userid, authority) values(#{userId}, #{authority});
     </insert>
 
     <delete id="deleteOneAuthorityToMember">
-        delete from authorities where userid like #{userId} and authority like #{auth};
+        delete from authorities where userid like #{userId} and authority like #{authority};
     </delete>
 
     <delete id="deleteAllAuthorityToMember">

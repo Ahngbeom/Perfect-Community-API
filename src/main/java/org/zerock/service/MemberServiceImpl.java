@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.zerock.domain.AuthVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.AuthorityDTO;
+import org.zerock.DTO.UserDTO;
 import org.zerock.mapper.MemberMapper;
 
 import java.util.List;
@@ -24,79 +24,85 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder encoder;
 
     @Override
-    public List<MemberVO> getUserList() {
+    public List<UserDTO> getUserList() {
         return (mapper.readAllMember());
     }
 
     @Override
-    public List<AuthVO> getAuthList(String userId) {
+    public List<AuthorityDTO> getAuthList(String userId) {
+        log.info(mapper.readAuthMember(userId));
         return mapper.readAuthMember(userId);
     }
 
     @Override
-    public boolean createUser(MemberVO member, AuthVO auth) {
-        boolean status = false;
-        member.setPassword(encoder.encode(member.getPassword()));
-        if (mapper.insertMember(member) == 1) {
-            if (mapper.insertAuthorityToMember(auth) == 1) {
-                status = true;
+    public void createUser(UserDTO user) throws RuntimeException {
+        user.setPassword(encoder.encode(user.getPassword()));
+        if (mapper.insertMember(user) == 1) {
+            for (AuthorityDTO auth : user.getAuthList()) {
+                auth.setUserId(user.getUserId());
+                if (!authorizationToUser(auth))
+                    throw new RuntimeException("Authorization failure");
             }
+        } else {
+            throw new RuntimeException("Create user failure");
         }
-        return status;
     }
 
     @Override
-    public MemberVO readUser(String userId) {
-        return mapper.readMember(userId);
+    public UserDTO readUserById(String userId) {
+        return mapper.readMemberByUserId(userId);
     }
 
     @Override
-    public boolean authorizationToUser(AuthVO auth) {
-        return mapper.insertAuthorityToMember(auth) == 1 ? true : false;
+    public UserDTO readUserByName(String userName) {
+        return mapper.readMemberByUserName(userName);
     }
 
     @Override
-    public boolean revokeOneAuthorityToUser(AuthVO auth) {
-        return mapper.deleteOneAuthorityToMember(auth) == 1 ? true : false;
+    public boolean authorizationToUser(AuthorityDTO auth) {
+        return mapper.insertAuthorityToMember(auth) == 1;
+    }
+
+    @Override
+    public boolean revokeOneAuthorityToUser(AuthorityDTO auth) {
+        return mapper.deleteOneAuthorityToMember(auth) == 1;
     }
 
     @Override
     public boolean revokeAllAuthorityToUser(String userId) {
-        return mapper.deleteAllAuthorityToMember((userId)) == 1 ? true : false;
+        return mapper.deleteAllAuthorityToMember((userId)) >= 0;
     }
 
     @Override
-    public boolean deleteUser(String userId) {
-        if (mapper.deleteMember(userId) == 1)
-            return true;
-        else {
-            log.error("Delete Member Failed");
-            return false;
+    public void deleteUser(String userId) {
+        if (revokeAllAuthorityToUser(userId)) {
+            if (mapper.deleteMember(userId)== 0)
+                throw new RuntimeException("That user doesn't exist.");
         }
     }
 
     @Override
     public boolean disableUser(String userId) {
-        return mapper.disableMember(userId) == 1 ? true : false;
+        return mapper.disableMember(userId) == 1;
     }
 
     @Override
     public boolean enableUser(String userId) {
-        return mapper.enableMember(userId) == 1 ? true : false;
+        return mapper.enableMember(userId) == 1;
     }
 
     @Override
     public boolean hasAdminRole(String userId) {
         AtomicBoolean result = new AtomicBoolean(false);
-        readUser(userId).getAuthList().forEach(auth -> {
-            if (auth.getAuth().equals("ROLE_ADMIN"))
+        readUserById(userId).getAuthList().forEach(auth -> {
+            if (auth.equals("ROLE_ADMIN"))
                 result.set(true);
         });
         return result.get();
     }
 
     @Override
-    public MemberVO dtoConverter(UserDetails userDetails) {
+    public UserDTO dtoConverter(UserDetails userDetails) {
         return null;
     }
 }

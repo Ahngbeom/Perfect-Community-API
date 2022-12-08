@@ -5,9 +5,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.zerock.domain.BoardSearchVO;
-import org.zerock.domain.BoardVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.PostsSearchDTO;
+import org.zerock.DTO.PostsDTO;
+import org.zerock.DTO.UserDTO;
 import org.zerock.mapper.BoardMapper;
 import org.zerock.utils.DateUtility;
 
@@ -25,37 +25,37 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public List<BoardVO> getBoardList() {
+    public List<PostsDTO> getBoardList() {
         return boardMapper.selectBoardList();
     }
 
     @Override
-    public List<BoardVO> getBoardListWithPage(int page) throws RuntimeException {
+    public List<PostsDTO> getBoardListWithPage(int page) throws RuntimeException {
         if (page < 0)
             throw new RuntimeException("Invalid page");
-        List<BoardVO> boardList = boardMapper.selectBoardListWithPage(page);
+        List<PostsDTO> boardList = boardMapper.selectBoardListWithPage(page);
 //        boardList.forEach(board -> board.dateToTodayCalculator());
         boardList.forEach(board -> board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate())));
         return boardList;
     }
 
     @Override
-    public BoardVO getBoardByBno(long bno) {
-        BoardVO posts = boardMapper.selectBoardByBno(bno);
+    public PostsDTO getBoardByBno(long bno) {
+        PostsDTO posts = boardMapper.selectBoardByBno(bno);
         if (posts == null)
             throw new RuntimeException("There are no posts with that bno.");
         return posts;
     }
 
     @Override
-    public List<BoardVO> searchBoardByKeyword(BoardSearchVO searchVO) {
-        List<BoardVO> searchResult = boardMapper.selectBoardByKeyword(searchVO);
+    public List<PostsDTO> searchBoardByKeyword(PostsSearchDTO searchVO) {
+        List<PostsDTO> searchResult = boardMapper.selectBoardByKeyword(searchVO);
         searchResult.forEach(board -> board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate())));
         return searchResult;
     }
 
     @Override
-    public int registerBoard(BoardVO board) {
+    public int registerBoard(PostsDTO board) {
         log.warn(board);
         int result;
         if (board.getBoardPassword() != null) {
@@ -71,12 +71,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int modifyPost(BoardVO board) {
+    public int modifyPost(PostsDTO board) {
         return boardMapper.updatePost(board);
     }
 
     @Override
-    public int modifyPostWithPassword(BoardVO board, boolean isAdmin) {
+    public int modifyPostWithPassword(PostsDTO board, boolean isAdmin) {
         return boardMapper.updatePasswordForPost(board.getBno(), passwordEncoder.encode(board.getBoardPassword())) |
                 boardMapper.updatePost(board);
     }
@@ -87,7 +87,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int removePostWithPassword(BoardVO board, boolean isAdmin) throws RuntimeException {
+    public int removePostWithPassword(PostsDTO board, boolean isAdmin) throws RuntimeException {
         if (!isAdmin) {
             String encodePassword = boardMapper.getPostPassword(board.getBno());
             if (encodePassword != null) {
@@ -124,7 +124,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardVO authenticateForPosts(BoardVO board, MemberVO member) {
+    public PostsDTO authenticateForPosts(PostsDTO board, UserDTO member) {
         return boardMapper.authenticateForPosts(board, member);
     }
 

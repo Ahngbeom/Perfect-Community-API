@@ -1,8 +1,8 @@
 package org.zerock.service;
 
-import org.zerock.domain.BoardSearchVO;
-import org.zerock.domain.BoardVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.PostsSearchDTO;
+import org.zerock.DTO.PostsDTO;
+import org.zerock.DTO.UserDTO;
 
 import java.util.List;
 
@@ -10,29 +10,29 @@ public interface BoardService {
 
     long countPosts();
 
-    List<BoardVO> getBoardList();
+    List<PostsDTO> getBoardList();
 
-    List<BoardVO> getBoardListWithPage(int page);
+    List<PostsDTO> getBoardListWithPage(int page);
 
-    BoardVO getBoardByBno(long bno);
+    PostsDTO getBoardByBno(long bno);
 
-    List<BoardVO> searchBoardByKeyword(BoardSearchVO searchVO);
+    List<PostsDTO> searchBoardByKeyword(PostsSearchDTO searchVO);
 
-    int registerBoard(BoardVO board);
+    int registerBoard(PostsDTO board);
 
-    int modifyPost(BoardVO board);
+    int modifyPost(PostsDTO board);
 
-    int modifyPostWithPassword(BoardVO board, boolean isAdmin);
+    int modifyPostWithPassword(PostsDTO board, boolean isAdmin);
 
     int removeBoard(long bno);
 
-    int removePostWithPassword(BoardVO board, boolean isAdmin);
+    int removePostWithPassword(PostsDTO board, boolean isAdmin);
 
     int removeAllBoard();
 
     long initBnoValue();
 
-    BoardVO authenticateForPosts(BoardVO board, MemberVO member);
+    PostsDTO authenticateForPosts(PostsDTO board, UserDTO member);
 
     boolean postHasPassword(long bno);
 

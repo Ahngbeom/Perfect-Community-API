@@ -10,8 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.domain.AuthVO;
-import org.zerock.domain.MemberVO;
+import org.zerock.DTO.AuthorityDTO;
+import org.zerock.DTO.UserDTO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +37,7 @@ class MemberMapperTest {
 
     @Test
     void readMember() {
-        log.info(mapper.readMember("aa"));
+        log.info(mapper.readMemberByUserId("aa"));
     }
 
     @Test
@@ -47,7 +47,7 @@ class MemberMapperTest {
 
     @Test
     void deleteMember() {
-        MemberVO member = mapper.readMember("new2");
+        UserDTO member = mapper.readMemberByUserId("new2");
         log.info(member);
 
         if (bCryptEncoder.matches("1234", member.getPassword())) {
@@ -59,11 +59,11 @@ class MemberMapperTest {
 
     @Test
     void insertMember() {
-        MemberVO member = new MemberVO("new2", encoder.encode("1234"), "New Member");
+        UserDTO member = UserDTO.builder().userId("new2").password(encoder.encode("1234")).userName("New Member").build();
 //        log.info(member);
         if (mapper.insertMember(member) == 1) {
             log.info("success");
-            if (mapper.insertAuthorityToMember(new AuthVO(member.getUserId(), "ROLE_USER")) == 1) {
+            if (mapper.insertAuthorityToMember(new AuthorityDTO(member.getUserId(), "ROLE_USER")) == 1) {
                 log.info("success");
             } else {
                 log.error("failed");
@@ -76,11 +76,11 @@ class MemberMapperTest {
 
     @Test
     void insertAdmin() {
-        MemberVO member = new MemberVO("admin", encoder.encode("admin"), "Administrator");
+        UserDTO member = UserDTO.builder().userId("admin").password(encoder.encode("admin")).userName("Administrator").build();
 //        log.info(member);
         if (mapper.insertMember(member) == 1) {
             log.info("success");
-            if (mapper.insertAuthorityToMember(new AuthVO(member.getUserId(), "ROLE_ADMIN")) == 1) {
+            if (mapper.insertAuthorityToMember(new AuthorityDTO(member.getUserId(), "ROLE_ADMIN")) == 1) {
                 log.info("success");
             } else {
                 log.error("failed");
@@ -93,7 +93,7 @@ class MemberMapperTest {
 
     @Test
     void InsertAuthOfSpecificMember() {
-        AuthVO auth = new AuthVO("new", "ROLE_USER");
+        AuthorityDTO auth = new AuthorityDTO("new", "ROLE_USER");
         if (mapper.insertAuthorityToMember(auth) == 1) {
             log.info("success");
         } else {
@@ -103,6 +103,6 @@ class MemberMapperTest {
 
     @Test
     void deleteAuthTests() {
-        log.warn(mapper.deleteOneAuthorityToMember(new AuthVO("aa", "ROLE_ADMIN")));
+        log.warn(mapper.deleteOneAuthorityToMember(new AuthorityDTO("aa", "ROLE_ADMIN")));
     }
 }

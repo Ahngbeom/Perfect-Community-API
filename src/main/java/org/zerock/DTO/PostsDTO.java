@@ -1,4 +1,4 @@
-package org.zerock.domain;
+package org.zerock.DTO;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class BoardVO {
+public class PostsDTO {
 
     private long    bno;
 
@@ -33,18 +33,18 @@ public class BoardVO {
 
     private String dateToToday;
 
-    private MemberVO writtenByMember;
+    private UserDTO writtenByMember;
 
-    public BoardVO() {    }
+    public PostsDTO() {    }
 
-    public BoardVO(@NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword) {
+    public PostsDTO(@NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
         this.boardPassword = boardPassword;
     }
 
-    public BoardVO(long bno, @NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword, LocalDateTime regDate, LocalDateTime updateDate) {
+    public PostsDTO(long bno, @NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword, LocalDateTime regDate, LocalDateTime updateDate) {
         this.bno = bno;
         this.title = title;
         this.contents = contents;
