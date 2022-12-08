@@ -40,7 +40,7 @@
             <td>내용</td>
             <td>
                 <label>
-                    <textarea name="content" cols="30" rows="10">${Post.content}</textarea>
+                    <textarea name="content" cols="30" rows="10">${Post.contents}</textarea>
                 </label>
             </td>
         </tr>

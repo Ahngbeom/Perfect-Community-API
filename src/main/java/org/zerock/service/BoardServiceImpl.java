@@ -1,6 +1,8 @@
 package org.zerock.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.BoardSearchVO;
@@ -14,17 +16,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
-
+    private static final Logger log = LogManager.getLogger(BoardServiceImpl.class);
     private final BoardMapper boardMapper;
 
     private final DateUtility dateUtility;
 
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public long countBoard() {
-        return boardMapper.countBoard();
-    }
 
     @Override
     public List<BoardVO> getBoardList() {
@@ -32,7 +30,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardVO> getBoardListWithPage(int page) {
+    public List<BoardVO> getBoardListWithPage(int page) throws RuntimeException {
+        if (page < 0)
+            throw new RuntimeException("Invalid page");
         List<BoardVO> boardList = boardMapper.selectBoardListWithPage(page);
 //        boardList.forEach(board -> board.dateToTodayCalculator());
         boardList.forEach(board -> board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate())));
@@ -41,7 +41,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardVO getBoardByBno(long bno) {
-        return boardMapper.selectBoardByBno(bno);
+        BoardVO posts = boardMapper.selectBoardByBno(bno);
+        if (posts == null)
+            throw new RuntimeException("There are no posts with that bno.");
+        return posts;
     }
 
     @Override
@@ -53,14 +56,18 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int registerBoard(BoardVO board) {
-        if (boardMapper.insertBoard(board) == 1) {
-            if (board.getBoardPassword() != null) {
-                return boardMapper.insertBoardWithPassword(board.getBno(), passwordEncoder.encode(board.getBoardPassword()));
-            }
+        log.warn(board);
+        int result;
+        if (board.getBoardPassword() != null) {
+            result = boardMapper.insertBoardWithPassword(board.getBno(), passwordEncoder.encode(board.getBoardPassword()));
         } else {
-            return 0;
+            result = boardMapper.insertBoard(board);
         }
-        return 1;
+
+        if (result == 0)
+            throw new RuntimeException("Failed to register post.");
+
+        return result;
     }
 
     @Override
@@ -92,8 +99,23 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int removeAllBoard() {
-        return boardMapper.deleteAllBoard();
+    public int removeAllBoard() throws RuntimeException {
+        int result;
+        if (countPosts() == 0) {
+            throw new RuntimeException("Posts do not exist.");
+        } else {
+            result = boardMapper.deleteAllBoard();
+            if (result == 0)
+                throw new RuntimeException("Failed to delete all posts");
+            if (initBnoValue() == 0)
+                throw new RuntimeException("Failure to initialize the bno value of the board");
+        }
+        return result;
+    }
+
+    @Override
+    public long countPosts() {
+        return boardMapper.countBoard();
     }
 
     @Override

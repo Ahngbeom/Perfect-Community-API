@@ -17,7 +17,7 @@ create table board
 alter table board add constraint pk_board primary key (bno);
 alter table board modify bno int unsigned auto_increment;
 alter table board auto_increment = 1;
-insert into board (title, content, writer)
+insert into board (title, contents, writer)
 values ('테스트 제목', '테스트 내용', 'Tester');
 
 select * from board;

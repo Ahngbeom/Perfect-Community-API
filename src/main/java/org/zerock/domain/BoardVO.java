@@ -2,7 +2,6 @@ package org.zerock.domain;
 
 import lombok.*;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,7 +15,7 @@ public class BoardVO {
     private String  title;
 
     @NonNull
-    private String  content;
+    private String contents;
 
     @NonNull
     private String  writer;
@@ -38,17 +37,17 @@ public class BoardVO {
 
     public BoardVO() {    }
 
-    public BoardVO(@NonNull String title, @NonNull String content, @NonNull String writer, String boardPassword) {
+    public BoardVO(@NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword) {
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.writer = writer;
         this.boardPassword = boardPassword;
     }
 
-    public BoardVO(long bno, @NonNull String title, @NonNull String content, @NonNull String writer, String boardPassword, LocalDateTime regDate, LocalDateTime updateDate) {
+    public BoardVO(long bno, @NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword, LocalDateTime regDate, LocalDateTime updateDate) {
         this.bno = bno;
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.writer = writer;
         this.boardPassword = boardPassword;
         this.regDate = regDate;
@@ -63,8 +62,8 @@ public class BoardVO {
         this.title = title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public void setWriter(String writer) {

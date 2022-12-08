@@ -36,7 +36,7 @@ class BoardServiceTest {
 
     @Test
     void testCountBoard() {
-        logger.info(service.countBoard());
+        logger.info(service.countPosts());
     }
 
     @Test
@@ -73,7 +73,7 @@ class BoardServiceTest {
     @Test
     void modifyBoard() {
         BoardVO board = service.getBoardByBno(7);
-        board.setContent("내가 돌아왔다");
+        board.setContents("내가 돌아왔다");
         board.setWriter("잭스");
         service.modifyPost(board);
         logger.info(service.getBoardByBno(board.getBno()));

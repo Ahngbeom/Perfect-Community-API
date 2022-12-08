@@ -10,39 +10,39 @@
     </select>
 
     <select id="selectBoardList" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, contents, writer, regdate, updatedate
         from board
         order by updatedate, bno DESC;
     </select>
 
     <select id="selectBoardListWithPage" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, contents, writer, regdate, updatedate
         from board
         order by updatedate desc
         limit ${(page - 1) * 10}, 10;
     </select>
 
     <select id="selectBoardByBno" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, contents, writer, regdate, updatedate
         from board
         where bno = #{bno};
     </select>
 
     <select id="selectBoardByKeyword" resultType="org.zerock.domain.BoardVO">
-        select bno, title, content, writer, regdate, updatedate
+        select bno, title, contents, writer, regdate, updatedate
         from board
         <choose>
             <when test="checkTitle">
                 where title like concat('%', #{keyword}, '%')
                 <if test="checkContent">
-                    or content like concat('%', #{keyword}, '%')
+                    or contents like concat('%', #{keyword}, '%')
                 </if>
                 <if test="checkWriter">
                     or writer like concat('%', #{keyword}, '%')
                 </if>
             </when>
             <when test="checkContent">
-                where content like concat('%', #{keyword}, '%')
+                where contents like concat('%', #{keyword}, '%')
                 <if test="checkWriter">
                     or writer like concat('%', #{keyword}, '%')
                 </if>
@@ -55,8 +55,8 @@
     </select>
 
     <insert id="insertBoard" parameterType="org.zerock.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
-        insert into board (title, content, writer)
-        values (#{title}, #{content}, #{writer});
+        insert into board (title, contents, writer)
+        values (#{title}, #{contents}, #{writer});
     </insert>
 
     <insert id="insertBoardWithPassword">
@@ -67,7 +67,7 @@
     <update id="updatePost">
         update board
         set title      = #{title},
-            content    = #{content},
+            contents    = #{contents},
             writer     = #{writer},
             updatedate = NOW()
         where bno = #{bno}
@@ -75,7 +75,7 @@
 
     <update id="updatePasswordForPost">
         update board_password
-        set password   = #{password}
+        set password = #{password}
         where bno = #{bno}
     </update>
 
@@ -113,7 +113,7 @@
         <id property="bno" column="bno"/>
         <result property="bno" column="bno"/>
         <result property="title" column="title"/>
-        <result property="content" column="content"/>
+        <result property="contents" column="contents"/>
         <result property="writer" column="writer"/>
         <result property="regDate" column="regDate"/>
         <result property="updateDate" column="updateDate"/>

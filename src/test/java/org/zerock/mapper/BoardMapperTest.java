@@ -72,7 +72,7 @@ class BoardMapperTest {
     void testUpdateBoard() {
         BoardVO board = boardMapper.selectBoardByBno(6);
         board.setTitle("다시다시");
-        board.setContent("해볼게게");
+        board.setContents("해볼게게");
         board.setWriter("잠깐만만");
         logger.info(boardMapper.updatePost(board));
         logger.info(boardMapper.selectBoardByBno(board.getBno()));

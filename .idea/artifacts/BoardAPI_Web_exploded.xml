@@ -1,10 +1,11 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="BasicSpringMVC:war exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/BasicSpringMVC_war_exploded</output-path>
+  <artifact type="exploded-war" name="BoardAPI:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/BoardAPI_Web_exploded</output-path>
     <root id="root">
+      <element id="javaee-facet-resources" facet="BoardAPI/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="BasicSpringMVC" />
+          <element id="module-output" name="BoardAPI" />
           <element id="library" level="application" name="bootstrap" />
           <element id="library" level="application" name="jquery-3.6.0" />
           <element id="library" level="application" name="popper.js" />
@@ -21,6 +22,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.3.22" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.3.22" />
           <element id="library" level="project" name="Maven: org.springframework:spring-test:5.3.22" />
+          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:4.0.1" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.7.2" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:5.7.2" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.7.2" />
@@ -42,6 +44,7 @@
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:2.0.7" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.30" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.19.4" />
+          <element id="library" level="project" name="Maven: org.mariadb.jdbc:mariadb-java-client:3.0.7" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-dbcp2:2.9.0" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.10.0" />
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
@@ -62,11 +65,8 @@
           <element id="library" level="project" name="Maven: org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.24" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
-          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:4.0.1" />
-          <element id="library" level="project" name="Maven: org.mariadb.jdbc:mariadb-java-client:3.0.7" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="BasicSpringMVC/web/Web" />
     </root>
   </artifact>
 </component>

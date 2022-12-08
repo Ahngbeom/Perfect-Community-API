@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BoardService {
 
-    long    countBoard();
+    long countPosts();
 
     List<BoardVO> getBoardList();
 

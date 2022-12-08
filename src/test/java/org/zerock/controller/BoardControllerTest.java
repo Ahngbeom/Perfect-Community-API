@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -26,7 +25,6 @@ import org.zerock.domain.BoardVO;
 import org.zerock.security.detail.CustomUserDetailService;
 import org.zerock.security.detail.CustomUserDetails;
 import org.zerock.service.BoardService;
-import org.zerock.service.MemberService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -141,7 +139,7 @@ class BoardControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
                         .param("title", board.getTitle())
-                        .param("content", board.getContent())
+                        .param("content", board.getContents())
                         .param("writer", board.getWriter()))
                 .andExpect(redirectedUrlPattern("/board/posts*"))
                 .andExpect(status().is3xxRedirection())
