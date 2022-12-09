@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.zerock.controller.REST.UserAPIController;
 import org.zerock.service.BoardService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +42,7 @@ class MemberControllerTest {
 
     @InjectMocks
     @Autowired
-    private MemberController controller;
+    private UserAPIController controller;
 
     @Mock
     private UserDetailsService service;

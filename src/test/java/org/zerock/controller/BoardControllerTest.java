@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.zerock.DTO.PostsDTO;
+import org.zerock.controller.REST.BoardAPIController;
 import org.zerock.security.detail.CustomUserDetailService;
 import org.zerock.security.detail.CustomUserDetails;
 import org.zerock.service.BoardService;
@@ -48,7 +49,7 @@ class BoardControllerTest {
 
     @InjectMocks
     @Autowired
-    private BoardController controller;
+    private BoardAPIController controller;
 
     @Mock
     private BoardService boardService;
