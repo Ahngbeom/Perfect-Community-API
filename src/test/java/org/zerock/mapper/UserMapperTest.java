@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
-class MemberMapperTest {
+class UserMapperTest {
 
     private static final Logger log = LogManager.getLogger();
 
     @Autowired
-    private MemberMapper mapper;
+    private UserMapper mapper;
 
     @Autowired
     private BCryptPasswordEncoder bCryptEncoder;
@@ -52,8 +52,7 @@ class MemberMapperTest {
 
         if (bCryptEncoder.matches("1234", member.getPassword())) {
             log.info("Passwords match.");
-            log.warn(mapper.deleteAuthOfSpecificMember(member.getUserId()));
-            log.warn(mapper.deleteMember(member.getUserId()));
+            log.warn(mapper.deleteUser(member.getUserId()));
         }
     }
 
@@ -67,7 +66,7 @@ class MemberMapperTest {
                 log.info("success");
             } else {
                 log.error("failed");
-                mapper.deleteMember(member.getUserId());
+                mapper.deleteUser(member.getUserId());
             }
         } else {
             log.error("failed");
@@ -84,7 +83,7 @@ class MemberMapperTest {
                 log.info("success");
             } else {
                 log.error("failed");
-                mapper.deleteMember(member.getUserId());
+                mapper.deleteUser(member.getUserId());
             }
         } else {
             log.error("failed");

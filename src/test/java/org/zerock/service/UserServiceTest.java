@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 import org.zerock.DTO.AuthorityDTO;
 import org.zerock.DTO.UserDTO;
 
@@ -23,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
-class MemberServiceTest {
+class UserServiceTest {
 
     private static final Logger log = LogManager.getLogger();
 
     @InjectMocks
     @Autowired
-    private MemberService service;
+    private UserService service;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -61,7 +59,7 @@ class MemberServiceTest {
 
     @Test
     void adminDeleteUser() {
-        service.deleteUser("aaa");
+        service.removeUser("aaa");
     }
 
     @Test
@@ -69,8 +67,4 @@ class MemberServiceTest {
 
     }
 
-    @Test
-    void revokeAuthTests() {
-        log.warn(service.revokeOneAuthorityToUser(new AuthorityDTO("aa", "ROLE_ADMIN")));
-    }
 }

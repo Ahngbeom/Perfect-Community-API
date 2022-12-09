@@ -26,7 +26,7 @@ class BoardMapperTest {
     private BoardMapper boardMapper;
 
     @Autowired
-    private MemberMapper memberMapper;
+    private UserMapper userMapper;
 
     @BeforeEach
     void setUp() {
@@ -93,7 +93,7 @@ class BoardMapperTest {
     @Test
     void testAuthenticateForPosts() {
         PostsDTO board = boardMapper.selectBoardByBno(1);
-        UserDTO member = memberMapper.readMemberByUserId("tester2");
+        UserDTO member = userMapper.readMemberByUserId("tester2");
         logger.info(boardMapper.authenticateForPosts(board, member));
     }
 

@@ -9,19 +9,8 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface MemberMapper {
-    UserDTO readMemberByUserId(String userId);
-    UserDTO readMemberByUserName(String userName);
-
-    List<UserDTO> readAllMember();
-
+public interface AuthMapper {
     List<AuthorityDTO> readAuthMember(String userId);
-
-    int deleteAuthOfSpecificMember(String userId);
-
-    int deleteMember(String userId);
-
-    int insertMember(UserDTO member);
 
     int insertAuthorityToMember(AuthorityDTO auth);
 
@@ -29,7 +18,4 @@ public interface MemberMapper {
 
     int deleteAllAuthorityToMember(String userId);
 
-    int disableMember(String userId);
-
-    int enableMember(String userId);
 }

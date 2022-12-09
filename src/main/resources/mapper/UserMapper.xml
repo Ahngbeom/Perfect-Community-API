@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.zerock.mapper.MemberMapper">
+<mapper namespace="org.zerock.mapper.UserMapper">
     <resultMap id="memberMap" type="org.zerock.DTO.UserDTO">
         <id property="userId" column="userid"/>
         <result property="userId" column="userid"/>
@@ -17,67 +17,95 @@
 
     <resultMap id="authMap" type="org.zerock.DTO.AuthorityDTO">
         <result property="userId" column="userid"/>
-        <result property="authority" column="authority" />
+        <result property="authority" column="authority"/>
     </resultMap>
 
     <select id="readMemberByUserId" resultMap="memberMap">
         select users.userid, password, username, enabled, regDate, updateDate, authority
-        from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
+        from users
+                 LEFT OUTER JOIN users_authorities on users.userid = users_authorities.userid
         where users.userid = #{userId};
     </select>
 
     <select id="readMemberByUserName" resultMap="memberMap">
         select users.userid, password, username, enabled, regDate, updateDate, authority
-        from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
+        from users
+                 LEFT OUTER JOIN users_authorities on users.userid = users_authorities.userid
         where users.username = #{userName};
     </select>
 
     <select id="readAllMember" resultMap="memberMap">
-        select users.userid, password, username, enabled, regDate, updateDate, authority, authorities.userid
-        from users LEFT OUTER JOIN authorities on users.userid = authorities.userid
+        select users.userid,
+               password,
+               username,
+               enabled,
+               regDate,
+               updateDate,
+               authority,
+               users_authorities.userid
+        from users
+                 LEFT OUTER JOIN users_authorities on users.userid = users_authorities.userid
         order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.userid asc;
     </select>
 
     <select id="readAuthMember" resultType="org.zerock.DTO.AuthorityDTO">
         select userid, authority
-        from authorities
+        from users_authorities
         where userid like #{userId};
     </select>
 
-    <delete id="deleteAuthOfSpecificMember">
-        delete
-        from authorities
-        where authorities.userid like #{userId};
-    </delete>
-
-    <delete id="deleteMember">
+    <delete id="deleteUser">
         delete
         from users
         where users.userid like #{userId};
     </delete>
 
     <insert id="insertMember" parameterType="org.zerock.DTO.UserDTO">
-        insert into users(userid, password, username) values(#{userId}, #{password}, #{userName});
+        insert into users(userid, password, username)
+        values (#{userId}, #{password}, #{userName});
     </insert>
 
+    <update id="updateUser" parameterType="org.zerock.DTO.UserDTO">
+        update users
+        set password = #{password},
+            username = #{userName}
+        where userid = #{userId};
+    </update>
+
     <insert id="insertAuthorityToMember" parameterType="org.zerock.DTO.AuthorityDTO">
-        insert into authorities(userid, authority) values(#{userId}, #{authority});
+        insert into users_authorities(userid, authority)
+        values (#{userId}, #{authority});
     </insert>
 
     <delete id="deleteOneAuthorityToMember">
-        delete from authorities where userid like #{userId} and authority like #{authority};
+        delete
+        from users_authorities
+        where userid like #{userId}
+          and authority like #{authority};
     </delete>
 
     <delete id="deleteAllAuthorityToMember">
-        delete from authorities where userid like #{userId};
+        delete
+        from users_authorities
+        where userid like #{userId};
     </delete>
 
     <update id="disableMember">
-        update users set enabled = false where userid like #{userId};
+        update users
+        set enabled = false
+        where userid like #{userId};
     </update>
 
     <update id="enableMember">
-        update users set enabled = true where userid like #{userId};
+        update users
+        set enabled = true
+        where userid like #{userId};
     </update>
+
+    <select id="getEncodePassword" resultType="String">
+        select password
+        from users
+        where userid = #{userId};
+    </select>
 
 </mapper>

@@ -8,8 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.DTO.PostsDTO;
+import org.zerock.service.AuthService;
 import org.zerock.service.BoardService;
-import org.zerock.service.MemberService;
+import org.zerock.service.UserService;
 
 import java.security.Principal;
 
@@ -20,7 +21,8 @@ public class BoardAPIController {
 
     private static final Logger log = LogManager.getLogger();
     private final BoardService boardService;
-    private final MemberService memberService;
+    private final UserService userService;
+    private final AuthService authService;
 
     @GetMapping(value = {"/list", "/"})
     public ResponseEntity<?> boardList(@RequestParam(defaultValue = "1") int page) {
@@ -150,7 +152,7 @@ public class BoardAPIController {
         try {
             if (principal == null)
                 return ResponseEntity.ok(boardService.postHasPassword(bno));
-            else if (memberService.hasAdminRole(principal.getName())) {
+            else if (authService.hasAdminRole(principal.getName())) {
                 return ResponseEntity.ok("isAdmin");
             }
         } catch (Exception e) {

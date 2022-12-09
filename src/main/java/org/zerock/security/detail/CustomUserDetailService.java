@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.stereotype.Service;
 import org.zerock.DTO.UserDTO;
-import org.zerock.mapper.MemberMapper;
+import org.zerock.mapper.UserMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private static final Logger log = LogManager.getLogger();
 
-    private final MemberMapper mapper;
+    private final UserMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

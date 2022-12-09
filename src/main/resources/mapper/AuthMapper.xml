@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.AuthMapper">
+    <resultMap id="authorityMap" type="org.zerock.DTO.AuthorityDTO">
+        <result property="userId" column="userid" />
+        <result property="authList" column="authority" />
+    </resultMap>
+
+    <select id="readAuthMember" resultType="org.zerock.DTO.AuthorityDTO">
+        select userid, authority
+        from users_authorities
+        where userid like #{userId};
+    </select>
+
+    <insert id="insertAuthorityToMember" parameterType="org.zerock.DTO.AuthorityDTO">
+        insert into users_authorities(userid, authority)
+        values (#{userId}, #{authority});
+    </insert>
+
+    <delete id="deleteOneAuthorityToMember">
+        delete
+        from users_authorities
+        where userid like #{userId}
+          and authority like #{authority};
+    </delete>
+
+    <delete id="deleteAllAuthorityToMember">
+        delete
+        from users_authorities
+        where userid like #{userId};
+    </delete>
+
+</mapper>

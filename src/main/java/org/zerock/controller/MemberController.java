@@ -8,13 +8,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.security.detail.CustomUserDetails;
 import org.zerock.security.detail.CustomUserDetailService;
-import org.zerock.service.MemberService;
+import org.zerock.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -27,7 +25,7 @@ public class MemberController {
     private static final Logger log = LogManager.getLogger();
 
     private final CustomUserDetailService userDetailsService;
-    private final MemberService memberService;
+    private final UserService userService;
 
     public final boolean isAdmin(Principal principal) {
         if (principal == null)
@@ -55,7 +53,7 @@ public class MemberController {
     @GetMapping("/list")
     public ModelAndView list(RedirectAttributes redirectAttributes, ModelAndView mv, @AuthenticationPrincipal Principal principal, Authentication authentication) {
         if (isAdmin(principal)) {
-            mv.addObject("MemberList", memberService.getUserList());
+            mv.addObject("MemberList", userService.getUserList());
             mv.setViewName("/member/list");
         } else {
             redirectAttributes.addFlashAttribute("memberAlertType", "Account Access");
@@ -81,43 +79,5 @@ public class MemberController {
         return mv;
     }
 
-    @PostMapping("/disable")
-    public ModelAndView disable(ModelAndView mv, RedirectAttributes redirectAttributes, Principal principal, String userId) {
-        // 장기 미접속 계정 휴면 상태 전환 기능 필요
-        
-        if (isAdmin(principal)) {
-            if (memberService.disableUser(userId)) {
-                redirectAttributes.addFlashAttribute("memberAlertType", "Account Disabled");
-                redirectAttributes.addFlashAttribute("memberAlertStatus", "SUCCESS");
-//                    redirectAttributes.addFlashAttribute("userId", userId);
-                mv.setViewName("redirect:/member/list");
-            }
-        } else if (principal != null) {
-            log.warn("You don't have that [ADMIN] permission.");
-            mv.setViewName("redirect:/");
-        } else {
-            log.warn("Login required.");
-            mv.setViewName("redirect:/login");
-        }
-        return mv;
-    }
 
-    @PostMapping("/enable")
-    public ModelAndView enable(ModelAndView mv, RedirectAttributes redirectAttributes, Principal principal, String userId) {
-        if (isAdmin(principal)) {
-            if (memberService.enableUser(userId)) {
-                redirectAttributes.addFlashAttribute("memberAlertType", "Account Enabled");
-                redirectAttributes.addFlashAttribute("memberAlertStatus", "SUCCESS");
-//                    redirectAttributes.addFlashAttribute("userId", userId);
-                mv.setViewName("redirect:/member/list");
-            }
-        } else if (principal != null) {
-            log.warn("You don't have that [ADMIN] permission.");
-            mv.setViewName("redirect:/");
-        } else {
-            log.warn("Login required.");
-            mv.setViewName("redirect:/login");
-        }
-        return mv;
-    }
 }

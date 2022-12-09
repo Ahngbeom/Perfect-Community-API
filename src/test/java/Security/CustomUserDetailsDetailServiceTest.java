@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.mapper.MemberMapper;
+import org.zerock.mapper.UserMapper;
 import org.zerock.security.detail.CustomUserDetailService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +27,7 @@ class CustomUserDetailsDetailServiceTest {
 
     @Mock
     @Autowired
-    private MemberMapper mapper;
+    private UserMapper mapper;
 
     @BeforeEach
     void setUp() {

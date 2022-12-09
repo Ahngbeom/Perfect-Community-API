@@ -75,7 +75,7 @@ public class MemberTests {
 
     @Test
     public void testInsertAuth() {
-        String sql = "insert into authorities(userid, authority) values(?,?)";
+        String sql = "insert into users_authorities(userid, authority) values(?,?)";
 
         for (int i = 0; i < 10; i++) {
             Connection con = null;
