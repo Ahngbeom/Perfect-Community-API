@@ -31,8 +31,8 @@ class BoardPosts {
 
     @Test
     void registerPostsDummy() {
-        for (int i = 0; i < 100; i++) {
-            PostsDTO board = new PostsDTO("TEST " + i, "TEST " + i, "TESTER", null);
+        for (int i = 1; i <= 100; i++) {
+            PostsDTO board = new PostsDTO("TEST " + i, "TEST " + i, "TESTER");
             service.registerBoard(board);
 //            logger.info(service.getBoardByBno(board.getBno()));
             logger.info(board);

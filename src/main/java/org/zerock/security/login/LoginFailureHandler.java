@@ -28,7 +28,7 @@ public class LoginFailureHandler extends JSONConverterForAJAX implements Authent
 //                request.getSession().setAttribute("signAlertStatus", "FAILURE");
             log.error("Login Failed: " + exception.getLocalizedMessage());
 //            response.sendRedirect("/login");
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, exception.getLocalizedMessage());
+            response.sendRedirect("/error?" + exception.getMessage());
         } catch (DisabledException e) {
             log.warn(e.getLocalizedMessage());
         }
