@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.board.api.DTO.PostsDTO;
+import com.board.api.DTO.PostDTO;
 import com.board.api.DTO.UserDTO;
 
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ class PostsCRUDMapperTest {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
-    private PostsCRUD_Mapper postsCRUDMapper;
+    private PostCRUD_Mapper postsCRUDMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -44,7 +44,7 @@ class PostsCRUDMapperTest {
 
     @Test
     void testSelectBoard() {
-        PostsDTO board = postsCRUDMapper.selectBoardByBno(1);
+        PostDTO board = postsCRUDMapper.selectBoardByBno(1);
         logger.info(board);
         logger.info(board.getRegDate());
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
@@ -54,14 +54,14 @@ class PostsCRUDMapperTest {
 
     @Test
     void testInsertBoard() {
-        PostsDTO board = new PostsDTO("아", "잠깐만", "기둘", null);
+        PostDTO board = new PostDTO("아", "잠깐만", "기둘", null);
         postsCRUDMapper.insertBoard(board);
         logger.info(postsCRUDMapper.selectBoardByBno(board.getBno()));
     }
 
     @Test
     void testUpdateBoard() {
-        PostsDTO board = postsCRUDMapper.selectBoardByBno(6);
+        PostDTO board = postsCRUDMapper.selectBoardByBno(6);
         board.setTitle("다시다시");
         board.setContents("해볼게게");
         board.setWriter("잠깐만만");
@@ -71,7 +71,7 @@ class PostsCRUDMapperTest {
 
     @Test
     void testDeleteBoard() {
-        PostsDTO board = postsCRUDMapper.selectBoardByBno(6);
+        PostDTO board = postsCRUDMapper.selectBoardByBno(6);
 
         logger.info(postsCRUDMapper.deleteBoard(board.getBno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }
@@ -83,7 +83,7 @@ class PostsCRUDMapperTest {
 
     @Test
     void testAuthenticateForPosts() {
-        PostsDTO board = postsCRUDMapper.selectBoardByBno(1);
+        PostDTO board = postsCRUDMapper.selectBoardByBno(1);
         UserDTO member = userMapper.readMemberByUserId("tester2");
         logger.info(postsCRUDMapper.authenticateForPosts(board, member));
     }

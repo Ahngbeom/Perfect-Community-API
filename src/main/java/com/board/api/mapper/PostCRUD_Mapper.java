@@ -3,28 +3,28 @@ package com.board.api.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import com.board.api.DTO.PostsDTO;
+import com.board.api.DTO.PostDTO;
 import com.board.api.DTO.UserDTO;
 
 import java.util.List;
 
 @Repository
 @Mapper
-public interface PostsCRUD_Mapper {
+public interface PostCRUD_Mapper {
 
     long countBoard();
 
-    List<PostsDTO> selectBoardList();
+    List<PostDTO> selectBoardList();
 
-    List<PostsDTO> selectBoardListWithPage(int page);
+    List<PostDTO> selectBoardListWithPage(int page);
 
-    PostsDTO selectBoardByBno(long bno);
+    PostDTO selectBoardByBno(long bno);
 
-    int insertBoard(PostsDTO board);
+    int insertBoard(PostDTO board);
 
     int insertBoardWithPassword(@Param("bno") long bno, @Param("password") String password);
 
-    int updatePost(PostsDTO board);
+    int updatePost(PostDTO board);
 
     int updatePasswordForPost(@Param("bno") long bno, @Param("password") String password);
 
@@ -36,7 +36,7 @@ public interface PostsCRUD_Mapper {
 
     long initAutoIncrement();
 
-    PostsDTO authenticateForPosts(@Param("board") PostsDTO board, @Param("member") UserDTO member);
+    PostDTO authenticateForPosts(@Param("board") PostDTO board, @Param("member") UserDTO member);
 
     String getPostPassword(long bno);
 }

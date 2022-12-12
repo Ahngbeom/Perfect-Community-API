@@ -9,8 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.board.api.DTO.PostsDTO;
-import com.board.api.service.board.PostsCRUD_Service;
+import com.board.api.DTO.PostDTO;
+import com.board.api.service.board.PostCRUD_Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +21,7 @@ class CRUDServiceTest {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
-    private PostsCRUD_Service service;
+    private PostCRUD_Service service;
 
 
     @BeforeEach
@@ -56,14 +56,14 @@ class CRUDServiceTest {
 
     @Test
     void registerBoard() {
-        PostsDTO board = new PostsDTO("짜잔", "내가", "돌아왔다", null);
+        PostDTO board = new PostDTO("짜잔", "내가", "돌아왔다", null);
         service.registerBoard(board);
         logger.info(service.getBoardByBno(board.getBno()));
     }
 
     @Test
     void modifyBoard() {
-        PostsDTO board = service.getBoardByBno(7);
+        PostDTO board = service.getBoardByBno(7);
         board.setContents("내가 돌아왔다");
         board.setWriter("잭스");
         service.modifyPost(board);

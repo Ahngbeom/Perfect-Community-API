@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class PostsDTO {
+public class PostDTO {
 
     private long    bno;
 
@@ -19,8 +19,6 @@ public class PostsDTO {
 
     @NonNull
     private String  writer;
-
-    private String boardPassword;
 
 // Java 8 이전
 //    private Date    regDate;
@@ -35,21 +33,19 @@ public class PostsDTO {
 
     private UserDTO writtenByMember;
 
-    public PostsDTO() {    }
+    public PostDTO() {    }
 
-    public PostsDTO(@NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword) {
+    public PostDTO(@NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
-        this.boardPassword = boardPassword;
     }
 
-    public PostsDTO(long bno, @NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword, LocalDateTime regDate, LocalDateTime updateDate) {
+    public PostDTO(long bno, @NonNull String title, @NonNull String contents, @NonNull String writer, String boardPassword, LocalDateTime regDate, LocalDateTime updateDate) {
         this.bno = bno;
         this.title = title;
         this.contents = contents;
         this.writer = writer;
-        this.boardPassword = boardPassword;
         this.regDate = regDate;
         this.updateDate = updateDate;
     }
@@ -68,10 +64,6 @@ public class PostsDTO {
 
     public void setWriter(String writer) {
         this.writer = writer;
-    }
-
-    public void setBoardPassword(String boardPassword) {
-        this.boardPassword = boardPassword;
     }
 
     public void setDateToToday(String dateToToday) {

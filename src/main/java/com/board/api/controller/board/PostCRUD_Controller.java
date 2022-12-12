@@ -5,16 +5,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.board.api.DTO.PostsDTO;
-import com.board.api.service.board.PostsCRUD_Service;
+import com.board.api.DTO.PostDTO;
+import com.board.api.service.board.PostCRUD_Service;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/board")
-public class PostsCRUD_Controller {
+public class PostCRUD_Controller {
 
     private static final Logger log = LogManager.getLogger();
-    private final PostsCRUD_Service CRUDService;
+    private final PostCRUD_Service CRUDService;
 
     @GetMapping(value = {"/list", "/"})
     public ResponseEntity<?> boardList(@RequestParam(defaultValue = "1") int page) {
@@ -37,7 +37,7 @@ public class PostsCRUD_Controller {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> register(PostsDTO board) {
+    public ResponseEntity<?> register(PostDTO board) {
         try {
             CRUDService.registerBoard(board);
         } catch (Exception e) {
@@ -48,14 +48,14 @@ public class PostsCRUD_Controller {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> modification(PostsDTO postsDTO) {
+    public ResponseEntity<?> modification(PostDTO postDTO) {
         try {
-            CRUDService.modifyPost(postsDTO);
+            CRUDService.modifyPost(postDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(postsDTO.getBno());
+        return ResponseEntity.ok(postDTO.getBno());
     }
 
     @PostMapping("/remove")

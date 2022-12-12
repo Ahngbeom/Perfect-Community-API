@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.api.mapper.PostSearchMapper">
+
+    <resultMap id="boardMap" type="com.board.api.DTO.PostDTO">
+        <id property="bno" column="bno"/>
+        <result property="bno" column="bno"/>
+        <result property="title" column="title"/>
+        <result property="contents" column="contents"/>
+        <result property="writer" column="writer"/>
+        <result property="regDate" column="regDate"/>
+        <result property="updateDate" column="updateDate"/>
+        <collection property="writtenByMember" resultMap="memberMap"/>
+    </resultMap>
+
+    <resultMap id="memberMap" type="com.board.api.DTO.UserDTO">
+        <id property="userId" column="userid"/>
+        <result property="userId" column="userid"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="username"/>
+        <result property="enabled" column="enabled"/>
+        <result property="regDate" column="regDate"/>
+        <result property="updateDate" column="updateDate"/>
+    </resultMap>
+
+    <select id="searchPostWithMultipleConditions" resultType="com.board.api.DTO.PostDTO" parameterType="java.util.List">
+        select bno, title, contents, writer, regdate, updatedate
+        from board
+        <where>
+            <foreach collection="list" item="condition" index="index" separator=" AND " open="(" close=")">
+                <bind name="containsKeyword" value="'%' + condition.getKeyword() + '%'"/>
+                <choose>
+                    <when test="condition.logic_operator == null">
+                        <if test="condition.targets[0] == 'TITLE'">
+                            title like #{containsKeyword}
+                        </if>
+                        <if test="condition.targets[0] == 'CONTENTS'">
+                            contents like #{containsKeyword}
+                        </if>
+                        <if test="condition.targets[0] == 'WRITER'">
+                            writer like #{containsKeyword}
+                        </if>
+                    </when>
+                    <when test="condition.logic_operator == 'OR' or condition.logic_operator == '||'">
+                        <foreach collection="condition.targets" item="target" index="index" separator="OR">
+                            <if test="target == 'TITLE'">
+                                title like #{containsKeyword}
+                            </if>
+                            <if test="target == 'CONTENTS'">
+                                contents like #{containsKeyword}
+                            </if>
+                            <if test="target == 'WRITER'">
+                                writer like #{containsKeyword}
+                            </if>
+                        </foreach>
+                    </when>
+                    <when test='condition.logic_operator == "AND" or condition.logic_operator == "&amp;&amp;"'>
+                        <foreach collection="condition.targets" item="target" index="index" separator="AND">
+                            <if test="target == 'TITLE'">
+                                title like #{containsKeyword}
+                            </if>
+                            <if test="target == 'CONTENTS'">
+                                contents like #{containsKeyword}
+                            </if>
+                            <if test="target == 'WRITER'">
+                                writer like #{containsKeyword}
+                            </if>
+                        </foreach>
+                    </when>
+                </choose>
+            </foreach>
+        </where>
+        order by updatedate DESC;
+    </select>
+
+</mapper>

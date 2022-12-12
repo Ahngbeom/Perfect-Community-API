@@ -5,26 +5,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.board.api.DTO.PostsDTO;
-import com.board.api.DTO.PostsSearchDTO;
-import com.board.api.service.board.PostsSearchService;
+import com.board.api.DTO.PostDTO;
+import com.board.api.DTO.PostSearchDTO;
+import com.board.api.service.board.PostSearchService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 //@RequestMapping("")
-public class PostsSearchController {
+public class PostSearchController {
 
     private static final Logger log = LogManager.getLogger();
-    private final PostsSearchService postsSearchService;
+    private final PostSearchService postSearchService;
 
-    @PostMapping("/api/board/search")
-    public ResponseEntity<?> searchPosts(@RequestBody PostsSearchDTO searchDTO) {
-        log.info(searchDTO);
-        List<PostsDTO> postsSearchResult;
+    @GetMapping("/api/board/search")
+    public ResponseEntity<?> searchPosts(@RequestBody List<PostSearchDTO> searchConditions) {
+        List<PostDTO> postsSearchResult;
         try {
-            postsSearchResult = postsSearchService.searchBoardByKeyword(searchDTO);
+            postsSearchResult = postSearchService.searchPostByKeyword(searchConditions);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

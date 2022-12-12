@@ -1,10 +1,10 @@
 package com.board.api.controller;
 
-import com.board.api.DTO.PostsDTO;
-import com.board.api.controller.board.PostsCRUD_Controller;
+import com.board.api.DTO.PostDTO;
+import com.board.api.controller.board.PostCRUD_Controller;
 import com.board.api.security.detail.CustomUserDetailService;
 import com.board.api.security.detail.CustomUserDetails;
-import com.board.api.service.board.PostsCRUD_Service;
+import com.board.api.service.board.PostCRUD_Service;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,10 +49,10 @@ class BoardControllerTest {
 
     @InjectMocks
     @Autowired
-    private PostsCRUD_Controller controller;
+    private PostCRUD_Controller controller;
 
     @Mock
-    private PostsCRUD_Service CRUDService;
+    private PostCRUD_Service CRUDService;
 
 
     private MockMvc mockMvc;
@@ -136,7 +136,7 @@ class BoardControllerTest {
 
     @Test
     void testRegistration() throws Exception {
-        PostsDTO board = new PostsDTO("안녕하세요", "신입생 안범준입니다.", "안범준", (String) null);
+        PostDTO board = new PostDTO("안녕하세요", "신입생 안범준입니다.", "안범준", (String) null);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
                         .param("title", board.getTitle())

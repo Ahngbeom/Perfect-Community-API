@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.board.api.mapper.PostsCRUD_Mapper">
+<mapper namespace="com.board.api.mapper.PostCRUD_Mapper">
 
-    <resultMap id="boardMap" type="com.board.api.DTO.PostsDTO">
+    <resultMap id="boardMap" type="com.board.api.DTO.PostDTO">
         <id property="bno" column="bno"/>
         <result property="bno" column="bno"/>
         <result property="title" column="title"/>
@@ -30,26 +30,26 @@
         from board;
     </select>
 
-    <select id="selectBoardList" resultType="com.board.api.DTO.PostsDTO">
+    <select id="selectBoardList" resultType="com.board.api.DTO.PostDTO">
         select bno, title, contents, writer, regdate, updatedate
         from board
         order by updatedate, bno DESC;
     </select>
 
-    <select id="selectBoardListWithPage" resultType="com.board.api.DTO.PostsDTO">
+    <select id="selectBoardListWithPage" resultType="com.board.api.DTO.PostDTO">
         select bno, title, contents, writer, regdate, updatedate
         from board
         order by updatedate desc
         limit ${(page - 1) * 10}, 10;
     </select>
 
-    <select id="selectBoardByBno" resultType="com.board.api.DTO.PostsDTO">
+    <select id="selectBoardByBno" resultType="com.board.api.DTO.PostDTO">
         select bno, title, contents, writer, regdate, updatedate
         from board
         where bno = #{bno};
     </select>
 
-    <insert id="insertBoard" parameterType="com.board.api.DTO.PostsDTO" useGeneratedKeys="true" keyProperty="bno">
+    <insert id="insertBoard" parameterType="com.board.api.DTO.PostDTO" useGeneratedKeys="true" keyProperty="bno">
         insert into board (title, contents, writer)
         values (#{title}, #{contents}, #{writer});
     </insert>
