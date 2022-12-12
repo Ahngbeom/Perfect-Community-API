@@ -29,7 +29,6 @@ public class PostSearchServiceImpl implements PostSearchService {
             if (postSearchDTO.getLogic_operator() != null)
                 postSearchDTO.setLogic_operator(postSearchDTO.getLogic_operator().toUpperCase());
             postSearchDTO.getTargets().replaceAll(String::toUpperCase);
-            log.info(searchConditions);
         }
         return postSearchMapper.searchPostWithMultipleConditions(searchConditions);
     }
