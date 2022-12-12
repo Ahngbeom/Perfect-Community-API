@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.api.mapper.PostsSearchMapper">
+
+    <resultMap id="boardMap" type="com.board.api.DTO.PostsDTO">
+        <id property="bno" column="bno"/>
+        <result property="bno" column="bno"/>
+        <result property="title" column="title"/>
+        <result property="contents" column="contents"/>
+        <result property="writer" column="writer"/>
+        <result property="regDate" column="regDate"/>
+        <result property="updateDate" column="updateDate"/>
+        <collection property="writtenByMember" resultMap="memberMap"/>
+    </resultMap>
+
+    <resultMap id="memberMap" type="com.board.api.DTO.UserDTO">
+        <id property="userId" column="userid"/>
+        <result property="userId" column="userid"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="username"/>
+        <result property="enabled" column="enabled"/>
+        <result property="regDate" column="regDate"/>
+        <result property="updateDate" column="updateDate"/>
+    </resultMap>
+
+    <select id="selectBoardByKeyword" resultType="com.board.api.DTO.PostsDTO">
+        select bno, title, contents, writer, regdate, updatedate
+        from board
+        where bno > 0
+        <if test="type.title">
+            and title like concat('%', #{keyword}, '%')
+        </if>
+        <if test="type.contents">
+            and contents like concat('%', #{keyword}, '%')
+        </if>
+        <if test="type.writer">
+            and writer like concat('%', #{keyword}, '%')
+        </if>
+        order by updatedate DESC;
+    </select>
+
+</mapper>

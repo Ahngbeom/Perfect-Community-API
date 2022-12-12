@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.api.mapper.PostsCRUD_Mapper">
+
+    <resultMap id="boardMap" type="com.board.api.DTO.PostsDTO">
+        <id property="bno" column="bno"/>
+        <result property="bno" column="bno"/>
+        <result property="title" column="title"/>
+        <result property="contents" column="contents"/>
+        <result property="writer" column="writer"/>
+        <result property="regDate" column="regDate"/>
+        <result property="updateDate" column="updateDate"/>
+        <collection property="writtenByMember" resultMap="memberMap"/>
+    </resultMap>
+
+    <resultMap id="memberMap" type="com.board.api.DTO.UserDTO">
+        <id property="userId" column="userid"/>
+        <result property="userId" column="userid"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="username"/>
+        <result property="enabled" column="enabled"/>
+        <result property="regDate" column="regDate"/>
+        <result property="updateDate" column="updateDate"/>
+    </resultMap>
+
+    <select id="countBoard" resultType="long">
+        select count(*) as count
+        from board;
+    </select>
+
+    <select id="selectBoardList" resultType="com.board.api.DTO.PostsDTO">
+        select bno, title, contents, writer, regdate, updatedate
+        from board
+        order by updatedate, bno DESC;
+    </select>
+
+    <select id="selectBoardListWithPage" resultType="com.board.api.DTO.PostsDTO">
+        select bno, title, contents, writer, regdate, updatedate
+        from board
+        order by updatedate desc
+        limit ${(page - 1) * 10}, 10;
+    </select>
+
+    <select id="selectBoardByBno" resultType="com.board.api.DTO.PostsDTO">
+        select bno, title, contents, writer, regdate, updatedate
+        from board
+        where bno = #{bno};
+    </select>
+
+    <insert id="insertBoard" parameterType="com.board.api.DTO.PostsDTO" useGeneratedKeys="true" keyProperty="bno">
+        insert into board (title, contents, writer)
+        values (#{title}, #{contents}, #{writer});
+    </insert>
+
+    <insert id="insertBoardWithPassword">
+        insert into board_password (bno, password)
+        values (#{bno}, #{password});
+    </insert>
+
+    <update id="updatePost">
+        update board
+        set title      = #{title},
+            contents    = #{contents},
+            writer     = #{writer},
+            updatedate = NOW()
+        where bno = #{bno}
+    </update>
+
+    <update id="updatePasswordForPost">
+        update board_password
+        set password = #{password}
+        where bno = #{bno}
+    </update>
+
+    <delete id="deleteBoard">
+        delete
+        from board
+        where bno = #{bno}
+    </delete>
+
+    <delete id="deleteAllBoard">
+        delete
+        from board
+        where bno > 0
+    </delete>
+
+    <delete id="deletePasswordForPost">
+        delete from board_password
+        where bno = #{bno};
+    </delete>
+
+    <select id="initAutoIncrement" resultType="long">
+        alter table board
+            auto_increment = 1;
+        set @COUNT = 0;
+        update board
+        set bno = @COUNT := @COUNT + 1
+        where bno > 0;
+        select Auto_increment
+        from information_schema.tables
+        where TABLE_SCHEMA = 'board_db'
+          and TABLE_NAME = 'board';
+    </select>
+
+    <select id="authenticateForPosts" resultMap="boardMap">
+        select * from board inner join users on board.writer = users.username
+        where bno = #{board.bno} and userid = #{member.userId};
+    </select>
+    
+    <select id="getPostPassword" resultType="String">
+        select password from board_password where bno = #{bno};
+    </select>
+</mapper>

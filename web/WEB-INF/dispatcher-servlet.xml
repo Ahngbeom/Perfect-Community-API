@@ -12,14 +12,14 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="org.zerock.controller" />
-    <context:component-scan base-package="org.zerock.service" />
-    <context:component-scan base-package="org.zerock.mapper" />
-    <context:component-scan base-package="org.zerock.DTO" />
-    <context:component-scan base-package="org.zerock.security"/>
-    <context:component-scan base-package="org.zerock.utils"/>
+    <context:component-scan base-package="com.board.api.controller" />
+    <context:component-scan base-package="com.board.api.service" />
+    <context:component-scan base-package="com.board.api.mapper" />
+    <context:component-scan base-package="com.board.api.DTO" />
+    <context:component-scan base-package="com.board.api.security"/>
+    <context:component-scan base-package="com.board.api.utils"/>
 
-    <mybatis:scan base-package="org.zerock.mapper" />
+    <mybatis:scan base-package="com.board.api.mapper" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 <!--    <mvc:resources mapping="/favicon.ico" location="/resources/"/>-->

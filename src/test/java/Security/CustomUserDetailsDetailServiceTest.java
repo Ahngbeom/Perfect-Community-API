@@ -10,8 +10,8 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.zerock.mapper.UserMapper;
-import org.zerock.security.detail.CustomUserDetailService;
+import com.board.api.mapper.UserMapper;
+import com.board.api.security.detail.CustomUserDetailService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
