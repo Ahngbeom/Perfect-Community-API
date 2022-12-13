@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.api.mapper.board.BoardCRUD_Mapper">
+
+    <resultMap id="boardMap" type="com.board.api.dto.board.BoardDTO">
+        <result column="bno" property="bno"/>
+        <result column="title" property="title"/>
+        <result column="comment" property="comment"/>
+    </resultMap>
+
+    <select id="getBoardList" resultMap="boardMap">
+        select bno, title, comment
+        from boards
+        order by bno;
+    </select>
+
+    <insert id="createBoard" parameterType="com.board.api.dto.board.BoardDTO" useGeneratedKeys="true" keyProperty="bno">
+        insert into boards (title, comment)
+        values (#{title}, #{comment})
+    </insert>
+</mapper>
