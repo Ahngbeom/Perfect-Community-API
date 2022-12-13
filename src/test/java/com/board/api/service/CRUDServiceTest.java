@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.board.api.dto.PostDTO;
-import com.board.api.service.board.PostCRUD_Service;
+import com.board.api.service.post.PostCRUD_Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 

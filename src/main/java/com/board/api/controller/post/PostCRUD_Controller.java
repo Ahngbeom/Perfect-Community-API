@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.board.api.dto.PostDTO;
-import com.board.api.service.board.PostCRUD_Service;
+import com.board.api.service.post.PostCRUD_Service;
 
 import javax.naming.AuthenticationException;
 import java.security.Principal;

@@ -1,4 +1,4 @@
-package com.board.api.service.board;
+package com.board.api.service.post;
 
 import com.board.api.dto.PostDTO;
 import com.board.api.dto.PostListOptDTO;

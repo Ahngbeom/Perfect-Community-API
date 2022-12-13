@@ -4,7 +4,7 @@ import com.board.api.dto.PostDTO;
 import com.board.api.controller.post.PostCRUD_Controller;
 import com.board.api.security.detail.CustomUserDetailService;
 import com.board.api.security.detail.CustomUserDetails;
-import com.board.api.service.board.PostCRUD_Service;
+import com.board.api.service.post.PostCRUD_Service;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

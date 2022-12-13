@@ -1,4 +1,4 @@
-package com.board.api.service.board;
+package com.board.api.service.post;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;

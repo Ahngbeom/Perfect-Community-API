@@ -1,4 +1,4 @@
-package com.board.api.service.board;
+package com.board.api.service.post;
 
 import com.board.api.dto.PostListOptDTO;
 import lombok.RequiredArgsConstructor;

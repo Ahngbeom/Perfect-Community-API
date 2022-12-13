@@ -1,7 +1,7 @@
 package com.board.api.dummy;
 
 import com.board.api.dto.PostDTO;
-import com.board.api.service.board.PostCRUD_Service;
+import com.board.api.service.post.PostCRUD_Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
