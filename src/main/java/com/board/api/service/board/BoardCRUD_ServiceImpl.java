@@ -19,6 +19,11 @@ public class BoardCRUD_ServiceImpl implements BoardCRUD_Service {
     }
 
     @Override
+    public BoardDTO getBoardInfo(long bno) {
+        return mapper.getBoardInfo(bno);
+    }
+
+    @Override
     public void createBoard(BoardDTO boardDTO) throws RuntimeException {
         if (mapper.createBoard(boardDTO) != 1) {
             throw new RuntimeException("Failed to create board.");

@@ -16,6 +16,12 @@
         order by bno;
     </select>
 
+    <select id="getBoardInfo" resultMap="boardMap">
+        select bno, title, comment
+        from boards
+        where bno = #{bno};
+    </select>
+
     <insert id="createBoard" parameterType="com.board.api.dto.board.BoardDTO" useGeneratedKeys="true" keyProperty="bno">
         insert into boards (title, comment)
         values (#{title}, #{comment})

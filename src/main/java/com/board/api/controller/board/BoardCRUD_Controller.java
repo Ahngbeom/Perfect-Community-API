@@ -22,7 +22,7 @@ public class BoardCRUD_Controller {
 
     @GetMapping("/{boardNo}")
     public ResponseEntity<BoardDTO> getBoardInfo(@PathVariable long boardNo) {
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(service.getBoardInfo(boardNo));
     }
 
     @PostMapping("/create")

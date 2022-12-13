@@ -8,5 +8,7 @@ public interface BoardCRUD_Service {
 
     List<BoardDTO> getBoardList();
 
+    BoardDTO getBoardInfo(long bno);
+
     void createBoard(BoardDTO boardDTO);
 }
