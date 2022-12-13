@@ -1,12 +1,12 @@
 package com.board.api.service.board;
 
+import com.board.api.dto.PostListOptDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.board.api.DTO.PostDTO;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.PostDTO;
 import com.board.api.mapper.PostCRUD_Mapper;
 import com.board.api.utils.DateUtility;
 
@@ -22,38 +22,31 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
 
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public List<PostDTO> getBoardList() {
         return postsCRUDMapper.selectBoardList();
     }
 
     @Override
-    public List<PostDTO> getBoardListWithPage(int page) throws RuntimeException {
-        if (page < 0)
+    public List<PostDTO> getBoardListWithPage(PostListOptDTO postListOptions) {
+        if (postListOptions.getPage() < 0)
             throw new RuntimeException("Invalid page");
-        List<PostDTO> boardList = postsCRUDMapper.selectBoardListWithPage(page);
-//        boardList.forEach(board -> board.dateToTodayCalculator());
-        boardList.forEach(board -> board.setDateToToday(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate())));
-        return boardList;
+        return postsCRUDMapper.selectBoardListWithPage(postListOptions);
     }
 
     @Override
-    public PostDTO getBoardByBno(long bno) {
-        PostDTO posts = postsCRUDMapper.selectBoardByBno(bno);
+    public PostDTO getPostByBno(long bno) {
+        PostDTO posts = postsCRUDMapper.selectBoardByPno(bno);
         if (posts == null)
             throw new RuntimeException("There are no posts with that bno.");
         return posts;
     }
 
     @Override
-    public void registerBoard(PostDTO board) {
+    public void registerPost(PostDTO board) throws RuntimeException {
         log.warn(board);
-        int result;
-        result = postsCRUDMapper.insertBoard(board);
-        if (result == 0)
+        if (postsCRUDMapper.insertBoard(board) == 0)
             throw new RuntimeException("Failed to register post.");
-
     }
 
     @Override
@@ -62,12 +55,12 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
     }
 
     @Override
-    public void removeBoard(long bno) {
+    public void removePost(long bno) {
         postsCRUDMapper.deleteBoard(bno);
     }
 
     @Override
-    public int removeAllBoard() throws RuntimeException {
+    public int removeAllPost() throws RuntimeException {
         int result;
         if (countPosts() == 0) {
             throw new RuntimeException("Posts do not exist.");
@@ -75,7 +68,7 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
             result = postsCRUDMapper.deleteAllBoard();
             if (result == 0)
                 throw new RuntimeException("Failed to delete all posts");
-            if (initBnoValue() == 0)
+            if (initPnoValue() == 0)
                 throw new RuntimeException("Failure to initialize the bno value of the board");
         }
         return result;
@@ -87,13 +80,8 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
     }
 
     @Override
-    public long initBnoValue() {
+    public long initPnoValue() {
         return postsCRUDMapper.initAutoIncrement();
-    }
-
-    @Override
-    public PostDTO authenticateForPosts(PostDTO board, UserDTO member) {
-        return postsCRUDMapper.authenticateForPosts(board, member);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.board.api.service;
 
+import com.board.api.dto.PostListOptDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.board.api.DTO.PostDTO;
+import com.board.api.dto.PostDTO;
 import com.board.api.service.board.PostCRUD_Service;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,28 +47,28 @@ class CRUDServiceTest {
 
     @Test
     void getBoardListWithPage() {
-        service.getBoardListWithPage(2).forEach(logger::info);
+        service.getBoardListWithPage(new PostListOptDTO(1, "normal")).forEach(logger::info);
     }
 
     @Test
     void getBoard() {
-        logger.info(service.getBoardByBno(5));
+        logger.info(service.getPostByBno(5));
     }
 
     @Test
     void registerBoard() {
-        PostDTO board = new PostDTO("짜잔", "내가", "돌아왔다", null);
-        service.registerBoard(board);
-        logger.info(service.getBoardByBno(board.getBno()));
+        PostDTO board = new PostDTO("normal", "짜잔", "내가");
+        service.registerPost(board);
+        logger.info(service.getPostByBno(board.getPno()));
     }
 
     @Test
     void modifyBoard() {
-        PostDTO board = service.getBoardByBno(7);
+        PostDTO board = service.getPostByBno(7);
         board.setContents("내가 돌아왔다");
         board.setWriter("잭스");
         service.modifyPost(board);
-        logger.info(service.getBoardByBno(board.getBno()));
+        logger.info(service.getPostByBno(board.getPno()));
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.board.api.service;
 
 
-import com.board.api.DTO.AuthorityDTO;
+import com.board.api.dto.AuthorityDTO;
 
 import java.util.List;
 

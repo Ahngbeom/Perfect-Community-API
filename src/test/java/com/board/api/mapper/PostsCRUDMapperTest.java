@@ -8,8 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.board.api.DTO.PostDTO;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.PostDTO;
 
 import java.text.SimpleDateFormat;
 
@@ -39,12 +38,12 @@ class PostsCRUDMapperTest {
 
     @Test
     void testSelectBoardListWithPage() {
-        postsCRUDMapper.selectBoardListWithPage(2).forEach(logger::info);
+//        postsCRUDMapper.selectBoardListWithPage(new PostListOptDTO(1, "normal")).forEach(logger::info);
     }
 
     @Test
     void testSelectBoard() {
-        PostDTO board = postsCRUDMapper.selectBoardByBno(1);
+        PostDTO board = postsCRUDMapper.selectBoardByPno(1);
         logger.info(board);
         logger.info(board.getRegDate());
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
@@ -54,42 +53,31 @@ class PostsCRUDMapperTest {
 
     @Test
     void testInsertBoard() {
-        PostDTO board = new PostDTO("아", "잠깐만", "기둘", null);
+        PostDTO board = new PostDTO("normal", "아", "잠깐만");
         postsCRUDMapper.insertBoard(board);
-        logger.info(postsCRUDMapper.selectBoardByBno(board.getBno()));
+        logger.info(postsCRUDMapper.selectBoardByPno(board.getPno()));
     }
 
     @Test
     void testUpdateBoard() {
-        PostDTO board = postsCRUDMapper.selectBoardByBno(6);
+        PostDTO board = postsCRUDMapper.selectBoardByPno(6);
         board.setTitle("다시다시");
         board.setContents("해볼게게");
         board.setWriter("잠깐만만");
         logger.info(postsCRUDMapper.updatePost(board));
-        logger.info(postsCRUDMapper.selectBoardByBno(board.getBno()));
+        logger.info(postsCRUDMapper.selectBoardByPno(board.getPno()));
     }
 
     @Test
     void testDeleteBoard() {
-        PostDTO board = postsCRUDMapper.selectBoardByBno(6);
+        PostDTO board = postsCRUDMapper.selectBoardByPno(6);
 
-        logger.info(postsCRUDMapper.deleteBoard(board.getBno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
+        logger.info(postsCRUDMapper.deleteBoard(board.getPno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }
 
     @Test
-    void initBno() {
+    void initPno() {
         logger.info(postsCRUDMapper.initAutoIncrement());
     }
 
-    @Test
-    void testAuthenticateForPosts() {
-        PostDTO board = postsCRUDMapper.selectBoardByBno(1);
-        UserDTO member = userMapper.readMemberByUserId("tester2");
-        logger.info(postsCRUDMapper.authenticateForPosts(board, member));
-    }
-
-    @Test
-    void testPostHasPassword() {
-        logger.info(postsCRUDMapper.getPostPassword(3));
-    }
 }

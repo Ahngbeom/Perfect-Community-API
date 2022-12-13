@@ -1,16 +1,15 @@
-package com.board.api.controller.board;
+package com.board.api.controller.post;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.board.api.DTO.PostDTO;
-import com.board.api.DTO.PostSearchDTO;
+import com.board.api.dto.PostDTO;
+import com.board.api.dto.PostSearchDTO;
 import com.board.api.service.board.PostSearchService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +24,18 @@ public class PostSearchController {
         List<PostDTO> postsSearchResult;
         try {
             postsSearchResult = postSearchService.searchPostByKeyword(searchConditions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(postsSearchResult);
+    }
+
+    @GetMapping("/api/board/search/regex")
+    public ResponseEntity<?> searchPostsByRegex(@RequestBody List<String> searchConditionsRegex) {
+        List<PostDTO> postsSearchResult;
+        try {
+            postsSearchResult = postSearchService.searchPostByRegex(searchConditionsRegex);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

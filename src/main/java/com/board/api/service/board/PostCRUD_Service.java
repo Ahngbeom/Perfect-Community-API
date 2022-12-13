@@ -1,7 +1,7 @@
 package com.board.api.service.board;
 
-import com.board.api.DTO.PostDTO;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.PostDTO;
+import com.board.api.dto.PostListOptDTO;
 
 import java.util.List;
 
@@ -11,20 +11,18 @@ public interface PostCRUD_Service {
 
     List<PostDTO> getBoardList();
 
-    List<PostDTO> getBoardListWithPage(int page);
+    List<PostDTO> getBoardListWithPage(PostListOptDTO postListOptions);
 
-    PostDTO getBoardByBno(long bno);
+    PostDTO getPostByBno(long bno);
 
-    void registerBoard(PostDTO board);
+    void registerPost(PostDTO board);
 
     void modifyPost(PostDTO board);
 
-    void removeBoard(long bno);
+    void removePost(long bno);
 
-    int removeAllBoard();
+    int removeAllPost();
 
-    long initBnoValue();
-
-    PostDTO authenticateForPosts(PostDTO board, UserDTO member);
+    long initPnoValue();
 
 }

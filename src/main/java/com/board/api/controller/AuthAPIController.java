@@ -1,6 +1,6 @@
 package com.board.api.controller;
 
-import com.board.api.DTO.AuthorityDTO;
+import com.board.api.dto.AuthorityDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

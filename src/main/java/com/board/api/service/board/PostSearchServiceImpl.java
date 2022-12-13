@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import com.board.api.DTO.PostDTO;
-import com.board.api.DTO.PostSearchDTO;
+import com.board.api.dto.PostDTO;
+import com.board.api.dto.PostSearchDTO;
 import com.board.api.mapper.PostSearchMapper;
 
 import java.util.*;
@@ -30,6 +30,11 @@ public class PostSearchServiceImpl implements PostSearchService {
                 postSearchDTO.setLogic_operator(postSearchDTO.getLogic_operator().toUpperCase());
             postSearchDTO.getTargets().replaceAll(String::toUpperCase);
         }
-        return postSearchMapper.searchPostWithMultipleConditions(searchConditions);
+        return postSearchMapper.searchPostByKeyword(searchConditions);
+    }
+
+    @Override
+    public List<PostDTO> searchPostByRegex(List<String> searchConditionsRegex) {
+        return postSearchMapper.searchPostByRegex(searchConditionsRegex);
     }
 }

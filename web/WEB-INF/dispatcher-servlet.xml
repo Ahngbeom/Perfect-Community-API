@@ -15,7 +15,7 @@
     <context:component-scan base-package="com.board.api.controller" />
     <context:component-scan base-package="com.board.api.service" />
     <context:component-scan base-package="com.board.api.mapper" />
-    <context:component-scan base-package="com.board.api.DTO" />
+    <context:component-scan base-package="com.board.api.dto" />
     <context:component-scan base-package="com.board.api.security"/>
     <context:component-scan base-package="com.board.api.utils"/>
 

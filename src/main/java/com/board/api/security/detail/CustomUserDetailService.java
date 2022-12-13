@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.stereotype.Service;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.UserDTO;
 import com.board.api.mapper.UserMapper;
 
 @Service

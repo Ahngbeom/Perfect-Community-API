@@ -1,10 +1,9 @@
 package com.board.api.mapper;
 
+import com.board.api.dto.PostListOptDTO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import com.board.api.DTO.PostDTO;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.PostDTO;
 
 import java.util.List;
 
@@ -16,27 +15,18 @@ public interface PostCRUD_Mapper {
 
     List<PostDTO> selectBoardList();
 
-    List<PostDTO> selectBoardListWithPage(int page);
+    List<PostDTO> selectBoardListWithPage(PostListOptDTO postListOptions);
 
-    PostDTO selectBoardByBno(long bno);
+    PostDTO selectBoardByPno(long pno);
 
     int insertBoard(PostDTO board);
 
-    int insertBoardWithPassword(@Param("bno") long bno, @Param("password") String password);
-
     int updatePost(PostDTO board);
-
-    int updatePasswordForPost(@Param("bno") long bno, @Param("password") String password);
 
     int deleteBoard(long bno);
 
     int deleteAllBoard();
 
-    int deletePasswordForPost(long bno);
-
     long initAutoIncrement();
 
-    PostDTO authenticateForPosts(@Param("board") PostDTO board, @Param("member") UserDTO member);
-
-    String getPostPassword(long bno);
 }

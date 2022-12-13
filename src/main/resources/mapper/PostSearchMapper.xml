@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.api.mapper.PostSearchMapper">
 
-    <resultMap id="boardMap" type="com.board.api.DTO.PostDTO">
-        <id property="bno" column="bno"/>
-        <result property="bno" column="bno"/>
+    <resultMap id="boardMap" type="com.board.api.dto.PostDTO">
+        <id property="pno" column="pno"/>
+        <result property="pno" column="pno"/>
         <result property="title" column="title"/>
         <result property="contents" column="contents"/>
         <result property="writer" column="writer"/>
@@ -15,7 +15,7 @@
         <collection property="writtenByMember" resultMap="memberMap"/>
     </resultMap>
 
-    <resultMap id="memberMap" type="com.board.api.DTO.UserDTO">
+    <resultMap id="memberMap" type="com.board.api.dto.UserDTO">
         <id property="userId" column="userid"/>
         <result property="userId" column="userid"/>
         <result property="password" column="password"/>
@@ -25,9 +25,9 @@
         <result property="updateDate" column="updateDate"/>
     </resultMap>
 
-    <select id="searchPostWithMultipleConditions" resultType="com.board.api.DTO.PostDTO" parameterType="java.util.List">
-        select bno, title, contents, writer, regdate, updatedate
-        from board
+    <select id="searchPostByKeyword" resultType="com.board.api.dto.PostDTO" parameterType="java.util.List">
+        select pno, title, contents, writer, regdate, updatedate
+        from posts
         <where>
             <foreach collection="list" item="condition" index="index" separator=" AND " open="(" close=")">
                 <bind name="containsKeyword" value="'%' + condition.getKeyword() + '%'"/>
@@ -70,6 +70,19 @@
                         </foreach>
                     </when>
                 </choose>
+            </foreach>
+        </where>
+        order by updatedate DESC;
+    </select>
+
+    <select id="searchPostByRegex" resultType="com.board.api.dto.PostDTO" parameterType="java.util.List">
+        select pno, title, contents, writer, regdate, updatedate
+        from posts
+        <where>
+            <foreach collection="list" item="regexPattern" index="index" separator=" AND " open="(" close=")">
+                title REGEXP #{regexPattern}
+                OR contents like #{regexPattern}
+                OR writer like #{regexPattern}
             </foreach>
         </where>
         order by updatedate DESC;

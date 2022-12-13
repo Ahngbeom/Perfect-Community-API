@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.api.mapper.UserMapper">
-    <resultMap id="memberMap" type="com.board.api.DTO.UserDTO">
+    <resultMap id="memberMap" type="com.board.api.dto.UserDTO">
         <id property="userId" column="userid"/>
         <result property="userId" column="userid"/>
         <result property="password" column="password"/>
@@ -15,7 +15,7 @@
         </collection>
     </resultMap>
 
-    <resultMap id="authMap" type="com.board.api.DTO.AuthorityDTO">
+    <resultMap id="authMap" type="com.board.api.dto.AuthorityDTO">
         <result property="userId" column="userid"/>
         <result property="authority" column="authority"/>
     </resultMap>
@@ -48,7 +48,7 @@
         order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.userid asc;
     </select>
 
-    <select id="readAuthMember" resultType="com.board.api.DTO.AuthorityDTO">
+    <select id="readAuthMember" resultType="com.board.api.dto.AuthorityDTO">
         select userid, authority
         from users_authorities
         where userid like #{userId};
@@ -60,19 +60,19 @@
         where users.userid like #{userId};
     </delete>
 
-    <insert id="insertMember" parameterType="com.board.api.DTO.UserDTO">
+    <insert id="insertMember" parameterType="com.board.api.dto.UserDTO">
         insert into users(userid, password, username)
         values (#{userId}, #{password}, #{userName});
     </insert>
 
-    <update id="updateUser" parameterType="com.board.api.DTO.UserDTO">
+    <update id="updateUser" parameterType="com.board.api.dto.UserDTO">
         update users
         set password = #{password},
             username = #{userName}
         where userid = #{userId};
     </update>
 
-    <insert id="insertAuthorityToMember" parameterType="com.board.api.DTO.AuthorityDTO">
+    <insert id="insertAuthorityToMember" parameterType="com.board.api.dto.AuthorityDTO">
         insert into users_authorities(userid, authority)
         values (#{userId}, #{authority});
     </insert>

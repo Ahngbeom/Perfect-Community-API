@@ -1,6 +1,6 @@
 package com.board.api.mapper;
 
-import com.board.api.DTO.AuthorityDTO;
+import com.board.api.dto.AuthorityDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.UserDTO;
 
 import static org.junit.jupiter.api.Assertions.*;
 

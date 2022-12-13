@@ -1,4 +1,4 @@
-package com.board.api.DTO;
+package com.board.api.dto;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

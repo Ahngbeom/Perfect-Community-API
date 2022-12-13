@@ -1,6 +1,6 @@
 package com.board.api.mapper;
 
-import com.board.api.DTO.AuthorityDTO;
+import com.board.api.dto.AuthorityDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

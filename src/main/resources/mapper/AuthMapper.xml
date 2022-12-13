@@ -3,18 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.api.mapper.AuthMapper">
-    <resultMap id="authorityMap" type="com.board.api.DTO.AuthorityDTO">
+    <resultMap id="authorityMap" type="com.board.api.dto.AuthorityDTO">
         <result property="userId" column="userid" />
         <result property="authList" column="authority" />
     </resultMap>
 
-    <select id="readAuthMember" resultType="com.board.api.DTO.AuthorityDTO">
+    <select id="readAuthMember" resultType="com.board.api.dto.AuthorityDTO">
         select userid, authority
         from users_authorities
         where userid like #{userId};
     </select>
 
-    <insert id="insertAuthorityToMember" parameterType="com.board.api.DTO.AuthorityDTO">
+    <insert id="insertAuthorityToMember" parameterType="com.board.api.dto.AuthorityDTO">
         insert into users_authorities(userid, authority)
         values (#{userId}, #{authority});
     </insert>

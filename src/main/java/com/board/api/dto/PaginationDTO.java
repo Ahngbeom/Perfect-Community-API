@@ -1,4 +1,4 @@
-package com.board.api.DTO;
+package com.board.api.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.board.api.service;
 
-import com.board.api.DTO.AuthorityDTO;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.AuthorityDTO;
+import com.board.api.dto.UserDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;

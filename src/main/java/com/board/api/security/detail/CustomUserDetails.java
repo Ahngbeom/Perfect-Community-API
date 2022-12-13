@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import com.board.api.DTO.UserDTO;
+import com.board.api.dto.UserDTO;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

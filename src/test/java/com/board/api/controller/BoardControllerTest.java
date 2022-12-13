@@ -1,7 +1,7 @@
 package com.board.api.controller;
 
-import com.board.api.DTO.PostDTO;
-import com.board.api.controller.board.PostCRUD_Controller;
+import com.board.api.dto.PostDTO;
+import com.board.api.controller.post.PostCRUD_Controller;
 import com.board.api.security.detail.CustomUserDetailService;
 import com.board.api.security.detail.CustomUserDetails;
 import com.board.api.service.board.PostCRUD_Service;
@@ -136,7 +136,7 @@ class BoardControllerTest {
 
     @Test
     void testRegistration() throws Exception {
-        PostDTO board = new PostDTO("안녕하세요", "신입생 안범준입니다.", "안범준", (String) null);
+        PostDTO board = new PostDTO("normal", "안녕하세요", "신입생 안범준입니다.");
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
                         .param("title", board.getTitle())
