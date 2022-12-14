@@ -11,4 +11,8 @@ public interface BoardCRUD_Service {
     BoardDTO getBoardInfo(long bno);
 
     void createBoard(BoardDTO boardDTO);
+
+    void updateBoard(BoardDTO boardDTO);
+
+    void deleteBoard(long bno);
 }

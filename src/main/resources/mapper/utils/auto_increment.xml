@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.api.mapper.utils.UtilsMapper">
+    <select id="initializeAutoIncrement" resultType="long">
+        set @COUNT = 0;
+        <choose>
+            <when test="tableName == 'boards'">
+                alter table boards
+                auto_increment = 1;
+                update boards
+                set bno = @COUNT := @COUNT + 1
+                where bno > 0;
+            </when>
+            <when test="tableName == 'posts'">
+                alter table posts
+                auto_increment = 1;
+                update posts
+                set pno = @COUNT := @COUNT + 1
+                where pno > 0;
+            </when>
+        </choose>
+        select Auto_increment
+        from information_schema.tables
+        where TABLE_SCHEMA = 'board_db'
+        and TABLE_NAME = #{tableName};
+    </select>
+</mapper>

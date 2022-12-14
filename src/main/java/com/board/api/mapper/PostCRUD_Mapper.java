@@ -27,6 +27,4 @@ public interface PostCRUD_Mapper {
 
     int deleteAllBoard();
 
-    long initAutoIncrement();
-
 }

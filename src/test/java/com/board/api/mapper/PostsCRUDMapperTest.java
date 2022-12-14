@@ -75,9 +75,4 @@ class PostsCRUDMapperTest {
         logger.info(postsCRUDMapper.deleteBoard(board.getPno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }
 
-    @Test
-    void initPno() {
-        logger.info(postsCRUDMapper.initAutoIncrement());
-    }
-
 }

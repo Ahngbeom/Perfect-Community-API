@@ -1,6 +1,7 @@
 package com.board.api.service.post;
 
 import com.board.api.dto.PostListOptDTO;
+import com.board.api.mapper.utils.UtilsMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,10 +18,7 @@ import java.util.List;
 public class PostCRUD_ServiceImpl implements PostCRUD_Service {
     private static final Logger log = LogManager.getLogger(PostCRUD_ServiceImpl.class);
     private final PostCRUD_Mapper postsCRUDMapper;
-
-    private final DateUtility dateUtility;
-
-    private final PasswordEncoder passwordEncoder;
+    private final UtilsMapper utilsMapper;
 
     @Override
     public List<PostDTO> getBoardList() {
@@ -81,7 +79,7 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
 
     @Override
     public long initPnoValue() {
-        return postsCRUDMapper.initAutoIncrement();
+        return utilsMapper.initializeAutoIncrement("posts");
     }
 
 }

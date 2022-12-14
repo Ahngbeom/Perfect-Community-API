@@ -79,17 +79,17 @@
         where pno > 0
     </delete>
 
-    <select id="initAutoIncrement" resultType="long">
-        alter table posts
-            auto_increment = 1;
-        set @COUNT = 0;
-        update posts
-        set pno = @COUNT := @COUNT + 1
-        where pno > 0;
-        select Auto_increment
-        from information_schema.tables
-        where TABLE_SCHEMA = 'board_db'
-          and TABLE_NAME = 'posts';
-    </select>
+<!--    <select id="initAutoIncrement" resultType="long">-->
+<!--        alter table posts-->
+<!--            auto_increment = 1;-->
+<!--        set @COUNT = 0;-->
+<!--        update posts-->
+<!--        set pno = @COUNT := @COUNT + 1-->
+<!--        where pno > 0;-->
+<!--        select Auto_increment-->
+<!--        from information_schema.tables-->
+<!--        where TABLE_SCHEMA = 'board_db'-->
+<!--          and TABLE_NAME = 'posts';-->
+<!--    </select>-->
 
 </mapper>

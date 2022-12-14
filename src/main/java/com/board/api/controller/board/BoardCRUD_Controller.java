@@ -3,6 +3,8 @@ package com.board.api.controller.board;
 import com.board.api.dto.board.BoardDTO;
 import com.board.api.service.board.BoardCRUD_Service;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/board")
 public class BoardCRUD_Controller {
 
+    private final Logger log = LogManager.getLogger();
     private final BoardCRUD_Service service;
 
     @GetMapping({"/list", "/"})
@@ -20,9 +23,14 @@ public class BoardCRUD_Controller {
         return ResponseEntity.ok(service.getBoardList());
     }
 
-    @GetMapping("/{boardNo}")
-    public ResponseEntity<BoardDTO> getBoardInfo(@PathVariable long boardNo) {
-        return ResponseEntity.ok(service.getBoardInfo(boardNo));
+    @GetMapping("/info/{boardNo}")
+    public ResponseEntity<?> getBoardInfo(@PathVariable long boardNo) {
+        try {
+            return ResponseEntity.ok(service.getBoardInfo(boardNo));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/create")
@@ -30,6 +38,28 @@ public class BoardCRUD_Controller {
         try {
             service.createBoard(boardDTO);
             return ResponseEntity.ok(boardDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateBoard(@RequestBody BoardDTO boardDTO) {
+        try {
+            service.updateBoard(boardDTO);
+            return ResponseEntity.ok(boardDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/delete/{boardNo}")
+    public ResponseEntity<?> deleteBoard(@PathVariable long boardNo) {
+        try {
+            service.deleteBoard(boardNo);
+            return ResponseEntity.ok("SUCCESS");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

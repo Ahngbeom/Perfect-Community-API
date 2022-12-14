@@ -26,4 +26,18 @@
         insert into boards (title, comment)
         values (#{title}, #{comment})
     </insert>
+
+    <update id="updateBoard" parameterType="com.board.api.dto.board.BoardDTO">
+        update boards
+        set title = #{title},
+            comment = #{comment},
+            update_date = NOW()
+        where bno = #{bno};
+    </update>
+
+    <update id="deleteBoard">
+        delete
+        from boards
+        where bno = #{bno};
+    </update>
 </mapper>
