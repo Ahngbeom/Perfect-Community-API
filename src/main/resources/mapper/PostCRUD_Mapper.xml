@@ -4,66 +4,58 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.api.mapper.PostCRUD_Mapper">
 
-    <resultMap id="postMap" type="com.board.api.dto.PostDTO">
+    <resultMap id="postMap" type="com.board.api.dto.post.PostDTO">
         <id property="pno" column="pno"/>
-        <result property="pno" column="pno"/>
+        <result property="boardNo" column="board_no"/>
         <result property="type" column="type"/>
         <result property="title" column="title"/>
         <result property="contents" column="contents"/>
         <result property="writer" column="writer"/>
-        <result property="regDate" column="regDate"/>
-        <result property="updateDate" column="updateDate"/>
-        <collection property="writtenByMember" resultMap="memberMap"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="reg_date"/>
     </resultMap>
-
-<!--    <resultMap id="memberMap" type="com.board.api.dto.UserDTO">-->
-<!--        <id property="userId" column="userid"/>-->
-<!--        <result property="userId" column="userid"/>-->
-<!--        <result property="password" column="password"/>-->
-<!--        <result property="userName" column="username"/>-->
-<!--        <result property="enabled" column="enabled"/>-->
-<!--        <result property="regDate" column="regDate"/>-->
-<!--        <result property="updateDate" column="updateDate"/>-->
-<!--    </resultMap>-->
 
     <select id="countBoard" resultType="long">
         select count(*) as count
-        from posts;
-    </select>
-
-    <select id="selectBoardList" resultType="com.board.api.dto.PostDTO">
-        select pno, type, title, contents, writer, regdate, updatedate
         from posts
-        order by updatedate, pno DESC;
+        where board_no = #{boardNo};
     </select>
 
-    <select id="selectBoardListWithPage" resultType="com.board.api.dto.PostDTO">
-        select pno, type, title, contents, writer, regdate, updatedate
+    <select id="selectBoardList" resultType="com.board.api.dto.post.PostDTO">
+        select pno, board_no, type, title, contents, writer, reg_date, update_date
+        from posts
+        where board_no = #{board_no}
+        order by update_date, pno DESC;
+    </select>
+
+    <select id="selectBoardListWithPage" resultMap="postMap">
+        select pno, board_no, type, title, contents, writer, reg_date, update_date
         from posts
         <if test="type != null">
             where type = #{type}
         </if>
-        order by updatedate desc
+        order by update_date desc
         limit ${(page - 1) * 10}, 10;
     </select>
 
-    <select id="selectBoardByBno" resultType="com.board.api.dto.PostDTO">
-        select pno, type, title, contents, writer, regdate, updatedate
+    <select id="selectBoardByBno" resultType="com.board.api.dto.post.PostDTO">
+        select pno, type, title, contents, writer, reg_date, update_date
         from posts
         where pno = #{pno};
     </select>
 
-    <insert id="insertBoard" parameterType="com.board.api.dto.PostDTO" useGeneratedKeys="true" keyProperty="pno">
-        insert into posts (type, title, contents, writer)
-        values (UPPER(#{type}), #{title}, #{contents}, #{writer});
+    <insert id="insertPost" parameterType="com.board.api.dto.post.PostDTO" useGeneratedKeys="true" keyProperty="pno">
+        insert into posts (board_no, type, title, contents, writer)
+        values (#{boardNo}, UPPER(#{type}), #{title}, #{contents}, #{writer});
     </insert>
 
     <update id="updatePost">
         update posts
-        set type = UPPER(#{type}),
+        set board_no = #{boardNo},
+            type = UPPER(#{type}),
             title      = #{title},
             contents    = #{contents},
-            updatedate = NOW()
+            update_date = NOW()
         where pno = #{pno}
     </update>
 
@@ -78,18 +70,5 @@
         from posts
         where pno > 0
     </delete>
-
-<!--    <select id="initAutoIncrement" resultType="long">-->
-<!--        alter table posts-->
-<!--            auto_increment = 1;-->
-<!--        set @COUNT = 0;-->
-<!--        update posts-->
-<!--        set pno = @COUNT := @COUNT + 1-->
-<!--        where pno > 0;-->
-<!--        select Auto_increment-->
-<!--        from information_schema.tables-->
-<!--        where TABLE_SCHEMA = 'board_db'-->
-<!--          and TABLE_NAME = 'posts';-->
-<!--    </select>-->
 
 </mapper>

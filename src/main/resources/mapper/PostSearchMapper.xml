@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.api.mapper.PostSearchMapper">
 
-    <resultMap id="boardMap" type="com.board.api.dto.PostDTO">
+    <resultMap id="boardMap" type="com.board.api.dto.post.PostDTO">
         <id property="pno" column="pno"/>
         <result property="pno" column="pno"/>
         <result property="title" column="title"/>
@@ -25,8 +25,8 @@
         <result property="updateDate" column="updateDate"/>
     </resultMap>
 
-    <select id="searchPostByKeyword" resultType="com.board.api.dto.PostDTO" parameterType="java.util.List">
-        select pno, title, contents, writer, regdate, updatedate
+    <select id="searchPostByKeyword" resultType="com.board.api.dto.post.PostDTO" parameterType="java.util.List">
+        select pno, title, contents, writer, reg_date, update_date
         from posts
         <where>
             <foreach collection="list" item="condition" index="index" separator=" AND " open="(" close=")">
@@ -75,8 +75,8 @@
         order by updatedate DESC;
     </select>
 
-    <select id="searchPostByRegex" resultType="com.board.api.dto.PostDTO" parameterType="java.util.List">
-        select pno, title, contents, writer, regdate, updatedate
+    <select id="searchPostByRegex" resultType="com.board.api.dto.post.PostDTO" parameterType="java.util.List">
+        select pno, title, contents, writer, reg_date, update_date
         from posts
         <where>
             <foreach collection="list" item="regexPattern" index="index" separator=" AND " open="(" close=")">

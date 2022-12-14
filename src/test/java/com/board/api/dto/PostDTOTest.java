@@ -1,5 +1,6 @@
 package com.board.api.dto;
 
+import com.board.api.dto.post.PostDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -24,12 +25,4 @@ class PostDTOTest {
     @Autowired
     private DateUtility dateUtility;
 
-    @Test
-    void dateToTodayCalculator() {
-        List<PostDTO> boardList = service.getBoardList();
-        boardList.forEach(board -> {
-            log.info(board.getRegDate() + ", " + board.getUpdateDate());
-            log.info(dateUtility.dateToTodayCalculator(board.getRegDate(), board.getUpdateDate()));
-        });
-    }
 }

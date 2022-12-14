@@ -1,6 +1,6 @@
 package com.board.api.controller.post;
 
-import com.board.api.dto.PostListOptDTO;
+import com.board.api.dto.post.PostListOptDTO;
 import com.board.api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -9,7 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.board.api.dto.PostDTO;
+import com.board.api.dto.post.PostDTO;
 import com.board.api.service.post.PostCRUD_Service;
 
 import javax.naming.AuthenticationException;
@@ -17,7 +17,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/board")
+@RequestMapping("/api/post")
 public class PostCRUD_Controller {
 
     private static final Logger log = LogManager.getLogger();
@@ -25,21 +25,23 @@ public class PostCRUD_Controller {
 
     private final UserService userService;
 
-    @GetMapping(value = {"/{boardNo}/list"})
-    public ResponseEntity<?> getPostList(@PathVariable long boardNo, @RequestBody(required = false) PostListOptDTO postListOptions) {
+    @GetMapping(value = {"/list"})
+    public ResponseEntity<?> getPostList(@RequestBody(required = false) PostListOptDTO postListOptions) {
         try {
             log.info(postListOptions);
-            return ResponseEntity.ok(CRUDService.getBoardListWithPage(postListOptions));
+            return ResponseEntity.ok(CRUDService.getPostList(postListOptions));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+
+
     @GetMapping("/info")
-    public ResponseEntity<?> getPost(long pno) {
+    public ResponseEntity<?> getPost(@PathVariable long boardNo, long pno) {
         try {
-            return ResponseEntity.ok(CRUDService.getPostByBno(pno));
+            return ResponseEntity.ok(CRUDService.getInfoByBno(pno));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,12 +49,12 @@ public class PostCRUD_Controller {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> register(Principal principal, PostDTO board) {
+    public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO board) {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
             board.setWriter(userService.getUserInfoById(principal.getName()).getUserName());
-            CRUDService.registerPost(board);
+            CRUDService.registration(board);
         } catch (AuthenticationException authenticationException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
@@ -65,9 +67,9 @@ public class PostCRUD_Controller {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> modification(PostDTO postDTO) {
+    public ResponseEntity<?> modification(@PathVariable long boardNo, PostDTO postDTO) {
         try {
-            CRUDService.modifyPost(postDTO);
+            CRUDService.modification(postDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -76,9 +78,9 @@ public class PostCRUD_Controller {
     }
 
     @PostMapping("/remove")
-    public ResponseEntity<?> remove(int pno) {
+    public ResponseEntity<?> remove(@PathVariable long boardNo, int pno) {
         try {
-            CRUDService.removePost(pno);
+            CRUDService.remove(pno);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

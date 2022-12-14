@@ -1,9 +1,9 @@
 package com.board.api.mapper;
 
-import com.board.api.dto.PostListOptDTO;
+import com.board.api.dto.post.PostListOptDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import com.board.api.dto.PostDTO;
+import com.board.api.dto.post.PostDTO;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface PostCRUD_Mapper {
 
-    long countBoard();
+    long countBoard(long boardNo);
 
     List<PostDTO> selectBoardList();
 
@@ -19,7 +19,7 @@ public interface PostCRUD_Mapper {
 
     PostDTO selectBoardByPno(long pno);
 
-    int insertBoard(PostDTO board);
+    int insertPost(PostDTO board);
 
     int updatePost(PostDTO board);
 

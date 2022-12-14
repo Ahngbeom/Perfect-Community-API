@@ -1,27 +1,25 @@
 package com.board.api.service.post;
 
-import com.board.api.dto.PostDTO;
-import com.board.api.dto.PostListOptDTO;
+import com.board.api.dto.post.PostDTO;
+import com.board.api.dto.post.PostListOptDTO;
 
 import java.util.List;
 
 public interface PostCRUD_Service {
 
-    long countPosts();
+    long countPosts(long boardNo);
 
-    List<PostDTO> getBoardList();
+    List<PostDTO> getPostList(PostListOptDTO postListOptions);
 
-    List<PostDTO> getBoardListWithPage(PostListOptDTO postListOptions);
+    PostDTO getInfoByBno(long bno);
 
-    PostDTO getPostByBno(long bno);
+    void registration(PostDTO board);
 
-    void registerPost(PostDTO board);
+    void modification(PostDTO board);
 
-    void modifyPost(PostDTO board);
+    void remove(long bno);
 
-    void removePost(long bno);
-
-    int removeAllPost();
+    int removeAll();
 
     long initPnoValue();
 

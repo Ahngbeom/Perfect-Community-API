@@ -1,4 +1,4 @@
-package com.board.api.dto;
+package com.board.api.dto.post;
 
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.board.api.service.post;
 
-import com.board.api.dto.PostDTO;
-import com.board.api.dto.PostSearchDTO;
+import com.board.api.dto.post.PostDTO;
+import com.board.api.dto.post.PostSearchDTO;
 
 import java.util.List;
 

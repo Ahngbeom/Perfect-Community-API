@@ -5,8 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.board.api.dto.PostDTO;
-import com.board.api.dto.PostSearchDTO;
+import com.board.api.dto.post.PostDTO;
+import com.board.api.dto.post.PostSearchDTO;
 import com.board.api.service.post.PostSearchService;
 
 import java.util.List;

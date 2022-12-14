@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.board.api.dto.PostDTO;
+import com.board.api.dto.post.PostDTO;
 
 import java.text.SimpleDateFormat;
 
@@ -53,9 +53,9 @@ class PostsCRUDMapperTest {
 
     @Test
     void testInsertBoard() {
-        PostDTO board = new PostDTO("normal", "아", "잠깐만");
-        postsCRUDMapper.insertBoard(board);
-        logger.info(postsCRUDMapper.selectBoardByPno(board.getPno()));
+//        PostDTO board = new PostDTO("normal", "아", "잠깐만");
+//        postsCRUDMapper.insertPost(board);
+//        logger.info(postsCRUDMapper.selectBoardByPno(board.getPno()));
     }
 
     @Test

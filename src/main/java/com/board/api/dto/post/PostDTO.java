@@ -1,4 +1,4 @@
-package com.board.api.dto;
+package com.board.api.dto.post;
 
 import lombok.*;
 
@@ -11,28 +11,19 @@ import java.time.LocalDateTime;
 public class PostDTO {
 
     private long pno;
-
+    @NonNull
+    private long boardNo;
     @NonNull
     private String  type;
-
     @NonNull
     private String  title;
-
     @NonNull
     private String contents;
-
-//    @NonNull
+    @NonNull
     private String  writer; // 사용자 이름(닉네임)
 
-// Java 8 이전
-//    private Date    regDate;
-//    private Date    updateDate;
-
-// Java 8 이후
     private LocalDateTime   regDate;
     private LocalDateTime   updateDate;
-
-//    private String dateToToday;
 
     public void setPno(long pno) { // Need when modifying posts of board
         this.pno = pno;
@@ -54,7 +45,12 @@ public class PostDTO {
         this.writer = writer;
     }
 
-//    public void setDateToToday(String dateToToday) {
-//        this.dateToToday = dateToToday;
-//    }
+    public void setRegDate(LocalDateTime regDate) {
+        this.regDate = regDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
 }

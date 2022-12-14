@@ -1,15 +1,13 @@
 package com.board.api.service.post;
 
-import com.board.api.dto.PostListOptDTO;
+import com.board.api.dto.post.PostListOptDTO;
 import com.board.api.mapper.utils.UtilsMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.board.api.dto.PostDTO;
+import com.board.api.dto.post.PostDTO;
 import com.board.api.mapper.PostCRUD_Mapper;
-import com.board.api.utils.DateUtility;
 
 import java.util.List;
 
@@ -21,19 +19,16 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
     private final UtilsMapper utilsMapper;
 
     @Override
-    public List<PostDTO> getBoardList() {
-        return postsCRUDMapper.selectBoardList();
-    }
-
-    @Override
-    public List<PostDTO> getBoardListWithPage(PostListOptDTO postListOptions) {
+    public List<PostDTO> getPostList(PostListOptDTO postListOptions) {
+        if (postListOptions.getBoardNo() < 1)
+            throw new RuntimeException("Invalid board number.");
         if (postListOptions.getPage() < 0)
-            throw new RuntimeException("Invalid page");
+            throw new RuntimeException("Invalid page number.");
         return postsCRUDMapper.selectBoardListWithPage(postListOptions);
     }
 
     @Override
-    public PostDTO getPostByBno(long bno) {
+    public PostDTO getInfoByBno(long bno) {
         PostDTO posts = postsCRUDMapper.selectBoardByPno(bno);
         if (posts == null)
             throw new RuntimeException("There are no posts with that bno.");
@@ -41,26 +36,26 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
     }
 
     @Override
-    public void registerPost(PostDTO board) throws RuntimeException {
+    public void registration(PostDTO board) throws RuntimeException {
         log.warn(board);
-        if (postsCRUDMapper.insertBoard(board) == 0)
+        if (postsCRUDMapper.insertPost(board) == 0)
             throw new RuntimeException("Failed to register post.");
     }
 
     @Override
-    public void modifyPost(PostDTO board) {
+    public void modification(PostDTO board) {
         postsCRUDMapper.updatePost(board);
     }
 
     @Override
-    public void removePost(long bno) {
+    public void remove(long bno) {
         postsCRUDMapper.deleteBoard(bno);
     }
 
     @Override
-    public int removeAllPost() throws RuntimeException {
+    public int removeAll() throws RuntimeException {
         int result;
-        if (countPosts() == 0) {
+        if (countPosts(1) == 0) {
             throw new RuntimeException("Posts do not exist.");
         } else {
             result = postsCRUDMapper.deleteAllBoard();
@@ -73,8 +68,8 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
     }
 
     @Override
-    public long countPosts() {
-        return postsCRUDMapper.countBoard();
+    public long countPosts(long boardNo) {
+        return postsCRUDMapper.countBoard(boardNo);
     }
 
     @Override
