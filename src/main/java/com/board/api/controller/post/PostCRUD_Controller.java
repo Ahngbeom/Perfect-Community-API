@@ -36,12 +36,10 @@ public class PostCRUD_Controller {
         }
     }
 
-
-
-    @GetMapping("/info")
-    public ResponseEntity<?> getPost(@PathVariable long boardNo, long pno) {
+    @GetMapping("/{postNo}")
+    public ResponseEntity<?> getPost(@PathVariable long postNo) {
         try {
-            return ResponseEntity.ok(CRUDService.getInfoByBno(pno));
+            return ResponseEntity.ok(CRUDService.getInfoByPno(postNo));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -67,9 +65,11 @@ public class PostCRUD_Controller {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> modification(@PathVariable long boardNo, PostDTO postDTO) {
+    public ResponseEntity<?> modification(Principal principal, @RequestBody PostDTO postDTO) {
         try {
-            CRUDService.modification(postDTO);
+            if (principal == null)
+                throw new AuthenticationException("Not logged in");
+            CRUDService.modification(postDTO, userService.getUserInfoById(principal.getName()).getUserName());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -77,15 +77,17 @@ public class PostCRUD_Controller {
         return ResponseEntity.ok(postDTO.getPno());
     }
 
-    @PostMapping("/remove")
-    public ResponseEntity<?> remove(@PathVariable long boardNo, int pno) {
+    @PostMapping("/remove/{postNo}")
+    public ResponseEntity<?> remove(Principal principal, @PathVariable int postNo) {
         try {
-            CRUDService.remove(pno);
+            if (principal == null)
+                throw new AuthenticationException("Not logged in");
+            CRUDService.remove(userService.getUserInfoById(principal.getName()).getUserName(), postNo);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(pno);
+        return ResponseEntity.ok(postNo);
     }
 
 }

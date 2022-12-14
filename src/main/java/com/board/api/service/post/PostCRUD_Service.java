@@ -11,13 +11,13 @@ public interface PostCRUD_Service {
 
     List<PostDTO> getPostList(PostListOptDTO postListOptions);
 
-    PostDTO getInfoByBno(long bno);
+    PostDTO getInfoByPno(long bno);
 
     void registration(PostDTO board);
 
-    void modification(PostDTO board);
+    void modification(PostDTO board, String userName);
 
-    void remove(long bno);
+    void remove(String userName, long bno);
 
     int removeAll();
 

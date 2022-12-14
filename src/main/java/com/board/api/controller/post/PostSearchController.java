@@ -13,13 +13,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping("")
+@RequestMapping("/api/search")
 public class PostSearchController {
 
     private static final Logger log = LogManager.getLogger();
     private final PostSearchService postSearchService;
 
-    @GetMapping("/api/board/search")
+    @GetMapping("/")
     public ResponseEntity<?> searchPosts(@RequestBody List<PostSearchDTO> searchConditions) {
         List<PostDTO> postsSearchResult;
         try {
@@ -31,7 +31,7 @@ public class PostSearchController {
         return ResponseEntity.ok(postsSearchResult);
     }
 
-    @GetMapping("/api/board/search/regex")
+    @GetMapping("/regex")
     public ResponseEntity<?> searchPostsByRegex(@RequestBody List<String> searchConditionsRegex) {
         List<PostDTO> postsSearchResult;
         try {

@@ -63,9 +63,11 @@ public class BoardCRUD_Controller {
     }
 
     @GetMapping("/delete/{boardNo}")
-    public ResponseEntity<?> deleteBoard(@PathVariable long boardNo) {
+    public ResponseEntity<?> deleteBoard(Principal principal, @PathVariable long boardNo) {
         try {
-            service.deleteBoard(boardNo);
+            if (principal == null)
+                throw new AuthenticationException("Not logged in.");
+            service.deleteBoard(principal.getName(), boardNo);
             return ResponseEntity.ok(boardNo);
         } catch (Exception e) {
             e.printStackTrace();

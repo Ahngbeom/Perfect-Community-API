@@ -14,5 +14,5 @@ public interface BoardCRUD_Service {
 
     void updateBoard(String userId, BoardDTO boardDTO);
 
-    void deleteBoard(long bno);
+    void deleteBoard(String userId, long bno);
 }

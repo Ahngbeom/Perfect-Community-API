@@ -47,10 +47,11 @@ public class BoardCRUD_ServiceImpl implements BoardCRUD_Service {
     }
 
     @Override
-    public void deleteBoard(long bno) {
-        if (mapper.deleteBoard(bno) != 1) {
+    public void deleteBoard(String userId, long bno) {
+        if (!boardAuthorizationVerify(userId, bno))
+            throw new RuntimeException("You do not have permission to delete this board.");
+        if (mapper.deleteBoard(bno) != 1)
             throw new RuntimeException("Failed to delete board.");
-        }
         utilsMapper.initializeAutoIncrement("boards");
     }
 

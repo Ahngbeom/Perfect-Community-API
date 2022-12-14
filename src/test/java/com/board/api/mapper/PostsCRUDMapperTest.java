@@ -32,18 +32,13 @@ class PostsCRUDMapperTest {
     }
 
     @Test
-    void testSelectBoardList() {
-        postsCRUDMapper.selectBoardList().forEach(logger::info);
-    }
-
-    @Test
     void testSelectBoardListWithPage() {
 //        postsCRUDMapper.selectBoardListWithPage(new PostListOptDTO(1, "normal")).forEach(logger::info);
     }
 
     @Test
     void testSelectBoard() {
-        PostDTO board = postsCRUDMapper.selectBoardByPno(1);
+        PostDTO board = postsCRUDMapper.selectPostInfoByPno(1);
         logger.info(board);
         logger.info(board.getRegDate());
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
@@ -60,17 +55,17 @@ class PostsCRUDMapperTest {
 
     @Test
     void testUpdateBoard() {
-        PostDTO board = postsCRUDMapper.selectBoardByPno(6);
+        PostDTO board = postsCRUDMapper.selectPostInfoByPno(6);
         board.setTitle("다시다시");
         board.setContents("해볼게게");
         board.setWriter("잠깐만만");
         logger.info(postsCRUDMapper.updatePost(board));
-        logger.info(postsCRUDMapper.selectBoardByPno(board.getPno()));
+        logger.info(postsCRUDMapper.selectPostInfoByPno(board.getPno()));
     }
 
     @Test
     void testDeleteBoard() {
-        PostDTO board = postsCRUDMapper.selectBoardByPno(6);
+        PostDTO board = postsCRUDMapper.selectPostInfoByPno(6);
 
         logger.info(postsCRUDMapper.deleteBoard(board.getPno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }

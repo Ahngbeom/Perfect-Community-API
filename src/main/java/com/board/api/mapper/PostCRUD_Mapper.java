@@ -11,13 +11,11 @@ import java.util.List;
 @Mapper
 public interface PostCRUD_Mapper {
 
-    long countBoard(long boardNo);
+    long countPosts(long boardNo);
 
-    List<PostDTO> selectBoardList();
+    List<PostDTO> selectPostList(PostListOptDTO postListOptions);
 
-    List<PostDTO> selectBoardListWithPage(PostListOptDTO postListOptions);
-
-    PostDTO selectBoardByPno(long pno);
+    PostDTO selectPostInfoByPno(long pno);
 
     int insertPost(PostDTO board);
 

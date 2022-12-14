@@ -46,7 +46,7 @@ class CRUDServiceTest {
 
     @Test
     void getBoard() {
-        logger.info(service.getInfoByBno(5));
+        logger.info(service.getInfoByPno(5));
     }
 
     @Test
@@ -58,11 +58,11 @@ class CRUDServiceTest {
 
     @Test
     void modifyBoard() {
-        PostDTO board = service.getInfoByBno(7);
-        board.setContents("내가 돌아왔다");
-        board.setWriter("잭스");
-        service.modification(board);
-        logger.info(service.getInfoByBno(board.getPno()));
+//        PostDTO board = service.getInfoByPno(7);
+//        board.setContents("내가 돌아왔다");
+//        board.setWriter("잭스");
+//        service.modification(board, userService.getUserInfoById(principal.getName()).getUserName());
+//        logger.info(service.getInfoByPno(board.getPno()));
     }
 
     @Test

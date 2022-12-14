@@ -24,12 +24,14 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
             throw new RuntimeException("Invalid board number.");
         if (postListOptions.getPage() < 0)
             throw new RuntimeException("Invalid page number.");
-        return postsCRUDMapper.selectBoardListWithPage(postListOptions);
+        if (!verifyPostType(postListOptions.getType()))
+            throw new RuntimeException("Invalid post type.");
+        return postsCRUDMapper.selectPostList(postListOptions);
     }
 
     @Override
-    public PostDTO getInfoByBno(long bno) {
-        PostDTO posts = postsCRUDMapper.selectBoardByPno(bno);
+    public PostDTO getInfoByPno(long bno) {
+        PostDTO posts = postsCRUDMapper.selectPostInfoByPno(bno);
         if (posts == null)
             throw new RuntimeException("There are no posts with that bno.");
         return posts;
@@ -43,12 +45,21 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
     }
 
     @Override
-    public void modification(PostDTO board) {
+    public void modification(PostDTO board, String userName) {
+        log.info(board);
+        if (board.getPno() < 1)
+            throw new RuntimeException("Invalid post number.");
+        if (!checkPostVerification(userName, board.getPno()))
+            throw new RuntimeException("You do not have permission to modify the post.");
         postsCRUDMapper.updatePost(board);
     }
 
     @Override
-    public void remove(long bno) {
+    public void remove(String userName, long bno) {
+        if (bno < 1)
+            throw new RuntimeException("Invalid post number.");
+        if (!checkPostVerification(userName, bno))
+            throw new RuntimeException("You do not have permission to remove the post.");
         postsCRUDMapper.deleteBoard(bno);
     }
 
@@ -69,12 +80,20 @@ public class PostCRUD_ServiceImpl implements PostCRUD_Service {
 
     @Override
     public long countPosts(long boardNo) {
-        return postsCRUDMapper.countBoard(boardNo);
+        return postsCRUDMapper.countPosts(boardNo);
     }
 
     @Override
     public long initPnoValue() {
         return utilsMapper.initializeAutoIncrement("posts");
+    }
+
+    public boolean checkPostVerification(String userName, long pno) {
+        return userName.equals(getInfoByPno(pno).getWriter());
+    }
+
+    public boolean verifyPostType(String type) {
+        return type == null || PostDTO.POST_TYPE.contains(type.toUpperCase());
     }
 
 }

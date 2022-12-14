@@ -3,6 +3,9 @@ package com.board.api.dto.post;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @ToString
@@ -21,6 +24,9 @@ public class PostDTO {
     private String contents;
     @NonNull
     private String  writer; // 사용자 이름(닉네임)
+
+
+    public static final Set<String> POST_TYPE = new HashSet<>(Arrays.asList("NORMAL", "NOTICE"));
 
     private LocalDateTime   regDate;
     private LocalDateTime   updateDate;

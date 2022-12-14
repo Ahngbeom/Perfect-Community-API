@@ -15,20 +15,13 @@
         <result property="updateDate" column="reg_date"/>
     </resultMap>
 
-    <select id="countBoard" resultType="long">
+    <select id="countPosts" resultType="long">
         select count(*) as count
         from posts
         where board_no = #{boardNo};
     </select>
 
-    <select id="selectBoardList" resultType="com.board.api.dto.post.PostDTO">
-        select pno, board_no, type, title, contents, writer, reg_date, update_date
-        from posts
-        where board_no = #{board_no}
-        order by update_date, pno DESC;
-    </select>
-
-    <select id="selectBoardListWithPage" resultMap="postMap">
+    <select id="selectPostList" resultMap="postMap">
         select pno, board_no, type, title, contents, writer, reg_date, update_date
         from posts
         <if test="type != null">
@@ -38,8 +31,8 @@
         limit ${(page - 1) * 10}, 10;
     </select>
 
-    <select id="selectBoardByBno" resultType="com.board.api.dto.post.PostDTO">
-        select pno, type, title, contents, writer, reg_date, update_date
+    <select id="selectPostInfoByPno" resultMap="postMap">
+        select pno, board_no, type, title, contents, writer, reg_date, update_date
         from posts
         where pno = #{pno};
     </select>
@@ -53,8 +46,8 @@
         update posts
         set board_no = #{boardNo},
             type = UPPER(#{type}),
-            title      = #{title},
-            contents    = #{contents},
+            title = #{title},
+            contents = #{contents},
             update_date = NOW()
         where pno = #{pno}
     </update>
