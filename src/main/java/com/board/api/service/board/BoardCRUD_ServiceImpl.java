@@ -30,13 +30,17 @@ public class BoardCRUD_ServiceImpl implements BoardCRUD_Service {
 
     @Override
     public void createBoard(BoardDTO boardDTO) throws RuntimeException {
+//        if (boardDTO.getTitle().contains(" "))
+//            throw new RuntimeException("Notice board names do not allow spaces.");
         if (mapper.createBoard(boardDTO) != 1) {
             throw new RuntimeException("Failed to create board.");
         }
     }
 
     @Override
-    public void updateBoard(BoardDTO boardDTO) throws RuntimeException {
+    public void updateBoard(String userId, BoardDTO boardDTO) throws RuntimeException {
+        if (!boardAuthorizationVerify(userId, boardDTO.getBno()))
+            throw new RuntimeException("You do not have permission to edit this board.");
         if (mapper.updateBoard(boardDTO) != 1) {
             throw new RuntimeException("Failed to update board.");
         }
@@ -48,5 +52,9 @@ public class BoardCRUD_ServiceImpl implements BoardCRUD_Service {
             throw new RuntimeException("Failed to delete board.");
         }
         utilsMapper.initializeAutoIncrement("boards");
+    }
+
+    public boolean boardAuthorizationVerify(String userId, long boardNo) {
+        return userId.equals(getBoardInfo(boardNo).getCreateUser());
     }
 }

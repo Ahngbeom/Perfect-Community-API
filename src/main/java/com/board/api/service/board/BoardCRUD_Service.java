@@ -12,7 +12,7 @@ public interface BoardCRUD_Service {
 
     void createBoard(BoardDTO boardDTO);
 
-    void updateBoard(BoardDTO boardDTO);
+    void updateBoard(String userId, BoardDTO boardDTO);
 
     void deleteBoard(long bno);
 }

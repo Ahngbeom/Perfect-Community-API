@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -23,7 +25,7 @@ public class BoardCRUD_Controller {
         return ResponseEntity.ok(service.getBoardList());
     }
 
-    @GetMapping("/info/{boardNo}")
+    @GetMapping({"/info/{boardNo}"})
     public ResponseEntity<?> getBoardInfo(@PathVariable long boardNo) {
         try {
             return ResponseEntity.ok(service.getBoardInfo(boardNo));
@@ -34,10 +36,13 @@ public class BoardCRUD_Controller {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createBoard(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<?> createBoard(Principal principal, @RequestBody BoardDTO boardDTO) {
         try {
+            if (principal == null)
+                throw new AuthenticationException("Not logged in.");
+            boardDTO.setCreateUser(principal.getName());
             service.createBoard(boardDTO);
-            return ResponseEntity.ok(boardDTO);
+            return ResponseEntity.ok(boardDTO.getBno());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -45,10 +50,12 @@ public class BoardCRUD_Controller {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateBoard(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<?> updateBoard(Principal principal, @RequestBody BoardDTO boardDTO) {
         try {
-            service.updateBoard(boardDTO);
-            return ResponseEntity.ok(boardDTO);
+            if (principal == null)
+                throw new AuthenticationException("Not logged in.");
+            service.updateBoard(principal.getName(), boardDTO);
+            return ResponseEntity.ok(boardDTO.getBno());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -59,7 +66,7 @@ public class BoardCRUD_Controller {
     public ResponseEntity<?> deleteBoard(@PathVariable long boardNo) {
         try {
             service.deleteBoard(boardNo);
-            return ResponseEntity.ok("SUCCESS");
+            return ResponseEntity.ok(boardNo);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
