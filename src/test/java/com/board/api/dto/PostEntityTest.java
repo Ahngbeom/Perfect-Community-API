@@ -15,7 +15,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")
-class PostDTOTest {
+class PostEntityTest {
 
     private static final Logger log = LogManager.getLogger();
 

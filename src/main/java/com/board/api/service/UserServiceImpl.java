@@ -19,8 +19,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper mapper;
 
-//    private final AuthService authService;
-
     private final PasswordEncoder encoder;
 
     @Override

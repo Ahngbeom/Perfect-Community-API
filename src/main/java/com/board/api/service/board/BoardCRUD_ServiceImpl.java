@@ -56,6 +56,6 @@ public class BoardCRUD_ServiceImpl implements BoardCRUD_Service {
     }
 
     public boolean boardAuthorizationVerify(String userId, long boardNo) {
-        return userId.equals(getBoardInfo(boardNo).getCreateUser());
+        return userId.equals(getBoardInfo(boardNo).getCreatedUser());
     }
 }

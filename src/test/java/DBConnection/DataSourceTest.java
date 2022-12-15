@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")
+@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
 public class DataSourceTest {
 
     private static final Logger logger = LogManager.getLogger();

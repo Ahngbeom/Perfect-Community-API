@@ -1,6 +1,7 @@
-package com.board.api.mapper;
+package com.board.api.mapper.post;
 
 import com.board.api.dto.post.PostListOptDTO;
+import com.board.api.entity.post.PostEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import com.board.api.dto.post.PostDTO;
@@ -17,12 +18,12 @@ public interface PostCRUD_Mapper {
 
     PostDTO selectPostInfoByPno(long pno);
 
-    int insertPost(PostDTO board);
+    int insertPost(PostEntity post);
 
-    int updatePost(PostDTO board);
+    int updatePost(PostDTO post);
 
-    int deleteBoard(long bno);
+    int deletePost(long pno);
 
-    int deleteAllBoard();
+    int deleteAllPosts();
 
 }

@@ -1,6 +1,6 @@
-package com.board.api.dto.post;
+package com.board.api.entity.post;
 
-import com.board.api.dto.UserDTO;
+import com.board.api.dto.post.PostDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDTO {
+public class PostEntity {
 
     private long pno;
     private long boardNo;
     private String  type;
     private String  title;
     private String contents;
-    private UserDTO writtenUser;
+    private String writer;
 
     private LocalDateTime   regDate;
     private LocalDateTime   updateDate;
@@ -42,8 +42,8 @@ public class PostDTO {
         this.contents = contents;
     }
 
-    public void setWrittenUser(UserDTO writtenUser) {
-        this.writtenUser = writtenUser;
+    public void setWriter(String writtenUser) {
+        this.writer = writtenUser;
     }
 
     public void setRegDate(LocalDateTime regDate) {
@@ -52,6 +52,20 @@ public class PostDTO {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+
+    public static PostEntity dtoToEntity(PostDTO postDTO) {
+        return PostEntity.builder()
+                .pno(postDTO.getPno())
+                .boardNo(postDTO.getBoardNo())
+                .type(postDTO.getType())
+                .writer(postDTO.getWrittenUser().getUserId())
+                .title(postDTO.getTitle())
+                .contents(postDTO.getContents())
+                .regDate(postDTO.getRegDate())
+                .updateDate(postDTO.getUpdateDate())
+                .build();
     }
 
 }

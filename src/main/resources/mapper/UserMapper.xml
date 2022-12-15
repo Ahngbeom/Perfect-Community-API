@@ -45,7 +45,7 @@
                users_authorities.userid
         from users
                  LEFT OUTER JOIN users_authorities on users.userid = users_authorities.userid
-        order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.userid asc;
+        order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.userid;
     </select>
 
     <select id="readAuthMember" resultType="com.board.api.dto.AuthorityDTO">

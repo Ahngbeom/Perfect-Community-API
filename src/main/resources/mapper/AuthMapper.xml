@@ -5,7 +5,7 @@
 <mapper namespace="com.board.api.mapper.AuthMapper">
     <resultMap id="authorityMap" type="com.board.api.dto.AuthorityDTO">
         <result property="userId" column="userid" />
-        <result property="authList" column="authority" />
+        <result property="authority" column="authority" />
     </resultMap>
 
     <select id="readAuthMember" resultType="com.board.api.dto.AuthorityDTO">

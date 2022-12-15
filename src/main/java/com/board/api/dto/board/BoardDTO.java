@@ -11,24 +11,20 @@ import java.time.LocalDateTime;
 public class BoardDTO {
 
     private long bno;
-
-    private String createUser;
-
+    private String createdUser;
     @NonNull
     private String title;
     @NonNull
     private String comment;
-
     private LocalDateTime createDate;
-
     private LocalDateTime updateDate;
 
     public void setBno(long bno) {
         this.bno = bno;
     }
 
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+    public void setCreatedUser(String createdUser) {
+        this.createdUser = createdUser;
     }
 
     public void setTitle(String title) {

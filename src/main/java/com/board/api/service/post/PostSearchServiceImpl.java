@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import com.board.api.dto.post.PostDTO;
 import com.board.api.dto.post.PostSearchDTO;
-import com.board.api.mapper.PostSearchMapper;
+import com.board.api.mapper.post.PostSearchMapper;
 
 import java.util.*;
 

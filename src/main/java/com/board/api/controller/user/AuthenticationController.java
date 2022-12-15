@@ -1,4 +1,4 @@
-package com.board.api.controller;
+package com.board.api.controller.user;
 
 import com.board.api.dto.AuthorityDTO;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user/auth")
 @RequiredArgsConstructor
-public class AuthAPIController {
+public class AuthenticationController {
     private static final Logger log = LogManager.getLogger();
 
     //    private final CustomUserDetailService userDetailsService;
     private final AuthService authService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<String>> getAuthorities(String userId) {
+    public ResponseEntity<List<AuthorityDTO>> getAuthorities(String userId) {
         try {
             return ResponseEntity.ok(authService.getAuthList(userId));
         } catch (Exception e) {

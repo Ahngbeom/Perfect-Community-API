@@ -6,7 +6,7 @@
 
     <resultMap id="boardMap" type="com.board.api.dto.board.BoardDTO">
         <result column="bno" property="bno"/>
-        <result column="create_user" property="createUser"/>
+        <result column="create_user" property="createdUser"/>
         <result column="title" property="title"/>
         <result column="comment" property="comment"/>
         <result column="create_date" property="createDate"/>
@@ -38,9 +38,9 @@
         where bno = #{bno};
     </update>
 
-    <update id="deleteBoard">
+    <delete id="deleteBoard">
         delete
         from boards
         where bno = #{bno};
-    </update>
+    </delete>
 </mapper>

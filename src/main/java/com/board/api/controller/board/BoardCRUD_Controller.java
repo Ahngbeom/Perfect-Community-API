@@ -40,7 +40,7 @@ public class BoardCRUD_Controller {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in.");
-            boardDTO.setCreateUser(principal.getName());
+            boardDTO.setCreatedUser(principal.getName());
             service.createBoard(boardDTO);
             return ResponseEntity.ok(boardDTO.getBno());
         } catch (Exception e) {

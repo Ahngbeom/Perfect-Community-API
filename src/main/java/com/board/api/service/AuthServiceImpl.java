@@ -25,8 +25,8 @@ public class AuthServiceImpl implements AuthService {
 //    private final PasswordEncoder encoder;
 
     @Override
-    public List<String> getAuthList(String userId) {
-        return authMapper.readAuthMember(userId).stream().map(AuthorityDTO::getAuthority).collect(Collectors.toList());
+    public List<AuthorityDTO> getAuthList(String userId) {
+        return authMapper.readAuthMember(userId);
     }
 
     @Override

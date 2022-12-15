@@ -1,5 +1,6 @@
 package com.board.api.controller;
 
+import com.board.api.controller.user.UserController;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +39,7 @@ class MemberControllerTest {
 
     @InjectMocks
     @Autowired
-    private UserAPIController controller;
+    private UserController controller;
 
     @Mock
     private UserDetailsService service;

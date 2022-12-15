@@ -22,7 +22,6 @@ public class PostCRUD_Controller {
 
     private static final Logger log = LogManager.getLogger();
     private final PostCRUD_Service CRUDService;
-
     private final UserService userService;
 
     @GetMapping(value = {"/list"})
@@ -47,12 +46,11 @@ public class PostCRUD_Controller {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO board) {
+    public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO postDTO) {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
-            board.setWriter(userService.getUserInfoById(principal.getName()).getUserName());
-            CRUDService.registration(board);
+            CRUDService.registration(principal.getName(), postDTO);
         } catch (AuthenticationException authenticationException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
@@ -61,7 +59,7 @@ public class PostCRUD_Controller {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(board.getPno());
+        return ResponseEntity.ok(postDTO.getPno());
     }
 
     @PostMapping("/modify")

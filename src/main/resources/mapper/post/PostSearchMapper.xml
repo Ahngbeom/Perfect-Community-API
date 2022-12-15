@@ -2,28 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.board.api.mapper.PostSearchMapper">
-
-    <resultMap id="boardMap" type="com.board.api.dto.post.PostDTO">
-        <id property="pno" column="pno"/>
-        <result property="pno" column="pno"/>
-        <result property="title" column="title"/>
-        <result property="contents" column="contents"/>
-        <result property="writer" column="writer"/>
-        <result property="regDate" column="regDate"/>
-        <result property="updateDate" column="updateDate"/>
-        <collection property="writtenByMember" resultMap="memberMap"/>
-    </resultMap>
-
-    <resultMap id="memberMap" type="com.board.api.dto.UserDTO">
-        <id property="userId" column="userid"/>
-        <result property="userId" column="userid"/>
-        <result property="password" column="password"/>
-        <result property="userName" column="username"/>
-        <result property="enabled" column="enabled"/>
-        <result property="regDate" column="regDate"/>
-        <result property="updateDate" column="updateDate"/>
-    </resultMap>
+<mapper namespace="com.board.api.mapper.post.PostSearchMapper">
 
     <select id="searchPostByKeyword" resultType="com.board.api.dto.post.PostDTO" parameterType="java.util.List">
         select pno, title, contents, writer, reg_date, update_date

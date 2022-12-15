@@ -1,4 +1,4 @@
-package com.board.api.mapper;
+package com.board.api.mapper.post;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

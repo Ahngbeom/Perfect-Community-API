@@ -1,4 +1,4 @@
-package com.board.api.controller;
+package com.board.api.controller.user;
 
 import com.board.api.dto.AuthorityDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-public class UserAPIController {
+public class UserController {
 
     private static final Logger log = LogManager.getLogger();
 

@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!--<Configuration status="WARN">-->
-<!--    <Appenders>-->
-<!--        <Console name="Console" target="SYSTEM_OUT">-->
-<!--            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
-<!--        </Console>-->
-<!--    </Appenders>-->
-<!--    <Loggers>-->
-<!--        <Root level="error">-->
-<!--            <AppenderRef ref="Console"/>-->
-<!--        </Root>-->
-<!--    </Loggers>-->
-<!--</Configuration>-->
-
 <Configuration status="INFO">
     <Properties>
         <Property name="LOG_PATTERN">
@@ -26,30 +12,29 @@
         </Console>
     </Appenders>
     <Loggers>
-        <!-- SQL Logger -->
-        <logger name="jdbc.sqltiming" >
-            <level value="WARN"/>
-            <appender-ref ref="console"/>
-        </logger>
-        <logger name="jdbc.sqlonly" additivity="false">
-            <level value="INFO"/>
-            <appender-ref ref="console"/>
-        </logger>
-        <logger name="jdbc.audit" additivity="false">
-            <level value="WARN"/>
-            <appender-ref ref="console"/>
-        </logger>
-        <logger name="jdbc.resultset" additivity="false">
-            <level value="WARN"/>
-            <appender-ref ref="console"/>
-        </logger>
-        <logger name="jdbc.resultsettable" additivity="false">
-            <level value="INFO"/>
-            <appender-ref ref="console"/>
-        </logger>
-
-        <Root level="INFO">
+        <Root level="INFO" additivity="false">
             <AppenderRef ref="console"/>
         </Root>
+        <!-- SQL Logger -->
+<!--        <logger name="jdbc.sqltiming">-->
+<!--            <level value="WARN"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.sqlonly" additivity="false">-->
+<!--            <level value="INFO"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.audit" additivity="false">-->
+<!--            <level value="WARN"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.resultset" additivity="false">-->
+<!--            <level value="WARN"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
+<!--        <logger name="jdbc.resultsettable" additivity="false">-->
+<!--            <level value="INFO"/>-->
+<!--            <appender-ref ref="console"/>-->
+<!--        </logger>-->
     </Loggers>
 </Configuration>

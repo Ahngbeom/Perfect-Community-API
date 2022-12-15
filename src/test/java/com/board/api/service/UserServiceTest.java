@@ -2,6 +2,7 @@ package com.board.api.service;
 
 import com.board.api.dto.AuthorityDTO;
 import com.board.api.dto.UserDTO;
+import com.board.api.mapper.UserMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,13 +28,13 @@ class UserServiceTest {
 
     @InjectMocks
     @Autowired
-    private UserService service;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    private UserServiceImpl service;
 
     @Mock
-    private Principal principal;
+    private UserMapper mapper;
+
+    @Mock
+    private PasswordEncoder encoder;
 
     @BeforeEach
     void setUp() {
@@ -47,14 +48,14 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-        UserDTO member = UserDTO.builder()
-                .userId("aaa")
-                .password("aaaa")
-                .userName("AAA")
-                .authList(Collections.singletonList(AuthorityDTO.builder().authority("ROLE_USER").build()))
-                .build();
-        service.createUser(member);
-        log.info(member);
+//        UserDTO member = UserDTO.builder()
+//                .userId("aaa")
+//                .password("aaaa")
+//                .userName("AAA")
+//                .authList(Collections.singletonList(AuthorityDTO.builder().authority("ROLE_USER").build()))
+//                .build();
+//        service.createUser(member);
+//        log.info(member);
     }
 
     @Test

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AuthService {
 
-    List<String> getAuthList(String userId);
+    List<AuthorityDTO> getAuthList(String userId);
 
     void grantAuthority(AuthorityDTO auth);
 
