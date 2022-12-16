@@ -7,15 +7,19 @@ import lombok.ToString;
 @Getter
 @ToString
 public class PostListOptDTO {
-    @NonNull
     private long boardNo;
     private int page;
     private String type;
 
     public PostListOptDTO() {
-        this.boardNo = -1;
+        this.boardNo = 0;
         this.page = 1;
         this.type = null;
+    }
+
+    public PostListOptDTO(long boardNo) {
+        this.boardNo = boardNo;
+        this.page = 0;
     }
 
     public PostListOptDTO(long boardNo, int page) {

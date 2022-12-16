@@ -2,35 +2,35 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.board.api.mapper.board.BoardCRUD_Mapper">
+<mapper namespace="com.board.api.mapper.board.BoardMapper">
 
-    <resultMap id="boardMap" type="com.board.api.dto.board.BoardDTO">
+    <resultMap id="boardEntityMap" type="com.board.api.entity.board.BoardEntity">
         <result column="bno" property="bno"/>
-        <result column="create_user" property="createdUser"/>
+        <result column="create_user" property="createUser"/>
         <result column="title" property="title"/>
         <result column="comment" property="comment"/>
         <result column="create_date" property="createDate"/>
         <result column="update_date" property="updateDate"/>
     </resultMap>
 
-    <select id="getBoardList" resultMap="boardMap">
+    <select id="getBoardList" resultMap="boardEntityMap">
         select bno, create_user, title, comment, create_date, update_date
         from boards
         order by bno;
     </select>
 
-    <select id="getBoardInfo" resultMap="boardMap">
+    <select id="getBoardInfo" resultMap="boardEntityMap">
         select bno, create_user, title, comment, create_date, update_date
         from boards
         where bno = #{bno};
     </select>
 
-    <insert id="createBoard" parameterType="com.board.api.dto.board.BoardDTO" useGeneratedKeys="true" keyProperty="bno">
+    <insert id="createBoard" useGeneratedKeys="true" keyProperty="bno">
         insert into boards (title, comment, create_user)
         values (#{title}, #{comment}, #{createUser})
     </insert>
 
-    <update id="updateBoard" parameterType="com.board.api.dto.board.BoardDTO">
+    <update id="updateBoard">
         update boards
         set title       = #{title},
             comment     = #{comment},

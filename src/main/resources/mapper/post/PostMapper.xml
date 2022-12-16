@@ -2,18 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.board.api.mapper.post.PostCRUD_Mapper">
-
-<!--    <resultMap id="postDTOMap" type="com.board.api.dto.post.PostDTO">-->
-<!--        <id property="pno" column="pno"/>-->
-<!--        <result property="boardNo" column="board_no"/>-->
-<!--        <result property="type" column="type"/>-->
-<!--        <result property="title" column="title"/>-->
-<!--        <result property="contents" column="contents"/>-->
-<!--        <result property="writtenUser" column="writer"/>-->
-<!--        <result property="regDate" column="reg_date"/>-->
-<!--        <result property="updateDate" column="update_date"/>-->
-<!--    </resultMap>-->
+<mapper namespace="com.board.api.mapper.post.PostMapper">
 
     <resultMap id="postEntityMap" type="com.board.api.entity.post.PostEntity">
         <id property="pno" column="pno"/>
@@ -35,11 +24,18 @@
     <select id="selectPostList" resultMap="postEntityMap">
         select pno, board_no, type, title, contents, writer, reg_date, update_date
         from posts
-        <if test="type != null">
-            where type = #{type}
-        </if>
+        <where>
+            <if test="boardNo gt 0">
+                board_no = #{boardNo}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+        </where>
         order by update_date desc
-        limit ${(page - 1) * 10}, 10;
+        <if test="page > 0">
+            limit ${(page - 1) * 10}, 10
+        </if>
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postEntityMap">

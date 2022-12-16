@@ -1,7 +1,7 @@
 package com.board.api.controller.board;
 
 import com.board.api.dto.board.BoardDTO;
-import com.board.api.service.board.BoardCRUD_Service;
+import com.board.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +15,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/board")
-public class BoardCRUD_Controller {
+public class BoardController {
 
     private final Logger log = LogManager.getLogger();
-    private final BoardCRUD_Service service;
+    private final BoardService service;
 
-    @GetMapping({"/list", "/"})
+    @GetMapping({"/list", ""})
     public ResponseEntity<List<BoardDTO>> getBoardList() {
         return ResponseEntity.ok(service.getBoardList());
     }
@@ -41,28 +41,27 @@ public class BoardCRUD_Controller {
             if (principal == null)
                 throw new AuthenticationException("Not logged in.");
             boardDTO.setCreatedUser(principal.getName());
-            service.createBoard(boardDTO);
-            return ResponseEntity.ok(boardDTO.getBno());
+            return ResponseEntity.ok(service.createBoard(boardDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<?> updateBoard(Principal principal, @RequestBody BoardDTO boardDTO) {
+    @PutMapping("/update/{boardNo}")
+    public ResponseEntity<?> updateBoard(Principal principal, @PathVariable long boardNo, @RequestBody BoardDTO boardDTO) {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in.");
-            service.updateBoard(principal.getName(), boardDTO);
-            return ResponseEntity.ok(boardDTO.getBno());
+            service.updateBoard(boardNo, principal.getName(), boardDTO);
+            return ResponseEntity.ok(boardNo);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/delete/{boardNo}")
+    @DeleteMapping("/delete/{boardNo}")
     public ResponseEntity<?> deleteBoard(Principal principal, @PathVariable long boardNo) {
         try {
             if (principal == null)

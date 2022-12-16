@@ -5,9 +5,10 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 @ToString
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class BoardDTO {
 
     private long bno;

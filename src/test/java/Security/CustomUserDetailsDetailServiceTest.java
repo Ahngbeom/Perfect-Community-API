@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.board.api.mapper.UserMapper;
+import com.board.api.mapper.user.UserMapper;
 import com.board.api.security.detail.CustomUserDetailService;
 
 import static org.junit.jupiter.api.Assertions.*;

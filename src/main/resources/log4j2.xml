@@ -3,7 +3,7 @@
     <Properties>
         <Property name="LOG_PATTERN">
             %style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan} %highlight{[%p]}{FATAL=bg_red, ERROR=red,
-            INFO=green, DEBUG=blue} [%C] %style{[%t]}{yellow} %m%n %l%n
+            INFO=green, DEBUG=blue} [%C%l]%n %style{[%t]}{yellow} %m%n
         </Property>
     </Properties>
     <Appenders>

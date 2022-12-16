@@ -1,7 +1,7 @@
 package com.board.api.dummy;
 
-import com.board.api.dto.post.PostDTO;
-import com.board.api.service.post.PostCRUD_Service;
+import com.board.api.service.post.PostService;
+import com.board.api.service.post.PostUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,10 @@ class BoardPosts {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
-    private PostCRUD_Service service;
+    private PostService service;
+
+    @Autowired
+    private PostUtils postUtils;
 
 
     @BeforeEach
@@ -68,6 +71,6 @@ class BoardPosts {
 
     @Test
     void removeAllPosts() {
-        logger.info(service.removeAll());
+        logger.info(postUtils.removeAll());
     }
 }

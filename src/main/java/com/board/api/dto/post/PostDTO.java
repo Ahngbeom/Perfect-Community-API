@@ -1,6 +1,7 @@
 package com.board.api.dto.post;
 
-import com.board.api.dto.UserDTO;
+import com.board.api.dto.user.UserDTO;
+import com.sun.istack.internal.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,9 +14,13 @@ import java.time.LocalDateTime;
 public class PostDTO {
 
     private long pno;
+    @NonNull
     private long boardNo;
+    @NonNull
     private String  type;
+    @NonNull
     private String  title;
+    @NonNull
     private String contents;
     private UserDTO writtenUser;
 

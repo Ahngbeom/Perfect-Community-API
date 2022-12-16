@@ -1,10 +1,9 @@
 package com.board.api.controller;
 
-import com.board.api.dto.post.PostDTO;
-import com.board.api.controller.post.PostCRUD_Controller;
+import com.board.api.controller.post.PostController;
 import com.board.api.security.detail.CustomUserDetailService;
 import com.board.api.security.detail.CustomUserDetails;
-import com.board.api.service.post.PostCRUD_Service;
+import com.board.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,10 +48,10 @@ class BoardControllerTest {
 
     @InjectMocks
     @Autowired
-    private PostCRUD_Controller controller;
+    private PostController controller;
 
     @Mock
-    private PostCRUD_Service CRUDService;
+    private PostService CRUDService;
 
 
     private MockMvc mockMvc;

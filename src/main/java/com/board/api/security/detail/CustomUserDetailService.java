@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.stereotype.Service;
-import com.board.api.dto.UserDTO;
-import com.board.api.mapper.UserMapper;
+import com.board.api.dto.user.UserDTO;
+import com.board.api.mapper.user.UserMapper;
 
 @Service
 @RequiredArgsConstructor

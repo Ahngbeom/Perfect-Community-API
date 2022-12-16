@@ -1,7 +1,7 @@
 package com.board.api.mapper;
 
 import com.board.api.dto.post.PostListOptDTO;
-import com.board.api.mapper.post.PostCRUD_Mapper;
+import com.board.api.mapper.post.PostMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ class PostsCRUDMapperTest {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
-    private PostCRUD_Mapper postsCRUDMapper;
+    private PostMapper postsCRUDMapper;
 
     @BeforeEach
     void setUp() {
@@ -37,19 +37,13 @@ class PostsCRUDMapperTest {
 
     @Test
     void testSelectBoard() {
-        PostDTO board = postsCRUDMapper.selectPostInfoByPno(1);
-        logger.info(board);
-        logger.info(board.getRegDate());
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
-        logger.info(formatDate.format(board.getRegDate()));
+
     }
 
 
     @Test
     void testInsertBoard() {
-//        PostDTO board = new PostDTO("normal", "아", "잠깐만");
-//        postsCRUDMapper.insertPost(board);
-//        logger.info(postsCRUDMapper.selectBoardByPno(board.getPno()));
+
     }
 
     @Test
@@ -59,9 +53,6 @@ class PostsCRUDMapperTest {
 
     @Test
     void testDeleteBoard() {
-        PostDTO board = postsCRUDMapper.selectPostInfoByPno(6);
-
-        logger.info(postsCRUDMapper.deletePost(board.getPno()) == 1 ? "DELETE SUCCESS" : "DELETE FAILURE");
     }
 
 }

@@ -10,13 +10,13 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface PostCRUD_Mapper {
+public interface PostMapper {
 
     long countPosts(long boardNo);
 
-    List<PostDTO> selectPostList(PostListOptDTO postListOptions);
+    List<PostEntity> selectPostList(PostListOptDTO postListOptions);
 
-    PostDTO selectPostInfoByPno(long pno);
+    PostEntity selectPostInfoByPno(long pno);
 
     int insertPost(PostEntity post);
 
