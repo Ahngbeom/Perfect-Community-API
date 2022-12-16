@@ -43,4 +43,8 @@
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath:/mapper/**/*.xml" />
     </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg ref="dataSource" />
+    </bean>
 </beans>
