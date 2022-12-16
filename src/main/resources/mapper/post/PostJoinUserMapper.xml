@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.board.api.mapper.post.PostJoinUserMapper">
+    <resultMap id="postDTOMap" type="com.board.api.dto.post.PostDTO">
+        <id property="pno" column="pno"/>
+        <result property="boardNo" column="board_no"/>
+        <result property="type" column="type"/>
+        <result property="title" column="title"/>
+        <result property="contents" column="contents"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <collection property="writtenUser" resultMap="com.board.api.mapper.user.UserMapper.userMap" />
+    </resultMap>
+
+    <select id="selectPostListJoinUsers" resultMap="postDTOMap">
+        select pno, board_no, type, title, contents, reg_date, update_date, userid, password, username, enabled, users.regDate, users.updateDate
+        from posts left join users on posts.writer = users.userid
+        <if test="type != null">
+            where type = #{type}
+        </if>
+        order by update_date desc
+        <if test="page > 0">
+            limit ${(page - 1) * 10}, 10
+        </if>
+    </select>
+</mapper>
