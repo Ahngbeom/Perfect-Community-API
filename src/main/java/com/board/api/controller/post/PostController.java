@@ -1,16 +1,17 @@
 package com.board.api.controller.post;
 
 import com.board.api.dto.post.PostListOptDTO;
-import com.board.api.service.UserService;
+import com.board.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.board.api.dto.post.PostDTO;
-import com.board.api.service.post.PostCRUD_Service;
+import com.board.api.service.post.PostService;
 
 import javax.naming.AuthenticationException;
 import java.security.Principal;
@@ -18,17 +19,17 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
-public class PostCRUD_Controller {
+public class PostController {
 
     private static final Logger log = LogManager.getLogger();
-    private final PostCRUD_Service CRUDService;
+    private final PostService postService;
     private final UserService userService;
 
     @GetMapping(value = {"/list"})
     public ResponseEntity<?> getPostList(@RequestBody(required = false) PostListOptDTO postListOptions) {
         try {
             log.info(postListOptions);
-            return ResponseEntity.ok(CRUDService.getPostList(postListOptions));
+            return ResponseEntity.ok(postService.getPostList(postListOptions));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -38,7 +39,7 @@ public class PostCRUD_Controller {
     @GetMapping("/{postNo}")
     public ResponseEntity<?> getPost(@PathVariable long postNo) {
         try {
-            return ResponseEntity.ok(CRUDService.getInfoByPno(postNo));
+            return ResponseEntity.ok(postService.getInfoByPno(postNo));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -46,20 +47,18 @@ public class PostCRUD_Controller {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO postDTO) {
+    public ResponseEntity<?> register(Principal principal, @RequestBody @Validated PostDTO postDTO) {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
-            CRUDService.registration(principal.getName(), postDTO);
+            log.info(postDTO);
+            return ResponseEntity.ok(postService.registration(principal.getName(), postDTO));
         } catch (AuthenticationException authenticationException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
-        } catch (DataIntegrityViolationException dataIntegrityViolationException) {
-            return ResponseEntity.badRequest().body(dataIntegrityViolationException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(postDTO.getPno());
     }
 
     @PostMapping("/modify")
@@ -67,7 +66,7 @@ public class PostCRUD_Controller {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
-            CRUDService.modification(postDTO, userService.getUserInfoById(principal.getName()).getUserName());
+            postService.modification(principal.getName(), postDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -80,7 +79,7 @@ public class PostCRUD_Controller {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
-            CRUDService.remove(userService.getUserInfoById(principal.getName()).getUserName(), postNo);
+            postService.remove(userService.getUserInfoById(principal.getName()).getUserName(), postNo);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

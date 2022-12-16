@@ -4,15 +4,15 @@ import com.board.api.dto.board.BoardDTO;
 
 import java.util.List;
 
-public interface BoardCRUD_Service {
+public interface BoardService {
 
     List<BoardDTO> getBoardList();
 
     BoardDTO getBoardInfo(long bno);
 
-    void createBoard(BoardDTO boardDTO);
+    BoardDTO createBoard(BoardDTO boardDTO);
 
-    void updateBoard(String userId, BoardDTO boardDTO);
+    void updateBoard(long boardNo, String userId, BoardDTO boardDTO);
 
     void deleteBoard(String userId, long bno);
 }
