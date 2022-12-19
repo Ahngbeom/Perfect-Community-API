@@ -17,7 +17,6 @@
     <context:component-scan base-package="com.board.api.mapper" />
     <context:component-scan base-package="com.board.api.dto" />
     <context:component-scan base-package="com.board.api.security"/>
-    <context:component-scan base-package="com.board.api.utils"/>
 
     <mybatis:scan base-package="com.board.api.mapper" />
 

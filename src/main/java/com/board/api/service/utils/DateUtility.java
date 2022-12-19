@@ -1,4 +1,4 @@
-package com.board.api.utils;
+package com.board.api.service.utils;
 
 import org.springframework.stereotype.Service;
 
