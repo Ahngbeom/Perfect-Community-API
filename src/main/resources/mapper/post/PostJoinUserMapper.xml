@@ -13,8 +13,8 @@
     </resultMap>
 
     <select id="selectPostListJoinUsers" resultMap="postDTOMap">
-        select pno, board_no, type, title, contents, reg_date, update_date, userid, password, username, enabled, users.regDate, users.updateDate
-        from posts left join users on posts.writer = users.userid
+        select pno, board_no, type, title, contents, reg_date, update_date, user_id, password, username, enabled, users.regDate, users.updateDate
+        from posts left join users on posts.writer = users.user_id
         <if test="type != null">
             where type = #{type}
         </if>

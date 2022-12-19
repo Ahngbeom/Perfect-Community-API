@@ -1,7 +1,6 @@
 package com.board.api.dto.post;
 
 import com.board.api.dto.user.UserDTO;
-import com.sun.istack.internal.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +10,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/*
+* **/
 public class PostDTO {
 
     private long pno;
@@ -27,7 +28,7 @@ public class PostDTO {
     private LocalDateTime   regDate;
     private LocalDateTime   updateDate;
 
-    public void setPno(long pno) { // Need when modifying posts of board
+    public void setPno(long pno) {
         this.pno = pno;
     }
 

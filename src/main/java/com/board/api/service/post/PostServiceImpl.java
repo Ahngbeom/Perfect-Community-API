@@ -2,10 +2,8 @@ package com.board.api.service.post;
 
 import com.board.api.dto.post.PostListOptDTO;
 import com.board.api.entity.post.PostEntity;
-import com.board.api.mapper.post.PostJoinUserMapper;
 import com.board.api.mapper.user.UserMapper;
 import com.board.api.mapper.post.PostTypeMapper;
-import com.board.api.mapper.utils.UtilsMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.board.api.dto.post.PostDTO;
 import com.board.api.mapper.post.PostMapper;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,12 +60,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void modification(String userId, PostDTO postDTO) {
-        log.info(postDTO);
-        if (postDTO.getPno() < 1)
+    public void modification(long postNo, String userId, PostDTO postDTO) {
+        log.info("pno: " + postNo + "\n" + postDTO);
+        if (postNo < 1)
             throw new RuntimeException("Invalid post number.");
-        if (!postUtils.checkPostVerification(userId, postDTO.getPno()))
+        if (!postUtils.checkPostVerification(userId, postNo))
             throw new RuntimeException("You do not have permission to modify the post.");
+        postDTO.setPno(postNo);
         postMapper.updatePost(postDTO);
     }
 

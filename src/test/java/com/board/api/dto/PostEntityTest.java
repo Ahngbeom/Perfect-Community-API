@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.board.api.service.post.PostService;
-import com.board.api.utils.DateUtility;
+import com.board.api.service.utils.DateUtility;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")

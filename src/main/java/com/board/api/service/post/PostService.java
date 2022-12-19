@@ -13,7 +13,7 @@ public interface PostService {
 
     PostDTO registration(String userId, PostDTO postDTO);
 
-    void modification(String userId, PostDTO postDTO);
+    void modification(long postNo, String userId, PostDTO postDTO);
 
     void remove(String userId, long pno);
 

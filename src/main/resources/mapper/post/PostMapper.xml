@@ -28,14 +28,17 @@
             <if test="boardNo gt 0">
                 board_no = #{boardNo}
             </if>
-            <if test="type != null">
-                AND type = #{type}
-            </if>
+            <choose>
+                <when test="type == null">
+                    AND type like 'NORMAL'
+                </when>
+                <otherwise>
+                    AND type like #{type}
+                </otherwise>
+            </choose>
         </where>
-        order by update_date desc
-        <if test="page > 0">
-            limit ${(page - 1) * 10}, 10
-        </if>
+#         order by field(type, 'NOTICE') desc, update_date desc limit ${(page - 1) * 10}, 10
+        order by update_date desc limit ${(page - 1) * 10}, 10
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postEntityMap">

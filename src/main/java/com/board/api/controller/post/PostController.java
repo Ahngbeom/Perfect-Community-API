@@ -47,7 +47,7 @@ public class PostController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> register(Principal principal, @RequestBody @Validated PostDTO postDTO) {
+    public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO postDTO) {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
@@ -61,12 +61,12 @@ public class PostController {
         }
     }
 
-    @PostMapping("/modify")
-    public ResponseEntity<?> modification(Principal principal, @RequestBody PostDTO postDTO) {
+    @PutMapping("/modify/{postNo}")
+    public ResponseEntity<?> modification(Principal principal, @PathVariable long postNo, @RequestBody PostDTO postDTO) {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
-            postService.modification(principal.getName(), postDTO);
+            postService.modification(postNo, principal.getName(), postDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -74,12 +74,12 @@ public class PostController {
         return ResponseEntity.ok(postDTO.getPno());
     }
 
-    @PostMapping("/remove/{postNo}")
+    @DeleteMapping("/remove/{postNo}")
     public ResponseEntity<?> remove(Principal principal, @PathVariable int postNo) {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in");
-            postService.remove(userService.getUserInfoById(principal.getName()).getUserName(), postNo);
+            postService.remove(principal.getName(), postNo);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
