@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="board_db@localhost" uuid="455f86e6-457b-4f45-baf0-fdc34f0599c9">
+    <data-source source="LOCAL" name="board_db@localhost" single-connection="true" uuid="455f86e6-457b-4f45-baf0-fdc34f0599c9">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mariadb://localhost:3306/board_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <time-zone>Asia/Seoul</time-zone>
     </data-source>
   </component>
 </project>
