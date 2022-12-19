@@ -1,46 +1,41 @@
 package com.board.api.dto.board;
 
+import com.google.common.base.Preconditions;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
+@Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class BoardDTO {
 
     private long bno;
+
     private String createdUser;
-    @NonNull
+
+//    @NonNull
     private String title;
-    @NonNull
+
     private String comment;
+
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    public void setBno(long bno) {
+    @Builder
+    public BoardDTO(long bno, String createdUser, String title, String comment, LocalDateTime createDate, LocalDateTime updateDate) {
         this.bno = bno;
-    }
-
-    public void setCreatedUser(String createdUser) {
         this.createdUser = createdUser;
+        Preconditions.checkNotNull(title, "Board title must not be null");
+        this.title = title;
+        this.comment = comment;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
     }
 
     public void setTitle(String title) {
+        Preconditions.checkNotNull(title, "Board title must not be null");
         this.title = title;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public void setUpdateDate(LocalDateTime updateDate) {
-        this.updateDate = updateDate;
     }
 }
