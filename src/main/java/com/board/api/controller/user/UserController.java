@@ -1,16 +1,16 @@
 package com.board.api.controller.user;
 
-import com.board.api.dto.AuthorityDTO;
+import com.board.api.dto.auth.AuthorityDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import com.board.api.dto.UserDTO;
+import com.board.api.dto.user.UserDTO;
 import com.board.api.security.detail.CustomUserDetailService;
-import com.board.api.service.AuthService;
-import com.board.api.service.UserService;
+import com.board.api.service.auth.AuthService;
+import com.board.api.service.user.UserService;
 
 import java.util.List;
 import java.util.Objects;
@@ -127,7 +127,7 @@ public class UserController {
     @PostMapping("/userId-duplicatesCheck")
     public boolean userIdDuplicatesChecking(String userId) {
         UserDetails user = userDetailsService.loadUserByUsername(userId);
-        return user != null ? true : false;
+        return user != null;
     }
 
 //    @PostMapping("/username-duplicatesCheck")

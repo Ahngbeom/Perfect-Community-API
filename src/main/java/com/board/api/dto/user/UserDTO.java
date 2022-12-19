@@ -1,5 +1,6 @@
-package com.board.api.dto;
+package com.board.api.dto.user;
 
+import com.board.api.dto.auth.AuthorityDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString()
 public class UserDTO {
 
     @NonNull
@@ -53,4 +54,17 @@ public class UserDTO {
     public void setAuthList(List<AuthorityDTO> authList) {
         this.authList = authList;
     }
+
+//    @Override
+//    public String toString() {
+//        return "UserDTO{" +
+//                "userId='" + userId + '\'' +
+//                ", password=" + "[PROTECTED]" +
+//                ", userName='" + userName + '\'' +
+//                ", enabled=" + enabled +
+//                ", regDate=" + regDate +
+//                ", updateDate=" + updateDate +
+//                ", authList=" + authList +
+//                '}';
+//    }
 }
