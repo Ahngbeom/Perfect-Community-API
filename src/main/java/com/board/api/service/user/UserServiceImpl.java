@@ -1,4 +1,4 @@
-package com.board.api.service;
+package com.board.api.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.board.api.dto.UserDTO;
-import com.board.api.mapper.UserMapper;
+import com.board.api.dto.user.UserDTO;
+import com.board.api.mapper.user.UserMapper;
 
 import java.util.List;
 

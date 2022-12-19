@@ -30,7 +30,7 @@ public class MemberTests {
     @Test
     public void testInsertMember() {
 
-        String sql = "insert into users(userid, password, username) values(?,?,?)";
+        String sql = "insert into users(user_id, password, username) values(?,?,?)";
 
         for (int i = 0; i < 10; i++) {
             Connection con = null;
@@ -75,7 +75,7 @@ public class MemberTests {
 
     @Test
     public void testInsertAuth() {
-        String sql = "insert into users_authorities(userid, authority) values(?,?)";
+        String sql = "insert into users_authorities(user_id, authority) values(?,?)";
 
         for (int i = 0; i < 10; i++) {
             Connection con = null;

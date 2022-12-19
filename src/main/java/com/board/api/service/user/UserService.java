@@ -1,7 +1,7 @@
-package com.board.api.service;
+package com.board.api.service.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import com.board.api.dto.UserDTO;
+import com.board.api.dto.user.UserDTO;
 
 import java.util.List;
 
