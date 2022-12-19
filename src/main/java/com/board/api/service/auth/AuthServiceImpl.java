@@ -1,17 +1,15 @@
-package com.board.api.service;
+package com.board.api.service.auth;
 
-import com.board.api.dto.AuthorityDTO;
+import com.board.api.dto.auth.AuthorityDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import com.board.api.mapper.AuthMapper;
+import com.board.api.mapper.auth.AuthMapper;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,16 +25,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public List<AuthorityDTO> getAuthList(String userId) {
         return authMapper.readAuthMember(userId);
-    }
-
-    @Override
-    public boolean hasAdminRole(String userId) {
-        AtomicBoolean result = new AtomicBoolean(false);
-//        getUserInfoById(userId).getAuthList().forEach(auth -> {
-//            if (auth.equals("ROLE_ADMIN"))
-//                result.set(true);
-//        });
-        return result.get();
     }
 
     @Override
@@ -68,4 +56,13 @@ public class AuthServiceImpl implements AuthService {
         authMapper.deleteAllAuthorityToMember((userId));
     }
 
+    @Override
+    public boolean hasRole(String userId, String role) {
+        List<AuthorityDTO> authorities = authMapper.readAuthMember(userId);
+        for (AuthorityDTO authority : authorities) {
+            if (authority.getAuthority().equalsIgnoreCase(role) || authority.getAuthority().equalsIgnoreCase("ROLE_" + role))
+                return true;
+        }
+        return false;
+    }
 }
