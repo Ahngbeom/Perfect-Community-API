@@ -46,9 +46,7 @@ public class BoardController {
                 throw new AuthenticationException("Not logged in.");
             if (!authService.hasRole(principal.getName(), "admin"))
                 throw new AuthenticationException("Unauthorized.");
-            log.info(principal);
-            boardDTO.setCreatedUser(principal.getName());
-            return ResponseEntity.ok(service.createBoard(boardDTO));
+            return ResponseEntity.ok(service.createBoard(principal.getName(), boardDTO));
         } catch (AuthenticationException authenticationException) {
             authenticationException.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
@@ -63,7 +61,7 @@ public class BoardController {
         try {
             if (principal == null)
                 throw new AuthenticationException("Not logged in.");
-            service.updateBoard(boardNo, principal.getName(), boardDTO);
+            service.updateBoard(principal.getName(), boardNo, boardDTO);
             return ResponseEntity.ok(boardNo);
         } catch (Exception e) {
             e.printStackTrace();
