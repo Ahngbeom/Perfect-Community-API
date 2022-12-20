@@ -13,7 +13,7 @@ public class BoardDTO {
 
     private long bno;
 
-    private String createdUser;
+    private String createUser;
 
 //    @NonNull
     private String title;
@@ -24,9 +24,9 @@ public class BoardDTO {
     private LocalDateTime updateDate;
 
     @Builder
-    public BoardDTO(long bno, String createdUser, String title, String comment, LocalDateTime createDate, LocalDateTime updateDate) {
+    public BoardDTO(long bno, String createUser, String title, String comment, LocalDateTime createDate, LocalDateTime updateDate) {
         this.bno = bno;
-        this.createdUser = createdUser;
+        this.createUser = createUser;
         Preconditions.checkNotNull(title, "Board title must not be null");
         this.title = title;
         this.comment = comment;

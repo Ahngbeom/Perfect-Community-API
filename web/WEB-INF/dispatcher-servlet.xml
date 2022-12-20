@@ -46,4 +46,7 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <constructor-arg ref="dataSource" />
     </bean>
+
+<!--    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">-->
+<!--    </bean>-->
 </beans>

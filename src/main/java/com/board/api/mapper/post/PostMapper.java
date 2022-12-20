@@ -24,6 +24,8 @@ public interface PostMapper {
 
     int deletePost(long pno);
 
+    int deletePostByBoardNo(long boardNo);
+
     int deleteAllPosts();
 
 }

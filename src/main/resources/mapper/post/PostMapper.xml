@@ -68,10 +68,17 @@
         where pno = #{pno}
     </delete>
 
+    <delete id="deletePostByBoardNo">
+        delete
+        from posts
+        where board_no = #{boardNo};
+    </delete>
+
     <delete id="deleteAllPosts">
         delete
         from posts
         where pno > 0
     </delete>
+
 
 </mapper>

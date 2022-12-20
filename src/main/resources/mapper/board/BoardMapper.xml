@@ -5,7 +5,7 @@
 <mapper namespace="com.board.api.mapper.board.BoardMapper">
 
     <resultMap id="boardEntityMap" type="com.board.api.entity.board.BoardEntity">
-        <result column="bno" property="bno"/>
+        <id column="bno" property="bno"/>
         <result column="create_user" property="createUser"/>
         <result column="title" property="title"/>
         <result column="comment" property="comment"/>
@@ -42,5 +42,11 @@
         delete
         from boards
         where bno = #{bno};
+    </delete>
+
+    <delete id="deleteAll">
+        delete
+        from boards
+        where bno > 0;
     </delete>
 </mapper>

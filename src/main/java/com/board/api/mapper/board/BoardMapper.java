@@ -15,4 +15,5 @@ public interface BoardMapper {
     int createBoard(BoardEntity boardEntity);
     int updateBoard(BoardEntity boardEntity);
     int deleteBoard(long bno);
+    int deleteAll();
 }

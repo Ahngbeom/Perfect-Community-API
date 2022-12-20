@@ -10,9 +10,10 @@ public interface BoardService {
 
     BoardDTO getBoardInfo(long bno);
 
-    BoardDTO createBoard(BoardDTO boardDTO);
+    BoardDTO createBoard(String createUser, BoardDTO boardDTO);
 
-    void updateBoard(long boardNo, String userId, BoardDTO boardDTO);
+    void updateBoard(String userId, long boardNo, BoardDTO boardDTO);
 
     void deleteBoard(String userId, long bno);
+
 }
