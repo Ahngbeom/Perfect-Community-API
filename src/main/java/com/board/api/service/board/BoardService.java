@@ -2,6 +2,7 @@ package com.board.api.service.board;
 
 import com.board.api.dto.board.BoardDTO;
 
+import javax.security.sasl.AuthenticationException;
 import java.util.List;
 
 public interface BoardService {
@@ -12,7 +13,7 @@ public interface BoardService {
 
     BoardDTO createBoard(String createUser, BoardDTO boardDTO);
 
-    void updateBoard(String userId, long boardNo, BoardDTO boardDTO);
+    void updateBoard(String userId, long boardNo, BoardDTO boardDTO) throws AuthenticationException;
 
     void deleteBoard(String userId, long bno);
 

@@ -4,8 +4,8 @@ import com.board.api.dto.board.BoardDTO;
 import com.board.api.entity.board.BoardEntity;
 import com.board.api.mapper.board.BoardMapper;
 import com.board.api.mapper.post.PostMapper;
-import com.board.api.mapper.utils.UtilsMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +18,6 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper mapper;
 
     private final PostMapper postMapper;
-
-    private final UtilsMapper utilsMapper;
 
     @Override
     public List<BoardDTO> getBoardList() {
@@ -48,8 +46,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void updateBoard(String userId, long boardNo, BoardDTO boardDTO) throws RuntimeException {
-        if (!matchUserIdAndBoardCreator(userId, boardNo))
-            throw new RuntimeException("You do not have permission to edit this board.");
+        if (notMatchUserIdAndBoardCreator(userId, boardNo))
+            throw new AccessDeniedException("You do not have permission to edit this board.");
         boardDTO.setBno(boardNo);
         BoardEntity boardEntity = BoardEntity.dtoToEntity(boardDTO);
         if (mapper.updateBoard(boardEntity) != 1) {
@@ -59,16 +57,16 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void deleteBoard(String userId, long bno) {
-        if (!matchUserIdAndBoardCreator(userId, bno))
-            throw new RuntimeException("You do not have permission to delete this board.");
+        if (notMatchUserIdAndBoardCreator(userId, bno))
+            throw new AccessDeniedException("You do not have permission to delete this board.");
         postMapper.deletePostByBoardNo(bno);
         if (mapper.deleteBoard(bno) != 1)
             throw new RuntimeException("Failed to delete board.");
-        utilsMapper.initializeAutoIncrement("boards");
+//        utilsMapper.initializeAutoIncrement("boards");
     }
 
-    public boolean matchUserIdAndBoardCreator(String userId, long boardNo) {
-        return userId.equals(getBoardInfo(boardNo).getCreateUser());
+    public boolean notMatchUserIdAndBoardCreator(String userId, long boardNo) {
+        return !userId.equals(getBoardInfo(boardNo).getCreateUser());
     }
 
     public BoardDTO entityToDTO(BoardEntity entity) {
