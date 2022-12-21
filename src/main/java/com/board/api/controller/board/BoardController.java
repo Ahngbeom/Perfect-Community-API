@@ -8,9 +8,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
+import javax.security.auth.login.AccountNotFoundException;
 import java.security.Principal;
 import java.util.List;
 
@@ -43,13 +44,13 @@ public class BoardController {
     public ResponseEntity<?> createBoard(Principal principal, @RequestBody BoardDTO boardDTO) {
         try {
             if (principal == null)
-                throw new AuthenticationException("Not logged in.");
+                throw new AccountNotFoundException("Not logged in.");
             if (!authService.hasRole(principal.getName(), "admin"))
-                throw new AuthenticationException("Unauthorized.");
+                throw new AccessDeniedException("Unauthorized.");
             return ResponseEntity.ok(service.createBoard(principal.getName(), boardDTO));
-        } catch (AuthenticationException authenticationException) {
-            authenticationException.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
+        } catch (AccountNotFoundException | AccessDeniedException unauthorizedException) {
+            unauthorizedException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -60,9 +61,12 @@ public class BoardController {
     public ResponseEntity<?> updateBoard(Principal principal, @PathVariable long boardNo, @RequestBody BoardDTO boardDTO) {
         try {
             if (principal == null)
-                throw new AuthenticationException("Not logged in.");
+                throw new AccountNotFoundException("Not logged in.");
             service.updateBoard(principal.getName(), boardNo, boardDTO);
             return ResponseEntity.ok(boardNo);
+        } catch (AccountNotFoundException | AccessDeniedException unauthorizedException) {
+            unauthorizedException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -73,9 +77,12 @@ public class BoardController {
     public ResponseEntity<?> deleteBoard(Principal principal, @PathVariable long boardNo) {
         try {
             if (principal == null)
-                throw new AuthenticationException("Not logged in.");
+                throw new AccountNotFoundException("Not logged in.");
             service.deleteBoard(principal.getName(), boardNo);
             return ResponseEntity.ok(boardNo);
+        } catch (AccountNotFoundException | AccessDeniedException unauthorizedException) {
+            unauthorizedException.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

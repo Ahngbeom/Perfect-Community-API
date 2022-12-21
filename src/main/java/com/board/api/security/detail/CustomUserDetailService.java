@@ -24,10 +24,10 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserCache userCache = new NullUserCache();
         try {
-            log.warn("UserCache: " + userCache.getUserFromCache(userName));
+            log.info("UserCache: " + userCache.getUserFromCache(userName));
 //            log.warn("Load User By Name:" + userName);
             UserDTO user = mapper.readMemberByUserId(userName);
-            log.warn("Load UserDTO By userName: " + user);
+            log.info("Load UserDTO By userName: " + user);
             if (user == null)
                 throw new UsernameNotFoundException(userName);
             return new CustomUserDetails(user);

@@ -23,7 +23,6 @@ class ReadTest extends BoardControllerTest {
                 .andReturn();
         List<BoardDTO> boardDTOList = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<BoardDTO>>(){});
         log.info(boardDTOList);
-//        boardDTOList.forEach(log::info);
     }
 
     @Test
@@ -34,5 +33,15 @@ class ReadTest extends BoardControllerTest {
                 .andDo(print())
                 .andReturn();
         log.info(objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BoardDTO.class));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void getBoardInfoWithInvalidBoardNo() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/board/info/-1"))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andReturn();
+        log.error(mvcResult.getResponse().getContentAsString());
     }
 }
