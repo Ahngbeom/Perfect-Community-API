@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.board.api.mapper.user.UserMapper">
-    <resultMap id="userMap" type="com.board.api.dto.user.UserDTO">
+<mapper namespace="com.perfect.community.api.mapper.user.UserMapper">
+    <resultMap id="userMap" type="com.perfect.community.api.dto.user.UserDTO">
         <id property="userId" column="user_id"/>
 <!--        <result property="userId" column="user_id"/>-->
         <result property="password" column="password"/>
@@ -13,7 +13,7 @@
         <result property="updateDate" column="updateDate"/>
     </resultMap>
 
-    <resultMap id="userWithAuthorityMap" type="com.board.api.dto.user.UserDTO">
+    <resultMap id="userWithAuthorityMap" type="com.perfect.community.api.dto.user.UserDTO">
         <id property="userId" column="user_id"/>
 <!--        <result property="userId" column="user_id"/>-->
         <result property="password" column="password"/>
@@ -21,7 +21,7 @@
         <result property="enabled" column="enabled"/>
         <result property="regDate" column="regDate"/>
         <result property="updateDate" column="updateDate"/>
-        <collection property="authList" resultMap="com.board.api.mapper.auth.AuthMapper.usersAuthoritiesMap">
+        <collection property="authList" resultMap="com.perfect.community.api.mapper.auth.AuthMapper.usersAuthoritiesMap">
         </collection>
     </resultMap>
 
@@ -53,7 +53,7 @@
         order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, users.user_id;
     </select>
 
-    <select id="readAuthMember" resultType="com.board.api.dto.auth.AuthorityDTO">
+    <select id="readAuthMember" resultType="com.perfect.community.api.dto.auth.AuthorityDTO">
         select user_id, authority
         from users_authorities
         where user_id like #{userId};
@@ -65,19 +65,19 @@
         where users.user_id like #{userId};
     </delete>
 
-    <insert id="insertMember" parameterType="com.board.api.dto.user.UserDTO">
+    <insert id="insertMember" parameterType="com.perfect.community.api.dto.user.UserDTO">
         insert into users(user_id, password, username)
         values (#{userId}, #{password}, #{userName});
     </insert>
 
-    <update id="updateUser" parameterType="com.board.api.dto.user.UserDTO">
+    <update id="updateUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
         update users
         set password = #{password},
             username = #{userName}
         where user_id = #{userId};
     </update>
 
-    <insert id="insertAuthorityToMember" parameterType="com.board.api.dto.auth.AuthorityDTO">
+    <insert id="insertAuthorityToMember" parameterType="com.perfect.community.api.dto.auth.AuthorityDTO">
         insert into users_authorities(user_id, authority)
         values (#{userId}, #{authority});
     </insert>

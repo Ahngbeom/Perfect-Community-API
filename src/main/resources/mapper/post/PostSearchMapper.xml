@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.board.api.mapper.post.PostSearchMapper">
+<mapper namespace="com.perfect.community.api.mapper.post.PostSearchMapper">
 
-    <select id="searchPostByKeyword" resultType="com.board.api.dto.post.PostDTO" parameterType="java.util.List">
+    <select id="searchPostByKeyword" resultType="com.perfect.community.api.dto.post.PostDTO" parameterType="java.util.List">
         select pno, title, contents, writer, reg_date, update_date
         from posts
         <where>
@@ -54,7 +54,7 @@
         order by updatedate DESC;
     </select>
 
-    <select id="searchPostByRegex" resultType="com.board.api.dto.post.PostDTO" parameterType="java.util.List">
+    <select id="searchPostByRegex" resultType="com.perfect.community.api.dto.post.PostDTO" parameterType="java.util.List">
         select pno, title, contents, writer, reg_date, update_date
         from posts
         <where>

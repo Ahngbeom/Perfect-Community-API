@@ -5,22 +5,22 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <bean id="accessDeniedHandler" class="com.board.api.security.AccessDeniedHandler"/>
-    <bean id="loginSuccessHandler" class="com.board.api.security.login.LoginSuccessHandler"/>
-    <bean id="loginFailureHandler" class="com.board.api.security.login.LoginFailureHandler"/>
+    <bean id="accessDeniedHandler" class="com.perfect.community.api.security.AccessDeniedHandler"/>
+    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.login.LoginSuccessHandler"/>
+    <bean id="loginFailureHandler" class="com.perfect.community.api.security.login.LoginFailureHandler"/>
 
-    <bean id="customAuthenticationProcessingFilter" class="com.board.api.security.filter.CustomAuthenticationProcessingFilter">
+    <bean id="customAuthenticationProcessingFilter" class="com.perfect.community.api.security.filter.CustomAuthenticationProcessingFilter">
         <constructor-arg ref="customAuthenticationManager" />
     </bean>
-    <bean id="customAuthenticationManager" class="com.board.api.security.filter.CustomAuthenticationManager" >
+    <bean id="customAuthenticationManager" class="com.perfect.community.api.security.filter.CustomAuthenticationManager" >
         <constructor-arg ref="customUserDetailService" />
     </bean>
-    <bean id="filterExceptionHandler" class="com.board.api.security.filter.FilterExceptionHandler" />
+    <bean id="filterExceptionHandler" class="com.perfect.community.api.security.filter.FilterExceptionHandler" />
 
     <!--    <bean id="customPasswordEncoder" class="security.com.board-api.CustomPasswordEncoder"/>-->
     <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-    <bean id="customUserDetailService" class="com.board.api.security.detail.CustomUserDetailService"/>
-    <bean id="logoutSuccessHandler" class="com.board.api.security.logout.CustomLogoutSuccessHandler"/>
+    <bean id="customUserDetailService" class="com.perfect.community.api.security.detail.CustomUserDetailService"/>
+    <bean id="logoutSuccessHandler" class="com.perfect.community.api.security.logout.CustomLogoutSuccessHandler"/>
 
     <security:client-registrations>
         <security:client-registration registration-id="google"

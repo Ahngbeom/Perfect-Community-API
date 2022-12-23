@@ -12,13 +12,13 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="com.board.api.controller" />
-    <context:component-scan base-package="com.board.api.service" />
-    <context:component-scan base-package="com.board.api.mapper" />
-    <context:component-scan base-package="com.board.api.dto" />
-    <context:component-scan base-package="com.board.api.security"/>
+    <context:component-scan base-package="com.perfect.community.api.controller" />
+    <context:component-scan base-package="com.perfect.community.api.service" />
+    <context:component-scan base-package="com.perfect.community.api.mapper" />
+    <context:component-scan base-package="com.perfect.community.api.dto" />
+    <context:component-scan base-package="com.perfect.community.api.security"/>
 
-    <mybatis:scan base-package="com.board.api.mapper" />
+    <mybatis:scan base-package="com.perfect.community.api.mapper" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
