@@ -1,9 +1,9 @@
 package com.board.api.service.post;
 
+import com.board.api.dto.board.BoardDTO;
 import com.board.api.dto.post.PostListOptDTO;
 import com.board.api.entity.post.PostEntity;
 import com.board.api.mapper.user.UserMapper;
-import com.board.api.mapper.post.PostTypeMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     private static final Logger log = LogManager.getLogger(PostServiceImpl.class);
     private final PostMapper postMapper;
-    private final PostTypeMapper postTypeMapper;
-
     private final UserMapper userMapper;
     private final PostUtils postUtils;
 
@@ -47,7 +45,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO registration(String userId, PostDTO postDTO) throws RuntimeException {
         PostEntity postEntity = PostEntity.builder()
-                .boardNo(postDTO.getBoardNo())
+                .boardNo(postDTO.getBindBoard().getBno())
                 .type(postDTO.getType())
                 .title(postDTO.getTitle())
                 .contents(postDTO.getContents())
@@ -82,7 +80,7 @@ public class PostServiceImpl implements PostService {
     public PostDTO entityToDTO(PostEntity entity) {
         return PostDTO.builder()
                 .pno(entity.getPno())
-                .boardNo(entity.getBoardNo())
+                .bindBoard(BoardDTO.builder().bno(entity.getBoardNo()).build())
                 .type(entity.getType())
                 .writtenUser(userMapper.readMemberByUserId(entity.getWriter()))
                 .title(entity.getTitle())

@@ -6,10 +6,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class BoardEntity {
     private long bno;
     private String createUser;
@@ -18,10 +16,20 @@ public class BoardEntity {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    @Builder
+    public BoardEntity(long bno, String createUser, String title, String comment, LocalDateTime createDate, LocalDateTime updateDate) {
+        this.bno = bno;
+        this.createUser = createUser;
+        this.title = title;
+        this.comment = comment;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+    }
+
     public static BoardEntity dtoToEntity(BoardDTO boardDTO) {
         return BoardEntity.builder()
                 .bno(boardDTO.getBno())
-                .createUser(boardDTO.getCreateUser())
+                .createUser(boardDTO.getCreateUser().getUserId())
                 .title(boardDTO.getTitle())
                 .comment(boardDTO.getComment())
                 .createDate(boardDTO.getCreateDate())

@@ -1,6 +1,7 @@
-package com.board.api.mapper.board;
+package com.board.api.mapper.board.crud;
 
 import com.board.api.entity.board.BoardEntity;
+import com.board.api.mapper.board.BoardMapperTest;
 import org.junit.jupiter.api.Test;
 
 class CreateTest extends BoardMapperTest {

@@ -1,63 +1,48 @@
 package com.board.api.dto.post;
 
+import com.board.api.dto.board.BoardDTO;
 import com.board.api.dto.user.UserDTO;
+import com.google.common.base.Preconditions;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @ToString
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-/*
-* **/
 public class PostDTO {
 
     private long pno;
-    @NonNull
-    private long boardNo;
-    @NonNull
-    private String  type;
-    @NonNull
-    private String  title;
-    @NonNull
+    private BoardDTO bindBoard;
+    private String type;
+    private String title;
     private String contents;
     private UserDTO writtenUser;
+    private LocalDateTime regDate;
+    private LocalDateTime updateDate;
 
-    private LocalDateTime   regDate;
-    private LocalDateTime   updateDate;
-
-    public void setPno(long pno) {
+    /**
+     * All Arguments Constructor
+     *
+     * @param pno:        게시물의 고유 번호.
+     * @param bindBoard     {@link com.board.api.dto.board.BoardDTO}: 게시물의 소속 게시판 고유 번호.
+     * @param type:       게시물의 유형. null을 허용하지 않는다.
+     * @param title:      게시물의 제목. null을 허용하지 않는다.
+     * @param contents:   게시물의 내용. null을 허용하지 않는다.
+     * @param writtenUser {@link UserDTO}: 게시물의 작성자. null을 허용하지 않는다.
+     * @param regDate     {@link LocalDateTime}:     게시물의 작성 날짜.
+     * @param updateDate  {@link LocalDateTime}:  게시물의 수정 날짜.
+     */
+    @Builder
+    public PostDTO(long pno, BoardDTO bindBoard, String type, String title, String contents, UserDTO writtenUser, LocalDateTime regDate, LocalDateTime updateDate) {
         this.pno = pno;
-    }
-
-    public void setBoardNo(long boardNo) {
-        this.boardNo = boardNo;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public void setWrittenUser(UserDTO writtenUser) {
-        this.writtenUser = writtenUser;
-    }
-
-    public void setRegDate(LocalDateTime regDate) {
+        this.bindBoard = Preconditions.checkNotNull(bindBoard, "[bindBoard] must not be null.");
+        this.type = Preconditions.checkNotNull(type, "[type] must not be null.");
+        this.title = Preconditions.checkNotNull(title, "[title] must not be null.");
+        this.contents = Preconditions.checkNotNull(contents, "[contents] must not be null.");
+        this.writtenUser = Preconditions.checkNotNull(writtenUser, "[writtenUser] must not be null.");
         this.regDate = regDate;
-    }
-
-    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
-
 }

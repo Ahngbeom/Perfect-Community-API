@@ -1,5 +1,6 @@
 package com.board.api.service.post;
 
+import com.board.api.dto.board.BoardDTO;
 import com.board.api.dto.post.PostDTO;
 import com.board.api.dto.post.PostListOptDTO;
 import org.apache.logging.log4j.LogManager;
@@ -57,7 +58,7 @@ class PostServiceTest {
 //    @Transactional
     void registration() {
         PostDTO postDTO = PostDTO.builder()
-                .boardNo(1)
+                .bindBoard(BoardDTO.builder().bno(1).build())
                 .type("NORMAL")
                 .title("JUNIT TEST")
                 .contents("THIS POST FOR JUNIT TEST")
@@ -68,7 +69,7 @@ class PostServiceTest {
     @Test
     void modification() {
         PostDTO postDTO = PostDTO.builder()
-                .boardNo(1)
+                .bindBoard(BoardDTO.builder().bno(1).build())
                 .type("notice")
                 .title("JUNIT TEST")
                 .contents("THIS POST FOR JUNIT TEST")

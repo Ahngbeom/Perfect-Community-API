@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
 @Transactional
-class BoardMapperTest {
+public class BoardMapperTest {
 
     protected static final Logger log = LogManager.getLogger();
 
