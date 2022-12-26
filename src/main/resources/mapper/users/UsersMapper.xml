@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.perfect.community.api.mapper.user.UsersMapper">
+    <resultMap id="userEntityMap" type="com.perfect.community.api.entity.user.UserEntity">
+        <id property="userId" column="user_id"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="username"/>
+        <result property="enabled" column="enabled"/>
+        <result property="reg_date" column="regDate"/>
+        <result property="update_date" column="updateDate"/>
+        <collection property="authorities" column="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">
+        </collection>
+    </resultMap>
+
+<!--    <resultMap id="userWithAuthorityMap" type="usersAuthoritiesMap">-->
+<!--        <id property="userId" column="user_id"/>-->
+<!--        <result property="password" column="password"/>-->
+<!--        <result property="userName" column="username"/>-->
+<!--        <result property="enabled" column="enabled"/>-->
+<!--        <result property="regDate" column="regDate"/>-->
+<!--        <result property="updateDate" column="updateDate"/>-->
+<!--        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+<!--    <resultMap id="usersAuthoritiesMap" type="com.perfect.community.api.entity.user.UserAuthorityEntity">-->
+<!--        <result property="userId" column="user_id" />-->
+<!--        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap" />-->
+<!--    </resultMap>-->
+
+    <select id="selectUserByUserId" resultMap="userEntityMap">
+        select user_id, password, username, enabled, reg_date, update_date
+        from users
+        where users.user_id = #{userId};
+    </select>
+
+    <select id="selectUserWithAuthoritiesByUserId" resultMap="userEntityMap">
+        select users.user_id, password, username, enabled, reg_date, update_date, authority
+        from users
+                 LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
+        where users.user_id = #{userId};
+    </select>
+
+    <select id="selectAllUsers" resultMap="userEntityMap">
+        select user_id,
+               password,
+               username,
+               enabled,
+               reg_date,
+               update_date
+        from users
+        order by reg_date;
+    </select>
+
+    <select id="selectAllUsersWithAuthorities" resultMap="userEntityMap">
+        select users.user_id,
+               password,
+               username,
+               enabled,
+               reg_date,
+               update_date,
+               authority,
+               users_authorities.user_id
+        from users
+                 LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
+        order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, reg_date;
+    </select>
+
+    <insert id="insertUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
+        insert into users(user_id, password, username)
+        values (#{userId}, #{password}, #{userName});
+    </insert>
+
+    <update id="updatePassword">
+        update users
+        set password = #{password},
+            update_date = now()
+        where user_id = #{userId};
+    </update>
+
+    <update id="updateUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
+        update users
+        set username = #{userName},
+            update_date = now()
+        where user_id = #{userId};
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from users
+        where users.user_id like #{userId};
+    </delete>
+
+    <update id="enableMember">
+        update users
+        set enabled = true
+        where user_id like #{userId};
+    </update>
+
+    <update id="disableUser">
+        update users
+        set enabled = false
+        where user_id like #{userId};
+    </update>
+
+</mapper>

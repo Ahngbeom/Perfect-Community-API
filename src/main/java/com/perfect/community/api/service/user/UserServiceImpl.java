@@ -1,7 +1,7 @@
 package com.perfect.community.api.service.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.mapper.user.UserMapper;
+import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,33 +18,27 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger log = LogManager.getLogger();
 
-    private final UserMapper mapper;
+    private final UsersMapper mapper;
 
     private final PasswordEncoder encoder;
 
     @Override
     public List<UserDTO> getUserList() {
-        return (mapper.readAllMember());
+        return mapper.selectAllUsers().stream().map(entity -> entity.toDTO()).collect(Collectors.toList());
     }
 
     @Override
     public void createUser(UserDTO user) throws RuntimeException {
         user.setPassword(encoder.encode(user.getPassword()));
-        if (mapper.insertMember(user) != 1) {
+        if (mapper.insertUser(user) != 1) {
             throw new RuntimeException("Create user failure");
         }
     }
 
     @Override
     public UserDTO getUserInfoById(String userId) {
-        return mapper.readMemberByUserId(userId);
+        return mapper.selectUserByUserId(userId).toDTO();
     }
-
-    @Override
-    public UserDTO getUserInfoByName(String userName) {
-        return mapper.readMemberByUserName(userName);
-    }
-
 
     @Override
     public void updateUser(UserDTO user) {
@@ -60,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void disableUser(String userId) {
-        if (mapper.disableMember(userId) == 0)
+        if (mapper.disableUser(userId) == 0)
             throw new RuntimeException("User deactivation failed.");
     }
 
@@ -72,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean verifyPassword(String userId, String password) {
-        return encoder.matches(password, mapper.getEncodePassword(userId));
+        return encoder.matches(password,  mapper.selectUserByUserId(userId).getPassword());
     }
 
     @Override

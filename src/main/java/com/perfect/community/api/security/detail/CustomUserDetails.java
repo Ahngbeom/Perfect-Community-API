@@ -21,7 +21,7 @@ public class CustomUserDetails extends User {
         super(user.getUserId(), user.getPassword(),
                 user.isEnabled(), true,
                 true, true,
-                user.getAuthList());
+                user.getAuthorities());
         this.user = user;
     }
 

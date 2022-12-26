@@ -1,6 +1,6 @@
 package com.perfect.community.api.controller.user;
 
-import com.perfect.community.api.dto.auth.AuthorityDTO;
+import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +11,7 @@ import com.perfect.community.api.service.auth.AuthService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private static final Logger log = LogManager.getLogger();
@@ -20,9 +20,9 @@ public class AuthenticationController {
     private final AuthService authService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<AuthorityDTO>> getAuthorities(String userId) {
+    public ResponseEntity<List<AuthoritiesDTO>> getAuthorities() {
         try {
-            return ResponseEntity.ok(authService.getAuthList(userId));
+            return ResponseEntity.ok(authService.getAuthorities());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(null);
@@ -30,9 +30,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/grant")
-    public ResponseEntity<String> grantAuthority(@RequestBody AuthorityDTO authorityDTO) {
+    public ResponseEntity<String> grantAuthority(@RequestBody AuthoritiesDTO authoritiesDTO) {
         try {
-            authService.grantAuthority(authorityDTO);
+            authService.addAuthority(authoritiesDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -41,9 +41,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/revoke")
-    public ResponseEntity<String> revokeAuthority(@RequestBody AuthorityDTO authorityDTO) {
+    public ResponseEntity<String> revokeAuthority(@RequestBody AuthoritiesDTO authoritiesDTO) {
         try {
-            authService.revokeOneAuthority(authorityDTO);
+            authService.removeAuthority(authoritiesDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

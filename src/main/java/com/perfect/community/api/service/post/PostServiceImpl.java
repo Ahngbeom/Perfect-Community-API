@@ -3,7 +3,7 @@ package com.perfect.community.api.service.post;
 import com.perfect.community.api.dto.board.BoardDTO;
 import com.perfect.community.api.dto.post.PostListOptDTO;
 import com.perfect.community.api.entity.post.PostEntity;
-import com.perfect.community.api.mapper.user.UserMapper;
+import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     private static final Logger log = LogManager.getLogger(PostServiceImpl.class);
     private final PostMapper postMapper;
-    private final UserMapper userMapper;
+    private final UsersMapper usersMapper;
     private final PostUtils postUtils;
 
     @Override
@@ -82,7 +82,7 @@ public class PostServiceImpl implements PostService {
                 .pno(entity.getPno())
                 .bindBoard(BoardDTO.builder().bno(entity.getBoardNo()).build())
                 .type(entity.getType())
-                .writtenUser(userMapper.readMemberByUserId(entity.getWriter()))
+                .writtenUser(usersMapper.selectUserByUserId(entity.getWriter()).toDTO())
                 .title(entity.getTitle())
                 .contents(entity.getContents())
                 .regDate(entity.getRegDate())

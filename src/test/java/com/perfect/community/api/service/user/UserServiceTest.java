@@ -1,7 +1,6 @@
-package com.perfect.community.api.service;
+package com.perfect.community.api.service.user;
 
-import com.perfect.community.api.mapper.user.UserMapper;
-import com.perfect.community.api.service.user.UserServiceImpl;
+import com.perfect.community.api.mapper.user.UsersMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +26,7 @@ class UserServiceTest {
     private UserServiceImpl service;
 
     @Mock
-    private UserMapper mapper;
+    private UsersMapper mapper;
 
     @Mock
     private PasswordEncoder encoder;

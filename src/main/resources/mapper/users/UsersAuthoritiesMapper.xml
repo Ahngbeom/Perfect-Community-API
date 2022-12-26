@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.perfect.community.api.mapper.user.UsersAuthoritiesMapper">
+    <resultMap id="usersAuthoritiesMap" type="com.perfect.community.api.entity.user.UserAuthorityEntity">
+        <result property="userId" column="user_id" />
+        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesStringMap" />
+    </resultMap>
+
+    <select id="selectAllUserAuthorities" resultMap="usersAuthoritiesMap">
+        select user_id, authority
+        from users_authorities;
+    </select>
+
+    <select id="selectAllUserAuthoritiesByUserId" resultMap="usersAuthoritiesMap">
+        select user_id, authority
+        from users_authorities
+        where user_id like #{userId};
+    </select>
+
+    <insert id="insertUserAuthorities">
+        <foreach collection="authorities" item="authority">
+            insert into users_authorities(user_id, authority)
+            values (#{userId}, #{authority});
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserAuthorities">
+        delete
+        from users_authorities
+        where user_id like #{userId} and
+        <foreach collection="authorities" item="authority" open="(" close=")" separator="OR">
+            authority like #{authority}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllUserAuthorities">
+        delete
+        from users_authorities
+        where user_id like #{userId};
+    </delete>
+
+    <select id="hasAuthority" resultType="java.lang.Boolean">
+        select if(count(authority), 1, 0)
+        from users_authorities
+        where user_id like #{userId} and authority like #{authority};
+    </select>
+
+</mapper>

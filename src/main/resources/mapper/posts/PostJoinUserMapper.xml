@@ -9,11 +9,11 @@
         <result property="contents" column="contents"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
-        <collection property="writtenUser" resultMap="com.perfect.community.api.mapper.user.UserMapper.userMap" />
+        <collection property="writtenUser" resultMap="com.perfect.community.api.mapper.user.UsersMapper.userMap" />
     </resultMap>
 
     <select id="selectPostListJoinUsers" resultMap="postDTOMap">
-        select pno, board_no, type, title, contents, reg_date, update_date, user_id, password, username, enabled, users.regDate, users.updateDate
+        select pno, board_no, type, title, contents, reg_date, update_date, user_id, password, username, enabled, users.reg_date, users.update_date
         from posts left join users on posts.writer = users.user_id
         <if test="type != null">
             where type = #{type}

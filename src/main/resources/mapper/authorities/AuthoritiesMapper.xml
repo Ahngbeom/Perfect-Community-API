@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.perfect.community.api.mapper.authorities.AuthoritiesMapper">
+
+    <resultMap id="authoritiesMap" type="com.perfect.community.api.entity.authorities.AuthoritiesEntity">
+        <id property="authority" column="authority"/>
+    </resultMap>
+
+    <resultMap id="authoritiesStringMap" type="string">
+        <id property="authority" column="authority"/>
+    </resultMap>
+
+    <select id="selectAllAuthority" resultMap="authoritiesStringMap">
+        select authority
+        from authorities;
+    </select>
+
+    <insert id="insertAuthority">
+        insert into authorities(authority) values (#{authority});
+    </insert>
+
+    <update id="updateAuthority">
+        update authorities
+        set authority = #{renameAuthority}
+        where authority like #{origAuthority};
+    </update>
+
+    <delete id="deleteAuthority">
+        delete
+        from authorities
+        where authority like #{authority};
+    </delete>
+</mapper>

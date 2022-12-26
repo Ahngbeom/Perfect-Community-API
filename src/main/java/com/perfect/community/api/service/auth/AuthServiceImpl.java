@@ -1,15 +1,16 @@
 package com.perfect.community.api.service.auth;
 
-import com.perfect.community.api.dto.auth.AuthorityDTO;
+import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import com.perfect.community.api.mapper.auth.AuthMapper;
+import com.perfect.community.api.mapper.authorities.AuthoritiesMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,21 +18,21 @@ public class AuthServiceImpl implements AuthService {
 
     private static final Logger log = LogManager.getLogger();
 
-    private final AuthMapper authMapper;
+    private final AuthoritiesMapper authoritiesMapper;
 //    private final UserService userService;
 
 //    private final PasswordEncoder encoder;
 
     @Override
-    public List<AuthorityDTO> getAuthList(String userId) {
-        return authMapper.readAuthMember(userId);
+    public List<AuthoritiesDTO> getAuthorities() {
+        return authoritiesMapper.selectAllAuthority().stream().map(entity -> entity.toDTO()).collect(Collectors.toList());
     }
 
     @Override
-    public void grantAuthority(AuthorityDTO auth) {
+    public void addAuthority(AuthoritiesDTO auth) {
         try {
-            if (authMapper.insertAuthorityToMember(auth) != 1)
-                throw new RuntimeException("Failed to grant user authority");
+            if (authoritiesMapper.insertAuthority(auth) != 1)
+                throw new RuntimeException("Failed to add authority");
         } catch (DuplicateKeyException duplicateKeyException) {
             throw new DuplicateKeyException("Duplicate authority");
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
@@ -40,10 +41,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void revokeOneAuthority(AuthorityDTO auth) {
+    public void removeAuthority(AuthoritiesDTO auth) {
         try {
-            if (authMapper.deleteOneAuthorityToMember(auth) != 1)
-                throw new RuntimeException("Failed to revoke user authority");
+            if (authoritiesMapper.deleteAuthority(auth) != 1)
+                throw new RuntimeException("Failed to remove authority");
         } catch (DuplicateKeyException duplicateKeyException) {
             throw new DuplicateKeyException("Duplicate authority");
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
@@ -52,17 +53,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void revokeAllAuthority(String userId) {
-        authMapper.deleteAllAuthorityToMember((userId));
-    }
-
-    @Override
-    public boolean hasRole(String userId, String role) {
-        List<AuthorityDTO> authorities = authMapper.readAuthMember(userId);
-        for (AuthorityDTO authority : authorities) {
-            if (authority.getAuthority().equalsIgnoreCase(role) || authority.getAuthority().equalsIgnoreCase("ROLE_" + role))
-                return true;
-        }
-        return false;
+    public void modifyAuthority(String origAuthority, String renameAuthority) {
+        if (authoritiesMapper.updateAuthority(origAuthority, renameAuthority) != 1)
+            throw new RuntimeException("Failed to update authority");
     }
 }

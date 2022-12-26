@@ -1,6 +1,5 @@
 package com.perfect.community.api.dto.user;
 
-import com.perfect.community.api.dto.auth.AuthorityDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,16 +17,16 @@ public class UserDTO {
     private boolean enabled;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
-    private List<AuthorityDTO> authList;
+    private List<String> authorities;
 
     @Builder
-    public UserDTO(String userId, String password, String userName, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<AuthorityDTO> authList) {
+    public UserDTO(String userId, String password, String userName, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<String> authorities) {
         this.userId = userId;
         this.password = password;
         this.userName = userName;
         this.enabled = enabled;
         this.regDate = regDate;
         this.updateDate = updateDate;
-        this.authList = authList;
+        this.authorities = authorities;
     }
 }

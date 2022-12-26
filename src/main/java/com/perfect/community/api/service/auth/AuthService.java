@@ -1,20 +1,18 @@
 package com.perfect.community.api.service.auth;
 
 
-import com.perfect.community.api.dto.auth.AuthorityDTO;
+import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
 
 import java.util.List;
 
 public interface AuthService {
 
-    List<AuthorityDTO> getAuthList(String userId);
+    List<AuthoritiesDTO> getAuthorities();
 
-    void grantAuthority(AuthorityDTO auth);
+    void addAuthority(AuthoritiesDTO auth);
 
-    void revokeOneAuthority(AuthorityDTO auth);
+    void removeAuthority(AuthoritiesDTO auth);
 
-    void revokeAllAuthority(String userId);
-
-    boolean hasRole(String userId, String role);
+    void modifyAuthority(String userId, String role);
 
 }

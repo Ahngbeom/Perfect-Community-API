@@ -45,8 +45,8 @@ public class BoardController {
         try {
             if (principal == null)
                 throw new AccountNotFoundException("Not logged in.");
-            if (!authService.hasRole(principal.getName(), "admin"))
-                throw new AccessDeniedException("Unauthorized.");
+//            if (!authService.modifyAuthority(principal.getName(), "admin"))
+//                throw new AccessDeniedException("Unauthorized.");
             return ResponseEntity.ok(service.createBoard(principal.getName(), boardDTO));
         } catch (AccountNotFoundException | AccessDeniedException unauthorizedException) {
             unauthorizedException.printStackTrace();

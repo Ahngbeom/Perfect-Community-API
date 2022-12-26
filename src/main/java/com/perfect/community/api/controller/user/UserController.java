@@ -1,6 +1,5 @@
 package com.perfect.community.api.controller.user;
 
-import com.perfect.community.api.dto.auth.AuthorityDTO;
 import com.perfect.community.api.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -28,13 +27,10 @@ public class UserController {
 
 
     @GetMapping("/info")
-    public ResponseEntity<?> info(String userId, String userName) {
+    public ResponseEntity<?> info(String userId) {
         try {
-            if (userId != null) {
+            if (userId != null)
                 return ResponseEntity.ok(userService.getUserInfoById(userId));
-            } else if (userName != null) {
-                return ResponseEntity.ok(userService.getUserInfoByName(userName));
-            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -53,10 +49,10 @@ public class UserController {
         log.warn(user);
         try {
             userService.createUser(user);
-            for (AuthorityDTO auth : user.getAuthList()) {
-                auth.setUserId(user.getUserId());
-                authService.grantAuthority(auth);
-            }
+//            for (AuthoritiesDTO auth : user.getAuthorities()) {
+//                auth.setUserId(user.getUserId());
+//                authService.grantAuthority(UserAuthoritiesDTO.builder().userId(user).authorities(user.getAuthorities()).build());
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -79,7 +75,7 @@ public class UserController {
     public ResponseEntity<String> removeUser(@RequestBody UserDTO user) {
         try {
             if (Objects.equals(verifyPassword(user).getBody(), true)) {
-                authService.revokeAllAuthority(user.getUserId());
+//                authService.revokeAllAuthority(user.getUserId());
                 userService.removeUser(user.getUserId());
             }
             else
