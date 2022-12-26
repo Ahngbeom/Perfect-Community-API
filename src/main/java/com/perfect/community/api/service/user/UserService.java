@@ -1,18 +1,23 @@
 package com.perfect.community.api.service.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 public interface UserService {
     List<UserDTO> getUserList();
 
+    List<UserDTO> getUserListWithAuthorities();
+
+    UserDTO getUserInfoByUserId(String userId);
+
+    UserDTO getUserInfoWithAuthoritiesByUserId(String userId);
+
     void createUser(UserDTO member);
 
-    UserDTO getUserInfoById(String userId);
+    void updateUserInfo(UserDTO user);
 
-    void updateUser(UserDTO user);
+    void changeUserPassword(UserDTO user);
 
     void removeUser(String userId);
 
@@ -21,7 +26,5 @@ public interface UserService {
     void enableUser(String userId);
 
     boolean verifyPassword(String userId, String password);
-
-    UserDTO dtoConverter(UserDetails userDetails);
 
 }

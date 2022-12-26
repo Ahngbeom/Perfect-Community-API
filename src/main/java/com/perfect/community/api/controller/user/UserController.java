@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity<?> info(String userId) {
         try {
             if (userId != null)
-                return ResponseEntity.ok(userService.getUserInfoById(userId));
+                return ResponseEntity.ok(userService.getUserInfoByUserId(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -63,7 +63,7 @@ public class UserController {
     @PostMapping("/update")
     public ResponseEntity<String> updateUser(@RequestBody UserDTO user) {
         try {
-            userService.updateUser(user);
+            userService.updateUserInfo(user);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

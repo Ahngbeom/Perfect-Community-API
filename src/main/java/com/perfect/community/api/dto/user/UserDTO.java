@@ -7,7 +7,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class UserDTO {
 
@@ -28,5 +27,27 @@ public class UserDTO {
         this.regDate = regDate;
         this.updateDate = updateDate;
         this.authorities = authorities;
+    }
+
+    @Override
+    public String toString() {
+        return this.authorities != null
+                ? "UserDTO{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", userName='" + userName + '\'' +
+                ", enabled=" + enabled +
+                ", regDate=" + regDate +
+                ", updateDate=" + updateDate +
+                ", authorities=" + authorities +
+                '}'
+                : "UserDTO{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", userName='" + userName + '\'' +
+                ", enabled=" + enabled +
+                ", regDate=" + regDate +
+                ", updateDate=" + updateDate +
+                '}';
     }
 }

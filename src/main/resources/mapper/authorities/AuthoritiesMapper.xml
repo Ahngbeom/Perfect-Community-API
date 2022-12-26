@@ -6,11 +6,11 @@
         <id property="authority" column="authority"/>
     </resultMap>
 
-    <resultMap id="authoritiesStringMap" type="string">
-        <id property="authority" column="authority"/>
-    </resultMap>
+<!--    <resultMap id="authoritiesStringMap" type="string">-->
+<!--        <id property="authority" column="authority"/>-->
+<!--    </resultMap>-->
 
-    <select id="selectAllAuthority" resultMap="authoritiesStringMap">
+    <select id="selectAllAuthority" resultMap="authoritiesMap">
         select authority
         from authorities;
     </select>

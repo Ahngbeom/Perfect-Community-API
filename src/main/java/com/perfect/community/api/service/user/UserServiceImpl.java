@@ -1,6 +1,10 @@
 package com.perfect.community.api.service.user;
 
+import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
+import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
+import com.perfect.community.api.entity.user.UserEntity;
+import com.perfect.community.api.mapper.user.UsersAuthoritiesMapper;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -9,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +25,8 @@ public class UserServiceImpl implements UserService {
 
     private final UsersMapper mapper;
 
+    private final UsersAuthoritiesMapper usersAuthoritiesMapper;
+
     private final PasswordEncoder encoder;
 
     @Override
@@ -28,40 +35,61 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> getUserListWithAuthorities() {
+        return mapper.selectAllUsersWithAuthorities().stream().map(entity -> entity.toDTO()).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO getUserInfoByUserId(String userId) {
+        UserEntity userEntity = mapper.selectUserByUserId(userId);
+        return userEntity != null ? userEntity.toDTO() : null;
+    }
+
+    @Override
+    public UserDTO getUserInfoWithAuthoritiesByUserId(String userId) {
+        UserEntity userEntity = mapper.selectUserWithAuthoritiesByUserId(userId);
+        return userEntity != null ? userEntity.toDTO() : null;
+    }
+
+    @Override
     public void createUser(UserDTO user) throws RuntimeException {
         user.setPassword(encoder.encode(user.getPassword()));
         if (mapper.insertUser(user) != 1) {
-            throw new RuntimeException("Create user failure");
+            throw new RuntimeException("Failed to create user");
+        }
+        if (usersAuthoritiesMapper.insertUserAuthorities(UserAuthoritiesDTO.builder().userId(user.getUserId()).authorities(user.getAuthorities()).build()) != 1) {
+            throw new RuntimeException("Failed to grant user authorities");
         }
     }
 
     @Override
-    public UserDTO getUserInfoById(String userId) {
-        return mapper.selectUserByUserId(userId).toDTO();
+    public void updateUserInfo(UserDTO user) {
+        if (mapper.updateUser(user) != 1)
+            throw new RuntimeException("failed to update user info");
     }
 
     @Override
-    public void updateUser(UserDTO user) {
+    public void changeUserPassword(UserDTO user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        if (mapper.updateUser(user) == 0)
-            throw new RuntimeException("User information update failed.");
+        if (mapper.updatePassword(user) != 1)
+            throw new RuntimeException("failed to change user password");
     }
 
     @Override
     public void removeUser(String userId) {
-        if (mapper.deleteUser(userId) == 0)
+        if (mapper.deleteUser(userId) != 1)
             throw new RuntimeException("That user doesn't exist.");
     }
 
     @Override
     public void disableUser(String userId) {
-        if (mapper.disableUser(userId) == 0)
+        if (mapper.disableUser(userId) != 1)
             throw new RuntimeException("User deactivation failed.");
     }
 
     @Override
     public void enableUser(String userId) {
-        if (mapper.enableMember(userId) == 0)
+        if (mapper.enableMember(userId) != 1)
             throw new RuntimeException("User activation failed.");
     }
 
@@ -70,8 +98,4 @@ public class UserServiceImpl implements UserService {
         return encoder.matches(password,  mapper.selectUserByUserId(userId).getPassword());
     }
 
-    @Override
-    public UserDTO dtoConverter(UserDetails userDetails) {
-        return null;
-    }
 }

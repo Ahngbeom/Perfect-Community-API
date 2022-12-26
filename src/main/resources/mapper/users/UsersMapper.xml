@@ -8,27 +8,20 @@
         <result property="password" column="password"/>
         <result property="userName" column="username"/>
         <result property="enabled" column="enabled"/>
-        <result property="reg_date" column="regDate"/>
-        <result property="update_date" column="updateDate"/>
-        <collection property="authorities" column="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">
-        </collection>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
     </resultMap>
 
-<!--    <resultMap id="userWithAuthorityMap" type="usersAuthoritiesMap">-->
-<!--        <id property="userId" column="user_id"/>-->
-<!--        <result property="password" column="password"/>-->
-<!--        <result property="userName" column="username"/>-->
-<!--        <result property="enabled" column="enabled"/>-->
-<!--        <result property="regDate" column="regDate"/>-->
-<!--        <result property="updateDate" column="updateDate"/>-->
-<!--        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">-->
-<!--        </collection>-->
-<!--    </resultMap>-->
-
-<!--    <resultMap id="usersAuthoritiesMap" type="com.perfect.community.api.entity.user.UserAuthorityEntity">-->
-<!--        <result property="userId" column="user_id" />-->
-<!--        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap" />-->
-<!--    </resultMap>-->
+    <resultMap id="userWithAuthoritiesMap" type="com.perfect.community.api.entity.user.UserEntity">
+        <id property="userId" column="user_id"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="username"/>
+        <result property="enabled" column="enabled"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">
+        </collection>
+    </resultMap>
 
     <select id="selectUserByUserId" resultMap="userEntityMap">
         select user_id, password, username, enabled, reg_date, update_date
@@ -36,7 +29,7 @@
         where users.user_id = #{userId};
     </select>
 
-    <select id="selectUserWithAuthoritiesByUserId" resultMap="userEntityMap">
+    <select id="selectUserWithAuthoritiesByUserId" resultMap="userWithAuthoritiesMap">
         select users.user_id, password, username, enabled, reg_date, update_date, authority
         from users
                  LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
@@ -54,7 +47,7 @@
         order by reg_date;
     </select>
 
-    <select id="selectAllUsersWithAuthorities" resultMap="userEntityMap">
+    <select id="selectAllUsersWithAuthorities" resultMap="userWithAuthoritiesMap">
         select users.user_id,
                password,
                username,
