@@ -45,7 +45,7 @@ class CreateTest extends BoardControllerTest {
                             .build()
             ).toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return;
         }
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/board/create")

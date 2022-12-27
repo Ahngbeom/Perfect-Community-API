@@ -1,5 +1,6 @@
 package com.perfect.community.api.security.detail;
 
+import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.entity.user.UserEntity;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,11 @@ public class CustomUserDetailService implements UserDetailsService {
         try {
             log.info("UserCache: " + userCache.getUserFromCache(userName));
 //            log.warn("Load User By Name:" + userName);
-            UserEntity user = mapper.selectUserByUserId(userName);
+            UserDTO user = mapper.selectUserWithAuthoritiesByUserId(userName).toDTO();
             log.info("Load UserDTO By userName: " + user);
             if (user == null)
                 throw new UsernameNotFoundException(userName);
-            return new CustomUserDetails(user.toDTO());
+            return new CustomUserDetails(user);
         } catch (UsernameNotFoundException usernameNotFoundException) {
             log.error("\"" + usernameNotFoundException.getMessage() + "\" account does not exist.");
         } catch (Exception e) {

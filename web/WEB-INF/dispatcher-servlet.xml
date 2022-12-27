@@ -10,40 +10,48 @@
         http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
         http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd">
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven/>
 
-    <context:component-scan base-package="com.perfect.community.api.controller" />
-    <context:component-scan base-package="com.perfect.community.api.service" />
-    <context:component-scan base-package="com.perfect.community.api.mapper" />
-    <context:component-scan base-package="com.perfect.community.api.dto" />
+    <context:component-scan base-package="com.perfect.community.api.controller"/>
+    <context:component-scan base-package="com.perfect.community.api.service"/>
+    <context:component-scan base-package="com.perfect.community.api.mapper"/>
+    <context:component-scan base-package="com.perfect.community.api.dto"/>
     <context:component-scan base-package="com.perfect.community.api.security"/>
 
-    <mybatis:scan base-package="com.perfect.community.api.mapper" />
+    <mybatis:scan base-package="com.perfect.community.api.mapper"/>
 
-    <mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.perfect.community.api.security.interceptor.AccessDeniedInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
-        <property name="url" value="jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>
-        <property name="username" value="root" />
-        <property name="password" value="1234" />
+        <property name="url"
+                  value="jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:/mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath:/mapper/**/*.xml" />
+        <property name="mapperLocations" value="classpath:/mapper/**/*.xml"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <constructor-arg ref="dataSource" />
+        <constructor-arg ref="dataSource"/>
     </bean>
 
-<!--    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">-->
-<!--    </bean>-->
+    <!--    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">-->
+    <!--    </bean>-->
 </beans>

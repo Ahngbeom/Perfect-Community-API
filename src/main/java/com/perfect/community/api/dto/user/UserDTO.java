@@ -1,5 +1,6 @@
 package com.perfect.community.api.dto.user;
 
+import com.google.common.base.Preconditions;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,17 +13,17 @@ public class UserDTO {
 
     private String userId;
     private String password;
-    private String userName;
+    private String nickname;
     private boolean enabled;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
     private List<String> authorities;
 
     @Builder
-    public UserDTO(String userId, String password, String userName, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<String> authorities) {
-        this.userId = userId;
+    public UserDTO(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<String> authorities) {
+        this.userId = Preconditions.checkNotNull(userId, "User ID must be not null.");
         this.password = password;
-        this.userName = userName;
+        this.nickname = nickname;
         this.enabled = enabled;
         this.regDate = regDate;
         this.updateDate = updateDate;
@@ -34,8 +35,8 @@ public class UserDTO {
         return this.authorities != null
                 ? "UserDTO{" +
                 "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", userName='" + userName + '\'' +
+                ", password=[PROTECTED]" +
+                ", nickname='" + nickname + '\'' +
                 ", enabled=" + enabled +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
@@ -43,8 +44,8 @@ public class UserDTO {
                 '}'
                 : "UserDTO{" +
                 "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", userName='" + userName + '\'' +
+                ", password=[PROTECTED]" +
+                ", nickname='" + nickname + '\'' +
                 ", enabled=" + enabled +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +

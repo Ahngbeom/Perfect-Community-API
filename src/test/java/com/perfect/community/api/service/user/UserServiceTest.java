@@ -61,7 +61,7 @@ class UserServiceTest {
         UserDTO user = UserDTO.builder()
                 .userId("aaa")
                 .password("aaaa")
-                .userName("AAA")
+                .nickname("AAA")
                 .authorities(Collections.singletonList("ROLE_USER"))
                 .build();
         service.createUser(user);
@@ -73,7 +73,7 @@ class UserServiceTest {
         service.updateUserInfo(
                 UserDTO.builder()
                         .userId("admin")
-                        .userName("관리자")
+                        .nickname("관리자")
                         .build()
         );
         log.warn(service.getUserInfoByUserId("admin"));
@@ -117,5 +117,17 @@ class UserServiceTest {
     void verifyPassword() {
         log.warn(service.verifyPassword("admin", "1234"));
         log.warn(service.verifyPassword("admin", "admin"));
+    }
+
+    @Test
+    void userIdAvailability() {
+        log.warn(service.userIdAvailability("admin"));
+        log.warn(service.userIdAvailability("ahngbeom"));
+    }
+
+    @Test
+    void nicknameAvailability() {
+        log.warn(service.nicknameAvailability("Administrator"));
+        log.warn(service.nicknameAvailability("AHNGBEOM"));
     }
 }

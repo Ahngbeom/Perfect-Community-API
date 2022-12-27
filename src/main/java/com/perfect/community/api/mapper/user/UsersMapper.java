@@ -18,7 +18,7 @@ public interface UsersMapper {
 
     List<UserEntity> selectAllUsersWithAuthorities();
 
-    int insertUser(UserDTO member);
+    int insertUser(UserDTO user);
 
     int updateUser(UserDTO user);
 
@@ -29,4 +29,8 @@ public interface UsersMapper {
     int enableMember(String userId);
 
     int disableUser(String userId);
+
+    boolean userIdAvailability(String userId);
+
+    boolean nicknameAvailability(String nickname);
 }

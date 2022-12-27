@@ -51,13 +51,13 @@ class UsersMapperTest {
 
     @Test
     void insertUser() {
-        log.warn(mapper.insertUser(UserDTO.builder().userId("junit_tester").password("junit").userName("JUNIT_TESTER").build()));
+        log.warn(mapper.insertUser(UserDTO.builder().userId("junit_tester").password("junit").nickname("JUNIT_TESTER").build()));
         log.warn(mapper.selectUserByUserId("junit_tester"));
     }
 
     @Test
     void updateUser() {
-        log.warn(mapper.updateUser(UserDTO.builder().userId("admin").userName("ADMIN").build()));
+        log.warn(mapper.updateUser(UserDTO.builder().userId("admin").nickname("ADMIN").build()));
         log.warn(mapper.selectUserByUserId("admin"));
     }
 
@@ -95,5 +95,17 @@ class UsersMapperTest {
     void disableUser() {
         log.warn(mapper.disableUser("admin"));
         log.warn(mapper.selectUserByUserId("admin"));
+    }
+
+    @Test
+    void userIdAvailability() {
+        log.warn(mapper.userIdAvailability("admin"));
+        log.warn(mapper.userIdAvailability("ahngbeom"));
+    }
+
+    @Test
+    void nicknameAvailability() {
+        log.warn(mapper.nicknameAvailability("Administrator"));
+        log.warn(mapper.nicknameAvailability("AHNG"));
     }
 }

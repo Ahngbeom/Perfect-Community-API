@@ -6,7 +6,7 @@
     <resultMap id="userEntityMap" type="com.perfect.community.api.entity.user.UserEntity">
         <id property="userId" column="user_id"/>
         <result property="password" column="password"/>
-        <result property="userName" column="username"/>
+        <result property="nickname" column="nickname"/>
         <result property="enabled" column="enabled"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
@@ -15,7 +15,7 @@
     <resultMap id="userWithAuthoritiesMap" type="com.perfect.community.api.entity.user.UserEntity">
         <id property="userId" column="user_id"/>
         <result property="password" column="password"/>
-        <result property="userName" column="username"/>
+        <result property="nickname" column="nickname"/>
         <result property="enabled" column="enabled"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
@@ -24,13 +24,13 @@
     </resultMap>
 
     <select id="selectUserByUserId" resultMap="userEntityMap">
-        select user_id, password, username, enabled, reg_date, update_date
+        select user_id, password, nickname, enabled, reg_date, update_date
         from users
         where users.user_id = #{userId};
     </select>
 
     <select id="selectUserWithAuthoritiesByUserId" resultMap="userWithAuthoritiesMap">
-        select users.user_id, password, username, enabled, reg_date, update_date, authority
+        select users.user_id, password, nickname, enabled, reg_date, update_date, authority
         from users
                  LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
         where users.user_id = #{userId};
@@ -39,7 +39,7 @@
     <select id="selectAllUsers" resultMap="userEntityMap">
         select user_id,
                password,
-               username,
+               nickname,
                enabled,
                reg_date,
                update_date
@@ -50,7 +50,7 @@
     <select id="selectAllUsersWithAuthorities" resultMap="userWithAuthoritiesMap">
         select users.user_id,
                password,
-               username,
+               nickname,
                enabled,
                reg_date,
                update_date,
@@ -62,8 +62,8 @@
     </select>
 
     <insert id="insertUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
-        insert into users(user_id, password, username)
-        values (#{userId}, #{password}, #{userName});
+        insert into users(user_id, password, nickname)
+        values (#{userId}, #{password}, #{nickname});
     </insert>
 
     <update id="updatePassword">
@@ -75,7 +75,7 @@
 
     <update id="updateUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
         update users
-        set username = #{userName},
+        set nickname = #{nickname},
             update_date = now()
         where user_id = #{userId};
     </update>
@@ -97,5 +97,18 @@
         set enabled = false
         where user_id like #{userId};
     </update>
+
+    <select id="userIdAvailability" resultType="java.lang.Boolean">
+        select if(count(user_id), 0, 1)
+        from users
+        where user_id like #{userId};
+    </select>
+
+    <select id="nicknameAvailability" resultType="java.lang.Boolean">
+        select if(count(nickname), 0, 1)
+        from users
+        where nickname like #{nickname};
+    </select>
+
 
 </mapper>

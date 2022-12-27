@@ -1,6 +1,5 @@
 package com.perfect.community.api.entity.user;
 
-import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.entity.authorities.AuthoritiesEntity;
 import lombok.*;
@@ -15,17 +14,17 @@ public class UserEntity {
 
     private String userId;
     private String password;
-    private String userName;
+    private String nickname;
     private boolean enabled;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
     private List<AuthoritiesEntity> authorities;
 
     @Builder
-    public UserEntity(String userId, String password, String userName, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<AuthoritiesEntity> authorities) {
+    public UserEntity(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<AuthoritiesEntity> authorities) {
         this.userId = userId;
         this.password = password;
-        this.userName = userName;
+        this.nickname = nickname;
         this.enabled = enabled;
         this.regDate = regDate;
         this.updateDate = updateDate;
@@ -36,7 +35,7 @@ public class UserEntity {
         return UserDTO.builder()
                 .userId(this.userId)
                 .password(this.password)
-                .userName(this.userName)
+                .nickname(this.nickname)
                 .enabled(this.enabled)
                 .regDate(this.regDate)
                 .updateDate(this.updateDate)
@@ -51,7 +50,7 @@ public class UserEntity {
         return UserDTO.builder()
                 .userId(entity.userId)
                 .password(entity.password)
-                .userName(entity.userName)
+                .nickname(entity.nickname)
                 .enabled(entity.enabled)
                 .regDate(entity.regDate)
                 .updateDate(entity.updateDate)
@@ -64,7 +63,7 @@ public class UserEntity {
                 ? "UserEntity{" +
                 "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
-                ", userName='" + userName + '\'' +
+                ", userName='" + nickname + '\'' +
                 ", enabled=" + enabled +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
@@ -74,7 +73,7 @@ public class UserEntity {
                 "UserEntity{" +
                         "userId='" + userId + '\'' +
                         ", password='" + password + '\'' +
-                        ", userName='" + userName + '\'' +
+                        ", userName='" + nickname + '\'' +
                         ", enabled=" + enabled +
                         ", regDate=" + regDate +
                         ", updateDate=" + updateDate +

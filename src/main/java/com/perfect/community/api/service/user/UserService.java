@@ -1,6 +1,7 @@
 package com.perfect.community.api.service.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
+import org.apache.ibatis.javassist.bytecode.DuplicateMemberException;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface UserService {
 
     UserDTO getUserInfoWithAuthoritiesByUserId(String userId);
 
-    void createUser(UserDTO member);
+    void createUser(UserDTO member) throws DuplicateMemberException;
 
     void updateUserInfo(UserDTO user);
 
@@ -26,5 +27,9 @@ public interface UserService {
     void enableUser(String userId);
 
     boolean verifyPassword(String userId, String password);
+
+    boolean userIdAvailability(String userId);
+
+    boolean nicknameAvailability(String nickname);
 
 }

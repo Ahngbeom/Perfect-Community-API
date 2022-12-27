@@ -1,6 +1,6 @@
 package com.perfect.community.api.service.user;
 
-import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
+import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.entity.user.UserEntity;
@@ -9,11 +9,10 @@ import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,23 +52,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDTO user) throws RuntimeException {
+        Preconditions.checkNotNull(user.getPassword(), "User PW must be not null.");
+        Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null.");
         user.setPassword(encoder.encode(user.getPassword()));
+        if (!userIdAvailability(user.getUserId()) || !nicknameAvailability(user.getNickname())) {
+            throw new DuplicateKeyException("User ID or nickname is duplicated.");
+        }
+        if (user.getAuthorities() == null || user.getAuthorities().size() == 0) {
+            throw new RuntimeException("Cannot be request without authorities.");
+        }
         if (mapper.insertUser(user) != 1) {
-            throw new RuntimeException("Failed to create user");
+            throw new RuntimeException("Failed to create user.");
         }
         if (usersAuthoritiesMapper.insertUserAuthorities(UserAuthoritiesDTO.builder().userId(user.getUserId()).authorities(user.getAuthorities()).build()) != 1) {
-            throw new RuntimeException("Failed to grant user authorities");
+            throw new RuntimeException("Failed to grant user authorities.");
         }
     }
 
     @Override
     public void updateUserInfo(UserDTO user) {
+        Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null.");
         if (mapper.updateUser(user) != 1)
             throw new RuntimeException("failed to update user info");
     }
 
     @Override
     public void changeUserPassword(UserDTO user) {
+        Preconditions.checkNotNull(user.getPassword(), "User PW must be not null.");
         user.setPassword(encoder.encode(user.getPassword()));
         if (mapper.updatePassword(user) != 1)
             throw new RuntimeException("failed to change user password");
@@ -95,7 +104,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean verifyPassword(String userId, String password) {
+        Preconditions.checkNotNull(userId, "User PW must be not null.");
         return encoder.matches(password,  mapper.selectUserByUserId(userId).getPassword());
     }
 
+    @Override
+    public boolean userIdAvailability(String userId) {
+        return mapper.userIdAvailability(userId);
+    }
+
+    @Override
+    public boolean nicknameAvailability(String nickname) {
+        return mapper.nicknameAvailability(nickname);
+    }
 }
