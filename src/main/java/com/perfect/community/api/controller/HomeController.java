@@ -5,6 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +42,11 @@ public class HomeController {
     public ResponseEntity<Map<String, String>> error(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         Map<String, String> pageInfo = putRequestData(request);
         return ResponseEntity.ok(pageInfo);
+    }
+
+    @GetMapping("/my-authentication")
+    public ResponseEntity<Authentication> myAuthentication() {
+        return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());
     }
 
     public static Map<String, String> putRequestData(HttpServletRequest request) throws UnsupportedEncodingException {

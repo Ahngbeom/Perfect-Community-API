@@ -54,13 +54,16 @@ public class UserServiceImpl implements UserService {
     public void createUser(UserDTO user) throws RuntimeException {
         Preconditions.checkNotNull(user.getPassword(), "User PW must be not null.");
         Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null.");
-        user.setPassword(encoder.encode(user.getPassword()));
-        if (!userIdAvailability(user.getUserId()) || !nicknameAvailability(user.getNickname())) {
-            throw new DuplicateKeyException("User ID or nickname is duplicated.");
+        if (!userIdAvailability(user.getUserId())) {
+            throw new DuplicateKeyException("User ID is duplicated.");
+        }
+        if (!nicknameAvailability(user.getNickname())) {
+            throw new DuplicateKeyException("User nickname is duplicated.");
         }
         if (user.getAuthorities() == null || user.getAuthorities().size() == 0) {
             throw new RuntimeException("Cannot be request without authorities.");
         }
+        user.setPassword(encoder.encode(user.getPassword()));
         if (mapper.insertUser(user) != 1) {
             throw new RuntimeException("Failed to create user.");
         }

@@ -26,12 +26,11 @@ public class UserController {
 
     private final UserService userService;
 
-
     @GetMapping("/info")
     public ResponseEntity<?> info(String userId) {
         try {
             if (userId != null)
-                return ResponseEntity.ok(userService.getUserInfoByUserId(userId));
+                return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,7 +46,6 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<String> signUpUser(@RequestBody UserDTO user) {
-        log.warn(user);
         try {
             userService.createUser(user);
             return ResponseEntity.ok(user.getUserId());
@@ -60,12 +58,10 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<String> updateUser(Principal principal, @RequestBody UserDTO user) {
         try {
-            if (principal == null)
-                throw new AccountNotFoundException("Not logged in.");
             if (!principal.getName().equals(user.getUserId()))
                 throw new AccessDeniedException("Access denied.");
             userService.updateUserInfo(user);
-        } catch (AccountNotFoundException | AccessDeniedException unauthorizedException) {
+        } catch (AccessDeniedException unauthorizedException) {
              unauthorizedException.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedException.getMessage());
         } catch (Exception e) {
@@ -78,6 +74,8 @@ public class UserController {
     @DeleteMapping("/withdraw")
     public ResponseEntity<String> withdrawUser(Principal principal, @RequestBody UserDTO user) {
         try {
+            if (!principal.getName().equals(user.getUserId()))
+                throw new AccessDeniedException("Access denied.");
             if (userService.verifyPassword(user.getUserId(), user.getPassword())) {
 //                authService.revokeAllAuthority(user.getUserId());
                 userService.removeUser(user.getUserId());
@@ -91,8 +89,7 @@ public class UserController {
     }
 
     @PutMapping("/disable")
-    public ResponseEntity<?> disable(String userId) {
-        // 장기 미접속 계정 휴면 상태 전환 기능 필요
+    public ResponseEntity<?> disable(Principal principal, String userId) {
         try {
             userService.disableUser(userId);
         } catch (Exception e) {
