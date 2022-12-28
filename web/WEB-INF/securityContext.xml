@@ -57,7 +57,7 @@
 
 <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
 <!--        <security:custom-filter ref="FilterExceptionHandler" before="FORM_LOGIN_FILTER"/>-->
-        <security:form-login login-page="/login" login-processing-url="/login" authentication-success-handler-ref="loginSuccessHandler"
+        <security:form-login login-processing-url="/login" authentication-success-handler-ref="loginSuccessHandler"
                              authentication-failure-handler-ref="loginFailureHandler" authentication-failure-url="/login" />
 <!--        <security:logout logout-success-url="/" invalidate-session="true" delete-cookies="JSESSIONID,remember-me" />-->
         <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
