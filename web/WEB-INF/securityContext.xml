@@ -69,7 +69,7 @@
         <security:oauth2-login login-processing-url="/login/oauth2/code/google" />
 
         <!--        <security:access-denied-handler error-page="/accessError" />-->
-        <security:access-denied-handler ref="accessDeniedHandler"/>
+<!--        <security:access-denied-handler ref="accessDeniedHandler" />-->
 
     </security:http>
 

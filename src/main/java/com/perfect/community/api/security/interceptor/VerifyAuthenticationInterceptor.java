@@ -1,7 +1,14 @@
 package com.perfect.community.api.security.interceptor;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.perfect.community.api.dto.user.UserDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,10 +16,14 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
-public class AccessDeniedInterceptor implements HandlerInterceptor {
+public class VerifyAuthenticationInterceptor implements HandlerInterceptor {
 
-    private static final Logger log = LogManager.getLogger(AccessDeniedInterceptor.class);
+    private static final Logger log = LogManager.getLogger(VerifyAuthenticationInterceptor.class);
 
     /**
      * Interception point before the execution of a handler. Called after
@@ -37,12 +48,29 @@ public class AccessDeniedInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.warn(request.getRequestURI());
-        if (request.getRequestURI().endsWith("/user/withdraw")) {
-            if (request.getUserPrincipal() == null) {
-                throw new AccountNotFoundException("Not logged in.");
-            }
+//        log.warn(request.getRequestURI());
+//        log.warn(request.getUserPrincipal());
+//        log.warn(SecurityContextHolder.getContext().getAuthentication());
+        if (SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+            throw new AccountNotFoundException("Not logged in.");
         }
+
+//        try {
+//            InputStream inputStream = request.getInputStream();
+//            if (inputStream != null) {
+//                StringBuilder stringBuilder = new StringBuilder();
+//                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//                String line;
+//                while ((line = bufferedReader.readLine()) != null) {
+//                    stringBuilder.append(line);
+//                }
+//                ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+//                log.warn("@RequestBody: " + objectMapper.readValue(stringBuilder.toString(), new TypeReference<UserDTO>(){}));
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
         return true;
     }
 
