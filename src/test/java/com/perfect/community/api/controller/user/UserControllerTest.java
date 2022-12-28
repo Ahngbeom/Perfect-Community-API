@@ -37,8 +37,6 @@ class UserControllerTest extends ControllerIntegrationTest {
         return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), UserDTO.class);
     }
 
-
-
     @Test
     void verifyPassword() {
     }

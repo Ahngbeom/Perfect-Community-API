@@ -36,10 +36,15 @@ public class UserDeniedAccessInterceptor implements HandlerInterceptor {
             UserDTO requestBody = objectMapper.readValue(stringBuilder.toString(), new TypeReference<UserDTO>() {
             });
             log.warn("@RequestBody: " + requestBody);
-            if (!requestBody.getUserId().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User access denied.");
-                return false;
-            }
+//            if (!requestBody.getUserId().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User access denied.");
+//                return false;
+//            }
+//            log.warn(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_ADMIN"));
+//            if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_ADMIN")) {
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User access denied.");
+//                return false;
+//            }
         }
         return true;
     }

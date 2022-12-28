@@ -37,28 +37,6 @@ public class WithdrawTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Withdraw User] - Incorrect Password")
-    @WithUserDetails("tester1")
-    void incorrectPassword() {
-        try {
-            requestBody = objectMapper.valueToTree(
-                    UserDTO.builder()
-                            .userId("tester1")
-                            .password("incorrectPassword")
-                            .build()
-            ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/withdraw")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(requestBody))
-                    .andExpect(status().isBadRequest())
-                    .andReturn();
-            log.error(mvcResult.getResponse().getContentAsString());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    @Test
     @DisplayName("[Withdraw User] - Correct Request")
     @WithUserDetails("tester1")
     void correctPassword() {
@@ -66,7 +44,7 @@ public class WithdrawTest extends UserControllerTest {
             requestBody = objectMapper.valueToTree(
                     UserDTO.builder()
                             .userId("tester1")
-                            .password("1234")
+//                            .password("1234")
                             .build()
             ).toString();
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/withdraw")

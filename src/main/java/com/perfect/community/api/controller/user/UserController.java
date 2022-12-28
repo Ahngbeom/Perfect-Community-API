@@ -62,7 +62,7 @@ public class UserController {
                 throw new AccessDeniedException("Access denied.");
             userService.updateUserInfo(user);
         } catch (AccessDeniedException unauthorizedException) {
-             unauthorizedException.printStackTrace();
+            unauthorizedException.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedException.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,11 +76,12 @@ public class UserController {
         try {
             if (!principal.getName().equals(user.getUserId()))
                 throw new AccessDeniedException("Access denied.");
-            if (userService.verifyPassword(user.getUserId(), user.getPassword())) {
+            // 
+//            if (userService.verifyPassword(user.getUserId(), user.getPassword())) {
 //                authService.revokeAllAuthority(user.getUserId());
-                userService.removeUser(user.getUserId());
-            } else
-                throw new BadCredentialsException("Passwords do not match.");
+            userService.removeUser(user.getUserId());
+//            } else
+//                throw new BadCredentialsException("Passwords do not match.");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

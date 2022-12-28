@@ -83,7 +83,7 @@
     <delete id="deleteUser">
         delete
         from users
-        where users.user_id like #{userId};
+        where user_id like #{userId};
     </delete>
 
     <update id="enableMember">

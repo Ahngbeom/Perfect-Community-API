@@ -10,20 +10,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class DisableTest extends UserControllerTest {
+public class EnableTest extends UserControllerTest {
 
     String requestBody;
 
     @Test
-    @DisplayName("[Disable User] - Not logged in")
+    @DisplayName("[Enable User] - Not logged in")
     void notLogin() {
         try {
             requestBody = objectMapper.valueToTree(
                     UserDTO.builder()
                             .userId("admin")
+                            .password("1234")
                             .build()
             ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/disable")
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))
                     .andExpect(status().isBadRequest())
@@ -35,16 +36,17 @@ public class DisableTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Disable User] - By Other User")
+    @DisplayName("[Enable User] - By Other User")
     @WithUserDetails("tester1")
     void byOtherUser() {
         try {
             requestBody = objectMapper.valueToTree(
                     UserDTO.builder()
                             .userId("admin")
+                            .password("1234")
                             .build()
             ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/disable")
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))
                     .andExpect(status().isUnauthorized())
@@ -56,16 +58,17 @@ public class DisableTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Disable User] - Correct Request")
+    @DisplayName("[Enable User] - Correct Request")
     @WithUserDetails("admin")
-    void correctRequest() throws Exception {
+    void correctRequest() {
         try {
             requestBody = objectMapper.valueToTree(
                     UserDTO.builder()
-                            .userId("tester1")
+                            .userId("admin")
+                            .password("admin")
                             .build()
             ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/disable")
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))
                     .andExpect(status().isOk())
@@ -74,7 +77,6 @@ public class DisableTest extends UserControllerTest {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        log.info(getUserInfo("admin"));
     }
 
 }
