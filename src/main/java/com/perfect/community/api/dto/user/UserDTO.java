@@ -21,7 +21,7 @@ public class UserDTO {
 
     @Builder
     public UserDTO(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<String> authorities) {
-        this.userId = Preconditions.checkNotNull(userId, "User ID must be not null.");
+        this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.enabled = enabled;

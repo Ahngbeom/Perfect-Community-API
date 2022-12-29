@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDTO user) throws RuntimeException {
+        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null.");
         Preconditions.checkNotNull(user.getPassword(), "User PW must be not null.");
         Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null.");
         if (!userIdAvailability(user.getUserId())) {
@@ -74,6 +75,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserInfo(UserDTO user) {
+        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null.");
         Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null.");
         if (mapper.updateUser(user) != 1)
             throw new RuntimeException("failed to update user info");
@@ -81,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeUserPassword(UserDTO user) {
+        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null.");
         Preconditions.checkNotNull(user.getPassword(), "User PW must be not null.");
         user.setPassword(encoder.encode(user.getPassword()));
         if (mapper.updatePassword(user) != 1)

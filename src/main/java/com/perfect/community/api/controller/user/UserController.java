@@ -55,69 +55,64 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateUser(Principal principal, @RequestBody UserDTO user) {
+    /**
+     * userId를 '@PathVariable'로 분리한 이유
+     * UserDeniedAccessInterceptor에서 userId를 확인 하기 위해 '@RequestBody'에 접근할 경우,
+     * '@RequestBody' 데이터가 소멸되기 때문에 Controller에서는 제대로 처리를 하지 못하게 된다.
+     * @see com.perfect.community.api.security.interceptor.UserDeniedAccessInterceptor
+     **/
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO) {
         try {
-            if (!principal.getName().equals(user.getUserId()))
-                throw new AccessDeniedException("Access denied.");
-            userService.updateUserInfo(user);
-        } catch (AccessDeniedException unauthorizedException) {
-            unauthorizedException.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(unauthorizedException.getMessage());
+            userDTO.setUserId(userId);
+            userService.updateUserInfo(userDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(user.getUserId());
+        return ResponseEntity.ok(userId);
     }
 
-    @DeleteMapping("/withdraw")
-    public ResponseEntity<String> withdrawUser(Principal principal, @RequestBody UserDTO user) {
+    @DeleteMapping("/withdraw/{userId}")
+    public ResponseEntity<String> withdrawUser(@PathVariable String userId) {
         try {
-            if (!principal.getName().equals(user.getUserId()))
-                throw new AccessDeniedException("Access denied.");
-            // 
-//            if (userService.verifyPassword(user.getUserId(), user.getPassword())) {
-//                authService.revokeAllAuthority(user.getUserId());
-            userService.removeUser(user.getUserId());
-//            } else
-//                throw new BadCredentialsException("Passwords do not match.");
+            userService.removeUser(userId);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(user.getUserId());
+        return ResponseEntity.ok(userId);
     }
 
-    @PutMapping("/disable")
-    public ResponseEntity<?> disable(Principal principal, String userId) {
+    @PutMapping("/disable/{userId}")
+    public ResponseEntity<?> disable(@PathVariable String userId) {
         try {
             userService.disableUser(userId);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok("SUCCESS");
+        return ResponseEntity.ok(userId);
     }
 
-    @PutMapping("/enable")
-    public ResponseEntity<?> enable(String userId) {
+    @PutMapping("/enable/{userId}")
+    public ResponseEntity<?> enable(@PathVariable String userId) {
         try {
             userService.enableUser(userId);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok("SUCCESS");
+        return ResponseEntity.ok(userId);
     }
 
     @PostMapping("/verify-password")
-    public ResponseEntity<Boolean> verifyPassword(@RequestBody UserDTO user) {
+    public ResponseEntity<Boolean> verifyPassword(Principal principal, String password) {
         try {
-            return ResponseEntity.ok(userService.verifyPassword(user.getUserId(), user.getPassword()));
+            return ResponseEntity.ok(userService.verifyPassword(principal.getName(), password));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(false);
+            return ResponseEntity.ok(false);
         }
     }
 
@@ -126,7 +121,7 @@ public class UserController {
         return userService.userIdAvailability(userId);
     }
 
-    @PostMapping("/nickname-availability")
+    @GetMapping("/nickname-availability")
     public boolean usernameDuplicatesChecking(String nickname) {
         return userService.nicknameAvailability(nickname);
     }

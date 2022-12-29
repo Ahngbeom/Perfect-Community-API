@@ -53,8 +53,8 @@
 <!--        <security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>-->
 <!--        <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>-->
 <!--        <security:intercept-url pattern="/**/json" access="hasRole('ROLE_ADMIN')"/>-->
-        <security:intercept-url pattern="/api/user/enable" access="hasRole('ROLE_ADMIN')"/>
-        <security:intercept-url pattern="/api/user/disable" access="hasRole('ROLE_ADMIN')"/>
+<!--        <security:intercept-url method="PUT" pattern="/api/user/enable" access="hasRole('ROLE_ADMIN')"/>-->
+<!--        <security:intercept-url method="PUT" pattern="/api/user/disable" access="hasRole('ROLE_ADMIN')"/>-->
         <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
 
 <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
@@ -70,8 +70,7 @@
 
         <security:oauth2-login login-processing-url="/login/oauth2/code/google" />
 
-        <!--        <security:access-denied-handler error-page="/accessError" />-->
-<!--        <security:access-denied-handler ref="accessDeniedHandler" />-->
+        <security:access-denied-handler ref="accessDeniedHandler" />
 
     </security:http>
 

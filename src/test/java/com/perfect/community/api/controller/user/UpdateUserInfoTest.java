@@ -17,21 +17,20 @@ public class UpdateUserInfoTest extends UserControllerTest {
 
     @Test
     @DisplayName("[Update User Info] - Not logged in")
-    void notLogin() throws Exception {
+    void notLogin() {
         try {
             requestBody = objectMapper.valueToTree(
                     UserDTO.builder()
-                            .userId("admin")
                             .nickname("A")
                             .build()
             ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/update")
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/update/admin")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
             log.error(mvcResult.getResponse().getContentAsString());
-        } catch (NestedServletException e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
@@ -42,16 +41,15 @@ public class UpdateUserInfoTest extends UserControllerTest {
     void byOtherUser() throws Exception {
         requestBody = objectMapper.valueToTree(
                 UserDTO.builder()
-                        .userId("admin")
                         .nickname("A")
                         .build()
         ).toString();
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/update")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/update/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
-        log.error(mvcResult.getResponse().getContentAsString());
+        log.error(mvcResult.getResponse().getErrorMessage());
     }
 
     @Test
@@ -60,11 +58,10 @@ public class UpdateUserInfoTest extends UserControllerTest {
     void updateMyself() throws Exception {
         requestBody = objectMapper.valueToTree(
                 UserDTO.builder()
-                        .userId("admin")
                         .nickname("A")
                         .build()
         ).toString();
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/update")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/update/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())

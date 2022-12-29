@@ -51,7 +51,7 @@ public class VerifyAuthenticationInterceptor implements HandlerInterceptor {
 //        log.warn(request.getRequestURI());
 //        log.warn(request.getUserPrincipal());
 //        log.warn(SecurityContextHolder.getContext().getAuthentication());
-        if (SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
             throw new AccountNotFoundException("Not logged in.");
         }
 

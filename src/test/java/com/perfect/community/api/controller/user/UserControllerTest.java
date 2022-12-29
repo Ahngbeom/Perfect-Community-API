@@ -37,15 +37,12 @@ class UserControllerTest extends ControllerIntegrationTest {
         return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), UserDTO.class);
     }
 
-    @Test
-    void verifyPassword() {
+    public boolean verifyPassword(String password) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user/verify-password")
+                        .param("password", password))
+                .andExpect(status().isOk())
+                .andReturn();
+        return Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
     }
 
-    @Test
-    void userIdDuplicatesChecking() {
-    }
-
-    @Test
-    void usernameDuplicatesChecking() {
-    }
 }

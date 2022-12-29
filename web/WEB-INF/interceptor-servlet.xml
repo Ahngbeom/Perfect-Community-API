@@ -12,15 +12,18 @@
             <mvc:exclude-mapping path="/api/user/info"/>
             <mvc:exclude-mapping path="/api/user/list"/>
             <mvc:exclude-mapping path="/api/user/sign-up"/>
+            <mvc:exclude-mapping path="/api/user/id-availability"/>
+            <mvc:exclude-mapping path="/api/user/nickname-availability"/>
             <bean id="verifyAuthenticationInterceptor"
                   class="com.perfect.community.api.security.interceptor.VerifyAuthenticationInterceptor"/>
         </mvc:interceptor>
 
         <mvc:interceptor>
-            <mvc:mapping path="/api/user/update"/>
-            <mvc:mapping path="/api/user/withdraw"/>
-            <mvc:mapping path="/api/user/enable"/>
-            <mvc:mapping path="/api/user/disable"/>
+            <mvc:mapping path="/api/user/update/*"/>
+            <mvc:mapping path="/api/user/withdraw/*"/>
+            <mvc:mapping path="/api/user/verify-password"/>
+            <mvc:mapping path="/api/user/enable/*"/>
+            <mvc:mapping path="/api/user/disable/*"/>
             <bean id="userDeniedAccessInterceptor"
                   class="com.perfect.community.api.security.interceptor.UserDeniedAccessInterceptor"/>
         </mvc:interceptor>

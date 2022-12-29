@@ -1,9 +1,7 @@
 package com.perfect.community.api.controller.user;
 
-import com.perfect.community.api.dto.user.UserDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -12,24 +10,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class EnableTest extends UserControllerTest {
 
-    String requestBody;
-
     @Test
     @DisplayName("[Enable User] - Not logged in")
     void notLogin() {
         try {
-            requestBody = objectMapper.valueToTree(
-                    UserDTO.builder()
-                            .userId("admin")
-                            .password("1234")
-                            .build()
-            ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(requestBody))
-                    .andExpect(status().isBadRequest())
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable/admin"))
+                    .andExpect(status().isUnauthorized())
                     .andReturn();
-            log.error(mvcResult.getResponse().getContentAsString());
+            log.error(mvcResult.getResponse().getErrorMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -40,15 +28,7 @@ public class EnableTest extends UserControllerTest {
     @WithUserDetails("tester1")
     void byOtherUser() {
         try {
-            requestBody = objectMapper.valueToTree(
-                    UserDTO.builder()
-                            .userId("admin")
-                            .password("1234")
-                            .build()
-            ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(requestBody))
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable/admin"))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
             log.error(mvcResult.getResponse().getErrorMessage());
@@ -60,20 +40,14 @@ public class EnableTest extends UserControllerTest {
     @Test
     @DisplayName("[Enable User] - Correct Request")
     @WithUserDetails("admin")
-    void correctRequest() {
+    void correctRequest() throws Exception {
         try {
-            requestBody = objectMapper.valueToTree(
-                    UserDTO.builder()
-                            .userId("admin")
-                            .password("admin")
-                            .build()
-            ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(requestBody))
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/enable/tester1"))
                     .andExpect(status().isOk())
                     .andReturn();
-            log.info(mvcResult.getResponse().getContentAsString());
+            String enabledUserId = mvcResult.getResponse().getContentAsString();
+            log.info(enabledUserId);
+            log.info(getUserInfo(enabledUserId));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
