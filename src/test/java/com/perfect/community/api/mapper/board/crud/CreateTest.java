@@ -2,11 +2,14 @@ package com.perfect.community.api.mapper.board.crud;
 
 import com.perfect.community.api.entity.board.BoardEntity;
 import com.perfect.community.api.mapper.board.BoardMapperTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("BoardMapper Test for Create")
 class CreateTest extends BoardMapperTest {
 
     @Test
+    @DisplayName("Create with null title")
     void createBoardWithNullTitle() {
         try {
             int result = boardMapper.createBoard(
@@ -23,12 +26,13 @@ class CreateTest extends BoardMapperTest {
     }
 
     @Test
+    @DisplayName("Create with not null title")
     void createBoard() {
         try {
             int result = boardMapper.createBoard(
                     BoardEntity.builder()
                             .createUser("admin")
-                            .title(randomTitle)
+                            .title(generateRandomTitle())
                             .comment("Create test from BoardMapperTest")
                             .build()
             );

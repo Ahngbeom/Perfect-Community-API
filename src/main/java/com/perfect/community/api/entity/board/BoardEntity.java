@@ -29,7 +29,7 @@ public class BoardEntity {
     public static BoardEntity dtoToEntity(BoardDTO boardDTO) {
         return BoardEntity.builder()
                 .bno(boardDTO.getBno())
-                .createUser(boardDTO.getCreateUser().getUserId())
+                .createUser(boardDTO.getCreateUser())
                 .title(boardDTO.getTitle())
                 .comment(boardDTO.getComment())
                 .createDate(boardDTO.getCreateDate())

@@ -49,4 +49,11 @@
         from boards
         where bno > 0;
     </delete>
+
+    <select id="isHeTheOwnerOfBoard" resultType="java.lang.Boolean">
+        select if(count(*) > 0 and create_user LIKE #{userId}, 1, 0)
+        from boards
+        where bno = #{bno}
+    </select>
+
 </mapper>
