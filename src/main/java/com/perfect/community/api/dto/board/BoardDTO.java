@@ -1,7 +1,5 @@
 package com.perfect.community.api.dto.board;
 
-import com.perfect.community.api.dto.user.UserDTO;
-import com.google.common.base.Preconditions;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +12,7 @@ public class BoardDTO {
 
     private long bno;
 
-    private UserDTO createUser;
+    private String createUser;
 
     private String title;
 
@@ -28,24 +26,20 @@ public class BoardDTO {
      * All Arguments Constructor
      *
      * @param bno:       게시판의 고유 번호.
-     * @param createUser {@link UserDTO}: 게시판의 생성자. null을 허용하지 않는다.
-     * @param title:     게시판의 제목. null을 허용하지 않는다.
+     * @param createUser: 게시판의 생성자.
+     * @param title:     게시판의 제목.
      * @param comment:   게시판의 내용.
-     * @param createDate {@link LocalDateTime}: 게시판의 작성 날짜.
-     * @param updateDate {@link LocalDateTime}: 게시판의 수정 날짜.
+     *
+     * @param createDate: 게시판의 작성 날짜. {@link LocalDateTime}
+     * @param updateDate}: 게시판의 수정 날짜. {@link LocalDateTime}
      */
     @Builder
-    public BoardDTO(long bno, UserDTO createUser, String title, String comment, LocalDateTime createDate, LocalDateTime updateDate) {
+    public BoardDTO(long bno, String createUser, String title, String comment, LocalDateTime createDate, LocalDateTime updateDate) {
         this.bno = bno;
-        this.createUser = Preconditions.checkNotNull(createUser, "[createUser] must not be null");
-        this.title = Preconditions.checkNotNull(title, "[title] must not be null");
+        this.createUser = createUser;
+        this.title = title;
         this.comment = comment;
         this.createDate = createDate;
         this.updateDate = updateDate;
     }
-
-    public void setTitle(String title) {
-        this.title = Preconditions.checkNotNull(title, "[title] title must not be null");
-    }
-
 }

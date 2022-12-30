@@ -1,14 +1,16 @@
 package com.perfect.community.api.service.board;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("BoardService Test For Delete")
 class DeleteTest extends BoardServiceTest {
 
     @Test
     void deleteBoard() {
         try {
-            boardService.deleteBoard("admin", 6);
-            log.info("Success");
+            boardService.deleteBoard("admin", 1);
+            log.info(getBoardInfo(1));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -18,7 +20,6 @@ class DeleteTest extends BoardServiceTest {
     void deleteBoardInvalidBoardNo() {
         try {
             boardService.deleteBoard("admin", -1);
-            log.info("Success");
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -27,8 +28,8 @@ class DeleteTest extends BoardServiceTest {
     @Test
     void deleteBoardWithUnauthorizedUser() {
         try {
-            boardService.deleteBoard("tester1", 6);
-            log.info("Success");
+            boardService.deleteBoard("tester1", 1);
+            log.info(getBoardInfo(1));
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -1,38 +1,60 @@
 package com.perfect.community.api.service.board;
 
 import com.perfect.community.api.dto.board.BoardDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("BoardService Test for Create")
 class CreateTest extends BoardServiceTest {
 
     @Test
-    void createBoardWithNullTitle() {
+    @DisplayName("Create board with null create user")
+    void createBoardWithNullCreateUser() {
         try {
-            BoardDTO boardDTO = boardService.createBoard(
-                    "admin",
+            long createdBoardNo = boardService.createBoard(
+                    null,
                     BoardDTO.builder()
-                            .title(null)
-                            .comment("Creation test of board service")
+                            .title(utils.generateRandomTitle())
+                            .comment("Creation test of board service...")
                             .build()
             );
-            log.info(boardDTO);
+            log.info(createdBoardNo);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
 
     @Test
-    void createBoard() {
+    @DisplayName("Create board with null title")
+    void createBoardWithNullTitle() {
         try {
-            BoardDTO boardDTO = boardService.createBoard(
+            long createdBoardNo = boardService.createBoard(
                     "admin",
                     BoardDTO.builder()
-                            .title(randomTitle)
+                            .title(null)
                             .comment("Creation test of board service")
                             .build()
             );
-            log.info(boardDTO);
+            log.info(createdBoardNo);
         } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Create board")
+    void createBoard() {
+        try {
+            long createdBoardNo = boardService.createBoard(
+                    "admin",
+                    BoardDTO.builder()
+                            .title(utils.generateRandomTitle())
+                            .comment("Creation test of board service")
+                            .build()
+            );
+            log.info(createdBoardNo);
+        } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
         }
     }

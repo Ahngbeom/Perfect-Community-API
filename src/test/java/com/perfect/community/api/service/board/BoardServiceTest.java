@@ -1,14 +1,18 @@
 package com.perfect.community.api.service.board;
 
+import com.perfect.community.api.UtilsForTest;
+import com.perfect.community.api.dto.board.BoardDTO;
+import com.perfect.community.api.service.utils.RelocateService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
@@ -25,29 +29,25 @@ class BoardServiceTest {
     @Autowired
     protected BoardService boardService;
 
+    @Autowired
+    protected RelocateService relocateService;
+
+    protected final UtilsForTest utils = new UtilsForTest();
 
     @BeforeEach
     void setUp() {
         assertNotNull(boardService);
+        assertNotNull(relocateService);
+        assertNotNull(utils);
     }
 
-    protected static String randomTitle;
-    @BeforeAll
-    static void generateRandomTitle() {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-
-        randomTitle = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+    @AfterTransaction
+    void relocateBoardNumbers() {
+        log.info("auto_increment key value: " + relocateService.relocateBoardNumbers("boards"));
     }
 
-    @AfterEach
-    void tearDown() {
+    public BoardDTO getBoardInfo(long bno) throws Exception {
+        return boardService.getBoardInfo(bno);
     }
 
 }

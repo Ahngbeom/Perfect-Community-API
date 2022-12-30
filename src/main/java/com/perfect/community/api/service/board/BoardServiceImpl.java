@@ -1,7 +1,7 @@
 package com.perfect.community.api.service.board;
 
+import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.board.BoardDTO;
-import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.entity.board.BoardEntity;
 import com.perfect.community.api.mapper.board.BoardMapper;
 import com.perfect.community.api.mapper.post.PostMapper;
@@ -21,62 +21,61 @@ public class BoardServiceImpl implements BoardService {
 
     private final PostMapper postMapper;
 
-    private final UsersMapper usersMapper;
-
     @Override
     public List<BoardDTO> getBoardList() {
         return mapper.getBoardList().stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 
     @Override
-    public BoardDTO getBoardInfo(long bno) throws RuntimeException {
-        if (bno < 1)
-            throw new RuntimeException("Invalid board number.");
-        BoardEntity boardEntity = mapper.getBoardInfo(bno);
-        if (boardEntity == null)
-            throw new RuntimeException("There are no boards for that board number.");
-        return entityToDTO(boardEntity);
+    public BoardDTO getBoardInfo(long bno) {
+        return entityToDTO(Preconditions.checkNotNull(mapper.getBoardInfo(bno), "Invalid board number."));
     }
 
     @Override
-    public BoardDTO createBoard(String createUser, BoardDTO boardDTO) throws RuntimeException {
-        boardDTO.setCreateUser(UserDTO.builder().userId(createUser).build());
+    public long createBoard(String createUser, BoardDTO boardDTO) {
+        Preconditions.checkNotNull(boardDTO.getTitle(), "[title] must not be null");
+        boardDTO.setCreateUser(Preconditions.checkNotNull(createUser, "[createUser] must not be null"));
         BoardEntity entity = BoardEntity.dtoToEntity(boardDTO);
         if (mapper.createBoard(entity) != 1) {
             throw new RuntimeException("Failed to create board.");
         }
-        return entityToDTO(entity);
+        return entity.getBno();
     }
 
     @Override
-    public void updateBoard(String userId, long boardNo, BoardDTO boardDTO) throws RuntimeException {
-        if (notMatchUserIdAndBoardCreator(userId, boardNo))
-            throw new AccessDeniedException("You do not have permission to edit this board.");
+    public void updateBoard(String userId, long boardNo, BoardDTO boardDTO) {
+        Preconditions.checkNotNull(boardDTO.getTitle(), "[title] must not be null");
+//        if (notMatchUserIdAndBoardCreator(userId, boardNo))
+//            throw new AccessDeniedException("You do not have permission to edit this board.");
         boardDTO.setBno(boardNo);
         BoardEntity boardEntity = BoardEntity.dtoToEntity(boardDTO);
         if (mapper.updateBoard(boardEntity) != 1) {
-            throw new RuntimeException("Failed to update board.");
+            throw new RuntimeException("Failed to update board. Make sure it's a valid board number");
         }
     }
 
     @Override
     public void deleteBoard(String userId, long bno) {
-        if (notMatchUserIdAndBoardCreator(userId, bno))
-            throw new AccessDeniedException("You do not have permission to delete this board.");
+//        if (notMatchUserIdAndBoardCreator(userId, bno))
+//            throw new AccessDeniedException("You do not have permission to delete this board.");
         postMapper.deletePostByBoardNo(bno);
         if (mapper.deleteBoard(bno) != 1)
-            throw new RuntimeException("Failed to delete board.");
-//        utilsMapper.initializeAutoIncrement("boards");
+            throw new RuntimeException("Failed to delete board. Make sure it's a valid board number");
     }
 
-    public boolean notMatchUserIdAndBoardCreator(String userId, long boardNo) {
-        return !userId.equals(mapper.getBoardInfo(boardNo).getCreateUser());
+    @Override
+    public boolean isHeTheOwnerOfBoard(String userId, long bno) {
+        return mapper.isHeTheOwnerOfBoard(userId, bno);
     }
+
+//    public boolean notMatchUserIdAndBoardCreator(String userId, long boardNo) {
+//        return !userId.equals(getBoardInfo(boardNo).getCreateUser());
+//    }
 
     public BoardDTO entityToDTO(BoardEntity entity) {
         return BoardDTO.builder()
                 .bno(entity.getBno())
-                .createUser(usersMapper.selectUserByUserId(entity.getCreateUser()).toDTO())
+                .createUser(entity.getCreateUser())
                 .title(entity.getTitle())
                 .comment(entity.getComment())
                 .createDate(entity.getCreateDate())

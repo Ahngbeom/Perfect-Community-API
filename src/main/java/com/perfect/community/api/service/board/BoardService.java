@@ -9,12 +9,14 @@ public interface BoardService {
 
     List<BoardDTO> getBoardList();
 
-    BoardDTO getBoardInfo(long bno);
+    BoardDTO getBoardInfo(long bno) throws Exception;
 
-    BoardDTO createBoard(String createUser, BoardDTO boardDTO);
+    long createBoard(String createUser, BoardDTO boardDTO);
 
     void updateBoard(String userId, long boardNo, BoardDTO boardDTO) throws AuthenticationException;
 
     void deleteBoard(String userId, long bno);
+
+    boolean isHeTheOwnerOfBoard(String userId, long bno);
 
 }

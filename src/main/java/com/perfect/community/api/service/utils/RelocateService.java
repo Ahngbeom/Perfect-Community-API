@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RelocateTablePrimaryKeyService {
+public class RelocateService {
 
     private final UtilsMapper mapper;
 
-    public void RelocateTablePK(String tableName) {
-        mapper.initializeAutoIncrement(tableName);
+    public long relocateBoardNumbers(String tableName) {
+        return mapper.initializeAutoIncrement(tableName);
     }
 }
