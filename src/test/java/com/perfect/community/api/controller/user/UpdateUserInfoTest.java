@@ -4,6 +4,7 @@ import com.perfect.community.api.dto.user.UserDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,6 +18,7 @@ public class UpdateUserInfoTest extends UserControllerTest {
 
     @Test
     @DisplayName("[Update User Info] - Not logged in")
+    @WithAnonymousUser
     void notLogin() {
         try {
             requestBody = objectMapper.valueToTree(
@@ -29,7 +31,6 @@ public class UpdateUserInfoTest extends UserControllerTest {
                             .content(requestBody))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
-            log.error(mvcResult.getResponse().getContentAsString());
         } catch (Exception e) {
             log.error(e.getMessage());
         }

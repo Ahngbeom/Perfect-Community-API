@@ -15,8 +15,8 @@ public class DisableTest extends UserControllerTest {
     void notLogin() {
         try {
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/disable/admin"))
-                    .andExpect(status().isUnauthorized())
                     .andReturn();
+            log.error(mvcResult.getResponse().getErrorMessage());
             log.error(mvcResult.getResponse().getErrorMessage());
         } catch (Exception e) {
             log.error(e.getMessage());

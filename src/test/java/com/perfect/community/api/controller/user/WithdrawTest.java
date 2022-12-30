@@ -20,16 +20,12 @@ public class WithdrawTest extends UserControllerTest {
     @Test
     @DisplayName("[Withdraw User] - Not logged in")
     void notLogin() throws Exception {
-        try {
-            if (!verifyPassword("1234"))
-                throw new CredentialException("Passwords do not match.");
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/withdraw/tester1"))
-                    .andExpect(status().isBadRequest())
-                    .andReturn();
-            log.error(mvcResult.getResponse().getContentAsString());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+//            if (!verifyPassword("1234"))
+//                throw new CredentialException("Passwords do not match.");
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/withdraw/tester1"))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+        log.error(mvcResult.getResponse().getErrorMessage());
     }
 
     @Test

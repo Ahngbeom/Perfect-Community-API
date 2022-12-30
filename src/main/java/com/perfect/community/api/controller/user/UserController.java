@@ -1,21 +1,16 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
+import com.perfect.community.api.security.interceptor.AccessDeniedInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import com.perfect.community.api.service.user.UserService;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/user")
@@ -59,7 +54,7 @@ public class UserController {
      * userId를 '@PathVariable'로 분리한 이유
      * UserDeniedAccessInterceptor에서 userId를 확인 하기 위해 '@RequestBody'에 접근할 경우,
      * '@RequestBody' 데이터가 소멸되기 때문에 Controller에서는 제대로 처리를 하지 못하게 된다.
-     * @see com.perfect.community.api.security.interceptor.UserDeniedAccessInterceptor
+     * @see AccessDeniedInterceptor
      **/
     @PutMapping("/update/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO) {
