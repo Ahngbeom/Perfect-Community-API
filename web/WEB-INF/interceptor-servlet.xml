@@ -7,25 +7,46 @@
        http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <mvc:interceptors>
+
+        <!-- 로그인 검증 -->
         <mvc:interceptor>
             <mvc:mapping path="/api/user/**"/>
+            <mvc:mapping path="/api/board/**"/>
+
             <mvc:exclude-mapping path="/api/user/info"/>
             <mvc:exclude-mapping path="/api/user/list"/>
             <mvc:exclude-mapping path="/api/user/sign-up"/>
             <mvc:exclude-mapping path="/api/user/id-availability"/>
             <mvc:exclude-mapping path="/api/user/nickname-availability"/>
+
+            <mvc:exclude-mapping path="/api/board/info/*"/>
+            <mvc:exclude-mapping path="/api/board/list"/>
+
             <bean id="verifyAuthenticationInterceptor"
-                  class="com.perfect.community.api.security.interceptor.VerifyAuthenticationInterceptor"/>
+                  class="com.perfect.community.api.security.interceptor.LoginVerificationInterceptor"/>
         </mvc:interceptor>
 
+        <!-- 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 -->
         <mvc:interceptor>
             <mvc:mapping path="/api/user/update/*"/>
             <mvc:mapping path="/api/user/withdraw/*"/>
             <mvc:mapping path="/api/user/verify-password"/>
             <mvc:mapping path="/api/user/enable/*"/>
             <mvc:mapping path="/api/user/disable/*"/>
-            <bean id="userDeniedAccessInterceptor"
-                  class="com.perfect.community.api.security.interceptor.UserDeniedAccessInterceptor"/>
+
+            <mvc:mapping path="/api/board/update/*"/>
+            <mvc:mapping path="/api/board/delete/*"/>
+
+            <bean id="accessDeniedInterceptor"
+                  class="com.perfect.community.api.security.interceptor.AccessDeniedInterceptor"/>
+        </mvc:interceptor>
+
+        <!-- 관리자만이 접근할 수 있는 API 제한 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/api/board/create"/>
+
+            <bean id="onlyAdminAccessInterceptor"
+                  class="com.perfect.community.api.security.interceptor.OnlyAdminAccessInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 

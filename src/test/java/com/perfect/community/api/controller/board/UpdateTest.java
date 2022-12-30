@@ -14,103 +14,90 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class UpdateTest extends BoardControllerTest {
 
+    String requestBody;
+
     @Test
     @WithUserDetails("admin")
     void updateBoard() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.valueToTree(
+        requestBody = objectMapper.valueToTree(
                 BoardDTO.builder()
                         .title("Updating")
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
-        log.info(mvcResult.getResponse().getContentAsString());
+        log.info(getBoardInfo(Long.parseLong(mvcResult.getResponse().getContentAsString())));
     }
 
     @Test
     @WithUserDetails("admin")
     void updateBoardWithInvalidBoardNo() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.valueToTree(
+        requestBody = objectMapper.valueToTree(
                 BoardDTO.builder()
                         .title("Updating")
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/100")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/100")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn();
-        log.error(mvcResult.getResponse().getContentAsString());
     }
 
     @Test
     @WithUserDetails("admin")
     void updateBoardWithNullTitle() {
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String requestBody = objectMapper.valueToTree(
+            requestBody = objectMapper.valueToTree(
                     BoardDTO.builder()
                             .title(null)
                             .comment("Updating a board for testing in JUNIT")
                             .build()
             ).toString();
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+            mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))
-                    .andDo(print())
                     .andExpect(status().isBadRequest())
                     .andReturn();
-            log.error(mvcResult.getResponse().getContentAsString());
         } catch (Exception e) {
             e.printStackTrace();
-            log.error(e.getMessage());
         }
     }
 
     @Test
     @WithUserDetails("tester1")
     void updateBoardWithUnauthorizedUser() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.valueToTree(
+        requestBody = objectMapper.valueToTree(
                 BoardDTO.builder()
                         .title("Updating")
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andDo(print())
                 .andExpect(status().isUnauthorized())
                 .andReturn();
-        log.error(mvcResult.getResponse().getContentAsString());
     }
 
     @Test
     @WithAnonymousUser
     void updateBoardWithAnonymous() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.valueToTree(
+        requestBody = objectMapper.valueToTree(
                 BoardDTO.builder()
                         .title("Updating")
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andDo(print())
                 .andExpect(status().isUnauthorized())
                 .andReturn();
-        log.error(mvcResult.getResponse().getContentAsString());
     }
 }

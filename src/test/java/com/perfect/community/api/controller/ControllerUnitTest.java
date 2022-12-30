@@ -2,7 +2,7 @@ package com.perfect.community.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.perfect.community.api.security.interceptor.UserDeniedAccessInterceptor;
+import com.perfect.community.api.security.interceptor.AccessDeniedInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,11 +37,14 @@ public class ControllerUnitTest {
     @Autowired
     private FilterChainProxy filterChainProxy;
 
+    @Autowired
+    private AccessDeniedInterceptor accessDeniedInterceptor;
+
     protected static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public void setUp(Object controller) {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .addMappedInterceptors(new String[]{"/**"}, new UserDeniedAccessInterceptor())
+                .addMappedInterceptors(new String[]{"/**"}, accessDeniedInterceptor)
                 .apply(springSecurity(filterChainProxy))
                 .build();
 

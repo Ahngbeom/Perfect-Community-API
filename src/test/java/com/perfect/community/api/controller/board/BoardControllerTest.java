@@ -1,57 +1,57 @@
 package com.perfect.community.api.controller.board;
 
-import com.perfect.community.api.service.board.BoardService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.perfect.community.api.controller.ControllerIntegrationTest;
+import com.perfect.community.api.dto.board.BoardDTO;
+import com.perfect.community.api.service.utils.RelocateService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.transaction.AfterTransaction;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import java.io.UnsupportedEncodingException;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
-//@WebAppConfiguration
-@RequiredArgsConstructor
-public class BoardControllerTest {
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-    protected static final Logger log = LogManager.getLogger();
-
-//    protected final WebApplicationContext ctx;
-    protected MockMvc mockMvc;
+public class BoardControllerTest extends ControllerIntegrationTest {
 
     @Autowired
-    protected FilterChainProxy filterChainProxy;
-
-    @Autowired
-    @InjectMocks
     protected BoardController controller;
 
-    @Mock
-    protected BoardService service;
-
-    protected static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    @Autowired
+    protected RelocateService relocateService;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).apply(springSecurity(filterChainProxy)).build();
-//        mockMvc = MockMvcBuilders.webAppContextSetup(ctx).apply(springSecurity()).build();
-
-        assertNotNull(log);
-        assertNotNull(mockMvc);
-        assertNotNull(controller);
-
-        log.info("SUCCESS setup");
+        setUp(controller);
     }
+
+    @AfterEach
+    void checkMvcResult() throws UnsupportedEncodingException {
+        HttpStatus status = HttpStatus.resolve(mvcResult.getResponse().getStatus());
+        assert status != null;
+        if (status.is2xxSuccessful()) {
+            log.info("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString());
+        } else if (status.is3xxRedirection()) {
+            log.warn("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString()
+                    + "\n[" + status + "] Servlet Error: " + mvcResult.getResponse().getErrorMessage());
+        } else {
+            log.error("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString()
+                    + "\n [" + status + "] Servlet Error: " + mvcResult.getResponse().getErrorMessage());
+        }
+    }
+
+    @AfterTransaction
+    void relocateBoardNumbers() {
+        log.info("auto_increment key value: " + relocateService.relocateBoardNumbers("boards"));
+    }
+
+    public BoardDTO getBoardInfo(long bno) throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/board/info/" + bno))
+                .andExpect(status().isOk())
+                .andReturn();
+        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BoardDTO.class);
+    }
+
 }

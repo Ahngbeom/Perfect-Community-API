@@ -2,6 +2,7 @@ package com.perfect.community.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.perfect.community.api.UtilsForTest;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +28,6 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
         "file:web/WEB-INF/dispatcher-servlet.xml"
 })
 @WebAppConfiguration
-@RequiredArgsConstructor
 @Transactional
 public class ControllerIntegrationTest {
 
@@ -38,24 +38,26 @@ public class ControllerIntegrationTest {
 
     protected MockMvc mockMvc;
 
-    protected MvcResult mvcResult;
     @Autowired
-    private FilterChainProxy filterChainProxy;
+    protected FilterChainProxy filterChainProxy;
+
+    protected MvcResult mvcResult;
 
     protected static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
+    protected static final UtilsForTest utilsForTest = new UtilsForTest();
+
     public void setUp(Object controller) {
-//        mockMvc = MockMvcBuilders.standaloneSetup(controller)
-//                .addInterceptors(new AccessDeniedInterceptor())
-//                .apply(springSecurity(filterChainProxy))
-//                .build();
-//        mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
         mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
                 .apply(springSecurity(filterChainProxy))
                 .build();
 
         assertNotNull(log);
+        assertNotNull(ctx);
         assertNotNull(mockMvc);
+        assertNotNull(filterChainProxy);
+        assertNotNull(objectMapper);
+        assertNotNull(utilsForTest);
         assertNotNull(controller);
     }
 }
