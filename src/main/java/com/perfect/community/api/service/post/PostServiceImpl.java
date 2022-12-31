@@ -1,7 +1,7 @@
 package com.perfect.community.api.service.post;
 
 import com.perfect.community.api.dto.board.BoardDTO;
-import com.perfect.community.api.dto.post.PostListOptDTO;
+import com.perfect.community.api.dto.post.PostExtractionDTO;
 import com.perfect.community.api.entity.post.PostEntity;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +23,13 @@ public class PostServiceImpl implements PostService {
     private final PostUtils postUtils;
 
     @Override
-    public List<PostDTO> getPostList(PostListOptDTO postListOptions) {
+    public List<PostDTO> getPostList(PostExtractionDTO.List postListOptions) {
 //        if (postListOptions.getBoardNo() < 1)
 //            throw new RuntimeException("Invalid board number.");
-        if (postListOptions.getPage() < 0)
-            throw new RuntimeException("Invalid page number.");
-        if (!postUtils.verifyPostType(postListOptions.getType()))
-            throw new RuntimeException("Invalid post type.");
+//        if (postListOptions.getPage() < 0)
+//            throw new RuntimeException("Invalid page number.");
+//        if (!postUtils.verifyPostType(postListOptions.getType()))
+//            throw new RuntimeException("Invalid post type.");
         List<PostEntity> postEntities = postMapper.selectPostList(postListOptions);
         return postEntities.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO registration(String userId, PostDTO postDTO) throws RuntimeException {
         PostEntity postEntity = PostEntity.builder()
-                .boardNo(postDTO.getBindBoard().getBno())
+                .boardNo(postDTO.getBoardNo())
                 .type(postDTO.getType())
                 .title(postDTO.getTitle())
                 .contents(postDTO.getContents())
@@ -65,7 +65,7 @@ public class PostServiceImpl implements PostService {
         if (!postUtils.checkPostVerification(userId, postNo))
             throw new RuntimeException("You do not have permission to modify the post.");
         postDTO.setPno(postNo);
-        postMapper.updatePost(postDTO);
+        postMapper.updatePost(PostEntity.dtoToEntity(postDTO));
     }
 
     @Override
@@ -80,9 +80,9 @@ public class PostServiceImpl implements PostService {
     public PostDTO entityToDTO(PostEntity entity) {
         return PostDTO.builder()
                 .pno(entity.getPno())
-                .bindBoard(BoardDTO.builder().bno(entity.getBoardNo()).build())
+                .boardNo(entity.getBoardNo())
                 .type(entity.getType())
-                .writtenUser(usersMapper.selectUserByUserId(entity.getWriter()).toDTO())
+                .writer(entity.getWriter())
                 .title(entity.getTitle())
                 .contents(entity.getContents())
                 .regDate(entity.getRegDate())

@@ -1,5 +1,6 @@
 package com.perfect.community.api.service.post;
 
+import com.perfect.community.api.dto.post.PostExtractionDTO;
 import com.perfect.community.api.mapper.post.PostMapper;
 import com.perfect.community.api.mapper.post.PostTypeMapper;
 import com.perfect.community.api.mapper.utils.UtilsMapper;
@@ -17,8 +18,8 @@ public class PostUtils {
         this.utilsMapper = utilsMapper;
     }
 
-    public long countPosts(long boardNo) {
-        return postMapper.countPosts(boardNo);
+    public long countPosts(PostExtractionDTO.List options) {
+        return postMapper.countPosts(options);
     }
 
     public boolean checkPostVerification(String userId, long pno) {
@@ -35,7 +36,7 @@ public class PostUtils {
 
     public int removeAll() throws RuntimeException {
         int result;
-        if (countPosts(1) == 0) {
+        if (postMapper.countPosts() == 0) {
             throw new RuntimeException("Posts do not exist.");
         } else {
             result = postMapper.deleteAllPosts();
