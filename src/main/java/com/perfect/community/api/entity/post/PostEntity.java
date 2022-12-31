@@ -34,9 +34,9 @@ public class PostEntity {
     public static PostEntity dtoToEntity(PostDTO postDTO) {
         return PostEntity.builder()
                 .pno(postDTO.getPno())
-                .boardNo(postDTO.getBindBoard().getBno())
+                .boardNo(postDTO.getBoardNo())
                 .type(postDTO.getType())
-                .writer(postDTO.getWrittenUser().getUserId())
+                .writer(postDTO.getWriter())
                 .title(postDTO.getTitle())
                 .contents(postDTO.getContents())
                 .regDate(postDTO.getRegDate())

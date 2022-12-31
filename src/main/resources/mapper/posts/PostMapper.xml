@@ -15,10 +15,26 @@
         <result property="updateDate" column="update_date"/>
     </resultMap>
 
+<!--    <parameterMap id="postExtractionListParamMap" type="com.perfect.community.api.dto.post.PostExtractionDTO">-->
+<!--        <parameter property="boardNo"/>-->
+<!--        <parameter property="page"/>-->
+<!--        <parameter property="type"/>-->
+<!--    </parameterMap>-->
+
     <select id="countPosts" resultType="long">
         select count(*) as count
         from posts
-        where board_no = #{boardNo};
+        <where>
+            <if test="boardNo gt 0">
+                board_no = #{boardNo}
+            </if>
+            <if test="type != null">
+                and type like #{type}
+            </if>
+            <if test="page gt 0">
+                and page = #{page}
+            </if>
+        </where>
     </select>
 
     <select id="selectPostList" resultMap="postEntityMap">
@@ -28,17 +44,15 @@
             <if test="boardNo gt 0">
                 board_no = #{boardNo}
             </if>
-            <choose>
-                <when test="type == null">
-                    AND type like 'NORMAL'
-                </when>
-                <otherwise>
-                    AND type like #{type}
-                </otherwise>
-            </choose>
+            <if test="type != null">
+                AND type like #{type}
+            </if>
         </where>
-#         order by field(type, 'NOTICE') desc, update_date desc limit ${(page - 1) * 10}, 10
-        order by update_date desc limit ${(page - 1) * 10}, 10
+        # order by field(type, 'NOTICE') desc, update_date desc limit ${(page - 1) * 10}, 10
+        order by reg_date desc
+        <if test="page > 0">
+            limit ${(page - 1) * 10}, 10
+        </if>
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postEntityMap">
