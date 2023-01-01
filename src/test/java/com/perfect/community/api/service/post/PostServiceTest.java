@@ -2,6 +2,7 @@ package com.perfect.community.api.service.post;
 
 import com.perfect.community.api.dto.board.BoardDTO;
 import com.perfect.community.api.dto.post.PostDTO;
+import com.perfect.community.api.dto.post.PostExtractionDTO;
 import com.perfect.community.api.dto.post.PostListOptDTO;
 import com.perfect.community.api.service.utils.RelocateService;
 import org.apache.logging.log4j.LogManager;
@@ -53,49 +54,16 @@ class PostServiceTest {
         log.info("auto_increment key: " + relocateService.relocateBoardNumbers("posts"));
     }
 
-    @Test
-    void getInfoByPno() {
-        PostDTO postDTO = postService.getInfoByPno(9);
-        log.info(postDTO);
+    public PostDTO getInfoByPno(long pno) {
+        return postService.getInfoByPno(pno);
     }
 
-    @Test
-//    @Transactional
-    void registration() {
-        PostDTO postDTO = PostDTO.builder()
-                .boardNo(1)
-                .type("NORMAL")
-                .title("JUNIT TEST")
-                .contents("THIS POST FOR JUNIT TEST")
-                .build();
-        log.info(postService.registration("admin", postDTO));
+    public long countPosts(PostExtractionDTO.List options) {
+        return postUtils.countPosts(options);
     }
 
-    @Test
-    void modification() {
-        PostDTO postDTO = PostDTO.builder()
-                .boardNo(1)
-                .type("notice")
-                .title("JUNIT TEST")
-                .contents("THIS POST FOR JUNIT TEST")
-                .build();
-        postService.modification(8, "admin", postDTO);
-        log.info(postService.getInfoByPno(8));
-    }
-
-    @Test
-    void remove() {
-        postService.remove("admin", 9);
-    }
-
-    @Test
-    void countPosts() {
-//        log.info(postUtils.countPosts(1));
-    }
-
-    @Test
-    void checkPostVerification() {
-
+    public boolean checkPostVerification(String userId, long pno) {
+        return postUtils.checkPostVerification(userId, pno);
     }
 
 }

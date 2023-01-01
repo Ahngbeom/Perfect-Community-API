@@ -1,6 +1,6 @@
 package com.perfect.community.api.service.post;
 
-import com.perfect.community.api.dto.board.BoardDTO;
+import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.post.PostExtractionDTO;
 import com.perfect.community.api.entity.post.PostEntity;
 import com.perfect.community.api.mapper.user.UsersMapper;
@@ -36,14 +36,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getInfoByPno(long pno) {
+        Preconditions.checkState(pno > 0, "Invalid post no.");
         PostEntity postEntity = postMapper.selectPostInfoByPno(pno);
-        if (postEntity == null)
-            throw new RuntimeException("There are no posts with that bno.");
-        return entityToDTO(postEntity);
+        return postEntity != null ? entityToDTO(postEntity) : null;
     }
 
     @Override
-    public PostDTO registration(String userId, PostDTO postDTO) throws RuntimeException {
+    public long registration(String userId, PostDTO postDTO) throws RuntimeException {
+        Preconditions.checkNotNull(postDTO, "PostDTO must not be null.");
         PostEntity postEntity = PostEntity.builder()
                 .boardNo(postDTO.getBoardNo())
                 .type(postDTO.getType())
@@ -53,27 +53,21 @@ public class PostServiceImpl implements PostService {
                 .build();
         if (postMapper.insertPost(postEntity) == 0)
             throw new RuntimeException("Failed to register post.");
-        log.warn(postEntity);
-        return entityToDTO(postEntity);
+        return postEntity.getPno();
     }
 
     @Override
     public void modification(long postNo, String userId, PostDTO postDTO) {
-        log.info("pno: " + postNo + "\n" + postDTO);
-        if (postNo < 1)
-            throw new RuntimeException("Invalid post number.");
-        if (!postUtils.checkPostVerification(userId, postNo))
-            throw new RuntimeException("You do not have permission to modify the post.");
+        Preconditions.checkState(postNo > 0, "Post number must be greater than zero.");
+        Preconditions.checkState(postUtils.checkPostVerification(userId, postNo), "You do not have permission to modify the post.");
         postDTO.setPno(postNo);
         postMapper.updatePost(PostEntity.dtoToEntity(postDTO));
     }
 
     @Override
     public void remove(String userId, long pno) {
-        if (pno < 1)
-            throw new RuntimeException("Invalid post number.");
-        if (!postUtils.checkPostVerification(userId, pno))
-            throw new RuntimeException("You do not have permission to remove the post.");
+        Preconditions.checkState(pno > 0, "Invalid post no.");
+        Preconditions.checkState(postUtils.checkPostVerification(userId, pno), "You do not have permission to remove the post.");
         postMapper.deletePost(pno);
     }
 

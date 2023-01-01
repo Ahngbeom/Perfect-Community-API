@@ -42,11 +42,10 @@ public class PostDTO {
         this.type = Preconditions.checkNotNull(type, "[type] must not be null.");
         this.title = Preconditions.checkNotNull(title, "[title] must not be null.");
         this.contents = Preconditions.checkNotNull(contents, "[contents] must not be null.");
-        this.writer = Preconditions.checkNotNull(writer, "[writtenUser] must not be null.");
+        this.writer = writer;
         this.regDate = regDate;
         this.updateDate = updateDate;
     }
-
 
     public static class Fetch {
         private long pno;
