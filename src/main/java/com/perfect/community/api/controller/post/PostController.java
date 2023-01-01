@@ -1,5 +1,6 @@
 package com.perfect.community.api.controller.post;
 
+import com.perfect.community.api.dto.post.PostExtractionDTO;
 import com.perfect.community.api.dto.post.PostListOptDTO;
 import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,8 @@ public class PostController {
     private final UserService userService;
 
     @GetMapping(value = {"/list"})
-    public ResponseEntity<?> getPostList(@RequestBody(required = false) PostListOptDTO postListOptions) {
+    public ResponseEntity<?> getPostList(@RequestBody(required = false) PostExtractionDTO.List postListOptions) {
         try {
-            log.info(postListOptions);
             return ResponseEntity.ok(postService.getPostList(postListOptions));
         } catch (Exception e) {
             e.printStackTrace();
