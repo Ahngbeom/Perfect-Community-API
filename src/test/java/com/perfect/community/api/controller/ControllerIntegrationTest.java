@@ -77,16 +77,18 @@ public class ControllerIntegrationTest {
 
     @AfterEach
     void checkMvcResult() throws UnsupportedEncodingException {
-        HttpStatus status = HttpStatus.resolve(mvcResult.getResponse().getStatus());
-        assert status != null;
-        if (status.is2xxSuccessful()) {
-            log.info("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString());
-        } else if (status.is3xxRedirection()) {
-            log.warn("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString()
-                    + "\n[" + status + "] Servlet Error: " + mvcResult.getResponse().getErrorMessage());
-        } else {
-            log.error("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString()
-                    + "\n [" + status + "] Servlet Error: " + mvcResult.getResponse().getErrorMessage());
+        if (mvcResult != null) {
+            HttpStatus status = HttpStatus.resolve(mvcResult.getResponse().getStatus());
+            assert status != null;
+            if (status.is2xxSuccessful()) {
+                log.info("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString());
+            } else if (status.is3xxRedirection()) {
+                log.warn("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString()
+                        + "\n[" + status + "] Servlet Error: " + mvcResult.getResponse().getErrorMessage());
+            } else {
+                log.error("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString()
+                        + "\n [" + status + "] Servlet Error: " + mvcResult.getResponse().getErrorMessage());
+            }
         }
     }
 

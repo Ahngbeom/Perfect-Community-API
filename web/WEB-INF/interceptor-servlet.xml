@@ -12,6 +12,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/api/user/**"/>
             <mvc:mapping path="/api/board/**"/>
+            <mvc:mapping path="/api/post/**"/>
 
             <mvc:exclude-mapping path="/api/user/info"/>
             <mvc:exclude-mapping path="/api/user/list"/>
@@ -21,6 +22,9 @@
 
             <mvc:exclude-mapping path="/api/board/info/*"/>
             <mvc:exclude-mapping path="/api/board/list"/>
+
+            <mvc:exclude-mapping path="/api/post/info/*"/>
+            <mvc:exclude-mapping path="/api/post/list"/>
 
             <bean id="verifyAuthenticationInterceptor"
                   class="com.perfect.community.api.security.interceptor.LoginVerificationInterceptor"/>
@@ -36,6 +40,9 @@
 
             <mvc:mapping path="/api/board/update/*"/>
             <mvc:mapping path="/api/board/delete/*"/>
+
+            <mvc:mapping path="/api/post/modify/*"/>
+            <mvc:mapping path="/api/post/remove/*"/>
 
             <bean id="accessDeniedInterceptor"
                   class="com.perfect.community.api.security.interceptor.AccessDeniedInterceptor"/>

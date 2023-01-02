@@ -1,6 +1,7 @@
 package com.perfect.community.api.security.interceptor;
 
 import com.perfect.community.api.service.board.BoardService;
+import com.perfect.community.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,8 @@ public class AccessDeniedInterceptor implements HandlerInterceptor {
     private static final Logger log = LogManager.getLogger(AccessDeniedInterceptor.class);
 
     private final BoardService boardService;
+
+    private final PostService postService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -39,8 +42,14 @@ public class AccessDeniedInterceptor implements HandlerInterceptor {
                     throw new AccessDeniedException("Access denied.");
                 }
             }
+        } else if (requestURI.startsWith("/api/post")) {
+            if (pathVariables.containsKey("postNo")) {
+                if (!postService.isWriter(Long.parseLong(pathVariables.get("postNo")), request.getUserPrincipal().getName())
+                        && !request.isUserInRole("ROLE_ADMIN")) {
+                    throw new AccessDeniedException("Access denied.");
+                }
+            }
         }
-
         return true;
     }
 

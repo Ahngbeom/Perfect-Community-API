@@ -1,14 +1,17 @@
 package com.perfect.community.api.controller.post;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.perfect.community.api.controller.ControllerIntegrationTest;
+import com.perfect.community.api.dto.post.PostDTO;
+import com.perfect.community.api.dto.post.PostType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostControllerTest extends ControllerIntegrationTest {
@@ -26,26 +29,13 @@ class PostControllerTest extends ControllerIntegrationTest {
         log.info("auto_increment key value: " + relocateService.relocateBoardNumbers("posts"));
     }
 
-    @Test
-    void getPostList() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post/list"))
+    public PostDTO getPostInfo(long pno) throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post/info/" + pno))
                 .andExpect(status().isOk())
                 .andReturn();
+        if (mvcResult.getResponse().getContentAsString().isEmpty())
+            return null;
+        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<PostDTO>(){});
     }
 
-    @Test
-    void getPost() {
-    }
-
-    @Test
-    void register() {
-    }
-
-    @Test
-    void modification() {
-    }
-
-    @Test
-    void remove() {
-    }
 }

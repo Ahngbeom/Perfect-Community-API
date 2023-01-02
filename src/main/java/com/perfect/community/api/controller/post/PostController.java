@@ -34,7 +34,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/{postNo}")
+    @GetMapping("/info/{postNo}")
     public ResponseEntity<?> getPost(@PathVariable long postNo) {
         try {
             return ResponseEntity.ok(postService.getInfoByPno(postNo));
@@ -47,23 +47,17 @@ public class PostController {
     @PostMapping("/registration")
     public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO postDTO) {
         try {
-            if (principal == null)
-                throw new AuthenticationException("Not logged in");
-            log.info(postDTO);
-            return ResponseEntity.ok(postService.registration(principal.getName(), postDTO));
-        } catch (AuthenticationException authenticationException) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
+            postService.registration(principal.getName(), postDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+        return ResponseEntity.ok(postDTO.getPno());
     }
 
     @PutMapping("/modify/{postNo}")
     public ResponseEntity<?> modification(Principal principal, @PathVariable long postNo, @RequestBody PostDTO postDTO) {
         try {
-            if (principal == null)
-                throw new AuthenticationException("Not logged in");
             postService.modification(postNo, principal.getName(), postDTO);
         } catch (Exception e) {
             e.printStackTrace();
