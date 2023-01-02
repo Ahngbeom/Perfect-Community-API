@@ -13,8 +13,8 @@ public class RegistrationTest extends PostServiceTest {
                 .title("JUNIT TEST")
                 .contents("THIS POST FOR JUNIT TEST")
                 .build();
-        long createdPostNo = postService.registration("admin", postDTO);
-        log.info(getInfoByPno(createdPostNo));
+        postService.registration("admin", postDTO);
+        log.info(getInfoByPno(postDTO.getPno()));
     }
 
     @Test
@@ -26,8 +26,8 @@ public class RegistrationTest extends PostServiceTest {
                     .title("JUNIT TEST")
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
-            long createdPostNo = postService.registration(null, postDTO);
-            log.info(getInfoByPno(createdPostNo));
+            postService.registration(null, postDTO);
+            log.info(getInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -42,8 +42,8 @@ public class RegistrationTest extends PostServiceTest {
                     .title("JUNIT TEST")
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
-            long createdPostNo = postService.registration("admin", postDTO);
-            log.info(getInfoByPno(createdPostNo));
+            postService.registration("admin", postDTO);
+            log.info(getInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -58,8 +58,8 @@ public class RegistrationTest extends PostServiceTest {
                     .title("JUNIT TEST")
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
-            long createdPostNo = postService.registration("admin", postDTO);
-            log.info(getInfoByPno(createdPostNo));
+            postService.registration("admin", postDTO);
+            log.info(getInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -74,8 +74,8 @@ public class RegistrationTest extends PostServiceTest {
                     .title(null)
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
-            long createdPostNo = postService.registration("admin", postDTO);
-            log.info(getInfoByPno(createdPostNo));
+            postService.registration("admin", postDTO);
+            log.info(getInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -90,8 +90,8 @@ public class RegistrationTest extends PostServiceTest {
                     .title("JUNIT TEST")
                     .contents(null)
                     .build();
-            long createdPostNo = postService.registration("admin", postDTO);
-            log.info(getInfoByPno(createdPostNo));
+            postService.registration("admin", postDTO);
+            log.info(getInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -100,8 +100,7 @@ public class RegistrationTest extends PostServiceTest {
     @Test
     void byNullPostDTO() {
         try {
-            long createdPostNo = postService.registration("admin", null);
-            log.info(getInfoByPno(createdPostNo));
+            postService.registration("admin", null);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

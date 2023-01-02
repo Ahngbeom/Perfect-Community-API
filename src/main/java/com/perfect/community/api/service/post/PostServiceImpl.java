@@ -24,12 +24,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDTO> getPostList(PostExtractionDTO.List postListOptions) {
-//        if (postListOptions.getBoardNo() < 1)
-//            throw new RuntimeException("Invalid board number.");
-//        if (postListOptions.getPage() < 0)
-//            throw new RuntimeException("Invalid page number.");
-//        if (!postUtils.verifyPostType(postListOptions.getType()))
-//            throw new RuntimeException("Invalid post type.");
         List<PostEntity> postEntities = postMapper.selectPostList(postListOptions);
         return postEntities.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
@@ -42,26 +36,31 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public long registration(String userId, PostDTO postDTO) throws RuntimeException {
+    public void registration(String userId, PostDTO postDTO) throws RuntimeException {
         Preconditions.checkNotNull(postDTO, "PostDTO must not be null.");
-        PostEntity postEntity = PostEntity.builder()
-                .boardNo(postDTO.getBoardNo())
-                .type(postDTO.getType())
-                .title(postDTO.getTitle())
-                .contents(postDTO.getContents())
-                .writer(userId)
-                .build();
-        if (postMapper.insertPost(postEntity) == 0)
-            throw new RuntimeException("Failed to register post.");
-        return postEntity.getPno();
+        Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater then zero");
+        Preconditions.checkState(postDTO.getType() != null, "[type] must not be null.");
+        Preconditions.checkState(postDTO.getTitle() != null, "[title] must not be null.");
+        Preconditions.checkState(postDTO.getContents() != null, "[contents] must not be null.");
+        postDTO.setWriter(Preconditions.checkNotNull(userId, "[writer] must not be null."));
+        if (postMapper.insertPost(postDTO) != 1)
+            throw new RuntimeException("Failed to post registration.");
     }
 
     @Override
     public void modification(long postNo, String userId, PostDTO postDTO) {
-        Preconditions.checkState(postNo > 0, "Post number must be greater than zero.");
-        Preconditions.checkState(postUtils.checkPostVerification(userId, postNo), "You do not have permission to modify the post.");
+        Preconditions.checkState(postNo > 0, "Invalid post no. [pno] must be greater than zero.");
         postDTO.setPno(postNo);
-        postMapper.updatePost(PostEntity.dtoToEntity(postDTO));
+//        Preconditions.checkState(postUtils.checkPostVerification(userId, postNo), "You do not have permission to modify the post.");
+        Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater than zero.");
+        Preconditions.checkState(postDTO.getType() != null, "[type] must not be null.");
+        Preconditions.checkState(postDTO.getTitle() != null, "[title] must not be null.");
+        Preconditions.checkState(postDTO.getContents() != null, "[contents] must not be null.");
+        Preconditions.checkState(userId != null, "[contents] must not be null.");
+        postDTO.setWriter(userId);
+        if (postMapper.updatePost(postDTO) != 1) {
+            throw new RuntimeException("Failed to post modification.");
+        }
     }
 
     @Override
@@ -69,6 +68,11 @@ public class PostServiceImpl implements PostService {
         Preconditions.checkState(pno > 0, "Invalid post no.");
         Preconditions.checkState(postUtils.checkPostVerification(userId, pno), "You do not have permission to remove the post.");
         postMapper.deletePost(pno);
+    }
+
+    @Override
+    public boolean isWriter(long pno, String userId) {
+        return postMapper.isWriter(pno, userId);
     }
 
     public PostDTO entityToDTO(PostEntity entity) {

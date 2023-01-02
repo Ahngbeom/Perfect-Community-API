@@ -11,10 +11,12 @@ public interface PostService {
 
     PostDTO getInfoByPno(long pno);
 
-    long registration(String userId, PostDTO postDTO);
+    void registration(String userId, PostDTO postDTO);
 
     void modification(long postNo, String userId, PostDTO postDTO);
 
     void remove(String userId, long pno);
+
+    boolean isWriter(long pno, String userId);
 
 }

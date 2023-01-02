@@ -4,6 +4,7 @@ import com.perfect.community.api.dto.post.PostExtractionDTO;
 import com.perfect.community.api.entity.post.PostEntity;
 import com.perfect.community.api.dto.post.PostDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,14 +20,16 @@ public interface PostMapper {
 
     PostEntity selectPostInfoByPno(long pno);
 
-    int insertPost(PostEntity post);
+    int insertPost(PostDTO post);
 
-    int updatePost(PostEntity post);
+    int updatePost(PostDTO post);
 
     int deletePost(long pno);
 
     int deletePostByBoardNo(long boardNo);
 
     int deleteAllPosts();
+
+    boolean isWriter(@Param("pno") long pno, @Param("userId") String userId);
 
 }

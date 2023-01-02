@@ -1,5 +1,6 @@
 package com.perfect.community.api.mapper.post;
 
+import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostType;
 import com.perfect.community.api.entity.post.PostEntity;
 import org.junit.jupiter.api.Test;
@@ -7,28 +8,28 @@ import org.junit.jupiter.api.Test;
 public class RegistrationTest extends PostMapperTest {
     @Test
     void registration() {
-        PostEntity postEntity = PostEntity.builder()
+        PostDTO postDTO = PostDTO.builder()
                 .boardNo(1)
                 .type(PostType.NORMAL.name())
                 .writer("admin")
                 .title("Post insert test in JUnit")
                 .contents("Post insert test in JUnit...")
                 .build();
-        log.info(postsMapper.insertPost(postEntity));
-        log.info(selectPostInfoByPno(postEntity.getPno()));
+        log.info(postsMapper.insertPost(postDTO));
+        log.info(selectPostInfoByPno(postDTO.getPno()));
     }
 
     @Test
     void byWithoutBoardNo() {
         try {
-            PostEntity postEntity = PostEntity.builder()
+            PostDTO postDTO = PostDTO.builder()
                     .type(PostType.NORMAL.name())
                     .writer("admin")
                     .title("Post insert test in JUnit")
                     .contents("Post insert test in JUnit...")
                     .build();
-            log.info(postsMapper.insertPost(postEntity));
-            log.info(selectPostInfoByPno(postEntity.getPno()));
+            log.info(postsMapper.insertPost(postDTO));
+            log.info(selectPostInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -37,15 +38,15 @@ public class RegistrationTest extends PostMapperTest {
     @Test
     void byNullType() {
         try {
-            PostEntity postEntity = PostEntity.builder()
+            PostDTO postDTO = PostDTO.builder()
                     .boardNo(1)
                     .type(null)
                     .writer("admin")
                     .title("Post insert test in JUnit")
                     .contents("Post insert test in JUnit...")
                     .build();
-            log.info(postsMapper.insertPost(postEntity));
-            log.info(selectPostInfoByPno(postEntity.getPno()));
+            log.info(postsMapper.insertPost(postDTO));
+            log.info(selectPostInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -54,15 +55,15 @@ public class RegistrationTest extends PostMapperTest {
     @Test
     void byNullWriter() {
         try {
-            PostEntity postEntity = PostEntity.builder()
+            PostDTO postDTO = PostDTO.builder()
                     .boardNo(1)
                     .type(PostType.NORMAL.name())
                     .writer(null)
                     .title("Post insert test in JUnit")
                     .contents("Post insert test in JUnit...")
                     .build();
-            log.info(postsMapper.insertPost(postEntity));
-            log.info(selectPostInfoByPno(postEntity.getPno()));
+            log.info(postsMapper.insertPost(postDTO));
+            log.info(selectPostInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -72,15 +73,15 @@ public class RegistrationTest extends PostMapperTest {
     @Test
     void byNullTitle() {
         try {
-            PostEntity postEntity = PostEntity.builder()
+            PostDTO postDTO = PostDTO.builder()
                     .boardNo(1)
                     .type(PostType.NORMAL.name())
                     .writer("admin")
                     .title(null)
                     .contents("Post insert test in JUnit...")
                     .build();
-            log.info(postsMapper.insertPost(postEntity));
-            log.info(selectPostInfoByPno(postEntity.getPno()));
+            log.info(postsMapper.insertPost(postDTO));
+            log.info(selectPostInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -89,15 +90,15 @@ public class RegistrationTest extends PostMapperTest {
     @Test
     void byNullContents() {
         try {
-            PostEntity postEntity = PostEntity.builder()
+            PostDTO postDTO = PostDTO.builder()
                     .boardNo(1)
                     .type(PostType.NORMAL.name())
                     .writer("admin")
                     .title("Post insert test in JUnit")
                     .contents(null)
                     .build();
-            log.info(postsMapper.insertPost(postEntity));
-            log.info(selectPostInfoByPno(postEntity.getPno()));
+            log.info(postsMapper.insertPost(postDTO));
+            log.info(selectPostInfoByPno(postDTO.getPno()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }

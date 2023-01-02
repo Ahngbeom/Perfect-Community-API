@@ -37,11 +37,10 @@ public class PostDTO {
     @Builder
     public PostDTO(long pno, long boardNo, String type, String title, String contents, String writer, LocalDateTime regDate, LocalDateTime updateDate) {
         this.pno = pno;
-        Preconditions.checkState(boardNo > 0, "[boardNo] must be greater then zero");
         this.boardNo = boardNo;
-        this.type = Preconditions.checkNotNull(type, "[type] must not be null.");
-        this.title = Preconditions.checkNotNull(title, "[title] must not be null.");
-        this.contents = Preconditions.checkNotNull(contents, "[contents] must not be null.");
+        this.type = type;
+        this.title = title;
+        this.contents = contents;
         this.writer = writer;
         this.regDate = regDate;
         this.updateDate = updateDate;

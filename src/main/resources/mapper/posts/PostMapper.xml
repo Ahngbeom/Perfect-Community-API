@@ -94,5 +94,9 @@
         where pno > 0
     </delete>
 
-
+    <select id="isWriter" resultType="java.lang.Boolean">
+        select if(count(*) = 1, 1, 0)
+        from posts
+        where pno = #{pno} and writer like #{userId}
+    </select>
 </mapper>
