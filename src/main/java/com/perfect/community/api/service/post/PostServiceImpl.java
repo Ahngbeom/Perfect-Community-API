@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     private static final Logger log = LogManager.getLogger(PostServiceImpl.class);
     private final PostMapper postMapper;
-    private final UsersMapper usersMapper;
     private final PostUtils postUtils;
 
     @Override
@@ -51,7 +50,6 @@ public class PostServiceImpl implements PostService {
     public void modification(long postNo, String userId, PostDTO postDTO) {
         Preconditions.checkState(postNo > 0, "Invalid post no. [pno] must be greater than zero.");
         postDTO.setPno(postNo);
-//        Preconditions.checkState(postUtils.checkPostVerification(userId, postNo), "You do not have permission to modify the post.");
         Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater than zero.");
         Preconditions.checkState(postDTO.getType() != null, "[type] must not be null.");
         Preconditions.checkState(postDTO.getTitle() != null, "[title] must not be null.");
