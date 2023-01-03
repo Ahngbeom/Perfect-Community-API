@@ -10,6 +10,8 @@
 
         <!-- 로그인 검증 -->
         <mvc:interceptor>
+            <mvc:mapping path="/api/authentication"/>
+
             <mvc:mapping path="/api/user/**"/>
             <mvc:mapping path="/api/board/**"/>
             <mvc:mapping path="/api/post/**"/>
@@ -50,6 +52,7 @@
 
         <!-- 관리자만이 접근할 수 있는 API 제한 -->
         <mvc:interceptor>
+<!--            <mvc:mapping path="/api"/>-->
             <mvc:mapping path="/api/board/create"/>
 
             <bean id="onlyAdminAccessInterceptor"

@@ -26,7 +26,7 @@ public interface UserService {
 
     void enableUser(String userId);
 
-    boolean verifyPassword(String userId, String password);
+    boolean verifyPassword(UserDTO userDTO);
 
     boolean userIdAvailability(String userId);
 

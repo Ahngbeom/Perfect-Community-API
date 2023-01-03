@@ -115,8 +115,11 @@ class UserServiceTest {
 
     @Test
     void verifyPassword() {
-        log.warn(service.verifyPassword("admin", "1234"));
-        log.warn(service.verifyPassword("admin", "admin"));
+        UserDTO userDTO = UserDTO.builder()
+                .userId("admin")
+                .password("1234")
+                .build();
+        log.warn(service.verifyPassword(userDTO));
     }
 
     @Test

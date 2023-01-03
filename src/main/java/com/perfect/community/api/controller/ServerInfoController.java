@@ -1,11 +1,15 @@
 package com.perfect.community.api.controller;
 
+import com.perfect.community.api.security.detail.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +30,8 @@ public class ServerInfoController {
 
     private static final Logger log = LogManager.getLogger();
 
+    private final CustomUserDetailService userDetailService;
+
     @GetMapping("")
     public ResponseEntity<Map<String, String>> home(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         Map<String, String> pageInfo = putRequestData(request);
@@ -38,9 +44,9 @@ public class ServerInfoController {
         return ResponseEntity.ok(pageInfo);
     }
 
-    @GetMapping("/my-authentication")
-    public ResponseEntity<Authentication> myAuthentication() {
-        return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());
+    @GetMapping("/authentication")
+    public ResponseEntity<UserDetails> myAuthentication(Principal principal) {
+        return ResponseEntity.ok(userDetailService.loadUserByUsername(principal.getName()));
     }
 
     public static Map<String, String> putRequestData(HttpServletRequest request) throws UnsupportedEncodingException {
@@ -53,7 +59,6 @@ public class ServerInfoController {
         info.put("method", request.getMethod());
         info.put("request_uri", request.getRequestURI());
         info.put("query_string", request.getQueryString() != null ? URLDecoder.decode(request.getQueryString(), "UTF-8") : null);
-        info.put("auth_type", request.getAuthType());
         Principal principal = request.getUserPrincipal();
         info.put("principal", principal != null ? principal.toString() : null);
 

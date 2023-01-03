@@ -109,9 +109,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean verifyPassword(String userId, String password) {
-        Preconditions.checkNotNull(userId, "User PW must be not null.");
-        return encoder.matches(password,  mapper.selectUserByUserId(userId).getPassword());
+    public boolean verifyPassword(UserDTO userDTO) {
+        Preconditions.checkNotNull(userDTO.getUserId(), "userId must be not null.");
+        Preconditions.checkNotNull(userDTO.getPassword(), "password must be not null.");
+        return encoder.matches(userDTO.getPassword(),  mapper.selectUserByUserId(userDTO.getUserId()).getPassword());
     }
 
     @Override

@@ -21,8 +21,13 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/info")
-    public ResponseEntity<?> info(String userId) {
+    @GetMapping("")
+    public ResponseEntity<List<UserDTO>> list() {
+        return ResponseEntity.ok(userService.getUserList());
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> info(@PathVariable String userId) {
         try {
             if (userId != null)
                 return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
@@ -34,12 +39,7 @@ public class UserController {
         return ResponseEntity.badRequest().body("Invalid params");
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<UserDTO>> list() {
-        return ResponseEntity.ok(userService.getUserList());
-    }
-
-    @PostMapping("/sign-up")
+    @PostMapping
     public ResponseEntity<String> signUpUser(@RequestBody UserDTO user) {
         try {
             userService.createUser(user);
@@ -56,7 +56,7 @@ public class UserController {
      * '@RequestBody' 데이터가 소멸되기 때문에 Controller에서는 제대로 처리를 하지 못하게 된다.
      * @see AccessDeniedInterceptor
      **/
-    @PutMapping("/update/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO) {
         try {
             userDTO.setUserId(userId);
@@ -68,7 +68,7 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
-    @DeleteMapping("/withdraw/{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<String> withdrawUser(@PathVariable String userId) {
         try {
             userService.removeUser(userId);
@@ -79,32 +79,32 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
-    @PutMapping("/disable/{userId}")
-    public ResponseEntity<?> disable(@PathVariable String userId) {
-        try {
-            userService.disableUser(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return ResponseEntity.ok(userId);
-    }
+//    @PutMapping("/disable/{userId}")
+//    public ResponseEntity<?> disable(@PathVariable String userId) {
+//        try {
+//            userService.disableUser(userId);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//        return ResponseEntity.ok(userId);
+//    }
+//
+//    @PutMapping("/enable/{userId}")
+//    public ResponseEntity<?> enable(@PathVariable String userId) {
+//        try {
+//            userService.enableUser(userId);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//        return ResponseEntity.ok(userId);
+//    }
 
-    @PutMapping("/enable/{userId}")
-    public ResponseEntity<?> enable(@PathVariable String userId) {
+    @PatchMapping("")
+    public ResponseEntity<Boolean> verifyPassword(@RequestBody UserDTO userDTO) {
         try {
-            userService.enableUser(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return ResponseEntity.ok(userId);
-    }
-
-    @PostMapping("/verify-password")
-    public ResponseEntity<Boolean> verifyPassword(Principal principal, String password) {
-        try {
-            return ResponseEntity.ok(userService.verifyPassword(principal.getName(), password));
+            return ResponseEntity.ok(userService.verifyPassword(userDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.ok(false);

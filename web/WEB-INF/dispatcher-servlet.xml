@@ -18,13 +18,13 @@
     <context:component-scan base-package="com.perfect.community.api.mapper"/>
     <context:component-scan base-package="com.perfect.community.api.dto"/>
     <context:component-scan base-package="com.perfect.community.api.security"/>
+    <mybatis:scan base-package="com.perfect.community.api.mapper"/>
 
     <!--  View  -->
     <context:component-scan base-package="com.perfect.community.view.controller"/>
 
-    <mybatis:scan base-package="com.perfect.community.api.mapper"/>
-
-    <!--    <mvc:resources mapping="/resources/**" location="/resources/"/>-->
+    <!--  css, js  -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>

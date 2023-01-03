@@ -5,6 +5,12 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="Perfect-Community-API" />
+          <element id="library" level="application" name="@popperjs/core" />
+          <element id="library" level="application" name="bootstrap" />
+          <element id="library" level="application" name="font-awesome" />
+          <element id="library" level="application" name="jquery-3.6.1" />
+          <element id="library" level="application" name="jquery-cookie" />
+          <element id="library" level="application" name="popper.js" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.3.22" />

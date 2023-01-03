@@ -10,6 +10,7 @@
             /WEB-INF/applicationContext.xml
             /WEB-INF/dispatcher-servlet.xml
             /WEB-INF/securityContext.xml
+            /WEB-INF/interceptor-servlet.xml
         </param-value>
     </context-param>
     <listener>

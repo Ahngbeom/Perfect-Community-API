@@ -5,7 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <bean id="accessDeniedHandler" class="com.perfect.community.api.security.AccessDeniedHandler"/>
+    <bean id="authenticationEntryPoint" class="com.perfect.community.api.security.CustomAuthenticationEntryPoint"/>
+    <bean id="accessDeniedHandler" class="com.perfect.community.api.security.CustomAccessDeniedHandler"/>
     <bean id="loginSuccessHandler" class="com.perfect.community.api.security.login.LoginSuccessHandler"/>
     <bean id="loginFailureHandler" class="com.perfect.community.api.security.login.LoginFailureHandler"/>
 
@@ -45,13 +46,11 @@
 <!--        <constructor-arg index="0" ref=""/>-->
 <!--        <constructor-arg index="1" ref=""/>-->
 <!--    </bean>-->
-
-    <security:http auto-config="true" use-expressions="true" >
+    <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
 <!--    <security:http auto-config="true" use-expressions="true" authentication-manager-ref="CustomAuthenticationManager" >-->
         <security:csrf disabled="true"/>
 
         <security:access-denied-handler ref="accessDeniedHandler" />
-
 <!--        <security:intercept-url pattern="/all" access="permitAll()"/>-->
 <!--        <security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>-->
 <!--        <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>-->

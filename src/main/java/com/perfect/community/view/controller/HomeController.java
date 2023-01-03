@@ -7,9 +7,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping({"/", "/api/docs", "/api/help"})
     public ModelAndView home(ModelAndView mv) {
-        mv.setViewName("index");
+        mv.setViewName("api/docs");
         return mv;
     }
 }
