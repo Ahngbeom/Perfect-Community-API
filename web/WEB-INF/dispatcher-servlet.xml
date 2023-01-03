@@ -12,7 +12,7 @@
 
     <mvc:annotation-driven/>
 
-    <!--  API  -->
+    <!--  API   -->
     <context:component-scan base-package="com.perfect.community.api.controller"/>
     <context:component-scan base-package="com.perfect.community.api.service"/>
     <context:component-scan base-package="com.perfect.community.api.mapper"/>
