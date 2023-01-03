@@ -3,36 +3,31 @@ package com.perfect.community.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.security.Principal;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 //@Controller
 @RestController
 @RequiredArgsConstructor
-public class HomeController {
+@RequestMapping("/api")
+public class ServerInfoController {
 
     private static final Logger log = LogManager.getLogger();
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Map<String, String>> home(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         Map<String, String> pageInfo = putRequestData(request);
         return ResponseEntity.ok(pageInfo);
