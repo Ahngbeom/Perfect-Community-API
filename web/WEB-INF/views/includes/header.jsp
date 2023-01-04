@@ -30,4 +30,23 @@
                 integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
                 crossorigin="anonymous"></script>
     </head>
+    <body>
+        <nav class="navbar fixed-top bg-light px-3">
+            <div class="container-fluid">
+                    <a href="/" class="navbar-brand text-dark">Perfect Community</a>
+                    <div id="api-response-area" class="text-center">
+                    </div>
+                    <div id="user-state">
+                        <%--                    <button type="button" data-user-login-state="false">로그인</button>--%>
+                    </div>
+            </div>
+        </nav>
+    </body>
+    <script type="application/javascript">
+        $(document).ready(() => {
+            console.log("Perfect Community API");
+            getAuthentication();
+            // serverState();
+        });
+    </script>
 </html>

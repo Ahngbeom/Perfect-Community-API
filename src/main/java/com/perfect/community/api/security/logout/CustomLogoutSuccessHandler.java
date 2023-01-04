@@ -17,29 +17,12 @@ public class CustomLogoutSuccessHandler extends JSONConverterForAJAX implements 
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-        if (authentication != null && authentication.getDetails() != null) {
-            String prevPage = request.getHeader("Referer");
-            if (prevPage == null)
-                prevPage = "/";
-            request.getSession().invalidate();
-
-            log.info("Logout Success - " + authentication.getName());
-//            log.info("Previous Page: " + prevPage);
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            request.getSession().setAttribute("signAlertType", "Logout");
-//            request.getSession().setAttribute("signAlertStatus", "SUCCESS");
-//            response.sendRedirect(prevPage);
-
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("status", "SUCCESS");
-//            map.put("redirectURL", prevPage);
-//
-//            JSONConverter(response, authentication, map);
-            response.sendRedirect(prevPage);
-        } else {
-            response.sendRedirect("/");
-        }
+        log.info("Logout Success - " + authentication);
+        request.getSession().invalidate();
+        String prevPage = request.getHeader("Referer");
+        if (prevPage == null)
+            prevPage = "/";
+        response.sendRedirect(prevPage);
     }
 
 }

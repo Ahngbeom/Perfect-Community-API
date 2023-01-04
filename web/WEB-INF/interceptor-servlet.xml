@@ -12,15 +12,15 @@
         <mvc:interceptor>
             <mvc:mapping path="/api/authentication"/>
 
-            <mvc:mapping path="/api/user/**"/>
+<!--            <mvc:mapping path="/api/user/**"/>-->
             <mvc:mapping path="/api/board/**"/>
             <mvc:mapping path="/api/post/**"/>
 
-            <mvc:exclude-mapping path="/api/user/info"/>
-            <mvc:exclude-mapping path="/api/user/list"/>
-            <mvc:exclude-mapping path="/api/user/sign-up"/>
-            <mvc:exclude-mapping path="/api/user/id-availability"/>
-            <mvc:exclude-mapping path="/api/user/nickname-availability"/>
+<!--            <mvc:exclude-mapping path="/api/user/info"/>-->
+<!--            <mvc:exclude-mapping path="/api/user/list"/>-->
+<!--            <mvc:exclude-mapping path="/api/user/sign-up"/>-->
+<!--            <mvc:exclude-mapping path="/api/user/id-availability"/>-->
+<!--            <mvc:exclude-mapping path="/api/user/nickname-availability"/>-->
 
             <mvc:exclude-mapping path="/api/board/info/*"/>
             <mvc:exclude-mapping path="/api/board/list"/>
@@ -28,9 +28,14 @@
             <mvc:exclude-mapping path="/api/post/info/*"/>
             <mvc:exclude-mapping path="/api/post/list"/>
 
-            <bean id="verifyAuthenticationInterceptor"
+            <bean id="loginVerifyAuthenticationInterceptor"
                   class="com.perfect.community.api.security.interceptor.LoginVerificationInterceptor"/>
         </mvc:interceptor>
+
+<!--        <mvc:interceptor>-->
+<!--            <bean id="logoutVerifyAuthenticationInterceptor"-->
+<!--                  class="com.perfect.community.api.security.interceptor.LogoutVerificationInterceptor"/>-->
+<!--        </mvc:interceptor>-->
 
         <!-- 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 -->
         <mvc:interceptor>

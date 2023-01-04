@@ -7,3 +7,4 @@
 --%>
 <script type="application/javascript" src="${pageContext.request.contextPath}/resources/js/serverState.js"></script>
 <script type="application/javascript" src="${pageContext.request.contextPath}/resources/js/user/authentication.js"></script>
+<script type="application/javascript" src="${pageContext.request.contextPath}/resources/js/user/user.js"></script>

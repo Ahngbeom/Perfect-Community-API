@@ -52,9 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDTO user) throws RuntimeException {
-        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null.");
-        Preconditions.checkNotNull(user.getPassword(), "User PW must be not null.");
-        Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null.");
+        accountPolicyValidation(user);
         if (!userIdAvailability(user.getUserId())) {
             throw new DuplicateKeyException("User ID is duplicated.");
         }
@@ -112,7 +110,7 @@ public class UserServiceImpl implements UserService {
     public boolean verifyPassword(UserDTO userDTO) {
         Preconditions.checkNotNull(userDTO.getUserId(), "userId must be not null.");
         Preconditions.checkNotNull(userDTO.getPassword(), "password must be not null.");
-        return encoder.matches(userDTO.getPassword(),  mapper.selectUserByUserId(userDTO.getUserId()).getPassword());
+        return encoder.matches(userDTO.getPassword(), mapper.selectUserByUserId(userDTO.getUserId()).getPassword());
     }
 
     @Override
@@ -123,5 +121,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean nicknameAvailability(String nickname) {
         return mapper.nicknameAvailability(nickname);
+    }
+
+    public void accountPolicyValidation(UserDTO user) {
+        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null");
+        Preconditions.checkState(!user.getUserId().isEmpty(), "User ID must be not null or empty.");
+        Preconditions.checkState(user.getUserId().length() >= 5, "User ID must be at least 5 characters long.");
+
+        Preconditions.checkNotNull(user.getPassword(), "User PW must be not null");
+        Preconditions.checkState(!user.getPassword().isEmpty(), "User PW must be not null or empty.");
+        Preconditions.checkState(user.getPassword().length() >= 4, "User PW must be at least 4 characters long.");
+
+        Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null");
+        Preconditions.checkState(!user.getNickname().isEmpty(), "User nickname must be not null or empty.");
+        Preconditions.checkState(user.getNickname().length() >= 2, "User nickname must be at least 2 characters long.");
     }
 }

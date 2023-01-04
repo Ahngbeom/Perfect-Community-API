@@ -3,9 +3,8 @@ package com.perfect.community.api.security.interceptor;
 import com.perfect.community.api.security.CustomAuthenticationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LoginVerificationInterceptor implements HandlerInterceptor {
+public class LogoutVerificationInterceptor implements HandlerInterceptor {
 
-    private static final Logger log = LogManager.getLogger(LoginVerificationInterceptor.class);
+    private static final Logger log = LogManager.getLogger(LogoutVerificationInterceptor.class);
 
     /**
      * Interception point before the execution of a handler. Called after
@@ -42,14 +41,8 @@ public class LoginVerificationInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException, AccountNotFoundException {
-        log.warn(request.getRequestURI());
-        log.warn(request.getUserPrincipal());
-        log.warn(SecurityContextHolder.getContext().getAuthentication());
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-//            log.error("Not logged in.");
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not logged in.");
-//            return false;
-            throw new CustomAuthenticationException("Not logged in.");
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
+            throw new CustomAuthenticationException("You are now logged in. Please proceed after logging out");
         }
         return true;
     }
