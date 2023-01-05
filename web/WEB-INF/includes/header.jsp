@@ -34,7 +34,7 @@
         <nav class="navbar fixed-top bg-light px-3">
             <div class="container-fluid">
                     <a href="/" class="navbar-brand text-dark">Perfect Community</a>
-                    <div id="api-response-area" class="text-center">
+                    <div id="api-response-area" class="px-3 bg-warning text-center">
                     </div>
                     <div id="user-state">
                         <%--                    <button type="button" data-user-login-state="false">로그인</button>--%>

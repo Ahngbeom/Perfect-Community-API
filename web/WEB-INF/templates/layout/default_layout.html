@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <th:block th:replace="metadata :: metadata"></th:block>
+
+    <body>
+        <header th:replace="header :: header"></header>
+        <div class="container-fluid" style="position: relative; top: 60px;">
+
+            <div class="d-flex justify-content-between">
+<!--                <div class="sticky-top float-left" style="top: 60px;" th:insert="sidebar :: sidebar"></div>-->
+                <nav class="navbar navbar-expand-sm flex-column navbar-dark sticky-top col-2" style="top: 60px;" >
+                    <a href="/docs" class="btn btn-link text-dark fs-5">API Docs</a>
+                    <div class="d-flex flex-column gap-2 text-center">
+                        <a class="p-1 rounded btn btn-link" href="/docs/intro">소개</a>
+                        <a class="p-1 rounded btn btn-link" href="/docs/credentials">로그인 & 로그아웃</a>
+                        <div class="collapse" id="docs-credentials-collapse">
+                            <ul>
+                                <li>
+                                    <button href="#login">로그인</button>
+                                </li>
+                                <li>
+                                    <button href="#logout">로그아웃</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="p-1 rounded btn btn-link" href="/docs/user">회원</a>
+                        <div class="collapse" id="docs-user-collapse">
+                            <ul>
+                                <li>
+                                    <button data-anchor-target="#authentication">User Authentication</button>
+                                </li>
+                                <li>
+                                    <button data-anchor-target="#user-info">User Info</button>
+                                </li>
+                                <li>
+                                    <button data-anchor-target="#user-list">User List</button>
+                                </li>
+                                <li>
+                                    <button data-anchor-target="#sign-up">Sign-Up</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="p-1 rounded btn btn-link" href="/docs/board">게시판</a>
+                        <a class="p-1 rounded btn btn-link" href="/docs/post">게시물</a>
+                        <a class="p-1 rounded btn btn-link" href="/docs/others">이 외</a>
+                    </div>
+                    <script type="application/javascript">
+                        window.onload = function () {
+                            const currentURI = location.pathname;
+                            if (currentURI === "/docs/credentials")
+                                $("#docs-credentials-collapse").addClass("show");
+                            else if (currentURI === "/docs/user")
+                                $("#docs-user-collapse").addClass("show");
+                        }
+                        $(".collapse").on('click', "button", (e) => {
+                            const targetOffsetTop = $($(e.target).data('anchor-target')).offset().top;
+                            console.log(targetOffsetTop);
+                            // location.href = $(e.target).data('anchor-target');
+                            // $(window).scrollTop(0);
+                            $('html, body').animate({
+                                scrollTop: targetOffsetTop < 120 ? 0 : targetOffsetTop
+                            }, 500);
+                        });
+                    </script>
+                </nav>
+                <div class="col-10" layout:fragment="content"></div>
+            </div>
+        </div>
+    </body>
+</html>
+

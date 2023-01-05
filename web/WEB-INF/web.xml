@@ -54,13 +54,13 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <jsp-config>
-        <jsp-property-group>
-            <url-pattern>*.jsp</url-pattern>
-            <page-encoding>UTF-8</page-encoding>
-            <include-prelude>/WEB-INF/views/includes/header.jsp</include-prelude>
-            <include-coda>/WEB-INF/views/includes/footer.jsp</include-coda>
-        </jsp-property-group>
-    </jsp-config>
+<!--    <jsp-config>-->
+<!--        <jsp-property-group>-->
+<!--            <url-pattern>*.jsp</url-pattern>-->
+<!--            <page-encoding>UTF-8</page-encoding>-->
+<!--            <include-prelude>/WEB-INF/views/pages/includes/header.jsp</include-prelude>-->
+<!--            <include-coda>/WEB-INF/views/pages/includes/footer.jsp</include-coda>-->
+<!--        </jsp-property-group>-->
+<!--    </jsp-config>-->
 
 </web-app>

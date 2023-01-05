@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+        <th:block th:fragment="sidebar">
+            <a href="/docs" class="btn btn-link text-dark fs-5">API Docs</a>
+            <div class="d-flex flex-column gap-2 text-center">
+                <a class="p-1 rounded btn btn-link" href="/docs/intro">소개</a>
+                <a class="p-1 rounded btn btn-link" href="/docs/credentials">로그인 & 로그아웃</a>
+                <div class="collapse" id="docs-credentials-collapse">
+                    <ul>
+                        <li>
+                            <button href="#login">로그인</button>
+                        </li>
+                        <li>
+                            <button href="#logout">로그아웃</button>
+                        </li>
+                    </ul>
+                </div>
+                <a class="p-1 rounded btn btn-link" href="/docs/user">회원</a>
+                <div class="collapse" id="docs-user-collapse">
+                    <ul>
+                        <li>
+                            <button data-anchor-target="#authentication">User Authentication</button>
+                        </li>
+                        <li>
+                            <button data-anchor-target="#user-info">User Info</button>
+                        </li>
+                        <li>
+                            <button data-anchor-target="#user-list">User List</button>
+                        </li>
+                        <li>
+                            <button data-anchor-target="#sign-up">Sign-Up</button>
+                        </li>
+                    </ul>
+                </div>
+                <a class="p-1 rounded btn btn-link" href="/docs/board">게시판</a>
+                <a class="p-1 rounded btn btn-link" href="/docs/post">게시물</a>
+                <a class="p-1 rounded btn btn-link" href="/docs/others">이 외</a>
+            </div>
+            <script type="application/javascript">
+                window.onload = function () {
+                    const currentURI = location.pathname;
+                    if (currentURI === "/docs/credentials")
+                        $("#docs-credentials-collapse").addClass("show");
+                    else if (currentURI === "/docs/user")
+                        $("#docs-user-collapse").addClass("show");
+                }
+                $(".collapse").on('click', "button", (e) => {
+                    const targetOffsetTop = $($(e.target).data('anchor-target')).offset().top;
+                    console.log(targetOffsetTop);
+                    // location.href = $(e.target).data('anchor-target');
+                    // $(window).scrollTop(0);
+                    $('html, body').animate({
+                        scrollTop: targetOffsetTop < 120 ? 0 : targetOffsetTop
+                    }, 500);
+                });
+            </script>
+        </th:block>
+
+<!--    <th:block th:fragment="sidebar">-->
+<!--        <div class="accordion" id="accordionExample">-->
+<!--            <div class="accordion-item">-->
+<!--                <h2 class="accordion-header" id="headingOne">-->
+<!--                    <button class="accordion-button" type="button" data-bs-toggle="collapse"-->
+<!--                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">-->
+<!--                        Accordion Item #1-->
+<!--                    </button>-->
+<!--                </h2>-->
+<!--                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"-->
+<!--                     data-bs-parent="#accordionExample">-->
+<!--                    <div class="accordion-body">-->
+<!--                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the-->
+<!--                        collapse plugin adds the appropriate classes that we use to style each element. These classes-->
+<!--                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can-->
+<!--                        modify any of this with custom CSS or overriding our default variables. It's also worth noting-->
+<!--                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition-->
+<!--                        does limit overflow.-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </th:block>-->
+</html>
