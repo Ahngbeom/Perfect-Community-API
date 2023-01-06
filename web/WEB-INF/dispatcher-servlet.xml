@@ -44,7 +44,12 @@
     </bean>
     <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
         <property name="templateResolver" ref="templateResolver"/>
-        <property name="additionalDialects" ref="layoutDialect"/>
+        <property name="additionalDialects">
+            <set>
+                <bean id="layoutDialect" class="nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect"/>
+                <bean class="org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect"/>
+            </set>
+        </property>
     </bean>
     <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
 <!--        <property name="viewNames" value="th/*"/>-->
@@ -52,8 +57,7 @@
         <property name="characterEncoding" value="UTF-8"/>
         <property name="order" value="1"/>
     </bean>
-    <bean id="layoutDialect" class="nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect">
-    </bean>
+
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>

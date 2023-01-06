@@ -58,6 +58,7 @@
         <!--        <security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>-->
         <!--        <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>-->
         <!--        <security:intercept-url pattern="/**/json" access="hasRole('ROLE_ADMIN')"/>-->
+
         <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
 
         <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
@@ -65,6 +66,10 @@
         <security:form-login login-processing-url="/login" authentication-success-handler-ref="loginSuccessHandler"
                              authentication-failure-handler-ref="loginFailureHandler"
                              authentication-failure-url="/login"/>
+<!--        <security:intercept-url pattern="/login" access="isAnonymous()"/>-->
+        <security:session-management session-authentication-error-url="/error">
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+        </security:session-management>
         <!--        <security:logout logout-success-url="/" invalidate-session="true" delete-cookies="JSESSIONID,remember-me" />-->
         <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
         <security:remember-me key="SpringSecurityRememberMe"

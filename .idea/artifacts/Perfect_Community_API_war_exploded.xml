@@ -82,6 +82,7 @@
           <element id="library" level="project" name="Maven: nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.0" />
           <element id="library" level="project" name="Maven: nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0" />
           <element id="library" level="project" name="Maven: org.apache.groovy:groovy:4.0.0" />
+          <element id="library" level="project" name="Maven: org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Perfect-Community-API/web/Web" />

@@ -51,6 +51,9 @@ public class LoginVerificationInterceptor implements HandlerInterceptor {
 //            return false;
             throw new CustomAuthenticationException("Not logged in.");
         }
+//        else if (request.getRequestURI().equals("/login")) {
+//            throw new AccessDeniedException("You are already logged in. Please try again after logging out.");
+//        }
         return true;
     }
 

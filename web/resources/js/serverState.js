@@ -1,5 +1,7 @@
 const responseArea = $("#api-response-area");
 
+serverState();
+
 function serverState(writeResponseBody) {
     let result = null;
     $.ajax({
@@ -32,3 +34,13 @@ function serverState(writeResponseBody) {
 $("#server-info-btn").on('click', () => {
     serverState(true);
 });
+
+// $(".collapse").on('click', "button", (e) => {
+//     const targetOffsetTop = $($(e.target).data('anchor-target')).offset().top;
+//     console.log(targetOffsetTop);
+//     // location.href = $(e.target).data('anchor-target');
+//     // $(window).scrollTop(0);
+//     $('html, body').animate({
+//         scrollTop: targetOffsetTop < 120 ? 0 : targetOffsetTop
+//     }, 500);
+// });
