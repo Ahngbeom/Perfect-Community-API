@@ -1,10 +1,8 @@
 package com.perfect.community.api.dto.user;
 
-import com.google.common.base.Preconditions;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,22 +15,22 @@ public class UserDTO {
     private boolean enabled;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
-    private List<String> authorities;
+    private String authority;
 
     @Builder
-    public UserDTO(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<String> authorities) {
+    public UserDTO(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, String authority) {
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.enabled = enabled;
         this.regDate = regDate;
         this.updateDate = updateDate;
-        this.authorities = authorities;
+        this.authority = authority;
     }
 
     @Override
     public String toString() {
-        return this.authorities != null
+        return this.authority != null && !this.authority.isEmpty()
                 ? "UserDTO{" +
                 "userId='" + userId + '\'' +
                 ", password=[PROTECTED]" +
@@ -40,7 +38,7 @@ public class UserDTO {
                 ", enabled=" + enabled +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
-                ", authorities=" + authorities +
+                ", authority=" + authority +
                 '}'
                 : "UserDTO{" +
                 "userId='" + userId + '\'' +

@@ -62,7 +62,7 @@ class UserServiceTest {
                 .userId("aaa")
                 .password("aaaa")
                 .nickname("AAA")
-                .authorities(Collections.singletonList("ROLE_USER"))
+                .authority("ROLE_USER")
                 .build();
         service.createUser(user);
         log.warn(service.getUserListWithAuthorities());

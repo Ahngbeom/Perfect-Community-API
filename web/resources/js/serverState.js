@@ -1,6 +1,8 @@
 const responseArea = $("#api-response-area");
 
-serverState();
+$("#server-info-btn").on('click', () => {
+    serverState(true);
+});
 
 function serverState(writeResponseBody) {
     let result = null;
@@ -31,9 +33,6 @@ function serverState(writeResponseBody) {
     return result;
 }
 
-$("#server-info-btn").on('click', () => {
-    serverState(true);
-});
 
 // $(".collapse").on('click', "button", (e) => {
 //     const targetOffsetTop = $($(e.target).data('anchor-target')).offset().top;

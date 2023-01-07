@@ -5,7 +5,6 @@ import com.perfect.community.api.entity.authorities.AuthoritiesEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -18,17 +17,17 @@ public class UserEntity {
     private boolean enabled;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
-    private List<AuthoritiesEntity> authorities;
+    private String authority;
 
     @Builder
-    public UserEntity(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, List<AuthoritiesEntity> authorities) {
+    public UserEntity(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, String authority) {
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.enabled = enabled;
         this.regDate = regDate;
         this.updateDate = updateDate;
-        this.authorities = authorities;
+        this.authority = authority;
     }
 
     public UserDTO toDTO() {
@@ -39,10 +38,7 @@ public class UserEntity {
                 .enabled(this.enabled)
                 .regDate(this.regDate)
                 .updateDate(this.updateDate)
-                .authorities(
-                        this.authorities != null
-                                ? this.authorities.stream().map(AuthoritiesEntity::getAuthority).collect(Collectors.toList())
-                                : null)
+                .authority(this.authority)
                 .build();
     }
 
@@ -59,7 +55,7 @@ public class UserEntity {
 
     @Override
     public String toString() {
-        return authorities != null && authorities.size() > 0
+        return authority != null
                 ? "UserEntity{" +
                 "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
@@ -67,7 +63,7 @@ public class UserEntity {
                 ", enabled=" + enabled +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
-                ", authorities=" + authorities +
+                ", authority=" + authority +
                 '}'
                 :
                 "UserEntity{" +

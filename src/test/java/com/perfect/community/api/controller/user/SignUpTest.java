@@ -122,7 +122,7 @@ public class SignUpTest extends UserControllerTest {
                             .userId("ahngbeom")
                             .password("1234")
                             .nickname("AhngBeom")
-                            .authorities(Collections.singletonList("ROLE_USER"))
+                            .authority("ROLE_USER")
                             .build()
             ).toString();
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user/sign-up")

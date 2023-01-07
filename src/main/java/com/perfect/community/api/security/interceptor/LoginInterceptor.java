@@ -3,16 +3,19 @@ package com.perfect.community.api.security.interceptor;
 import com.perfect.community.api.security.CustomAuthenticationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
@@ -44,11 +47,18 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.warn(request.getRequestURI());
         log.warn(request.getUserPrincipal());
         log.warn(SecurityContextHolder.getContext().getAuthentication());
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-//            log.error("Not logged in.");
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not logged in.");
-//            return false;
-            throw new CustomAuthenticationException("Not logged in.");
+            if (request.getRequestURI().startsWith("/api/user")) {
+                if (HttpMethod.POST.matches(request.getMethod()))
+                    return true;
+                else if (HttpMethod.GET.matches(request.getMethod()) && !pathVariables.containsKey("userId"))
+                    return true;
+            }
+            throw new AccessDeniedException("Not logged in.");
         }
         else if (request.getRequestURI().equals("/login")) {
             throw new AccessDeniedException("You are already logged in. Please try again after logging out.");

@@ -38,7 +38,7 @@ class UsersAuthoritiesMapperTest {
         log.warn(mapper.insertUserAuthorities(
                 UserAuthoritiesDTO.builder()
                         .userId("admin")
-                        .authorities(Arrays.asList("ROLE_MANAGER", "ROLE_USER"))
+                        .authority("ROLE_MANAGER")
                         .build()
         ));
         log.warn(mapper.selectAllUserAuthoritiesByUserId("admin"));
@@ -49,7 +49,7 @@ class UsersAuthoritiesMapperTest {
         log.warn(mapper.deleteUserAuthorities(
                 UserAuthoritiesDTO.builder()
                         .userId("admin")
-                        .authorities(Collections.singletonList("ROLE_ADMIN"))
+                        .authority("ROLE_ADMIN")
                         .build()
         ));
         log.warn(mapper.selectAllUserAuthoritiesByUserId("admin"));

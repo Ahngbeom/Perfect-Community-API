@@ -13,15 +13,9 @@
 <!--            <mvc:mapping path="/login**"/>-->
             <mvc:mapping path="/api/authentication"/>
 
-<!--            <mvc:mapping path="/api/user/**"/>-->
+            <mvc:mapping path="/api/user/**"/>
             <mvc:mapping path="/api/board/**"/>
             <mvc:mapping path="/api/post/**"/>
-
-<!--            <mvc:exclude-mapping path="/api/user/info"/>-->
-<!--            <mvc:exclude-mapping path="/api/user/list"/>-->
-<!--            <mvc:exclude-mapping path="/api/user/sign-up"/>-->
-<!--            <mvc:exclude-mapping path="/api/user/id-availability"/>-->
-<!--            <mvc:exclude-mapping path="/api/user/nickname-availability"/>-->
 
             <mvc:exclude-mapping path="/api/board/info/*"/>
             <mvc:exclude-mapping path="/api/board/list"/>
@@ -54,6 +48,7 @@
         <!-- 관리자만이 접근할 수 있는 API 제한 -->
         <mvc:interceptor>
 <!--            <mvc:mapping path="/api"/>-->
+<!--            <mvc:mapping path="/api/user"/>-->
             <mvc:mapping path="/api/board/create"/>
 
             <bean id="onlyAdminAccessInterceptor"

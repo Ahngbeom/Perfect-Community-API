@@ -23,20 +23,17 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<List<UserDTO>> list() {
-        return ResponseEntity.ok(userService.getUserList());
+        return ResponseEntity.ok(userService.getUserListWithAuthorities());
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> info(@PathVariable String userId) {
         try {
-            if (userId != null)
-                return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
+            return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        return ResponseEntity.badRequest().body("Invalid params");
     }
 
     @PostMapping
@@ -54,6 +51,7 @@ public class UserController {
      * userId를 '@PathVariable'로 분리한 이유
      * UserDeniedAccessInterceptor에서 userId를 확인 하기 위해 '@RequestBody'에 접근할 경우,
      * '@RequestBody' 데이터가 소멸되기 때문에 Controller에서는 제대로 처리를 하지 못하게 된다.
+     *
      * @see AccessDeniedInterceptor
      **/
     @PutMapping("/{userId}")

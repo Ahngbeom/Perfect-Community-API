@@ -2,20 +2,18 @@ package com.perfect.community.api.dto.user;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @ToString
 @NoArgsConstructor
 public class UserAuthoritiesDTO {
 
     private String userId;
-    private List<String> authorities;
+    private String authority;
 
     @Builder
-    public UserAuthoritiesDTO(String userId, List<String> authorities) {
+    public UserAuthoritiesDTO(String userId, String authority) {
         this.userId = userId;
-        this.authorities = authorities;
+        this.authority = authority;
     }
 
     //    @Getter

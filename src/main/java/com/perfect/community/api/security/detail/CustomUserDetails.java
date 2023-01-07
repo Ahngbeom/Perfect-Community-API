@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Getter
@@ -24,7 +25,7 @@ public class CustomUserDetails extends User {
         super(user.getUserId(), user.getPassword(),
                 user.isEnabled(), true,
                 true, true,
-                user.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+                Collections.singleton(new SimpleGrantedAuthority(user.getAuthority())));
         this.user = user;
     }
 

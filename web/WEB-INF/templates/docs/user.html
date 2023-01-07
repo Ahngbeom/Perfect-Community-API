@@ -14,7 +14,7 @@
                 <p>현재 클라이언트의 인증 정보가 유효하지 않다면, 즉 비로그인 상태라면 요청이 실패됩니다.</p>
             </li>
             <li>
-                <button type="button" id="api-user-info-btn" class="btn btn-link">
+                <button type="button" id="api-user-info-btn" class="btn btn-link" th:attr="data-userid=${#authentication.getName()}">
                     /api/user/{userId} - [GET]
                 </button>
                 <p>현재 클라이언트의 정보를 조회하는 API입니다.</p>
@@ -34,16 +34,35 @@
                 </p>
             </li>
             <li id="sign-up">
-                <button type="button" id="api-user-signup-btn" class="btn btn-link">
+                <button type="button" class="btn btn-link api-user-signup-btn">
                     /api/user - [POST]
                 </button>
-                <form id="api-user-signup-form">
+                <form id="api-user-signup-form" class="py-3">
                     <label>아이디</label>
                     <input type="text" name="userId" class="form-control col-4"/>
                     <label>패스워드</label>
                     <input type="password" name="password" class="form-control col-4"/>
                     <label>닉네임</label>
                     <input type="text" name="nickname" class="form-control col-4"/>
+                    <label>권한</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="authority" id="inlineRadio1"
+                                   value="ROLE_ADMIN">
+                            <label class="form-check-label" for="inlineRadio1">관리자</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="authority" id="inlineRadio2"
+                                   value="ROLE_MANAGER">
+                            <label class="form-check-label" for="inlineRadio2">매니저</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="authority" id="inlineRadio3"
+                                   value="ROLE_USER">
+                            <label class="form-check-label" for="inlineRadio3">일반 사용자</label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary api-user-signup-btn">회원 가입</button>
                 </form>
                 <p>이 사이트에 회원 가입을 할 수 있는 API입니다.</p>
                 <p>

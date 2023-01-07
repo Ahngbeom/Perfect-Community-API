@@ -30,18 +30,47 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getUserList() {
-        return mapper.selectAllUsers().stream().map(entity -> entity.toDTO()).collect(Collectors.toList());
+        return mapper.selectAllUsers().stream().map(userEntity ->
+                UserDTO.builder()
+                        .userId(userEntity.getUserId())
+                        .password(userEntity.getPassword())
+                        .nickname(userEntity.getNickname())
+                        .enabled(userEntity.isEnabled())
+                        .regDate(userEntity.getRegDate())
+                        .updateDate(userEntity.getUpdateDate())
+                        .authority(userEntity.getAuthority())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
     @Override
     public List<UserDTO> getUserListWithAuthorities() {
-        return mapper.selectAllUsersWithAuthorities().stream().map(entity -> entity.toDTO()).collect(Collectors.toList());
+        return mapper.selectAllUsersWithAuthorities().stream().map(userEntity ->
+                UserDTO.builder()
+                        .userId(userEntity.getUserId())
+                        .password(userEntity.getPassword())
+                        .nickname(userEntity.getNickname())
+                        .enabled(userEntity.isEnabled())
+                        .regDate(userEntity.getRegDate())
+                        .updateDate(userEntity.getUpdateDate())
+                        .authority(userEntity.getAuthority())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO getUserInfoByUserId(String userId) {
         UserEntity userEntity = mapper.selectUserByUserId(userId);
-        return userEntity != null ? userEntity.toDTO() : null;
+        log.warn(userEntity);
+        return UserDTO.builder()
+                .userId(userEntity.getUserId())
+                .password(userEntity.getPassword())
+                .nickname(userEntity.getNickname())
+                .enabled(userEntity.isEnabled())
+                .regDate(userEntity.getRegDate())
+                .updateDate(userEntity.getUpdateDate())
+                .authority(userEntity.getAuthority())
+                .build();
     }
 
     @Override
@@ -59,14 +88,14 @@ public class UserServiceImpl implements UserService {
         if (!nicknameAvailability(user.getNickname())) {
             throw new DuplicateKeyException("User nickname is duplicated.");
         }
-        if (user.getAuthorities() == null || user.getAuthorities().size() == 0) {
-            throw new RuntimeException("Cannot be request without authorities.");
-        }
+//        if (user.getAuthority() == null || user.getAuthority().size() == 0) {
+//            throw new RuntimeException("Cannot be request without authorities.");
+//        }
         user.setPassword(encoder.encode(user.getPassword()));
         if (mapper.insertUser(user) != 1) {
             throw new RuntimeException("Failed to create user.");
         }
-        if (usersAuthoritiesMapper.insertUserAuthorities(UserAuthoritiesDTO.builder().userId(user.getUserId()).authorities(user.getAuthorities()).build()) != 1) {
+        if (usersAuthoritiesMapper.insertUserAuthorities(UserAuthoritiesDTO.builder().userId(user.getUserId()).authority(user.getAuthority()).build()) != 1) {
             throw new RuntimeException("Failed to grant user authorities.");
         }
     }
@@ -124,16 +153,20 @@ public class UserServiceImpl implements UserService {
     }
 
     public void accountPolicyValidation(UserDTO user) {
+        log.warn(user);
         Preconditions.checkNotNull(user.getUserId(), "User ID must be not null");
-        Preconditions.checkState(!user.getUserId().isEmpty(), "User ID must be not null or empty.");
+        Preconditions.checkState(!user.getUserId().isEmpty(), "User ID must be not empty.");
         Preconditions.checkState(user.getUserId().length() >= 5, "User ID must be at least 5 characters long.");
 
         Preconditions.checkNotNull(user.getPassword(), "User PW must be not null");
-        Preconditions.checkState(!user.getPassword().isEmpty(), "User PW must be not null or empty.");
+        Preconditions.checkState(!user.getPassword().isEmpty(), "User PW must be not empty.");
         Preconditions.checkState(user.getPassword().length() >= 4, "User PW must be at least 4 characters long.");
 
         Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null");
-        Preconditions.checkState(!user.getNickname().isEmpty(), "User nickname must be not null or empty.");
+        Preconditions.checkState(!user.getNickname().isEmpty(), "User nickname must be not empty.");
         Preconditions.checkState(user.getNickname().length() >= 2, "User nickname must be at least 2 characters long.");
+
+        Preconditions.checkNotNull(user.getAuthority(), "User authority must be not null");
+        Preconditions.checkState(!user.getAuthority().isEmpty(), "User nickname must be not empty.");
     }
 }

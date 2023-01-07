@@ -16,17 +16,20 @@
                 </div>
                 <div class="col-10" layout:fragment="content"></div>
             </div>
-            <div class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" id="response-body-toast">
-                <div class="toast-header gap-2">
-                    <i class="fa-solid fa-square"></i>
-                    <strong class="me-auto">Bootstrap</strong>
-<!--                    <small>11 mins ago</small>-->
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    Hello, world! This is a toast message.
+            <div class="toast-container position-fixed bottom-0 end-0" id="response-body-toast-container">
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header gap-2">
+                        <i class="fa-solid fa-square"></i>
+                        <strong class="me-auto">Bootstrap</strong>
+                        <!--                    <small>11 mins ago</small>-->
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        Hello, world! This is a toast message.
+                    </div>
                 </div>
             </div>
+
         </div>
 
     </body>

@@ -5,7 +5,7 @@
 <mapper namespace="com.perfect.community.api.mapper.user.UsersAuthoritiesMapper">
     <resultMap id="usersAuthoritiesMap" type="com.perfect.community.api.entity.user.UserAuthorityEntity">
         <result property="userId" column="user_id" />
-        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesStringMap" />
+        <result property="authority" column="authority" />
     </resultMap>
 
     <select id="selectAllUserAuthorities" resultMap="usersAuthoritiesMap">
@@ -20,10 +20,8 @@
     </select>
 
     <insert id="insertUserAuthorities">
-        <foreach collection="authorities" item="authority">
-            insert into users_authorities(user_id, authority)
-            values (#{userId}, #{authority});
-        </foreach>
+        insert into users_authorities(user_id, authority)
+        values (#{userId}, #{authority});
     </insert>
 
     <delete id="deleteUserAuthorities">

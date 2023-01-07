@@ -13,12 +13,12 @@ import java.util.List;
 public class UserAuthorityEntity {
 
     private String userId;
-    private List<String> authorities;
+    private String authority;
 
     @Builder
-    public UserAuthorityEntity(String userId, List<String> authorities) {
+    public UserAuthorityEntity(String userId, String authority) {
         this.userId = userId;
-        this.authorities = authorities;
+        this.authority = authority;
     }
 
 }

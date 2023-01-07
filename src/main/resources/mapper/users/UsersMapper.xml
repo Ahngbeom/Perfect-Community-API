@@ -19,8 +19,9 @@
         <result property="enabled" column="enabled"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
-        <collection property="authorities" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">
-        </collection>
+        <result property="authority" column="authority"/>
+<!--        <collection property="authority" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">-->
+<!--        </collection>-->
     </resultMap>
 
     <select id="selectUserByUserId" resultMap="userEntityMap">
