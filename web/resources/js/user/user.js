@@ -7,7 +7,8 @@ $("#api-user-info-btn").on('click', () => {
             url: '/api/user/' + userAuthentication.username,
             contentType: 'application/json',
             success: (data) => {
-                responseArea.html(JSON.stringify(data)).css('word-break', 'break-all');
+                console.log(data);
+                // responseArea.html(JSON.stringify(data)).css('word-break', 'break-all');
             },
             error: (xhr) => {
                 console.error(xhr.responseText);
@@ -22,10 +23,11 @@ $("#api-user-list-btn").on('click', () => {
         url: '/api/user',
         contentType: 'application/json',
         success: (users) => {
-            responseArea.html("");
-            users.forEach(user => {
-                responseArea.append("<li>" + JSON.stringify(user) + "</li>").css('word-break', 'break-all');
-            });
+            console.log(users);
+            // responseArea.html("");
+            // users.forEach(user => {
+            //     responseArea.append("<li>" + JSON.stringify(user) + "</li>").css('word-break', 'break-all');
+            // });
         },
         error: (xhr) => {
             console.error(xhr.responseText);
@@ -54,7 +56,6 @@ $("#api-user-signup-btn").on('click', () => {
         },
         error: (xhr) => {
             console.error(xhr.responseText);
-            responseArea.html(xhr.responseText).css("color", "red");
         }
     })
 });

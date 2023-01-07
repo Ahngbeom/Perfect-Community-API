@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LoginVerificationInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
 
-    private static final Logger log = LogManager.getLogger(LoginVerificationInterceptor.class);
+    private static final Logger log = LogManager.getLogger(LoginInterceptor.class);
 
     /**
      * Interception point before the execution of a handler. Called after
@@ -51,9 +50,9 @@ public class LoginVerificationInterceptor implements HandlerInterceptor {
 //            return false;
             throw new CustomAuthenticationException("Not logged in.");
         }
-//        else if (request.getRequestURI().equals("/login")) {
-//            throw new AccessDeniedException("You are already logged in. Please try again after logging out.");
-//        }
+        else if (request.getRequestURI().equals("/login")) {
+            throw new AccessDeniedException("You are already logged in. Please try again after logging out.");
+        }
         return true;
     }
 

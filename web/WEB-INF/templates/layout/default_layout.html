@@ -8,11 +8,13 @@
 
     <body>
         <header th:replace="header :: header"></header>
-        <div class="container-fluid" style="position: relative; top: 60px;">
+        <div class="container-fluid" style="">
 
-            <div class="d-flex justify-content-between gap-3">
-                <div class="col-2" style="top: 60px;" th:insert="sidebar :: sidebar"></div>
-                <div class="col-10 mt-3" layout:fragment="content"></div>
+            <div class="d-flex justify-content-around gap-3">
+                <div class="col-2" style="top: 60px;" layout:fragment="sidebar">
+                    <th:block th:replace="sidebar :: sidebar"/>
+                </div>
+                <div class="col-10" layout:fragment="content"></div>
             </div>
             <div class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" id="response-body-toast">
                 <div class="toast-header gap-2">

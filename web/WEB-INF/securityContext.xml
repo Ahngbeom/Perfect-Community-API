@@ -63,19 +63,21 @@
 
         <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
         <!--        <security:custom-filter ref="FilterExceptionHandler" before="FORM_LOGIN_FILTER"/>-->
-        <security:form-login login-processing-url="/login" authentication-success-handler-ref="loginSuccessHandler"
+        <security:form-login login-page="/login" login-processing-url="/login"
+                             authentication-success-handler-ref="loginSuccessHandler"
                              authentication-failure-handler-ref="loginFailureHandler"
                              authentication-failure-url="/login"/>
-<!--        <security:intercept-url pattern="/login" access="isAnonymous()"/>-->
+        <security:intercept-url method="GET" pattern="/login" access="isAnonymous()"/>
         <security:session-management session-authentication-error-url="/error">
             <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
         </security:session-management>
         <!--        <security:logout logout-success-url="/" invalidate-session="true" delete-cookies="JSESSIONID,remember-me" />-->
         <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
-        <security:remember-me key="SpringSecurityRememberMe"
+        <security:remember-me key="PerfectCommunity-Spring-Security-Remember-Me-By-Ahngbeom"
                               token-validity-seconds="604800"
                               authentication-success-handler-ref="loginSuccessHandler"
-                              user-service-ref="customUserDetailService"/>
+                              user-service-ref="customUserDetailService"
+                              remember-me-parameter="remember-me"/>
 
         <!--        <security:oauth2-login login-processing-url="/login/oauth2/code/google" />-->
 

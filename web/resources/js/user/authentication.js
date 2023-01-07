@@ -1,7 +1,7 @@
 const userState = $("#user-state");
 let userAuthentication = null;
 
-function getAuthentication(writeResponseBody) {
+function getAuthentication() {
     $.ajax({
         type: "get",
         url: "/api/authentication",
@@ -10,11 +10,9 @@ function getAuthentication(writeResponseBody) {
             userAuthentication = data;
             console.log("User Authentication", userAuthentication);
             // userState.find("button").html("로그아웃");
-            userState.html("Logged in - " + userAuthentication.username).css("color", "green");
         },
         error: (xhr) => {
             console.error(xhr.responseText);
-            userState.html(xhr.responseText).css("color", "red");
         }
     })
 }

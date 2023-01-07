@@ -8,13 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 
-//    @GetMapping({"/", "/docs"})
-//    public ModelAndView docs(ModelAndView mv) {
-////        mv.setViewName("docs/intro");
-////        mv.setViewName("pages/docs/intro");
-//        return mv;
-//    }
-
     @GetMapping({"/", "/docs"})
     public String docs(ModelAndView mv) {
 //        return "default_layout";
