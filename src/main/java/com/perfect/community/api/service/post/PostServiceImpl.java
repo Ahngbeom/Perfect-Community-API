@@ -23,6 +23,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostDTO> getPostList(PostFilterDTO postListOptions) {
         log.warn(postListOptions);
+        log.warn(postListOptions.getBoardNo());
+        log.warn(postListOptions.getPage());
+        log.warn(postListOptions.getType() == null);
         List<PostEntity> postEntities = postMapper.selectPostList(postListOptions);
         log.warn(postEntities);
         return postEntities.stream().map(this::entityToDTO).collect(Collectors.toList());

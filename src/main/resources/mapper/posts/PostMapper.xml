@@ -42,7 +42,7 @@
         from posts
         <where>
             <if test="boardNo > 0">
-                AND board_no = #{boardNo}
+                board_no = #{boardNo}
             </if>
             <if test="type != null">
                 AND type like #{type}
@@ -53,9 +53,9 @@
         </where>
         # order by field(type, 'NOTICE') desc, update_date desc limit ${(page - 1) * 10}, 10
         order by reg_date desc
-        <if test="page gt 0">
-            limit ${(page - 1) * 10}, 10
-        </if>
+<!--        <if test="page gt 0">-->
+<!--            limit ${(page - 1) * 10}, 10-->
+<!--        </if>-->
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postEntityMap">
