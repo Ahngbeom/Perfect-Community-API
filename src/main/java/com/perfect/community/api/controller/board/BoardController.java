@@ -19,12 +19,12 @@ public class BoardController {
     private final Logger log = LogManager.getLogger();
     private final BoardService service;
 
-    @GetMapping({"/list"})
+    @GetMapping({""})
     public ResponseEntity<List<BoardDTO>> getBoardList() {
         return ResponseEntity.ok(service.getBoardList());
     }
 
-    @GetMapping({"/info/{boardNo}"})
+    @GetMapping({"/{boardNo}"})
     public ResponseEntity<?> getBoardInfo(@PathVariable long boardNo) {
         try {
             return ResponseEntity.ok(service.getBoardInfo(boardNo));
@@ -34,7 +34,7 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> createBoard(Principal principal, @RequestBody BoardDTO boardDTO) {
         try {
             return ResponseEntity.ok(service.createBoard(principal.getName(), boardDTO));
@@ -44,7 +44,7 @@ public class BoardController {
         }
     }
 
-    @PutMapping("/update/{boardNo}")
+    @PutMapping("/{boardNo}")
     public ResponseEntity<?> updateBoard(Principal principal, @PathVariable long boardNo, @RequestBody BoardDTO boardDTO) {
         try {
             service.updateBoard(principal.getName(), boardNo, boardDTO);
@@ -55,7 +55,7 @@ public class BoardController {
         }
     }
 
-    @DeleteMapping("/delete/{boardNo}")
+    @DeleteMapping("/{boardNo}")
     public ResponseEntity<?> deleteBoard(Principal principal, @PathVariable long boardNo) {
         try {
             service.deleteBoard(principal.getName(), boardNo);

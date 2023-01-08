@@ -1,6 +1,6 @@
 package com.perfect.community.api.service.post;
 
-import com.perfect.community.api.dto.post.PostExtractionDTO;
+import com.perfect.community.api.dto.post.PostFilterDTO;
 import com.perfect.community.api.mapper.post.PostMapper;
 import com.perfect.community.api.mapper.post.PostTypeMapper;
 import com.perfect.community.api.mapper.utils.UtilsMapper;
@@ -18,7 +18,7 @@ public class PostUtils {
         this.utilsMapper = utilsMapper;
     }
 
-    public long countPosts(PostExtractionDTO.List options) {
+    public long countPosts(PostFilterDTO options) {
         return postMapper.countPosts(options);
     }
 

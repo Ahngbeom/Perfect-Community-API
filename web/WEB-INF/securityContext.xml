@@ -65,8 +65,7 @@
         <!--        <security:custom-filter ref="FilterExceptionHandler" before="FORM_LOGIN_FILTER"/>-->
         <security:form-login login-page="/login" login-processing-url="/login"
                              authentication-success-handler-ref="loginSuccessHandler"
-                             authentication-failure-handler-ref="loginFailureHandler"
-                             authentication-failure-url="/login"/>
+                             authentication-failure-handler-ref="loginFailureHandler" />
         <security:intercept-url method="GET" pattern="/login" access="isAnonymous()"/>
         <security:session-management session-authentication-error-url="/error">
             <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>

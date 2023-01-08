@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import com.perfect.community.api.dto.post.PostExtractionDTO;
+import com.perfect.community.api.dto.post.PostFilterDTO;
 import com.perfect.community.api.mapper.post.PostSearchMapper;
 
 import java.util.*;
@@ -17,7 +17,7 @@ public class PostSearchServiceImpl implements PostSearchService {
     private final PostSearchMapper postSearchMapper;
 
     @Override
-    public List<PostDTO> searchPostByKeyword(List<PostExtractionDTO> searchConditions) {
+    public List<PostDTO> searchPostByKeyword(List<PostFilterDTO> searchConditions) {
 
 //        for (PostExtractionDTO postExtractionDTO : searchConditions) {
 //            if (postExtractionDTO.getTargets().size() > 1 && postExtractionDTO.getLogic_operator() == null) {

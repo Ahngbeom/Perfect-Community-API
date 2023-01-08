@@ -1,9 +1,8 @@
 package com.perfect.community.api.service.post;
 
 import com.google.common.base.Preconditions;
-import com.perfect.community.api.dto.post.PostExtractionDTO;
+import com.perfect.community.api.dto.post.PostFilterDTO;
 import com.perfect.community.api.entity.post.PostEntity;
-import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,8 +21,10 @@ public class PostServiceImpl implements PostService {
     private final PostUtils postUtils;
 
     @Override
-    public List<PostDTO> getPostList(PostExtractionDTO.List postListOptions) {
+    public List<PostDTO> getPostList(PostFilterDTO postListOptions) {
+        log.warn(postListOptions);
         List<PostEntity> postEntities = postMapper.selectPostList(postListOptions);
+        log.warn(postEntities);
         return postEntities.stream().map(this::entityToDTO).collect(Collectors.toList());
     }
 

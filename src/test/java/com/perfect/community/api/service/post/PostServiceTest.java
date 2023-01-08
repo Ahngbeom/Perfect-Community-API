@@ -1,14 +1,11 @@
 package com.perfect.community.api.service.post;
 
-import com.perfect.community.api.dto.board.BoardDTO;
 import com.perfect.community.api.dto.post.PostDTO;
-import com.perfect.community.api.dto.post.PostExtractionDTO;
-import com.perfect.community.api.dto.post.PostListOptDTO;
+import com.perfect.community.api.dto.post.PostFilterDTO;
 import com.perfect.community.api.service.utils.RelocateService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -58,7 +55,7 @@ class PostServiceTest {
         return postService.getInfoByPno(pno);
     }
 
-    public long countPosts(PostExtractionDTO.List options) {
+    public long countPosts(PostFilterDTO options) {
         return postUtils.countPosts(options);
     }
 

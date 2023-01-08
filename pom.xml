@@ -191,12 +191,6 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.thymeleaf</groupId>-->
-<!--            <artifactId>thymeleaf</artifactId>-->
-<!--            <version>3.1.1.RELEASE</version>-->
-<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring5 -->
         <dependency>
             <groupId>org.thymeleaf</groupId>

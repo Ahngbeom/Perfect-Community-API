@@ -18,20 +18,23 @@
         </Root>
 
         <!-- SQL Logger -->
-<!--        <Logger name="jdbc.sqltiming" level="WARN" additivity="false">-->
-<!--            <AppenderRef ref="console"/>-->
-<!--        </Logger>-->
-<!--        <Logger name="jdbc.sqlonly" level="INFO" additivity="false">-->
-<!--            <AppenderRef ref="console"/>-->
-<!--        </Logger>-->
-<!--        <Logger name="jdbc.audit" level="WARN" additivity="false">-->
-<!--            <AppenderRef ref="console"/>-->
-<!--        </Logger>-->
-<!--        <Logger name="jdbc.resultset" level="WARN" additivity="false">-->
-<!--            <AppenderRef ref="console"/>-->
-<!--        </Logger>-->
-<!--        <Logger name="jdbc.resultsettable" level="WARN" additivity="false">-->
-<!--            <AppenderRef ref="console"/>-->
-<!--        </Logger>-->
+        <Logger name="jdbc.connection" level="WARN" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="jdbc.sqltiming" level="WARN" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="jdbc.sqlonly" level="INFO" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="jdbc.audit" level="WARN" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="jdbc.resultset" level="WARN" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="jdbc.resultsettable" level="WARN" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
     </Loggers>
 </Configuration>

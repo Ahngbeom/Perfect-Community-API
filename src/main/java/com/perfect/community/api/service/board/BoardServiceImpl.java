@@ -34,7 +34,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public long createBoard(String createUser, BoardDTO boardDTO) {
         Preconditions.checkNotNull(boardDTO.getTitle(), "[title] must not be null");
-        boardDTO.setCreateUser(Preconditions.checkNotNull(createUser, "[createUser] must not be null"));
+        Preconditions.checkState(!boardDTO.getTitle().isEmpty(), "[title] must not be empty");
+        boardDTO.setCreateUser(createUser);
         BoardEntity entity = BoardEntity.dtoToEntity(boardDTO);
         if (mapper.createBoard(entity) != 1) {
             throw new RuntimeException("Failed to create board.");

@@ -44,9 +44,9 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException, AccountNotFoundException {
-        log.warn(request.getRequestURI());
-        log.warn(request.getUserPrincipal());
-        log.warn(SecurityContextHolder.getContext().getAuthentication());
+//        log.warn(request.getRequestURI());
+//        log.warn(request.getUserPrincipal());
+//        log.warn(SecurityContextHolder.getContext().getAuthentication());
 
         @SuppressWarnings("unchecked")
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
@@ -56,6 +56,12 @@ public class LoginInterceptor implements HandlerInterceptor {
                 if (HttpMethod.POST.matches(request.getMethod()))
                     return true;
                 else if (HttpMethod.GET.matches(request.getMethod()) && !pathVariables.containsKey("userId"))
+                    return true;
+            } else if (request.getRequestURI().startsWith("/api/board")) {
+                if (HttpMethod.GET.matches(request.getMethod()))
+                    return true;
+            } else if (request.getRequestURI().startsWith("/api/post")) {
+                if (HttpMethod.GET.matches(request.getMethod()))
                     return true;
             }
             throw new AccessDeniedException("Not logged in.");
