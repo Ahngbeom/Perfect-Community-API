@@ -12,11 +12,6 @@ $("#api-post-list-with-options-btn").on('click', (e) => {
     const page = liElem.find("input[name='page']").val();
     const type = liElem.find("select[name='type']").val();
 
-    console.log({
-        boardNo: boardNo !== '' ? boardNo : 0,
-        page: page !== '' ? page : 0,
-        type: type !== 'null' ? type : null
-    });
     $.ajax({
         type: 'get',
         url: '/api/post',
