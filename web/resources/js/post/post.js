@@ -8,6 +8,7 @@ $("#api-post-list-btn").on('click', () => {
 
 $("#api-post-list-with-options-btn").on('click', (e) => {
     const liElem = $(e.target).parents("li");
+    const keyword = liElem.find("input[name='keyword']").val();
     const boardNo = liElem.find("input[name='boardNo']").val();
     const page = liElem.find("input[name='page']").val();
     const type = liElem.find("select[name='type']").val();
@@ -18,12 +19,10 @@ $("#api-post-list-with-options-btn").on('click', (e) => {
         contentType: 'application/json',
         dataType: 'json',
         data: {
+            keyword: keyword !== '' ? keyword : undefined,
             boardNo: boardNo !== '' ? boardNo : 0,
             page: page !== '' ? page : 0,
             type: type !== 'null' ? type : undefined
-        },
-        success(data) {
-            console.log(data);
         }
     })
 });
@@ -37,17 +36,42 @@ $("#api-post-info-btn").on('click', (e) => {
 });
 
 $(".api-post-create-btn").on('click', (e) => {
-    const liElem = $(e.target).parents("li");
-    $.ajax({
-        type: 'post',
-        url: '/api/post',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify({
-            title: liElem.find("input[name='title']").val(),
-            comment: liElem.find("textarea[name='comment']").val()
-        })
-    })
+    function ajaxPostRegistration() {
+        const liElem = $(e.target).parents("li");
+        $.ajax({
+            type: 'post',
+            url: '/api/post',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                title: liElem.find("input[name='title']").val(),
+                comment: liElem.find("textarea[name='comment']").val()
+            })
+        });
+    }
+
+    if (userID === '') {
+        loginSubmitBtn.on('click', () => {
+            console.log(
+                {
+                    userId: loginModalElem.find("input[name='username']").val(),
+                    userPw: loginModalElem.find("input[name='password']").val()
+                }
+            )
+            $.when(ajaxLogin())
+                .done(() => {
+                    loginModal.hide();
+                    // userState.load(window.location.href + ' #user-state');
+                    ajaxPostRegistration();
+                })
+                .fail((response) => {
+                    console.error(response);
+                });
+        });
+        loginModal.show();
+    } else {
+        ajaxPostRegistration();
+    }
 });
 
 $(".api-post-update-btn").on('click', (e) => {

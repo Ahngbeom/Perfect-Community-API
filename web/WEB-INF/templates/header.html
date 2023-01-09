@@ -11,7 +11,7 @@
                         <a href="/login" class="btn btn-outline-secondary">Login</a>
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">
-                        <span th:text="${#authentication.getName()}"></span>
+                        <span id="user-id" th:text="${#authentication.getName()}"></span>
                         <a href="/logout" class="btn btn-warning">Logout</a>
                     </th:block>
                 </div>

@@ -16,6 +16,8 @@
                 </div>
                 <div class="col-10" layout:fragment="content"></div>
             </div>
+
+            <!--     BootStrap Toast       -->
             <div class="toast-container position-fixed bottom-0 end-0" id="response-body-toast-container">
                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header gap-2">
@@ -30,6 +32,34 @@
                 </div>
             </div>
 
+            <!--     BootStrap Modal for Login      -->
+            <div class="modal fade" tabindex="-1" id="loginModal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Login</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3 row">
+                                <label for="loginModalInputID" class="col-sm-2 col-form-label">ID</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="loginModalInputID" name="username">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="loginModalInputPassword" class="col-sm-2 col-form-label">Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="loginModalInputPassword" name="password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </body>
