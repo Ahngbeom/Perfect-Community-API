@@ -114,6 +114,30 @@
                 <button type="button" id="api-post-create-btn" class="btn btn-link api-post-create-btn">/api/post
                 </button>
                 <div class="mb-3 row">
+                    <div class="col-2">
+                        <label class="form-label">
+                            boardNo:
+                        </label>
+                    </div>
+                    <div class="col-2">
+                        <input type="number" class="form-control m-0 py-0" min="0" name="boardNo" value="0">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-2">
+                        <label class="form-label">
+                            type:
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-select m-0 py-0" name="type">
+                            <option value="null" selected>Open this select type</option>
+                            <option value="Notice">Notice</option>
+                            <option value="Normal">Normal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3 row">
                     <label for="inputCreateTitle" class="col-sm-2 col-form-label">title</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputCreateTitle" name="title">
@@ -138,7 +162,7 @@
 
             <!--     게시물 수정       -->
             <li>
-                <div class="row">
+                <div class="mb-3 row">
                     <label class="col-2 col-form-label">[PUT]</label>
                     <div class="col-5">
                         <button type="button" id="api-post-update-btn" class="btn btn-link api-post-update-btn">
@@ -148,22 +172,45 @@
                     <div class="col-5">
                         <div class="input-group mb-3">
                             <input type="number" id="post-no-to-update" class="form-control"
-                                   placeholder="Board number to update" min="1">
+                                   placeholder="Post number to update" min="1" name="postNo">
                             <button class="btn btn-secondary" type="button" id="get-post-info-to-update-btn">Apply
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="inputUpdateTitle" class="col-sm-2 col-form-label">title</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputUpdateTitle" name="title" disabled>
+                    <div class="col-2">
+                        <label class="form-label">
+                            boardNo
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" class="form-control py-0" name="boardNo" disabled>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="textareaUpdateComment" class="col-sm-2 col-form-label">comment</label>
+                    <div class="col-2">
+                        <label class="form-label">
+                            type
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-select m-0 py-0" name="type" disabled>
+                            <option value="NOTICE">공지</option>
+                            <option value="NORMAL">일반</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">title</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" id="textareaUpdateComment" rows="3" name="comment"
+                        <input type="text" class="form-control" name="title" disabled>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">contents</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" name="contents"
                                   disabled></textarea>
                     </div>
                 </div>

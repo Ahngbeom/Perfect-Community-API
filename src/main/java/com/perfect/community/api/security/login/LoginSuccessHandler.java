@@ -69,11 +69,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         //        servletCheck.headerPrint(request);
-        if (request.getHeader("x-requested-with").equals("XMLHttpRequest")) {
+        String xRequestedWithValue = request.getHeader("x-requested-with");
+        if (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest")) {
             response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(authentication.getName());
         } else {
-            //        redirectToReferer(request, response, authentication);
-            redirectToSavedRequest(request, response, authentication);
+            redirectToReferer(request, response, authentication);
+//            redirectToSavedRequest(request, response, authentication);
         }
     }
 

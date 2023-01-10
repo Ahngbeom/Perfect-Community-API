@@ -1,6 +1,6 @@
 const userState = $("#user-state");
 let userAuthentication = null;
-const userID = userState.find("#user-id").text();
+let userID = userState.find("#user-id").text();
 
 function getAuthentication() {
     $.ajax({

@@ -8,12 +8,12 @@ $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
     if (status >= 200 && status < 300) {
         // toastHeader.find("i").class("<i class='fa-sharp fa-solid fa-check'></i>")
         toastHeader.removeClass("text-danger").addClass("text-success");
-        toastHeader.find("strong").html("Done");
+        toastHeader.find("strong").html("Done" + " - [" + ajaxOptions.type + "]" + ajaxOptions.url);
         responseBodyToastContainer.find(".toast-body").html(jqXHR.responseText);
     } else if (status >= 400 && status < 500) {
         // toastHeader.find("i").replaceWith("<i class=\"fa-sharp fa-solid fa-xmark\"></i>")
         toastHeader.removeClass("text-success").addClass("text-danger");
-        toastHeader.find("strong").html("Failed");
+        toastHeader.find("strong").html("Failed" + " - [" + ajaxOptions.type + "]" + ajaxOptions.url);
         responseBodyToastContainer.find(".toast-body").html(jqXHR.responseText);
     }
     responseBodyToast.show();

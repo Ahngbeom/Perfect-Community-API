@@ -18,7 +18,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("Login Failed: " + exception.getMessage());
-        if (request.getHeader("x-requested-with").equals("XMLHttpRequest")) {
+        String xRequestWithValue = request.getHeader("x-requested-with");
+        if (xRequestWithValue != null && xRequestWithValue.equals("XMLHttpRequest")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
             response.sendRedirect("/login?error");

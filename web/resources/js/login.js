@@ -15,5 +15,5 @@ function ajaxLogin() {
             username: loginModalElem.find("input[name='username']").val(),
             password: loginModalElem.find("input[name='password']").val()
         }
-    });
+    }).done((data) => userID = data);
 }

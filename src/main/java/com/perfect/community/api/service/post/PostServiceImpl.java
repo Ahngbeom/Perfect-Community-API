@@ -36,11 +36,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public void registration(String userId, PostDTO postDTO) throws RuntimeException {
         Preconditions.checkNotNull(postDTO, "PostDTO must not be null.");
-        Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater then zero");
-        Preconditions.checkState(postDTO.getType() != null, "[type] must not be null.");
-        Preconditions.checkState(postDTO.getTitle() != null, "[title] must not be null.");
-        Preconditions.checkState(postDTO.getContents() != null, "[contents] must not be null.");
+        Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater than zero.");
+        Preconditions.checkState(postDTO.getType() != null && !postDTO.getType().isEmpty(), "[type] must not be null or empty.");
+        Preconditions.checkState(postDTO.getTitle() != null && !postDTO.getTitle().isEmpty(), "[title] must not be null or empty.");
+        Preconditions.checkState(postDTO.getContents() != null && !postDTO.getContents().isEmpty(), "[contents] must not be null or empty.");
         postDTO.setWriter(Preconditions.checkNotNull(userId, "[writer] must not be null."));
+        log.warn(postDTO);
         if (postMapper.insertPost(postDTO) != 1)
             throw new RuntimeException("Failed to post registration.");
     }
