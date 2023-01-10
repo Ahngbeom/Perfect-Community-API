@@ -1,0 +1,97 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+
+    <div layout:fragment="content">
+        <div class="d-flex flex-column gap-3">
+            <div id="board-list" class="border border-dark p-2">
+                <span class="fw-bold">게시판</span>
+                <div class="d-flex justify-content-around">
+
+                </div>
+            </div>
+            <div id="post-list" class="border border-3 border-secondary p-2">
+                <span class="fw-bold">게시물</span>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="fw-bold">
+                                <td class="col-1">postNo</td>
+                                <td class="col-4">title</td>
+                                <td class="col-3">writer</td>
+                                <td class="col-4">regDate</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+                                        <ul class="pagination">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(() => {
+                const boardListArea = $("#board-list");
+                $.when(ajaxGetBoardList())
+                    .done((data) => {
+                        console.log("Boards", data);
+                        $.each(data, (index, item) => {
+                            boardListArea.find("div").append("<a href='#'>" + item.title + "</a>");
+                        })
+                    });
+
+                const postListTable = $("#post-list table");
+                $.when(ajaxGetPostList(1))
+                    .done((data) => {
+                        console.log("Posts", data);
+                        $.each(data, (index, item) => {
+                            postListTable.find("tbody").append(
+                                "<tr>" +
+                                "<td>" +
+                                item.pno +
+                                "</td>" +
+                                "<td>" +
+                                item.title +
+                                "</td>" +
+                                "<td>" +
+                                item.writer +
+                                "</td>" +
+                                "<td>" +
+                                item.regDate +
+                                "</td>" +
+                                "</tr>"
+                            )
+                        });
+                    });
+            });
+        </script>
+    </div>
+
+
+</html>
+
+

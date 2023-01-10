@@ -1,14 +1,7 @@
+import "./list.js";
 import "./registration.js";
 import "./modification.js";
 import "./remove.js";
-
-$("#api-post-list-btn").on('click', () => {
-    $.ajax({
-        type: 'get',
-        url: '/api/post',
-        contentType: 'application/json'
-    })
-});
 
 $("#api-post-list-with-options-btn").on('click', (e) => {
     const liElem = $(e.target).parents("li");

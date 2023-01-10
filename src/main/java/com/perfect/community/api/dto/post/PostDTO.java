@@ -1,5 +1,6 @@
 package com.perfect.community.api.dto.post;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.perfect.community.api.dto.board.BoardDTO;
 import com.perfect.community.api.dto.user.UserDTO;
 import com.google.common.base.Preconditions;
@@ -19,7 +20,9 @@ public class PostDTO {
     private String title;
     private String contents;
     private String writer;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateDate;
 
     /**
