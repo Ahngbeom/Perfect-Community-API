@@ -73,6 +73,12 @@ public class PostServiceImpl implements PostService {
         return postMapper.isWriter(pno, userId);
     }
 
+
+    @Override
+    public long getPostCount(PostFilterDTO postFilterDTO) {
+        return postMapper.countPosts(postFilterDTO);
+    }
+
     public PostDTO entityToDTO(PostEntity entity) {
         return PostDTO.builder()
                 .pno(entity.getPno())

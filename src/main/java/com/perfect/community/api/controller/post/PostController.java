@@ -33,10 +33,19 @@ public class PostController {
     }
 
     @GetMapping("/{postNo}")
-
     public ResponseEntity<?> getPost(@PathVariable long postNo) {
         try {
             return ResponseEntity.ok(postService.getInfoByPno(postNo));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<?> getPostCount(@RequestBody(required = false) PostFilterDTO postListOptions) {
+        try {
+            return ResponseEntity.ok(postService.getPostCount(postListOptions));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

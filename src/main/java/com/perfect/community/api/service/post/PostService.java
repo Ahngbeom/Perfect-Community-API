@@ -19,4 +19,6 @@ public interface PostService {
 
     boolean isWriter(long pno, String userId);
 
+    long getPostCount(PostFilterDTO postFilterDTO);
+
 }

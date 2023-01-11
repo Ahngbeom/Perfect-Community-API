@@ -15,15 +15,20 @@
         <result property="updateDate" column="update_date"/>
     </resultMap>
 
-<!--    <parameterMap id="postExtractionListParamMap" type="com.perfect.community.api.dto.post.PostFilterDTO">-->
-<!--        <parameter property="boardNo"/>-->
-<!--        <parameter property="page"/>-->
-<!--        <parameter property="type"/>-->
-<!--    </parameterMap>-->
-
     <select id="countPosts" resultType="long">
-        select count(*) as count
-        from posts
+        select count(pno) as count
+        <choose>
+            <when test="page gt 0">
+                from (
+                select pno
+                from posts
+                limit ${(page - 1) * 10}, 10
+                ) as by_page
+            </when>
+            <otherwise>
+                from posts
+            </otherwise>
+        </choose>
         <where>
             <if test="boardNo gt 0">
                 board_no = #{boardNo}
@@ -31,10 +36,8 @@
             <if test="type != null">
                 and type like #{type}
             </if>
-            <if test="page gt 0">
-                and page = #{page}
-            </if>
         </where>
+
     </select>
 
     <select id="selectPostList" resultMap="postEntityMap">
@@ -51,11 +54,10 @@
                 AND (title like concat('%', #{keyword}, '%') OR contents like concat('%', #{keyword}, '%'))
             </if>
         </where>
-        # order by field(type, 'NOTICE') desc, update_date desc limit ${(page - 1) * 10}, 10
-        order by reg_date desc
         <if test="page > 0">
             limit ${(page - 1) * 10}, 10
         </if>
+        order by reg_date desc
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postEntityMap">

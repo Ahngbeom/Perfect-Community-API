@@ -36,7 +36,7 @@ public class PostUtils {
 
     public int removeAll() throws RuntimeException {
         int result;
-        if (postMapper.countPosts() == 0) {
+        if (postMapper.countPosts(null) == 0) {
             throw new RuntimeException("Posts do not exist.");
         } else {
             result = postMapper.deleteAllPosts();

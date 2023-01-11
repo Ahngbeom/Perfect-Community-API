@@ -8,7 +8,7 @@ public class CountTest extends PostMapperTest {
 
     @Test
     void countPostsNoArguments() {
-        log.info(postsMapper.countPosts());
+        log.info(postsMapper.countPosts(null));
     }
     @Test
     void countPostsByBoardNo() {
