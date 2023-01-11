@@ -76,7 +76,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserInfoWithAuthoritiesByUserId(String userId) {
         UserEntity userEntity = mapper.selectUserWithAuthoritiesByUserId(userId);
-        return userEntity != null ? userEntity.toDTO() : null;
+        if (userEntity == null)
+            return null;
+        return UserDTO.builder()
+                .userId(userEntity.getUserId())
+                .password(userEntity.getPassword())
+                .nickname(userEntity.getNickname())
+                .enabled(userEntity.isEnabled())
+                .authority(userEntity.getAuthority())
+                .regDate(userEntity.getRegDate())
+                .updateDate(userEntity.getUpdateDate())
+                .build();
     }
 
     @Override

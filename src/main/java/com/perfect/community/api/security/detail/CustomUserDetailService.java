@@ -22,11 +22,9 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        log.warn("Load request by \"" + userName + "\"");
         UserEntity userEntity = mapper.selectUserWithAuthoritiesByUserId(userName);
-        log.warn("Load UserEntity By userName: " + userEntity);
         if (userEntity == null)
             throw new UsernameNotFoundException(userName);
-        return new CustomUserDetails(userEntity.toDTO());
+        return new CustomUserDetails(userEntity);
     }
 }

@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import javax.security.auth.login.LoginException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +17,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("Login Failed: " + exception.getMessage());
-        String xRequestWithValue = request.getHeader("x-requested-with");
-        log.warn(xRequestWithValue);
-        if (xRequestWithValue != null && xRequestWithValue.equals("XMLHttpRequest")) {
+        String xRequestedWithValue = request.getHeader("x-requested-with");
+        String contentType = request.getContentType();
+        if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(exception.getMessage());
         } else {
             response.sendRedirect("/login?error");
         }

@@ -26,14 +26,14 @@
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
     <!--  Customize AuthenticationManager  -->
-    <bean id="customAuthenticationManager"
-          class="com.perfect.community.api.security.filter.CustomAuthenticationManager">
-    </bean>
+<!--    <bean id="customAuthenticationManager"-->
+<!--          class="com.perfect.community.api.security.filter.CustomAuthenticationManager">-->
+<!--    </bean>-->
 
     <!--  Customize UsernamePasswordAuthenticationFilter for JSON  -->
     <bean id="jsonUsernamePasswordAuthenticationFilter"
           class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter">
-        <constructor-arg name="authenticationManager" ref="customAuthenticationManager"/>
+<!--        <constructor-arg name="authenticationManager" ref="authenticationManager"/>-->
         <constructor-arg name="objectMapper" ref="objectMapper"/>
         <constructor-arg name="authenticationSuccessHandler" ref="loginSuccessHandler"/>
         <constructor-arg name="authenticationFailureHandler" ref="loginFailureHandler"/>
@@ -64,10 +64,8 @@
     <!--        <constructor-arg index="0" ref=""/>-->
     <!--        <constructor-arg index="1" ref=""/>-->
     <!--    </bean>-->
-    <security:http auto-config="false" use-expressions="true"
-                   authentication-manager-ref="customAuthenticationManager"
-                   entry-point-ref="authenticationEntryPoint">
-        <!--    <security:http auto-config="true" use-expressions="true" authentication-manager-ref="CustomAuthenticationManager" >-->
+    <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint" authentication-manager-ref="authenticationManager">
+
         <security:csrf disabled="true"/>
 
         <security:intercept-url method="GET" pattern="/login" access="isAnonymous()"/>
@@ -79,7 +77,7 @@
         <!--                <security:form-login login-page="/login" login-processing-url="/login"-->
         <!--                                     authentication-success-handler-ref="loginSuccessHandler"-->
         <!--                                     authentication-failure-handler-ref="loginFailureHandler"/>-->
-        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
+        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
 
 
         <security:session-management session-authentication-error-url="/error">
@@ -99,23 +97,10 @@
 
     </security:http>
 
-    <security:authentication-manager>
-        <!--        <security:authentication-provider>-->
+    <security:authentication-manager id="authenticationManager">
         <security:authentication-provider user-service-ref="customUserDetailService">
-            <!--            <security:user-service>-->
-            <!--                <security:user name="member" password="{noop}member" authorities="ROLE_MEMBER" />-->
-            <!--                <security:user name="admin" password="{noop}1234" authorities="ROLE_MEMBER, ROLE_ADMIN" />-->
-            <!--            </security:user-service>-->
-
-            <!--            <security:jdbc-user-service-->
-            <!--                data-source-ref="dataSource" users-by-username-query=" select userid, password, enabled from users where userid = ?"-->
-            <!--                authorities-by-username-query="select username, authority from authorities where username = ?"-->
-            <!--            />-->
-
-            <!--            <security:password-encoder ref="customPasswordEncoder" />-->
             <security:password-encoder ref="bCryptPasswordEncoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
-
 
 </beans>

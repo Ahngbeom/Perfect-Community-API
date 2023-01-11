@@ -1,6 +1,7 @@
 package com.perfect.community.api.security.detail;
 
 import com.perfect.community.api.dto.user.UserDTO;
+import com.perfect.community.api.entity.user.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,6 +28,22 @@ public class CustomUserDetails extends User {
                 true, true,
                 Collections.singleton(new SimpleGrantedAuthority(user.getAuthority())));
         this.user = user;
+    }
+
+    public CustomUserDetails(UserEntity user) {
+        super(user.getUserId(), user.getPassword(),
+                user.isEnabled(), true,
+                true, true,
+                Collections.singleton(new SimpleGrantedAuthority(user.getAuthority())));
+        this.user = UserDTO.builder()
+                .userId(user.getUserId())
+                .password(user.getPassword())
+                .nickname(user.getNickname())
+                .enabled(user.isEnabled())
+                .authority(user.getAuthority())
+                .regDate(user.getRegDate())
+                .updateDate(user.getUpdateDate())
+                .build();
     }
 
 }
