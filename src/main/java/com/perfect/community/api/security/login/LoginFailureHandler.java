@@ -19,6 +19,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("Login Failed: " + exception.getMessage());
         String xRequestWithValue = request.getHeader("x-requested-with");
+        log.warn(xRequestWithValue);
         if (xRequestWithValue != null && xRequestWithValue.equals("XMLHttpRequest")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {

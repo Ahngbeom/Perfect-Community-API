@@ -9,7 +9,6 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +19,28 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private static final Logger log = LogManager.getLogger();
 
     private static final HttpServletCheck servletCheck = new HttpServletCheck();
+
+    /**
+     * Called when a user has been successfully authenticated.
+     *
+     * @param request        the request which caused the successful authentication
+     * @param response       the response
+     * @param authentication the <tt>Authentication</tt> object which was created during
+     *                       the authentication process.
+     */
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        //        servletCheck.headerPrint(request);
+        String xRequestedWithValue = request.getHeader("x-requested-with");
+        String contentType = request.getContentType();
+        if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(authentication.getName());
+        } else {
+            redirectToReferer(request, response, authentication);
+//            redirectToSavedRequest(request, response, authentication);
+        }
+    }
 
     // Reference: https://hungseong.tistory.com/60
     private void redirectToReferer(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -58,36 +79,5 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     }
 
-    /**
-     * Called when a user has been successfully authenticated.
-     *
-     * @param request        the request which caused the successful authentication
-     * @param response       the response
-     * @param authentication the <tt>Authentication</tt> object which was created during
-     *                       the authentication process.
-     */
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        //        servletCheck.headerPrint(request);
-        String xRequestedWithValue = request.getHeader("x-requested-with");
-        if (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest")) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(authentication.getName());
-        } else {
-            redirectToReferer(request, response, authentication);
-//            redirectToSavedRequest(request, response, authentication);
-        }
-    }
 
-    /**
-     * Called when a user has been successfully authenticated.
-     *
-     * @param request        the request which caused the successful authentication
-     * @param response       the response
-     * @param chain          the {@link FilterChain} which can be used to proceed other filters in
-     *                       the chain
-     * @param authentication the <tt>Authentication</tt> object which was created during
-     *                       the authentication process.
-     * @since 5.2.0
-     */
 }

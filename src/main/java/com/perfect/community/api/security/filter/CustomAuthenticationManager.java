@@ -22,9 +22,9 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         log.info("[CustomAuthenticationManager] authenticate");
         UserDetails userDetails = userDetailsService.loadUserByUsername((String) authentication.getPrincipal());
-        log.warn(userDetails);
-        if (userDetails == null)
-            throw new UsernameNotFoundException((String) authentication.getPrincipal());
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+        log.info("UserDetails: " + userDetails);
+//        if (userDetails == null)
+//            throw new UsernameNotFoundException((String) authentication.getPrincipal());
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 }

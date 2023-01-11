@@ -23,7 +23,7 @@ public class PostController {
     private final UserService userService;
 
     @GetMapping(value = {""})
-    public ResponseEntity<?> getPostList(PostFilterDTO postListOptions) {
+    public ResponseEntity<?> getPostList(@RequestBody PostFilterDTO postListOptions) {
         try {
             return ResponseEntity.ok(postService.getPostList(postListOptions));
         } catch (Exception e) {
@@ -33,6 +33,7 @@ public class PostController {
     }
 
     @GetMapping("/{postNo}")
+
     public ResponseEntity<?> getPost(@PathVariable long postNo) {
         try {
             return ResponseEntity.ok(postService.getInfoByPno(postNo));

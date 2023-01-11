@@ -5,25 +5,42 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <!--  Authentication  -->
     <bean id="authenticationEntryPoint" class="com.perfect.community.api.security.CustomAuthenticationEntryPoint"/>
     <bean id="accessDeniedHandler" class="com.perfect.community.api.security.CustomAccessDeniedHandler"/>
+
+    <!--  Login Handler  -->
     <bean id="loginSuccessHandler" class="com.perfect.community.api.security.login.LoginSuccessHandler"/>
     <bean id="loginFailureHandler" class="com.perfect.community.api.security.login.LoginFailureHandler"/>
 
+    <!--  Logout Handler  -->
+    <bean id="logoutSuccessHandler" class="com.perfect.community.api.security.logout.CustomLogoutSuccessHandler"/>
+
+    <!--  Customize UserDetailService  -->
+    <bean id="customUserDetailService" class="com.perfect.community.api.security.detail.CustomUserDetailService"/>
+
+    <!--  BCryptPasswordEncoder  -->
+    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <!--  ObjectMapper for JSON  -->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+    <!--  Customize AuthenticationManager  -->
     <bean id="customAuthenticationManager"
           class="com.perfect.community.api.security.filter.CustomAuthenticationManager">
-        <constructor-arg ref="customUserDetailService"/>
     </bean>
 
-    <!--    <bean id="customAuthenticationProcessingFilter" class="com.perfect.community.api.security.filter.CustomAuthenticationProcessingFilter">-->
-    <!--        <constructor-arg ref="customAuthenticationManager" />-->
-    <!--    </bean>-->
+    <!--  Customize UsernamePasswordAuthenticationFilter for JSON  -->
+    <bean id="jsonUsernamePasswordAuthenticationFilter"
+          class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter">
+        <constructor-arg name="authenticationManager" ref="customAuthenticationManager"/>
+        <constructor-arg name="objectMapper" ref="objectMapper"/>
+        <constructor-arg name="authenticationSuccessHandler" ref="loginSuccessHandler"/>
+        <constructor-arg name="authenticationFailureHandler" ref="loginFailureHandler"/>
+    </bean>
 
     <!--    <bean id="filterExceptionHandler" class="com.perfect.community.api.security.filter.FilterExceptionHandler" />-->
 
-    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-    <bean id="customUserDetailService" class="com.perfect.community.api.security.detail.CustomUserDetailService"/>
-    <bean id="logoutSuccessHandler" class="com.perfect.community.api.security.logout.CustomLogoutSuccessHandler"/>
 
     <!--    <security:client-registrations>-->
     <!--        <security:client-registration registration-id="google"-->
@@ -47,31 +64,31 @@
     <!--        <constructor-arg index="0" ref=""/>-->
     <!--        <constructor-arg index="1" ref=""/>-->
     <!--    </bean>-->
-    <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint">
+    <security:http auto-config="false" use-expressions="true"
+                   authentication-manager-ref="customAuthenticationManager"
+                   entry-point-ref="authenticationEntryPoint">
         <!--    <security:http auto-config="true" use-expressions="true" authentication-manager-ref="CustomAuthenticationManager" >-->
         <security:csrf disabled="true"/>
 
+        <security:intercept-url method="GET" pattern="/login" access="isAnonymous()"/>
         <security:intercept-url method="POST" pattern="/api/user" access="isAnonymous()"/>
-
-        <security:access-denied-handler ref="accessDeniedHandler"/>
-        <!--        <security:intercept-url pattern="/all" access="permitAll()"/>-->
-        <!--        <security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>-->
-        <!--        <security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>-->
-        <!--        <security:intercept-url pattern="/**/json" access="hasRole('ROLE_ADMIN')"/>-->
-
         <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
 
-        <!--        <security:custom-filter ref="CustomAuthenticationProcessingFilter" before="FORM_LOGIN_FILTER"/>-->
-        <!--        <security:custom-filter ref="FilterExceptionHandler" before="FORM_LOGIN_FILTER"/>-->
-        <security:form-login login-page="/login" login-processing-url="/login"
-                             authentication-success-handler-ref="loginSuccessHandler"
-                             authentication-failure-handler-ref="loginFailureHandler" />
-        <security:intercept-url method="GET" pattern="/login" access="isAnonymous()"/>
+        <security:access-denied-handler ref="accessDeniedHandler"/>
+
+        <!--                <security:form-login login-page="/login" login-processing-url="/login"-->
+        <!--                                     authentication-success-handler-ref="loginSuccessHandler"-->
+        <!--                                     authentication-failure-handler-ref="loginFailureHandler"/>-->
+        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
+
+
         <security:session-management session-authentication-error-url="/error">
             <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
         </security:session-management>
-        <!--        <security:logout logout-success-url="/" invalidate-session="true" delete-cookies="JSESSIONID,remember-me" />-->
+
         <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
+        <!--        <security:logout logout-success-url="/" invalidate-session="true" delete-cookies="JSESSIONID,remember-me" />-->
+
         <security:remember-me key="PerfectCommunity-Spring-Security-Remember-Me-By-Ahngbeom"
                               token-validity-seconds="604800"
                               authentication-success-handler-ref="loginSuccessHandler"
@@ -79,7 +96,6 @@
                               remember-me-parameter="remember-me"/>
 
         <!--        <security:oauth2-login login-processing-url="/login/oauth2/code/google" />-->
-
 
     </security:http>
 
