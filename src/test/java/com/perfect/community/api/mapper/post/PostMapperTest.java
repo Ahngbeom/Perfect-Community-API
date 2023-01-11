@@ -29,6 +29,9 @@ class PostMapperTest {
     protected PostMapper postsMapper;
 
     @Autowired
+    protected PostInteractionMapper postInteractionMapper;
+
+    @Autowired
     private UtilsMapper utilsMapper;
 
     @BeforeEach

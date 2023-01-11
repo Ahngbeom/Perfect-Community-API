@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.perfect.community.api.mapper.post.PostInteractionMapper">
+    <update id="increaseViews" parameterType="com.perfect.community.api.entity.post.PostEntity">
+        <selectKey keyProperty="views" resultType="java.lang.Long" order="AFTER">
+            select views
+            from posts
+            where pno = #{pno}
+        </selectKey>
+        update posts set views = views + 1 where pno = #{pno}
+    </update>
+</mapper>

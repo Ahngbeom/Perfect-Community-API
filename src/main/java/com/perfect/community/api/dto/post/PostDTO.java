@@ -20,6 +20,7 @@ public class PostDTO {
     private String title;
     private String contents;
     private String writer;
+    private long views;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -34,17 +35,19 @@ public class PostDTO {
      * @param title:     게시물의 제목. null을 허용하지 않는다.
      * @param contents:  게시물의 내용. null을 허용하지 않는다.
      * @param writer:    게시물의 작성자. null을 허용하지 않는다.
+     * @param views:     게시물의 조회수.
      * @param regDate    {@link LocalDateTime}:     게시물의 작성 날짜.
      * @param updateDate {@link LocalDateTime}:  게시물의 수정 날짜.
      */
     @Builder
-    public PostDTO(long pno, long boardNo, String type, String title, String contents, String writer, LocalDateTime regDate, LocalDateTime updateDate) {
+    public PostDTO(long pno, long boardNo, String type, String title, String contents, String writer, long views, LocalDateTime regDate, LocalDateTime updateDate) {
         this.pno = pno;
         this.boardNo = boardNo;
         this.type = type;
         this.title = title;
         this.contents = contents;
         this.writer = writer;
+        this.views = views;
         this.regDate = regDate;
         this.updateDate = updateDate;
     }
