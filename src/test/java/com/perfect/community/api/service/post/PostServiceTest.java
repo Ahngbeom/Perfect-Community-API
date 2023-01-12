@@ -30,7 +30,7 @@ class PostServiceTest {
     protected PostService postService;
 
     @Autowired
-    protected PostJoinUserService postJoinUserService;
+    protected PostInteractionService postInteractionService;
 
     @Autowired
     protected PostUtils postUtils;
@@ -42,7 +42,6 @@ class PostServiceTest {
     void setUp() {
         assertNotNull(log);
         assertNotNull(postService);
-        assertNotNull(postJoinUserService);
         assertNotNull(postUtils);
     }
 
