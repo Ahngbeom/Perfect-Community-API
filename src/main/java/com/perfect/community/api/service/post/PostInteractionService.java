@@ -12,27 +12,30 @@ public class PostInteractionService {
 
     private final PostInteractionMapper mapper;
 
-    long increaseViews(long pno) {
+    public long increaseViews(long pno) {
         PostViewsVO postViewsVO = PostViewsVO.builder()
                 .post_no(pno)
                 .build();
-        mapper.increaseViews(postViewsVO);
+        if (mapper.increaseViews(postViewsVO) != 1)
+            throw new RuntimeException("Failed to increase views of post.");
         return postViewsVO.getViews();
     }
 
-    long increaseRecommend(long pno) {
+    public long increaseRecommend(long pno) {
         PostRecommendVO postRecommendVO = PostRecommendVO.builder()
                 .post_no(pno)
                 .build();
-        mapper.recommendation(postRecommendVO);
+        if (mapper.recommendation(postRecommendVO) != 1)
+            throw new RuntimeException("Failed to post recommendation.");
         return postRecommendVO.getRecommend();
     }
 
-    long increaseNotRecommend(long pno) {
+    public long increaseNotRecommend(long pno) {
         PostRecommendVO postRecommendVO = PostRecommendVO.builder()
                 .post_no(pno)
                 .build();
-        mapper.notRecommendation(postRecommendVO);
+        if (mapper.notRecommendation(postRecommendVO) != 1)
+            throw new RuntimeException("Failed to post not recommendation.");
         return postRecommendVO.getNot_recommend();
     }
 }

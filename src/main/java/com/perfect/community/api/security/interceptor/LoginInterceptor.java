@@ -47,21 +47,23 @@ public class LoginInterceptor implements HandlerInterceptor {
 //        log.warn(request.getRequestURI());
 //        log.warn(request.getUserPrincipal());
 //        log.warn(SecurityContextHolder.getContext().getAuthentication());
-
+        final String requestURI = request.getRequestURI();
         @SuppressWarnings("unchecked")
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-            if (request.getRequestURI().startsWith("/api/user")) {
+            if (requestURI.startsWith("/api/user")) {
                 if (HttpMethod.POST.matches(request.getMethod()))
                     return true;
                 else if (HttpMethod.GET.matches(request.getMethod()) && !pathVariables.containsKey("userId"))
                     return true;
-            } else if (request.getRequestURI().startsWith("/api/board")) {
+            } else if (requestURI.startsWith("/api/board")) {
                 if (HttpMethod.GET.matches(request.getMethod()))
                     return true;
-            } else if (request.getRequestURI().startsWith("/api/post")) {
+            } else if (requestURI.startsWith("/api/post")) {
                 if (HttpMethod.GET.matches(request.getMethod()))
+                    return true;
+                else if (requestURI.endsWith("/views")) // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
                     return true;
             }
             throw new AccessDeniedException("Not logged in.");
