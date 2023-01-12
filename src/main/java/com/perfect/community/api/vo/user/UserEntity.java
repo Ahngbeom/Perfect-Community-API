@@ -1,4 +1,4 @@
-package com.perfect.community.api.entity.user;
+package com.perfect.community.api.vo.user;
 
 import lombok.*;
 

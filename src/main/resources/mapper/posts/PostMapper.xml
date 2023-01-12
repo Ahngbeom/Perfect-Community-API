@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.perfect.community.api.mapper.post.PostMapper">
 
-    <resultMap id="postEntityMap" type="com.perfect.community.api.entity.post.PostEntity">
-        <id property="pno" column="pno"/>
+    <resultMap id="postDTOMap" type="com.perfect.community.api.dto.post.PostDTO">
+        <id property="postNo" column="pno"/>
         <result property="boardNo" column="board_no"/>
         <result property="type" column="type"/>
         <result property="title" column="title"/>
@@ -16,11 +16,11 @@
     </resultMap>
 
     <select id="countPosts" resultType="long">
-        select count(pno) as count
+        select count(post_no) as count
         <choose>
             <when test="page gt 0">
                 from (
-                select pno
+                select post_no
                 from posts
                 limit ${(page - 1) * 10}, 10
                 ) as by_page
@@ -40,8 +40,8 @@
 
     </select>
 
-    <select id="selectPostList" resultMap="postEntityMap">
-        select pno, board_no, type, title, contents, writer, reg_date, update_date
+    <select id="selectPostList" resultType="com.perfect.community.api.vo.post.PostVO">
+        select post_no, board_no, type, title, contents, writer, reg_date, update_date
         from posts
         <where>
             <if test="boardNo > 0">
@@ -60,13 +60,13 @@
         order by reg_date desc
     </select>
 
-    <select id="selectPostInfoByPno" resultMap="postEntityMap">
-        select pno, board_no, type, title, contents, writer, reg_date, update_date
+    <select id="selectPostInfoByPno" resultType="com.perfect.community.api.vo.post.PostVO">
+        select post_no, board_no, type, title, contents, writer, reg_date, update_date
         from posts
-        where pno = #{pno};
+        where post_no = #{pno};
     </select>
 
-    <insert id="insertPost" parameterType="com.perfect.community.api.entity.post.PostEntity" useGeneratedKeys="true" keyProperty="pno">
+    <insert id="insertPost" parameterType="com.perfect.community.api.dto.post.PostDTO" useGeneratedKeys="true" keyProperty="postNo">
         insert into posts (board_no, type, title, contents, writer)
         values (#{boardNo}, UPPER(#{type}), #{title}, #{contents}, #{writer});
     </insert>
@@ -78,13 +78,13 @@
             title = #{title},
             contents = #{contents},
             update_date = NOW()
-        where pno = #{pno}
+        where post_no = #{pno}
     </update>
 
     <delete id="deletePost">
         delete
         from posts
-        where pno = #{pno}
+        where post_no = #{pno}
     </delete>
 
     <delete id="deletePostByBoardNo">
@@ -96,12 +96,12 @@
     <delete id="deleteAllPosts">
         delete
         from posts
-        where pno > 0
+        where post_no > 0
     </delete>
 
     <select id="isWriter" resultType="java.lang.Boolean">
         select if(count(*) = 1, 1, 0)
         from posts
-        where pno = #{pno} and writer like #{userId}
+        where post_no = #{pno} and writer like #{userId}
     </select>
 </mapper>

@@ -17,13 +17,13 @@
                 alter table posts
                 auto_increment = 1;
                 update posts
-                set pno = @COUNT := @COUNT + 1
-                where pno > 0;
+                set post_no = @COUNT := @COUNT + 1
+                where post_no > 0;
             </when>
         </choose>
         select Auto_increment
         from information_schema.tables
-        where TABLE_SCHEMA = 'board_db'
+        where TABLE_SCHEMA like 'perfect_community'
         and TABLE_NAME = #{tableName};
     </select>
 </mapper>

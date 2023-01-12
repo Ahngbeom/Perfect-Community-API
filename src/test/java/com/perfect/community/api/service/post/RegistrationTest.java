@@ -3,6 +3,7 @@ package com.perfect.community.api.service.post;
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostType;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.annotation.Rollback;
 
 public class RegistrationTest extends PostServiceTest {
     @Test
@@ -14,7 +15,7 @@ public class RegistrationTest extends PostServiceTest {
                 .contents("THIS POST FOR JUNIT TEST")
                 .build();
         postService.registration("admin", postDTO);
-        log.info(getInfoByPno(postDTO.getPno()));
+        log.info(getInfoByPno(postDTO.getPostNo()));
     }
 
     @Test
@@ -27,7 +28,7 @@ public class RegistrationTest extends PostServiceTest {
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
             postService.registration(null, postDTO);
-            log.info(getInfoByPno(postDTO.getPno()));
+            log.info(getInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -43,7 +44,7 @@ public class RegistrationTest extends PostServiceTest {
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
             postService.registration("admin", postDTO);
-            log.info(getInfoByPno(postDTO.getPno()));
+            log.info(getInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -59,7 +60,7 @@ public class RegistrationTest extends PostServiceTest {
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
             postService.registration("admin", postDTO);
-            log.info(getInfoByPno(postDTO.getPno()));
+            log.info(getInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -75,7 +76,7 @@ public class RegistrationTest extends PostServiceTest {
                     .contents("THIS POST FOR JUNIT TEST")
                     .build();
             postService.registration("admin", postDTO);
-            log.info(getInfoByPno(postDTO.getPno()));
+            log.info(getInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -91,7 +92,7 @@ public class RegistrationTest extends PostServiceTest {
                     .contents(null)
                     .build();
             postService.registration("admin", postDTO);
-            log.info(getInfoByPno(postDTO.getPno()));
+            log.info(getInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }

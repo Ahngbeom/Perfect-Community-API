@@ -26,10 +26,10 @@
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
         <property name="url"
-                  value="jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>
+                  value="jdbc:mariadb://localhost:3306/perfect_community?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>
         <!--                <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>-->
         <!--                <property name="url" value="jdbc:log4jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>-->
-        <property name="username" value="root"/>
+        <property name="username" value="ahngbeom"/>
         <property name="password" value="1234"/>
     </bean>
 

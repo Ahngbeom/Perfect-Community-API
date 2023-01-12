@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.perfect.community.api.mapper.board.BoardMapper">
 
-    <resultMap id="boardEntityMap" type="com.perfect.community.api.entity.board.BoardEntity">
+    <resultMap id="boardEntityMap" type="com.perfect.community.api.vo.board.BoardEntity">
         <id column="bno" property="bno"/>
         <result column="create_user" property="createUser" />
         <result column="title" property="title"/>

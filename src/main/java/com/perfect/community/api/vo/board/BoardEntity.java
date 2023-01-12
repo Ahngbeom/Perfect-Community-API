@@ -1,4 +1,4 @@
-package com.perfect.community.api.entity.board;
+package com.perfect.community.api.vo.board;
 
 import com.perfect.community.api.dto.board.BoardDTO;
 import lombok.*;

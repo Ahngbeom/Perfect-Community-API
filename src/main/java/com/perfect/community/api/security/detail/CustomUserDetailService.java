@@ -1,15 +1,13 @@
 package com.perfect.community.api.security.detail;
 
-import com.perfect.community.api.entity.user.UserEntity;
+import com.perfect.community.api.vo.user.UserEntity;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.cache.SpringCacheBasedUserCache;
 import org.springframework.stereotype.Service;
 
 @Service

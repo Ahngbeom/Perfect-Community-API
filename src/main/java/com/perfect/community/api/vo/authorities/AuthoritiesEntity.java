@@ -1,4 +1,4 @@
-package com.perfect.community.api.entity.authorities;
+package com.perfect.community.api.vo.authorities;
 
 import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
 import lombok.Builder;

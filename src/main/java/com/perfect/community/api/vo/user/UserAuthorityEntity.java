@@ -1,11 +1,9 @@
-package com.perfect.community.api.entity.user;
+package com.perfect.community.api.vo.user;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @ToString

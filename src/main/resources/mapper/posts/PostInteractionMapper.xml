@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.perfect.community.api.mapper.post.PostInteractionMapper">
-    <update id="increaseViews" parameterType="com.perfect.community.api.entity.post.PostEntity">
-        <selectKey keyProperty="views" resultType="java.lang.Long" order="AFTER">
+
+    <insert id="initializeViews">
+        insert into post_views(post_no) VALUES(#{post_no});
+    </insert>
+    <insert id="initializeRecommend">
+        insert into post_recommend(post_no) VALUES(#{post_no});
+    </insert>
+
+    <update id="increaseViews" parameterType="com.perfect.community.api.vo.post.PostViewsVO">
+        <selectKey keyProperty="views" resultType="long" order="AFTER">
             select views
-            from posts
-            where pno = #{pno}
+            from post_views
+            where post_no = #{post_no}
         </selectKey>
-        update posts set views = views + 1 where pno = #{pno}
+        update post_views set views = views + 1 where post_no = #{post_no}
+    </update>
+
+    <update id="recommendation" parameterType="com.perfect.community.api.vo.post.PostRecommendVO">
+        <selectKey keyProperty="recommend" resultType="long" order="AFTER">
+            select recommend
+            from post_recommend
+            where post_no = #{post_no}
+        </selectKey>
+        update post_recommend set recommend = recommend + 1 where post_no = #{post_no}
+    </update>
+    <update id="notRecommendation" parameterType="com.perfect.community.api.vo.post.PostRecommendVO">
+        <selectKey keyProperty="not_recommend" resultType="long" order="AFTER">
+            select not_recommend
+            from post_recommend
+            where post_no = #{post_no}
+        </selectKey>
+        update post_recommend set not_recommend = not_recommend + 1 where post_no = #{post_no}
     </update>
 </mapper>

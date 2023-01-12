@@ -3,7 +3,7 @@ package com.perfect.community.api.service.user;
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.entity.user.UserEntity;
+import com.perfect.community.api.vo.user.UserEntity;
 import com.perfect.community.api.mapper.user.UsersAuthoritiesMapper;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;

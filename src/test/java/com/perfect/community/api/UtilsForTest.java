@@ -1,7 +1,6 @@
 package com.perfect.community.api;
 
 import com.perfect.community.api.dto.post.PostDTO;
-import com.perfect.community.api.entity.post.PostEntity;
 import com.perfect.community.api.mapper.post.PostMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

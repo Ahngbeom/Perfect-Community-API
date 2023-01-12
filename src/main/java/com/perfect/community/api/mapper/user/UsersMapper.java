@@ -1,7 +1,7 @@
 package com.perfect.community.api.mapper.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.entity.user.UserEntity;
+import com.perfect.community.api.vo.user.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

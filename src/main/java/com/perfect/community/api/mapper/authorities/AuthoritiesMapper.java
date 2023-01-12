@@ -1,7 +1,7 @@
 package com.perfect.community.api.mapper.authorities;
 
 import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
-import com.perfect.community.api.entity.authorities.AuthoritiesEntity;
+import com.perfect.community.api.vo.authorities.AuthoritiesEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

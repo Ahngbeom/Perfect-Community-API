@@ -1,6 +1,6 @@
 package com.perfect.community.api.mapper.board.crud;
 
-import com.perfect.community.api.entity.board.BoardEntity;
+import com.perfect.community.api.vo.board.BoardEntity;
 import com.perfect.community.api.mapper.board.BoardMapperTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

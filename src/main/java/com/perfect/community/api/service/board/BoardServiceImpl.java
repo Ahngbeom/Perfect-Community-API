@@ -2,12 +2,10 @@ package com.perfect.community.api.service.board;
 
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.board.BoardDTO;
-import com.perfect.community.api.entity.board.BoardEntity;
+import com.perfect.community.api.vo.board.BoardEntity;
 import com.perfect.community.api.mapper.board.BoardMapper;
 import com.perfect.community.api.mapper.post.PostMapper;
-import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

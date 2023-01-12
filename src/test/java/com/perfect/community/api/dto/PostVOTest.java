@@ -11,7 +11,7 @@ import com.perfect.community.api.service.utils.DateUtility;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:web/WEB-INF/dispatcher-servlet.xml")
-class PostEntityTest {
+class PostVOTest {
 
     private static final Logger log = LogManager.getLogger();
 

@@ -60,7 +60,7 @@ public class PostController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(postDTO.getPno());
+        return ResponseEntity.ok(postDTO.getPostNo());
     }
 
     @PutMapping("/{postNo}")
@@ -71,7 +71,7 @@ public class PostController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(postDTO.getPno());
+        return ResponseEntity.ok(postDTO.getPostNo());
     }
 
     @DeleteMapping("/{postNo}")

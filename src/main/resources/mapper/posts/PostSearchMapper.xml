@@ -5,7 +5,7 @@
 <mapper namespace="com.perfect.community.api.mapper.post.PostSearchMapper">
 
     <select id="searchPostByKeyword" resultType="com.perfect.community.api.dto.post.PostDTO" parameterType="java.util.List">
-        select pno, title, contents, writer, reg_date, update_date
+        select post_no, title, contents, writer, reg_date, update_date
         from posts
         <where>
             <foreach collection="list" item="condition" index="index" separator=" AND " open="(" close=")">
@@ -55,7 +55,7 @@
     </select>
 
     <select id="searchPostByRegex" resultType="com.perfect.community.api.dto.post.PostDTO" parameterType="java.util.List">
-        select pno, title, contents, writer, reg_date, update_date
+        select post_no, title, contents, writer, reg_date, update_date
         from posts
         <where>
             <foreach collection="list" item="regexPattern" index="index" separator=" AND " open="(" close=")">

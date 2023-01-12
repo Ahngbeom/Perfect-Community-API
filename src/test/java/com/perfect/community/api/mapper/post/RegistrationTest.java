@@ -2,11 +2,12 @@ package com.perfect.community.api.mapper.post;
 
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostType;
-import com.perfect.community.api.entity.post.PostEntity;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.annotation.Rollback;
 
 public class RegistrationTest extends PostMapperTest {
     @Test
+    @Rollback(value = false)
     void registration() {
         PostDTO postDTO = PostDTO.builder()
                 .boardNo(1)
@@ -16,7 +17,7 @@ public class RegistrationTest extends PostMapperTest {
                 .contents("Post insert test in JUnit...")
                 .build();
         log.info(postsMapper.insertPost(postDTO));
-        log.info(selectPostInfoByPno(postDTO.getPno()));
+        log.info(selectPostInfoByPno(postDTO.getPostNo()));
     }
 
     @Test
@@ -29,7 +30,7 @@ public class RegistrationTest extends PostMapperTest {
                     .contents("Post insert test in JUnit...")
                     .build();
             log.info(postsMapper.insertPost(postDTO));
-            log.info(selectPostInfoByPno(postDTO.getPno()));
+            log.info(selectPostInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -46,7 +47,7 @@ public class RegistrationTest extends PostMapperTest {
                     .contents("Post insert test in JUnit...")
                     .build();
             log.info(postsMapper.insertPost(postDTO));
-            log.info(selectPostInfoByPno(postDTO.getPno()));
+            log.info(selectPostInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -63,7 +64,7 @@ public class RegistrationTest extends PostMapperTest {
                     .contents("Post insert test in JUnit...")
                     .build();
             log.info(postsMapper.insertPost(postDTO));
-            log.info(selectPostInfoByPno(postDTO.getPno()));
+            log.info(selectPostInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -81,7 +82,7 @@ public class RegistrationTest extends PostMapperTest {
                     .contents("Post insert test in JUnit...")
                     .build();
             log.info(postsMapper.insertPost(postDTO));
-            log.info(selectPostInfoByPno(postDTO.getPno()));
+            log.info(selectPostInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -98,7 +99,7 @@ public class RegistrationTest extends PostMapperTest {
                     .contents(null)
                     .build();
             log.info(postsMapper.insertPost(postDTO));
-            log.info(selectPostInfoByPno(postDTO.getPno()));
+            log.info(selectPostInfoByPno(postDTO.getPostNo()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }

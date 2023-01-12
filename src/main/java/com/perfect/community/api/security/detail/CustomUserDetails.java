@@ -1,13 +1,12 @@
 package com.perfect.community.api.security.detail;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.entity.user.UserEntity;
+import com.perfect.community.api.vo.user.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 @Getter
 public class CustomUserDetails extends User {

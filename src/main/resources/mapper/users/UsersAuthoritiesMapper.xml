@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.perfect.community.api.mapper.user.UsersAuthoritiesMapper">
-    <resultMap id="usersAuthoritiesMap" type="com.perfect.community.api.entity.user.UserAuthorityEntity">
+    <resultMap id="usersAuthoritiesMap" type="com.perfect.community.api.vo.user.UserAuthorityEntity">
         <result property="userId" column="user_id" />
         <result property="authority" column="authority" />
     </resultMap>
