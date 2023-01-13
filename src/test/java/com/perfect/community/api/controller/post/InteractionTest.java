@@ -16,7 +16,7 @@ public class InteractionTest extends ControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        setUp(controller);
+        setUpWithController(controller);
     }
 
     @Test

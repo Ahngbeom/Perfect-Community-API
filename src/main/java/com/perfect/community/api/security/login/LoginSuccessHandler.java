@@ -1,8 +1,10 @@
 package com.perfect.community.api.security.login;
 
+import com.perfect.community.api.mapper.user.LoginHistoryMapper;
 import com.perfect.community.api.utils.HttpServletCheck;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.perfect.community.api.vo.LoginHistoryVO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -14,11 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
+@RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private static final Logger log = LogManager.getLogger();
+    private final HttpServletCheck servletCheck = new HttpServletCheck();
 
-    private static final HttpServletCheck servletCheck = new HttpServletCheck();
+    private final LoginHistoryMapper loginHistoryMapper;
 
     /**
      * Called when a user has been successfully authenticated.
@@ -30,9 +34,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        //        servletCheck.headerPrint(request);
+//        servletCheck.headerPrint(request);
         String xRequestedWithValue = request.getHeader("x-requested-with");
         String contentType = request.getContentType();
+        saveLoginHistory(request, authentication);
         if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write(authentication.getName());
@@ -40,6 +45,19 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             redirectToReferer(request, response, authentication);
 //            redirectToSavedRequest(request, response, authentication);
         }
+    }
+
+    private void saveLoginHistory(HttpServletRequest request, Authentication authentication) {
+        String loggedInClientIp = request.getHeader("X-Forwarded-For");
+        if (loggedInClientIp == null)
+            loggedInClientIp = request.getRemoteAddr();
+        LoginHistoryVO loginHistoryVO = LoginHistoryVO.builder()
+                .user_id(authentication.getName())
+                .ip_address(loggedInClientIp)
+                .user_agent(request.getHeader("user-agent"))
+                .build();
+        log.info("Save to login history result = {}",
+                loginHistoryMapper.saveLoggedInLog(loginHistoryVO) == 1 ? "Success" : "Failure");
     }
 
     // Reference: https://hungseong.tistory.com/60

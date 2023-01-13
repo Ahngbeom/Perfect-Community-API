@@ -16,7 +16,7 @@ class UserControllerTest extends ControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        setUp(controller);
+        setUpWithController(controller);
     }
 
     public UserDTO getUserInfo(String userId) throws Exception {

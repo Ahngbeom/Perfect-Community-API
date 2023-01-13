@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.perfect.community.api.UtilsForTest;
 import com.perfect.community.api.service.utils.RelocateService;
-import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,7 +27,6 @@ import java.io.UnsupportedEncodingException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({
@@ -60,13 +57,26 @@ public class ControllerIntegrationTest {
     @Autowired
     protected RelocateService relocateService;
 
-    public void setUp(Object controller) {
+    public void setUpWithWebAppCtx() {
         mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
                 .apply(springSecurity(filterChainProxy))
                 .build();
 
         assertNotNull(log);
         assertNotNull(ctx);
+        assertNotNull(mockMvc);
+        assertNotNull(filterChainProxy);
+        assertNotNull(objectMapper);
+        assertNotNull(utilsForTest);
+        assertNotNull(relocateService);
+    }
+
+    public void setUpWithController(Object controller) {
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .apply(springSecurity(filterChainProxy))
+                .build();
+
+        assertNotNull(log);
         assertNotNull(mockMvc);
         assertNotNull(filterChainProxy);
         assertNotNull(objectMapper);

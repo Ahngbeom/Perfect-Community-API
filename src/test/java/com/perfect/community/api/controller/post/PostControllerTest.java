@@ -17,7 +17,7 @@ class PostControllerTest extends ControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        setUp(controller);
+        setUpWithController(controller);
     }
 
     @AfterTransaction

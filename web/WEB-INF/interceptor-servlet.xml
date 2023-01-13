@@ -10,12 +10,13 @@
 
         <!-- 로그인 검증 -->
         <mvc:interceptor>
-<!--            <mvc:mapping path="/login**"/>-->
             <mvc:mapping path="/api/authentication"/>
 
             <mvc:mapping path="/api/user/**"/>
             <mvc:mapping path="/api/board/**"/>
             <mvc:mapping path="/api/post/**"/>
+
+            <mvc:exclude-mapping path="/api/login"/>
 
             <bean id="loginVerifyAuthenticationInterceptor"
                   class="com.perfect.community.api.security.interceptor.LoginInterceptor"/>

@@ -10,7 +10,8 @@
     <bean id="accessDeniedHandler" class="com.perfect.community.api.security.CustomAccessDeniedHandler"/>
 
     <!--  Login Handler  -->
-    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.login.LoginSuccessHandler"/>
+    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.login.LoginSuccessHandler">
+    </bean>
     <bean id="loginFailureHandler" class="com.perfect.community.api.security.login.LoginFailureHandler"/>
 
     <!--  Logout Handler  -->

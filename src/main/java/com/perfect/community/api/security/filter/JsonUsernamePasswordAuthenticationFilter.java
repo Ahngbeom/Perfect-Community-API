@@ -26,7 +26,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
     public static final String SPRING_SECURITY_JSON_PASSWORD_KEY = "password";
 
-    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login",
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/api/login",
             "POST");
 
     private boolean postOnly = true;
