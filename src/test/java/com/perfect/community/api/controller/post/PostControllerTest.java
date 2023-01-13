@@ -26,7 +26,7 @@ class PostControllerTest extends ControllerIntegrationTest {
     }
 
     public PostDTO getPostInfo(long pno) throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post/info/" + pno))
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post/" + pno))
                 .andExpect(status().isOk())
                 .andReturn();
         if (mvcResult.getResponse().getContentAsString().isEmpty())

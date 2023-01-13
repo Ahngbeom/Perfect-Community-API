@@ -2,6 +2,7 @@ package com.perfect.community.api.service.post;
 
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.post.PostFilterDTO;
+import com.perfect.community.api.dto.post.PostViewsDTO;
 import com.perfect.community.api.mapper.post.PostInteractionMapper;
 import com.perfect.community.api.vo.post.PostVO;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,13 @@ public class PostServiceImpl implements PostService {
     public PostDTO getInfoByPno(long pno) {
         Preconditions.checkState(pno > 0, "Invalid post no.");
         PostVO postVO = postMapper.selectPostInfoByPno(pno);
-        return postVO != null ? postVO.toDTO() : null;
+        if (postVO == null)
+            return null;
+        PostDTO postDTO = postVO.toDTO();
+        postDTO.setViews(postInteractionMapper.getViews(pno));
+        postDTO.setRecommend(postInteractionMapper.getRecommend(pno));
+        postDTO.setNotRecommend(postInteractionMapper.getNotRecommend(pno));
+        return postDTO;
     }
 
     @Override

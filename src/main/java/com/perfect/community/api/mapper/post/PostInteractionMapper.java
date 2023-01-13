@@ -11,6 +11,11 @@ public interface PostInteractionMapper {
 
     int initializeViews(long postNo);
     int initializeRecommend(long postNo);
+
+    long getViews(long postNo);
+    long getRecommend(long postNo);
+    long getNotRecommend(long postNo);
+
     int increaseViews(PostViewsVO postViewsVO);
     int recommendation(PostRecommendVO postRecommendVO);
     int notRecommendation(PostRecommendVO postRecommendVO);
