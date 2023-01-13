@@ -5,6 +5,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface LoginHistoryMapper {
-
     int saveLoggedInLog(LoginHistoryVO loginHistoryVO);
 }
