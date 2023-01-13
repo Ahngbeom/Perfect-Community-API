@@ -14,7 +14,7 @@ public class InteractionTest extends PostMapperTest {
                 .post_no(1)
                 .build();
         if (postInteractionMapper.increaseViews(postViewsVO) == 1) {
-            log.info(postViewsVO.getViews());
+            log.info(postViewsVO);
         }
     }
 

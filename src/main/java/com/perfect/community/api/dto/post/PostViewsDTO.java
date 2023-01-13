@@ -4,8 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
+@ToString
 public class PostViewsDTO {
     private long postNo;
     private long views;

@@ -1,7 +1,5 @@
 package com.perfect.community.api.controller.post;
 
-import com.perfect.community.api.dto.post.PostRecommendDTO;
-import com.perfect.community.api.dto.post.PostViewsDTO;
 import com.perfect.community.api.service.post.PostInteractionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,28 +12,28 @@ public class PostInteractionController {
 
     private final PostInteractionService postInteractionService;
 
-    @PatchMapping("/views")
-    public ResponseEntity<?> increaseViews(@RequestBody PostViewsDTO postViewsDTO) {
+    @PatchMapping("/views/{postNo}")
+    public ResponseEntity<?> increaseViews(@PathVariable long postNo) {
         try {
-            return ResponseEntity.ok(postInteractionService.increaseViews(postViewsDTO.getPostNo()));
+            return ResponseEntity.ok(postInteractionService.increaseViews(postNo));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PatchMapping("/recommend")
-    public ResponseEntity<?> recommendation(@RequestBody PostRecommendDTO postRecommendDTO) {
+    @PatchMapping("/recommend/{postNo}")
+    public ResponseEntity<?> recommendation(@PathVariable long postNo) {
         try {
-            return ResponseEntity.ok(postInteractionService.increaseRecommend(postRecommendDTO.getPostNo()));
+            return ResponseEntity.ok(postInteractionService.increaseRecommend(postNo));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PatchMapping("/not-recommend")
-    public ResponseEntity<?> notRecommendation(@RequestBody PostRecommendDTO postRecommendDTO) {
+    @PatchMapping("/not-recommend/{postNo}")
+    public ResponseEntity<?> notRecommendation(@PathVariable long postNo) {
         try {
-            return ResponseEntity.ok(postInteractionService.increaseNotRecommend(postRecommendDTO.getPostNo()));
+            return ResponseEntity.ok(postInteractionService.increaseNotRecommend(postNo));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

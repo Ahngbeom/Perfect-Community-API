@@ -15,7 +15,7 @@ public class JDBCTest {
     void JDBCTester() {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true", "root", "1234");
+            Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/perfect_community?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true", "root", "1234");
             logger.info(conn);
         } catch (Exception e) {
             logger.error(e);

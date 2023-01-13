@@ -63,7 +63,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             } else if (requestURI.startsWith("/api/post")) {
                 if (HttpMethod.GET.matches(request.getMethod()))
                     return true;
-                else if (requestURI.endsWith("/views")) // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
+                else if (requestURI.startsWith("/api/post/views") && pathVariables.containsKey("postNo")) // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
                     return true;
             }
             throw new AccessDeniedException("Not logged in.");

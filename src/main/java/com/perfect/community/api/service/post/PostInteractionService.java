@@ -4,8 +4,10 @@ import com.perfect.community.api.mapper.post.PostInteractionMapper;
 import com.perfect.community.api.vo.post.PostRecommendVO;
 import com.perfect.community.api.vo.post.PostViewsVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostInteractionService {
