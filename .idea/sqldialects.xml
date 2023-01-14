@@ -2,8 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/db_ddl" dialect="MariaDB" />
-    <file url="file://$PROJECT_DIR$/db_ddl/authorities.sql" dialect="MariaDB" />
-    <file url="file://$PROJECT_DIR$/db_ddl/users.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/main/resources/mapper/posts/PostMapper.xml" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/main/resources/mapper/users/UsersMapper.xml" dialect="MariaDB" />
     <file url="PROJECT" dialect="MariaDB" />

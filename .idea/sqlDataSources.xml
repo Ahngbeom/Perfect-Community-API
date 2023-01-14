@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DdlMappings">
-    <mapping uuid="f22eaf11-9a29-4c4f-8b20-6d8a30c1a321" name="root@localhost (DDL) Mapping">
-      <data-sources db="7d45f7ee-d980-41c0-829d-e21cdeddfaa2" ddl="61fdeb85-6d55-4887-a129-d4dbb61e1e97" />
+    <mapping uuid="29855c9d-5796-44a0-ae3f-20bc1312a2b5" name="perfect_community@localhost Mapping">
+      <data-sources db="4d8aca23-2dc2-4714-a9f3-9112ad9a034a" ddl="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
       <scope>
-        <node kind="schema" qname="basicspringmvc" />
+        <node negative="1">
+          <node kind="database" qname="@" />
+          <node kind="schema" qname="perfect_community" />
+        </node>
       </scope>
     </mapping>
   </component>
@@ -14,7 +17,7 @@
         <State>
           <option name="id" value="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
           <option name="name" value="DDL data source" />
-          <option name="languageId" value="MariaDB" />
+          <option name="dbmsName" value="MARIADB" />
           <option name="urls">
             <array>
               <option value="file://$PROJECT_DIR$/db_ddl" />
