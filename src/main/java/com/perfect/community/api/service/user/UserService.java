@@ -28,8 +28,8 @@ public interface UserService {
 
     boolean verifyPassword(UserDTO userDTO);
 
-    boolean userIdAvailability(String userId);
+    boolean isValidUserId(String userId);
 
-    boolean nicknameAvailability(String nickname);
+    boolean isValidNickname(String nickname);
 
 }

@@ -6,15 +6,11 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -124,13 +120,13 @@ class UserServiceTest {
 
     @Test
     void userIdAvailability() {
-        log.warn(service.userIdAvailability("admin"));
-        log.warn(service.userIdAvailability("ahngbeom"));
+        log.warn(service.isValidUserId("admin"));
+        log.warn(service.isValidUserId("ahngbeom"));
     }
 
     @Test
     void nicknameAvailability() {
-        log.warn(service.nicknameAvailability("Administrator"));
-        log.warn(service.nicknameAvailability("AHNGBEOM"));
+        log.warn(service.isValidNickname("Administrator"));
+        log.warn(service.isValidNickname("AHNGBEOM"));
     }
 }

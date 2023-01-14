@@ -1,6 +1,7 @@
 package com.perfect.community.api.security.detail;
 
-import com.perfect.community.api.vo.user.UserEntity;
+import com.perfect.community.api.dto.user.UserDTO;
+import com.perfect.community.api.vo.user.UserVO;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -20,9 +21,9 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserEntity userEntity = mapper.selectUserWithAuthoritiesByUserId(userName);
-        if (userEntity == null)
+        UserDTO userDTO = mapper.selectUserWithAuthoritiesByUserId(userName);
+        if (userDTO == null)
             throw new UsernameNotFoundException(userName);
-        return new CustomUserDetails(userEntity);
+        return new CustomUserDetails(userDTO);
     }
 }

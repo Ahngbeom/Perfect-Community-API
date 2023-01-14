@@ -5,7 +5,7 @@
 <mapper namespace="com.perfect.community.api.mapper.post.PostMapper">
 
     <resultMap id="postDTOMap" type="com.perfect.community.api.dto.post.PostDTO">
-        <id property="postNo" column="pno"/>
+        <id property="postNo" column="post_no"/>
         <result property="boardNo" column="board_no"/>
         <result property="type" column="type"/>
         <result property="title" column="title"/>

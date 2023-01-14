@@ -1,27 +1,21 @@
 package com.perfect.community.api.mapper.user;
 
-import com.perfect.community.api.dto.user.UserDTO;
+import com.perfect.community.api.mapper.MapperTest;
+import com.perfect.community.api.vo.user.UserVO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
-@Transactional
-class UsersMapperTest {
+class UsersMapperTest extends MapperTest {
 
-    private static final Logger log = LogManager.getLogger();
+    protected static final Logger log = LogManager.getLogger();
 
     @Autowired
-    private UsersMapper mapper;
+    protected UsersMapper mapper;
 
     @BeforeEach
     void setUp() {
@@ -51,19 +45,19 @@ class UsersMapperTest {
 
     @Test
     void insertUser() {
-        log.warn(mapper.insertUser(UserDTO.builder().userId("junit_tester").password("junit").nickname("JUNIT_TESTER").build()));
+        log.warn(mapper.insertUser(UserVO.builder().user_id("junit_tester").password("junit").nickname("JUNIT_TESTER").build()));
         log.warn(mapper.selectUserByUserId("junit_tester"));
     }
 
     @Test
     void updateUser() {
-        log.warn(mapper.updateUser(UserDTO.builder().userId("admin").nickname("ADMIN").build()));
+        log.warn(mapper.updateUser(UserVO.builder().user_id("admin").nickname("ADMIN").build()));
         log.warn(mapper.selectUserByUserId("admin"));
     }
 
     @Test
     void updatePassword() {
-        log.warn(mapper.updatePassword(UserDTO.builder().userId("admin").password("1234").build()));
+        log.warn(mapper.updatePassword(UserVO.builder().user_id("admin").password("1234").build()));
         log.warn(mapper.selectUserByUserId("admin"));
     }
 

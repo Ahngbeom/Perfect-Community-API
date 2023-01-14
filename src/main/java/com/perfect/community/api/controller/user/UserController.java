@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.perfect.community.api.service.user.UserService;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -111,11 +110,11 @@ public class UserController {
 
     @GetMapping("/id-availability")
     public boolean userIdDuplicatesChecking(String userId) {
-        return userService.userIdAvailability(userId);
+        return userService.isValidUserId(userId);
     }
 
     @GetMapping("/nickname-availability")
     public boolean usernameDuplicatesChecking(String nickname) {
-        return userService.nicknameAvailability(nickname);
+        return userService.isValidNickname(nickname);
     }
 }

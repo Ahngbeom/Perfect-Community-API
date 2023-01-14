@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <object-set>
+    <schema path="perfect_community">
+      <view name="user_with_authority_virtual_view" query="select *&#xa;from users left join users_authorities ua on users.user_id = ua.user_id;"/>
+    </schema>
+  </object-set>
+</data>

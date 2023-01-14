@@ -3,7 +3,7 @@ package com.perfect.community.api.service.user;
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.vo.user.UserEntity;
+import com.perfect.community.api.vo.user.UserVO;
 import com.perfect.community.api.mapper.user.UsersAuthoritiesMapper;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,100 +30,56 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getUserList() {
-        return mapper.selectAllUsers().stream().map(userEntity ->
-                UserDTO.builder()
-                        .userId(userEntity.getUserId())
-                        .password(userEntity.getPassword())
-                        .nickname(userEntity.getNickname())
-                        .enabled(userEntity.isEnabled())
-                        .regDate(userEntity.getRegDate())
-                        .updateDate(userEntity.getUpdateDate())
-                        .authority(userEntity.getAuthority())
-                        .build()
-        ).collect(Collectors.toList());
+        return mapper.selectAllUsers();
     }
 
     @Override
     public List<UserDTO> getUserListWithAuthorities() {
-        return mapper.selectAllUsersWithAuthorities().stream().map(userEntity ->
-                UserDTO.builder()
-                        .userId(userEntity.getUserId())
-                        .password(userEntity.getPassword())
-                        .nickname(userEntity.getNickname())
-                        .enabled(userEntity.isEnabled())
-                        .regDate(userEntity.getRegDate())
-                        .updateDate(userEntity.getUpdateDate())
-                        .authority(userEntity.getAuthority())
-                        .build()
-        ).collect(Collectors.toList());
+        return mapper.selectAllUsersWithAuthorities();
     }
 
     @Override
     public UserDTO getUserInfoByUserId(String userId) {
-        UserEntity userEntity = mapper.selectUserByUserId(userId);
-        log.warn(userEntity);
-        return UserDTO.builder()
-                .userId(userEntity.getUserId())
-                .password(userEntity.getPassword())
-                .nickname(userEntity.getNickname())
-                .enabled(userEntity.isEnabled())
-                .regDate(userEntity.getRegDate())
-                .updateDate(userEntity.getUpdateDate())
-                .authority(userEntity.getAuthority())
-                .build();
+        return mapper.selectUserByUserId(userId);
     }
 
     @Override
     public UserDTO getUserInfoWithAuthoritiesByUserId(String userId) {
-        UserEntity userEntity = mapper.selectUserWithAuthoritiesByUserId(userId);
-        if (userEntity == null)
-            return null;
-        return UserDTO.builder()
-                .userId(userEntity.getUserId())
-                .password(userEntity.getPassword())
-                .nickname(userEntity.getNickname())
-                .enabled(userEntity.isEnabled())
-                .authority(userEntity.getAuthority())
-                .regDate(userEntity.getRegDate())
-                .updateDate(userEntity.getUpdateDate())
-                .build();
+        return mapper.selectUserWithAuthoritiesByUserId(userId);
     }
 
     @Override
-    public void createUser(UserDTO user) throws RuntimeException {
-        accountPolicyValidation(user);
-        if (!userIdAvailability(user.getUserId())) {
+    public void createUser(UserDTO userDTO) throws RuntimeException {
+        accountPolicyValidation(userDTO);
+        if (!isValidUserId(userDTO.getUserId())) {
             throw new DuplicateKeyException("User ID is duplicated.");
         }
-        if (!nicknameAvailability(user.getNickname())) {
+        if (!isValidNickname(userDTO.getNickname())) {
             throw new DuplicateKeyException("User nickname is duplicated.");
         }
-//        if (user.getAuthority() == null || user.getAuthority().size() == 0) {
-//            throw new RuntimeException("Cannot be request without authorities.");
-//        }
-        user.setPassword(encoder.encode(user.getPassword()));
-        if (mapper.insertUser(user) != 1) {
+        userDTO.setPassword(encoder.encode(userDTO.getPassword()));
+        if (mapper.insertUser(new UserVO(userDTO)) != 1) {
             throw new RuntimeException("Failed to create user.");
         }
-        if (usersAuthoritiesMapper.insertUserAuthorities(UserAuthoritiesDTO.builder().userId(user.getUserId()).authority(user.getAuthority()).build()) != 1) {
+        if (usersAuthoritiesMapper.insertUserAuthorities(UserAuthoritiesDTO.builder().userId(userDTO.getUserId()).authority(userDTO.getAuthority()).build()) != 1) {
             throw new RuntimeException("Failed to grant user authorities.");
         }
     }
 
     @Override
-    public void updateUserInfo(UserDTO user) {
-        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null.");
-        Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null.");
-        if (mapper.updateUser(user) != 1)
+    public void updateUserInfo(UserDTO userDTO) {
+        Preconditions.checkNotNull(userDTO.getUserId(), "User ID must be not null.");
+        Preconditions.checkNotNull(userDTO.getNickname(), "User nickname must be not null.");
+        if (mapper.updateUser(new UserVO(userDTO)) != 1)
             throw new RuntimeException("failed to update user info");
     }
 
     @Override
-    public void changeUserPassword(UserDTO user) {
-        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null.");
-        Preconditions.checkNotNull(user.getPassword(), "User PW must be not null.");
-        user.setPassword(encoder.encode(user.getPassword()));
-        if (mapper.updatePassword(user) != 1)
+    public void changeUserPassword(UserDTO userDTO) {
+        Preconditions.checkNotNull(userDTO.getUserId(), "User ID must be not null.");
+        Preconditions.checkNotNull(userDTO.getPassword(), "User PW must be not null.");
+        userDTO.setPassword(encoder.encode(userDTO.getPassword()));
+        if (mapper.updatePassword(new UserVO(userDTO)) != 1)
             throw new RuntimeException("failed to change user password");
     }
 
@@ -153,12 +109,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean userIdAvailability(String userId) {
+    public boolean isValidUserId(String userId) {
         return mapper.userIdAvailability(userId);
     }
 
     @Override
-    public boolean nicknameAvailability(String nickname) {
+    public boolean isValidNickname(String nickname) {
         return mapper.nicknameAvailability(nickname);
     }
 

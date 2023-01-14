@@ -1,7 +1,7 @@
 package com.perfect.community.api.mapper.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.vo.user.UserEntity;
+import com.perfect.community.api.vo.user.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -10,19 +10,19 @@ import java.util.List;
 @Repository
 @Mapper
 public interface UsersMapper {
-    UserEntity selectUserByUserId(String userId);
+    UserDTO selectUserByUserId(String userId);
 
-    UserEntity selectUserWithAuthoritiesByUserId(String userId);
+    UserDTO selectUserWithAuthoritiesByUserId(String userId);
 
-    List<UserEntity> selectAllUsers();
+    List<UserDTO> selectAllUsers();
 
-    List<UserEntity> selectAllUsersWithAuthorities();
+    List<UserDTO> selectAllUsersWithAuthorities();
 
-    int insertUser(UserDTO user);
+    int insertUser(UserVO user);
 
-    int updateUser(UserDTO user);
+    int updateUser(UserVO user);
 
-    int updatePassword(UserDTO user);
+    int updatePassword(UserVO user);
 
     int deleteUser(String userId);
 

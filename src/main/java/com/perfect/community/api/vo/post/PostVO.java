@@ -8,16 +8,17 @@ import java.util.Objects;
 
 @Getter
 @ToString
+@NoArgsConstructor
 public class PostVO {
 
-    private final long post_no;
-    private final long board_no;
-    private final String type;
-    private final String title;
-    private final String contents;
-    private final String writer;
-    private final LocalDateTime reg_date;
-    private final LocalDateTime update_date;
+    private long post_no;
+    private long board_no;
+    private String type;
+    private String title;
+    private String contents;
+    private String writer;
+    private LocalDateTime reg_date;
+    private LocalDateTime update_date;
 
     @Builder
     public PostVO(long post_no, long board_no, String type, String title, String contents, String writer, LocalDateTime reg_date, LocalDateTime update_date) {
