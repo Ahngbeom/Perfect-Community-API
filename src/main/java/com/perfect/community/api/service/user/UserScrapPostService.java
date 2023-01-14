@@ -1,7 +1,7 @@
 package com.perfect.community.api.service.user;
 
 import com.perfect.community.api.dto.post.PostDTO;
-import com.perfect.community.api.mapper.user.UserPostScrapMapper;
+import com.perfect.community.api.mapper.user.UserScrapPostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +9,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserPostScrapService {
+public class UserScrapPostService {
 
-    private final UserPostScrapMapper mapper;
+    private final UserScrapPostMapper mapper;
 
     public void scrapePost(String userId, long postNo) {
         if (mapper.insertScrapPost(userId, postNo) != 1)

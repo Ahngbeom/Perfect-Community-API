@@ -2,7 +2,9 @@ package com.perfect.community.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.perfect.community.api.UtilsForTest;
 import com.perfect.community.api.security.interceptor.AccessDeniedInterceptor;
+import com.perfect.community.api.service.utils.RelocateService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,11 +38,15 @@ public class ControllerUnitTest {
     protected MvcResult mvcResult;
     @Autowired
     private FilterChainProxy filterChainProxy;
-
     @Autowired
     private AccessDeniedInterceptor accessDeniedInterceptor;
 
     protected static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+    protected static final UtilsForTest utilsForTest = new UtilsForTest();
+
+    @Autowired
+    protected RelocateService relocateService;
 
     public void setUp(Object controller) {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
@@ -50,6 +56,20 @@ public class ControllerUnitTest {
 
         assertNotNull(log);
         assertNotNull(mockMvc);
+        assertNotNull(controller);
+    }
+
+    public void setUpWithController(Object controller) {
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .apply(springSecurity(filterChainProxy))
+                .build();
+
+        assertNotNull(log);
+        assertNotNull(mockMvc);
+        assertNotNull(filterChainProxy);
+        assertNotNull(objectMapper);
+        assertNotNull(utilsForTest);
+        assertNotNull(relocateService);
         assertNotNull(controller);
     }
 }

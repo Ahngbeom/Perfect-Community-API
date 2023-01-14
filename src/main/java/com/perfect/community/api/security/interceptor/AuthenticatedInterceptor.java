@@ -1,6 +1,5 @@
 package com.perfect.community.api.security.interceptor;
 
-import com.perfect.community.api.security.CustomAuthenticationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpMethod;
@@ -11,15 +10,13 @@ import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Map;
 
-public class LoginInterceptor implements HandlerInterceptor {
+public class AuthenticatedInterceptor implements HandlerInterceptor {
 
-    private static final Logger log = LogManager.getLogger(LoginInterceptor.class);
+    private static final Logger log = LogManager.getLogger(AuthenticatedInterceptor.class);
 
     /**
      * Interception point before the execution of a handler. Called after
@@ -43,34 +40,45 @@ public class LoginInterceptor implements HandlerInterceptor {
      * @throws Exception in case of errors
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException, AccountNotFoundException {
-//        log.warn(request.getRequestURI());
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        final String requestURI = request.getRequestURI();
+        final String requestMethod = request.getMethod();
+
+//        log.warn(requestURI);
 //        log.warn(request.getUserPrincipal());
 //        log.warn(SecurityContextHolder.getContext().getAuthentication());
-        final String requestURI = request.getRequestURI();
+
         @SuppressWarnings("unchecked")
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-            if (requestURI.startsWith("/api/user")) {
-                if (HttpMethod.POST.matches(request.getMethod()))
-                    return true;
-                else if (HttpMethod.GET.matches(request.getMethod()) && !pathVariables.containsKey("userId"))
-                    return true;
+            if (requestURI.startsWith("/api/user") && isPermitAllByUserAPI(requestURI, requestMethod)) {
+                return true;
             } else if (requestURI.startsWith("/api/board")) {
-                if (HttpMethod.GET.matches(request.getMethod()))
+                if (HttpMethod.GET.matches(requestMethod))
                     return true;
             } else if (requestURI.startsWith("/api/post")) {
-                if (HttpMethod.GET.matches(request.getMethod()))
+                if (HttpMethod.GET.matches(requestMethod))
                     return true;
                 else if (requestURI.startsWith("/api/post/views") && pathVariables.containsKey("postNo")) // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
                     return true;
             }
             throw new AccessDeniedException("Not logged in.");
-        }
-        else if (request.getRequestURI().equals("/login")) {
+        } else if (request.getRequestURI().equals("/login")) {
             throw new AccessDeniedException("You are already logged in. Please try again after logging out.");
         }
+
+        log.info(this.getClass().getSimpleName() + " [PASSED]");
+        return true;
+    }
+
+    private boolean isPermitAllByUserAPI(String requestURI, String requestMethod) {
+        if (HttpMethod.GET.matches(requestMethod)) {
+            if (requestURI.endsWith("/scraped-posts"))
+                return false;
+        } else if (HttpMethod.POST.matches(requestMethod))
+            return false;
         return true;
     }
 

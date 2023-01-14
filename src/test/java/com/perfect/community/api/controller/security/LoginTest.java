@@ -1,8 +1,6 @@
 package com.perfect.community.api.controller.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.perfect.community.api.controller.ControllerIntegrationTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.MediaType;
@@ -24,11 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @Rollback(value = false)
 public class LoginTest extends ControllerIntegrationTest {
-
-    @BeforeEach
-    void setUp() {
-        setUpWithWebAppCtx();
-    }
 
     @Test
     void login() throws Exception {

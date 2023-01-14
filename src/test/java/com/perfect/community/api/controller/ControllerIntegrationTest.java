@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,6 +37,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 })
 @WebAppConfiguration
 @Transactional
+@WithUserDetails("admin")
 public class ControllerIntegrationTest {
 
     protected static final Logger log = LogManager.getLogger(ControllerIntegrationTest.class);
@@ -69,20 +71,6 @@ public class ControllerIntegrationTest {
         assertNotNull(objectMapper);
         assertNotNull(utilsForTest);
         assertNotNull(relocateService);
-    }
-
-    public void setUpWithController(Object controller) {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .apply(springSecurity(filterChainProxy))
-                .build();
-
-        assertNotNull(log);
-        assertNotNull(mockMvc);
-        assertNotNull(filterChainProxy);
-        assertNotNull(objectMapper);
-        assertNotNull(utilsForTest);
-        assertNotNull(relocateService);
-        assertNotNull(controller);
     }
 
     @AfterEach

@@ -4,12 +4,10 @@ import com.perfect.community.api.service.ServiceTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class UserPostScrapServiceTest extends ServiceTest {
+class UserScrapPostServiceTest extends ServiceTest {
 
     @Autowired
-    private UserPostScrapService service;
+    private UserScrapPostService service;
 
     @Test
     void scrapePost() {

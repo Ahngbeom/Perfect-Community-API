@@ -18,8 +18,8 @@
 
             <mvc:exclude-mapping path="/api/login"/>
 
-            <bean id="loginVerifyAuthenticationInterceptor"
-                  class="com.perfect.community.api.security.interceptor.LoginInterceptor"/>
+            <bean id="AuthenticatedInterceptor"
+                  class="com.perfect.community.api.security.interceptor.AuthenticatedInterceptor"/>
         </mvc:interceptor>
 
         <!-- 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 -->

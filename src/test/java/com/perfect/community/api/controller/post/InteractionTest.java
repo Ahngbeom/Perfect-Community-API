@@ -1,7 +1,6 @@
 package com.perfect.community.api.controller.post;
 
 import com.perfect.community.api.controller.ControllerIntegrationTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -13,11 +12,6 @@ public class InteractionTest extends ControllerIntegrationTest {
 
     @Autowired
     protected PostInteractionController controller;
-
-    @BeforeEach
-    void setUp() {
-        setUpWithController(controller);
-    }
 
     @Test
     void increaseViews() throws Exception {

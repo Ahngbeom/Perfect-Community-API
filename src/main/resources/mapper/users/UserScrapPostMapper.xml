@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.perfect.community.api.mapper.user.UserPostScrapMapper">
+<mapper namespace="com.perfect.community.api.mapper.user.UserScrapPostMapper">
 
     <insert id="insertScrapPost">
         insert into user_post_scrap(user_id, post_no) VALUES (#{userId}, #{postNo})

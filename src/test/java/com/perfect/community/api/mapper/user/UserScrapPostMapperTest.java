@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 @Rollback(value = false)
-public class UserPostScrapMapperTest extends MapperTest {
+public class UserScrapPostMapperTest extends MapperTest {
 
     @Autowired
-    private UserPostScrapMapper mapper;
+    private UserScrapPostMapper mapper;
 
     @Test
     void scraping() {
