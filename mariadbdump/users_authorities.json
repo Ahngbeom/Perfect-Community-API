@@ -1,0 +1,14 @@
+[
+  {
+    "user_id": "aaaaa",
+    "authority": "ROLE_ADMIN"
+  },
+  {
+    "user_id": "admin",
+    "authority": "ROLE_ADMIN"
+  },
+  {
+    "user_id": "bbbbb",
+    "authority": "ROLE_MANAGER"
+  }
+]

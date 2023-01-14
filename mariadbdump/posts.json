@@ -1,0 +1,22 @@
+[
+  {
+    "post_no": 1,
+    "board_no": 1,
+    "type": "NORMAL",
+    "title": "JUNIT TEST",
+    "contents": "THIS POST FOR JUNIT TEST",
+    "writer": "admin",
+    "reg_date": "2023-01-12 21:32:39",
+    "update_date": "2023-01-12 21:32:39"
+  },
+  {
+    "post_no": 2,
+    "board_no": 1,
+    "type": "NORMAL",
+    "title": "JUNIT TEST",
+    "contents": "THIS POST FOR JUNIT TEST",
+    "writer": "admin",
+    "reg_date": "2023-01-14 18:00:34",
+    "update_date": "2023-01-14 18:00:34"
+  }
+]

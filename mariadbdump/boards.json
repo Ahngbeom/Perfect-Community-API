@@ -1,0 +1,26 @@
+[
+  {
+    "bno": 1,
+    "create_user": "admin",
+    "title": "MODIFY BOARD FROM POSTMAN",
+    "comment": "THIS MODIFIED BOARD FROM POSTMAN",
+    "create_date": "2022-12-30 16:10:31",
+    "update_date": "2023-01-12 00:11:33"
+  },
+  {
+    "bno": 2,
+    "create_user": "admin",
+    "title": "Second Board",
+    "comment": "Second board...",
+    "create_date": "2022-12-30 16:10:31",
+    "update_date": "2022-12-30 16:10:31"
+  },
+  {
+    "bno": 3,
+    "create_user": "admin",
+    "title": "Third Board",
+    "comment": "Third Board...",
+    "create_date": "2022-12-30 16:10:31",
+    "update_date": "2022-12-30 16:10:31"
+  }
+]
