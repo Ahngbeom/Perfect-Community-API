@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DdlMappings">
-    <mapping uuid="29855c9d-5796-44a0-ae3f-20bc1312a2b5" name="perfect_community@localhost Mapping">
+    <mapping uuid="8add066f-8fec-49a5-831b-3c425d8627ee" name="perfect_community@localhost Mapping">
       <data-sources db="c14774d5-a65d-462e-8c76-c8232b74f758" ddl="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
       <scope>
-        <node kind="database" negative="1">
-          <node kind="schema" negative="1" />
-        </node>
+        <node kind="schema" qname="perfect_community" />
       </scope>
     </mapping>
   </component>
@@ -16,7 +14,7 @@
         <State>
           <option name="id" value="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
           <option name="name" value="DDL data source" />
-          <option name="languageId" value="MariaDB" />
+          <option name="dbmsName" value="MARIADB" />
           <option name="urls">
             <array>
               <option value="file://$PROJECT_DIR$/db_ddl" />
