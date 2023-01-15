@@ -2,11 +2,14 @@ package com.perfect.community.api.security.filter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -29,8 +32,6 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/api/login",
             "POST");
 
-    private boolean postOnly = true;
-
     private final ObjectMapper objectMapper;
 
     /**
@@ -50,11 +51,15 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
-        if (this.postOnly && !request.getMethod().equals("POST")) {
-            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+        String authenticationTokenUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
+            throw new AuthenticationServiceException("Already authenticated - " + authenticationTokenUsername);
         }
-        if (!request.getContentType().equals("application/json")) {
-            throw new AuthenticationServiceException("Authentication content type not supported: " + request.getContentType());
+        if (!HttpMethod.POST.matches(request.getMethod())) {
+            throw new AuthenticationServiceException("Authentication method not supported - " + request.getMethod());
+        }
+        if (!request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
+            throw new AuthenticationServiceException("Authentication content type not supported - " + request.getContentType());
         }
 
         JsonNode requestJSON = objectMapper.readTree(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8));
@@ -68,7 +73,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
         setDetails(request, authRequest);
         Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
-        logger.info("Authentication: " + authentication);
+        logger.info("[Authentication Success]\n" + authentication);
         return authentication;
     }
 

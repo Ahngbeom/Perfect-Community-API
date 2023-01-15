@@ -45,9 +45,9 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 		final String requestURI = request.getRequestURI();
 		final String requestMethod = request.getMethod();
 
-//        log.warn(requestURI);
-//        log.warn(request.getUserPrincipal());
-//        log.warn(SecurityContextHolder.getContext().getAuthentication());
+        log.warn(requestURI);
+        log.warn(request.getUserPrincipal());
+        log.warn(SecurityContextHolder.getContext().getAuthentication());
 
 		@SuppressWarnings("unchecked")
 		Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
@@ -65,10 +65,7 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 					return true;
 			}
 			throw new AccessDeniedException("Not logged in.");
-		} else if (request.getRequestURI().equals("/login")) {
-			throw new AccessDeniedException("You are already logged in. Please try again after logging out.");
 		}
-
 		log.info(this.getClass().getSimpleName() + " [PASSED]");
 		return true;
 	}

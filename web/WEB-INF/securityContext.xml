@@ -69,9 +69,7 @@
 
         <security:csrf disabled="true"/>
 
-        <security:intercept-url method="GET" pattern="/login" access="isAnonymous()"/>
-        <security:intercept-url method="POST" pattern="/api/user" access="isAnonymous()"/>
-        <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
+<!--        <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>-->
 
         <security:access-denied-handler ref="accessDeniedHandler"/>
 

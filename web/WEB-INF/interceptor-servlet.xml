@@ -10,14 +10,7 @@
 
         <!-- 로그인 검증 -->
         <mvc:interceptor>
-            <mvc:mapping path="/api/authentication"/>
-
-            <mvc:mapping path="/api/user/**"/>
-            <mvc:mapping path="/api/board/**"/>
-            <mvc:mapping path="/api/post/**"/>
-
-            <mvc:exclude-mapping path="/api/login"/>
-
+            <mvc:mapping path="/api/**"/>
             <bean id="AuthenticatedInterceptor"
                   class="com.perfect.community.api.security.interceptor.AuthenticatedInterceptor"/>
         </mvc:interceptor>
