@@ -1,4 +1,4 @@
-package com.perfect.community.api.security.interceptor;
+package com.perfect.community.api.interceptor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

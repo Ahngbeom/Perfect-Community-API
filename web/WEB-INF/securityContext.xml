@@ -6,16 +6,15 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <!--  Authentication  -->
-    <bean id="authenticationEntryPoint" class="com.perfect.community.api.security.CustomAuthenticationEntryPoint"/>
-    <bean id="accessDeniedHandler" class="com.perfect.community.api.security.CustomAccessDeniedHandler"/>
+    <bean id="authenticationEntryPoint" class="com.perfect.community.api.security.authentication.CustomAuthenticationEntryPoint"/>
+    <bean id="accessDeniedHandler" class="com.perfect.community.api.security.authentication.CustomAccessDeniedHandler"/>
 
     <!--  Login Handler  -->
-    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.login.LoginSuccessHandler">
-    </bean>
-    <bean id="loginFailureHandler" class="com.perfect.community.api.security.login.LoginFailureHandler"/>
+    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.authentication.LoginSuccessHandler"/>
+    <bean id="loginFailureHandler" class="com.perfect.community.api.security.authentication.LoginFailureHandler"/>
 
     <!--  Logout Handler  -->
-    <bean id="logoutSuccessHandler" class="com.perfect.community.api.security.logout.CustomLogoutSuccessHandler"/>
+    <bean id="logoutSuccessHandler" class="com.perfect.community.api.security.authentication.CustomLogoutSuccessHandler"/>
 
     <!--  Customize UserDetailService  -->
     <bean id="customUserDetailService" class="com.perfect.community.api.security.detail.CustomUserDetailService"/>
@@ -26,11 +25,6 @@
     <!--  ObjectMapper for JSON  -->
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
-    <!--  Customize AuthenticationManager  -->
-<!--    <bean id="customAuthenticationManager"-->
-<!--          class="com.perfect.community.api.security.filter.CustomAuthenticationManager">-->
-<!--    </bean>-->
-
     <!--  Customize UsernamePasswordAuthenticationFilter for JSON  -->
     <bean id="jsonUsernamePasswordAuthenticationFilter"
           class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter">
@@ -40,51 +34,34 @@
         <constructor-arg name="authenticationFailureHandler" ref="loginFailureHandler"/>
     </bean>
 
-    <!--    <bean id="filterExceptionHandler" class="com.perfect.community.api.security.filter.FilterExceptionHandler" />-->
+    <security:authentication-manager id="authenticationManager">
+        <security:authentication-provider user-service-ref="customUserDetailService">
+            <security:password-encoder ref="bCryptPasswordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
 
 
-    <!--    <security:client-registrations>-->
-    <!--        <security:client-registration registration-id="google"-->
-    <!--                                      client-id="701605057235-h15lm743tsj3pmgl05pa53mtgpk3jb2l.apps.googleusercontent.com"-->
-    <!--                                      client-secret="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"-->
-    <!--                                      provider-id="google"-->
-    <!--                                      scope="profile,email"-->
-    <!--                                      client-name="client-registration"/>-->
-    <!--    </security:client-registrations>-->
-
-    <!--    <bean id="authorizedClientRepository" class="org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository">-->
-    <!--        <constructor-arg ref="authorizedClientService"/>-->
-    <!--    </bean>-->
-    <!--    <bean id="clientRegistrationRepository" class="org.springframework.security.oauth2.client.registration.ClientRegistrationRepository"></bean>-->
-    <!--    <bean id="authorizedClientService" class="org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService">-->
-    <!--        <constructor-arg ref="clientRegistrationRepository"/>-->
-    <!--    </bean>-->
-
-
-    <!--    <bean id="auth2AuthorizedClientManager" class="org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager">-->
-    <!--        <constructor-arg index="0" ref=""/>-->
-    <!--        <constructor-arg index="1" ref=""/>-->
-    <!--    </bean>-->
-    <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint" authentication-manager-ref="authenticationManager">
+    <!--
+        Reference: https://fenderist.tistory.com/342
+        create-session: Spring Security Session Policy
+            always: Spring Security가 항상 세션을 생성
+            ifRequired: Spring Security가 필요할 때만 세션 생성
+            never: Spring Security가 세션을 생성하지 않음. 단 기존에 존재했다면 사용
+            stateless: Spring Security가 세션을 생성 및 사용하지 않음. (JWT와 같은 토큰 방식을 사용할 때 설정)
+    -->
+    <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint" authentication-manager-ref="authenticationManager" create-session="stateless">
 
         <security:csrf disabled="true"/>
 
-<!--        <security:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>-->
-
         <security:access-denied-handler ref="accessDeniedHandler"/>
 
-        <!--                <security:form-login login-page="/login" login-processing-url="/login"-->
-        <!--                                     authentication-success-handler-ref="loginSuccessHandler"-->
-        <!--                                     authentication-failure-handler-ref="loginFailureHandler"/>-->
         <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
 
-
-        <security:session-management session-authentication-error-url="/error">
-            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
-        </security:session-management>
+<!--        <security:session-management session-authentication-error-url="/error">-->
+<!--            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />-->
+<!--        </security:session-management>-->
 
         <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
-        <!--        <security:logout logout-success-url="/" invalidate-session="true" delete-cookies="JSESSIONID,remember-me" />-->
 
         <security:remember-me key="PerfectCommunity-Spring-Security-Remember-Me-By-Ahngbeom"
                               token-validity-seconds="604800"
@@ -95,11 +72,5 @@
         <!--        <security:oauth2-login login-processing-url="/login/oauth2/code/google" />-->
 
     </security:http>
-
-    <security:authentication-manager id="authenticationManager">
-        <security:authentication-provider user-service-ref="customUserDetailService">
-            <security:password-encoder ref="bCryptPasswordEncoder"/>
-        </security:authentication-provider>
-    </security:authentication-manager>
 
 </beans>

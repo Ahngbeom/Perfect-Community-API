@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--    <security:client-registrations>-->
+    <!--        <security:client-registration registration-id="google"-->
+    <!--                                      client-id="701605057235-h15lm743tsj3pmgl05pa53mtgpk3jb2l.apps.googleusercontent.com"-->
+    <!--                                      client-secret="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"-->
+    <!--                                      provider-id="google"-->
+    <!--                                      scope="profile,email"-->
+    <!--                                      client-name="client-registration"/>-->
+    <!--    </security:client-registrations>-->
+
+    <!--    <bean id="authorizedClientRepository" class="org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository">-->
+    <!--        <constructor-arg ref="authorizedClientService"/>-->
+    <!--    </bean>-->
+    <!--    <bean id="clientRegistrationRepository" class="org.springframework.security.oauth2.client.registration.ClientRegistrationRepository"></bean>-->
+    <!--    <bean id="authorizedClientService" class="org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService">-->
+    <!--        <constructor-arg ref="clientRegistrationRepository"/>-->
+    <!--    </bean>-->
+
+
+    <!--    <bean id="auth2AuthorizedClientManager" class="org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager">-->
+    <!--        <constructor-arg index="0" ref=""/>-->
+    <!--        <constructor-arg index="1" ref=""/>-->
+    <!--    </bean>-->
+
+
+</beans>

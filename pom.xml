@@ -11,8 +11,10 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <org.springframework-version>5.3.22</org.springframework-version>
-        <org.spring-security-version>5.7.2</org.spring-security-version>
+        <org.springframework-version>5.3.25</org.springframework-version>
+        <org.springframework.security-version>5.7.5</org.springframework.security-version>
+        <io.jsonwebtoken.jjwt-version>0.11.5</io.jsonwebtoken.jjwt-version>
+        <com.fasterxml.jackson-version>2.14.0</com.fasterxml.jackson-version>
     </properties>
     <dependencies>
 
@@ -48,49 +50,71 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--  Dependencies for Spring Framework Security -->
+        <!--  Spring Security  -->
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${org.spring-security-version}</version>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${org.spring-security-version}</version>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${org.spring-security-version}</version>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>${org.spring-security-version}</version>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-client</artifactId>
-            <version>${org.spring-security-version}</version>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-jose -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-jose</artifactId>
-            <version>${org.spring-security-version}</version>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-test -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>${org.spring-security-version}</version>
+            <version>${org.springframework.security-version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!--    JWT on Spring Security    -->
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${io.jsonwebtoken.jjwt-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${io.jsonwebtoken.jjwt-version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${io.jsonwebtoken.jjwt-version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!--    Dependencies for Database    -->
@@ -138,13 +162,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.14.0</version>
+            <version>${com.fasterxml.jackson-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.14.0</version>
+            <version>${com.fasterxml.jackson-version}</version>
         </dependency>
 
         <!--    Dependencies for Test    -->
@@ -157,7 +181,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.0</version>
+            <version>5.9.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

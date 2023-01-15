@@ -1,10 +1,9 @@
-package com.perfect.community.api.security.interceptor;
+package com.perfect.community.api.interceptor;
 
 import com.perfect.community.api.service.board.BoardService;
 import com.perfect.community.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
@@ -13,10 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 public class AccessDeniedInterceptor implements HandlerInterceptor {
-
-    private static final Logger log = LogManager.getLogger(AccessDeniedInterceptor.class);
 
     private final BoardService boardService;
 

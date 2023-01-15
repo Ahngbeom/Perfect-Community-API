@@ -1,4 +1,4 @@
-package com.perfect.community.api.security.login;
+package com.perfect.community.api.security.authentication;
 
 import com.perfect.community.api.mapper.user.LoginHistoryMapper;
 import com.perfect.community.api.utils.HttpServletCheck;
@@ -33,7 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
      *                       the authentication process.
      */
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException{
 //        servletCheck.headerPrint(request);
         String xRequestedWithValue = request.getHeader("x-requested-with");
         String contentType = request.getContentType();
@@ -56,8 +56,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .ip_address(loggedInClientIp)
                 .user_agent(request.getHeader("user-agent"))
                 .build();
-        log.info("Save to login history result = {}",
-                loginHistoryMapper.saveLoggedInLog(loginHistoryVO) == 1 ? "Success" : "Failure");
+        log.info("Save authentication log = {}",
+                loginHistoryMapper.saveLoggedInLog(loginHistoryVO) == 1 ? "OK" : "Failed");
     }
 
     // Reference: https://hungseong.tistory.com/60

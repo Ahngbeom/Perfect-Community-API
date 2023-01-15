@@ -1,4 +1,4 @@
-package com.perfect.community.api.security;
+package com.perfect.community.api.security.authentication;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

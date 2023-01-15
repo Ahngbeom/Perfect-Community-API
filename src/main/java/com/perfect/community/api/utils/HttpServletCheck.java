@@ -1,6 +1,7 @@
 package com.perfect.community.api.utils;
 
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

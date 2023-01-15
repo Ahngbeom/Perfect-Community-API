@@ -37,6 +37,7 @@ public class LoginTest extends ControllerIntegrationTest {
                         .content(jsonData))
                 .andExpect(status().isOk())
                 .andReturn();
+
     }
 
     @Test
@@ -52,4 +53,5 @@ public class LoginTest extends ControllerIntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
+
 }

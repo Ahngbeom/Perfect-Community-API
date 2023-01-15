@@ -1,22 +1,20 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.security.interceptor.AccessDeniedInterceptor;
+import com.perfect.community.api.interceptor.AccessDeniedInterceptor;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.perfect.community.api.service.user.UserService;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-
-    private static final Logger log = LogManager.getLogger();
 
     private final UserService userService;
 

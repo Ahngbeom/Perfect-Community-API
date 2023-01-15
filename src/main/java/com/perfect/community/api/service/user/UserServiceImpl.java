@@ -1,7 +1,6 @@
 package com.perfect.community.api.service.user;
 
 import com.google.common.base.Preconditions;
-import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.vo.user.UserVO;
 import com.perfect.community.api.mapper.user.UsersAuthoritiesMapper;
@@ -12,12 +11,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private static final Logger log = LogManager.getLogger();
@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void createUser(UserDTO userDTO) throws RuntimeException {
         accountPolicyValidation(userDTO);
         if (!isValidUserId(userDTO.getUserId())) {
@@ -69,6 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUserInfo(UserDTO userDTO) {
         Preconditions.checkNotNull(userDTO.getUserId(), "User ID must be not null.");
         Preconditions.checkNotNull(userDTO.getNickname(), "User nickname must be not null.");
@@ -77,6 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void changeUserPassword(UserDTO userDTO) {
         Preconditions.checkNotNull(userDTO.getUserId(), "User ID must be not null.");
         Preconditions.checkNotNull(userDTO.getPassword(), "User PW must be not null.");
@@ -86,18 +89,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void removeUser(String userId) {
         if (mapper.deleteUser(userId) != 1)
             throw new RuntimeException("That user doesn't exist.");
     }
 
     @Override
+    @Transactional
     public void disableUser(String userId) {
         if (mapper.disableUser(userId) != 1)
             throw new RuntimeException("User deactivation failed.");
     }
 
     @Override
+    @Transactional
     public void enableUser(String userId) {
         if (mapper.enableMember(userId) != 1)
             throw new RuntimeException("User activation failed.");

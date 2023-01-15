@@ -12,7 +12,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/api/**"/>
             <bean id="AuthenticatedInterceptor"
-                  class="com.perfect.community.api.security.interceptor.AuthenticatedInterceptor"/>
+                  class="com.perfect.community.api.interceptor.AuthenticatedInterceptor"/>
         </mvc:interceptor>
 
         <!-- 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 -->
@@ -30,7 +30,7 @@
             <mvc:mapping path="/api/post/remove/*"/>
 
             <bean id="accessDeniedInterceptor"
-                  class="com.perfect.community.api.security.interceptor.AccessDeniedInterceptor"/>
+                  class="com.perfect.community.api.interceptor.AccessDeniedInterceptor"/>
         </mvc:interceptor>
 
         <!-- 관리자만이 접근할 수 있는 API 제한 -->
@@ -40,7 +40,7 @@
             <mvc:mapping path="/api/board/create"/>
 
             <bean id="onlyAdminAccessInterceptor"
-                  class="com.perfect.community.api.security.interceptor.OnlyAdminAccessInterceptor"/>
+                  class="com.perfect.community.api.interceptor.OnlyAdminAccessInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
