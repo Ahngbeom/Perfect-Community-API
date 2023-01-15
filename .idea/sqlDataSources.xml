@@ -5,7 +5,9 @@
       <data-sources db="4d8aca23-2dc2-4714-a9f3-9112ad9a034a" ddl="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
       <scope>
         <node negative="1">
-          <node kind="database" qname="@" />
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
+          </node>
           <node kind="schema" qname="perfect_community" />
         </node>
       </scope>
@@ -17,7 +19,7 @@
         <State>
           <option name="id" value="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
           <option name="name" value="DDL data source" />
-          <option name="dbmsName" value="MARIADB" />
+          <option name="languageId" value="MariaDB" />
           <option name="urls">
             <array>
               <option value="file://$PROJECT_DIR$/db_ddl" />
