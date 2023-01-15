@@ -2,13 +2,10 @@
 <project version="4">
   <component name="DdlMappings">
     <mapping uuid="29855c9d-5796-44a0-ae3f-20bc1312a2b5" name="perfect_community@localhost Mapping">
-      <data-sources db="4d8aca23-2dc2-4714-a9f3-9112ad9a034a" ddl="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
+      <data-sources db="c14774d5-a65d-462e-8c76-c8232b74f758" ddl="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
       <scope>
-        <node negative="1">
-          <node kind="database" qname="@">
-            <node kind="schema" qname="@" />
-          </node>
-          <node kind="schema" qname="perfect_community" />
+        <node kind="database" negative="1">
+          <node kind="schema" negative="1" />
         </node>
       </scope>
     </mapping>

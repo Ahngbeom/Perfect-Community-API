@@ -35,13 +35,8 @@ class UsersAuthoritiesMapperTest {
 
     @Test
     void insertUserAuthorities() {
-        log.warn(mapper.insertUserAuthorities(
-                UserAuthoritiesDTO.builder()
-                        .userId("admin")
-                        .authority("ROLE_MANAGER")
-                        .build()
-        ));
-        log.warn(mapper.selectAllUserAuthoritiesByUserId("admin"));
+        log.warn(mapper.insertUserAuthorities("ahngbeom", "ROLE_MANAGER"));
+        log.warn(mapper.selectAllUserAuthoritiesByUserId("ahngbeom"));
     }
 
     @Test

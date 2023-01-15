@@ -61,9 +61,11 @@ public class UserServiceImpl implements UserService {
         if (mapper.insertUser(new UserVO(userDTO)) != 1) {
             throw new RuntimeException("Failed to create user.");
         }
-        if (usersAuthoritiesMapper.insertUserAuthorities(UserAuthoritiesDTO.builder().userId(userDTO.getUserId()).authority(userDTO.getAuthority()).build()) != 1) {
+        log.info("Created user");
+        if (usersAuthoritiesMapper.insertUserAuthorities(userDTO.getUserId(), userDTO.getAuthority()) != 1) {
             throw new RuntimeException("Failed to grant user authorities.");
         }
+        log.info("Granted authority to created user");
     }
 
     @Override

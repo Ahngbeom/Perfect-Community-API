@@ -62,9 +62,9 @@
         order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, reg_date;
     </select>
 
-    <insert id="insertUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
+    <insert id="insertUser" parameterType="com.perfect.community.api.vo.user.UserVO">
         insert into users(user_id, password, nickname)
-        values (#{userId}, #{password}, #{nickname});
+        values (#{user_id}, #{password}, #{nickname});
     </insert>
 
     <update id="updatePassword">

@@ -3,17 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.perfect.community.api.mapper.user.UsersAuthoritiesMapper">
-    <resultMap id="usersAuthoritiesMap" type="com.perfect.community.api.vo.user.UserAuthorityEntity">
+    <resultMap id="usersAuthoritiesDTOMap" type="com.perfect.community.api.dto.user.UserAuthoritiesDTO">
         <result property="userId" column="user_id" />
         <result property="authority" column="authority" />
     </resultMap>
 
-    <select id="selectAllUserAuthorities" resultMap="usersAuthoritiesMap">
+    <select id="selectAllUserAuthorities" resultMap="usersAuthoritiesDTOMap">
         select user_id, authority
         from users_authorities;
     </select>
 
-    <select id="selectAllUserAuthoritiesByUserId" resultMap="usersAuthoritiesMap">
+    <select id="selectAllUserAuthoritiesByUserId" resultMap="usersAuthoritiesDTOMap">
         select user_id, authority
         from users_authorities
         where user_id like #{userId};

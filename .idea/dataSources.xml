@@ -8,14 +8,11 @@
       <jdbc-url>jdbc:redis://localhost:6379/0</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="perfect_community@localhost" uuid="4d8aca23-2dc2-4714-a9f3-9112ad9a034a">
+    <data-source source="LOCAL" name="perfect_community@localhost" uuid="c14774d5-a65d-462e-8c76-c8232b74f758">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306/perfect_community_db</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="EXTERNAL_DATA_PATH" value="G:\Spring2022\Perfect-Community-API\external-data.xml" />
-      </jdbc-additional-properties>
+      <jdbc-url>jdbc:mariadb://localhost:3306/perfect_community</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
