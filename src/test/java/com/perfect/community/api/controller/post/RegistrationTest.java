@@ -1,5 +1,6 @@
 package com.perfect.community.api.controller.post;
 
+import com.perfect.community.api.controller.ControllerIntegrationTest;
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostType;
 import org.junit.jupiter.api.Test;
@@ -10,10 +11,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class RegistrationTest extends PostControllerTest {
+public class RegistrationTest extends ControllerIntegrationTest {
+
     @Test
-    @WithUserDetails("admin")
-    void registration() throws Exception {
+    public void registration() throws Exception {
         PostDTO postDTO = PostDTO.builder()
                 .boardNo(1)
                 .type(PostType.NORMAL.name())
@@ -25,7 +26,6 @@ public class RegistrationTest extends PostControllerTest {
                         .content(objectMapper.valueToTree(postDTO).toString()))
                 .andExpect(status().isOk())
                 .andReturn();
-        log.info(getPostInfo(Long.parseLong(mvcResult.getResponse().getContentAsString())));
     }
 
     @Test

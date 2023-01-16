@@ -7,11 +7,11 @@
 
     <!--  Authentication  -->
     <bean id="authenticationEntryPoint" class="com.perfect.community.api.security.authentication.CustomAuthenticationEntryPoint"/>
-    <bean id="accessDeniedHandler" class="com.perfect.community.api.security.authentication.CustomAccessDeniedHandler"/>
+    <bean id="customAccessDeniedHandler" class="com.perfect.community.api.security.authentication.CustomAccessDeniedHandler"/>
 
     <!--  Login Handler  -->
-    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.authentication.LoginSuccessHandler"/>
-    <bean id="loginFailureHandler" class="com.perfect.community.api.security.authentication.LoginFailureHandler"/>
+    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.authentication.CustomAuthenticationSuccessHandler"/>
+    <bean id="loginFailureHandler" class="com.perfect.community.api.security.authentication.CustomAuthenticationFailureHandler"/>
 
     <!--  Logout Handler  -->
     <bean id="logoutSuccessHandler" class="com.perfect.community.api.security.authentication.CustomLogoutSuccessHandler"/>
@@ -28,10 +28,15 @@
     <!--  Customize UsernamePasswordAuthenticationFilter for JSON  -->
     <bean id="jsonUsernamePasswordAuthenticationFilter"
           class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter">
-<!--        <constructor-arg name="authenticationManager" ref="authenticationManager"/>-->
+        <constructor-arg name="jwtTokenProvider" ref="jwtTokenProvider"/>
         <constructor-arg name="objectMapper" ref="objectMapper"/>
         <constructor-arg name="authenticationSuccessHandler" ref="loginSuccessHandler"/>
         <constructor-arg name="authenticationFailureHandler" ref="loginFailureHandler"/>
+    </bean>
+
+<!--  JWT Authentication  -->
+    <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider"/>
+    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter">
     </bean>
 
     <security:authentication-manager id="authenticationManager">
@@ -40,22 +45,22 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-
     <!--
         Reference: https://fenderist.tistory.com/342
         create-session: Spring Security Session Policy
-            always: Spring Security가 항상 세션을 생성
-            ifRequired: Spring Security가 필요할 때만 세션 생성
-            never: Spring Security가 세션을 생성하지 않음. 단 기존에 존재했다면 사용
-            stateless: Spring Security가 세션을 생성 및 사용하지 않음. (JWT와 같은 토큰 방식을 사용할 때 설정)
+        - always: Spring Security가 항상 세션을 생성
+        - ifRequired: Spring Security가 필요할 때만 세션 생성
+        - never: Spring Security가 세션을 생성하지 않음. 단 기존에 존재했다면 사용
+        - stateless: Spring Security가 세션을 생성 및 사용하지 않음. (JWT와 같은 토큰 방식을 사용할 때 설정)
     -->
     <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint" authentication-manager-ref="authenticationManager" create-session="stateless">
 
         <security:csrf disabled="true"/>
 
-        <security:access-denied-handler ref="accessDeniedHandler"/>
+        <security:access-denied-handler ref="customAccessDeniedHandler"/>
 
-        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
+        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
+<!--        <security:custom-filter ref="jwtAuthenticationFilter" after="FORM_LOGIN_FILTER"/>-->
 
 <!--        <security:session-management session-authentication-error-url="/error">-->
 <!--            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />-->

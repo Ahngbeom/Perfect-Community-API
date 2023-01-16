@@ -1,7 +1,9 @@
 package com.perfect.community.api.interceptor;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.perfect.community.api.jwt.JwtAuthenticationFilter;
+import com.perfect.community.api.jwt.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -14,10 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+@Slf4j
+@RequiredArgsConstructor
 public class AuthenticatedInterceptor implements HandlerInterceptor {
 
-	private static final Logger log = LogManager.getLogger(AuthenticatedInterceptor.class);
-
+	private final JwtTokenProvider jwtTokenProvider;
 	/**
 	 * Interception point before the execution of a handler. Called after
 	 * HandlerMapping determined an appropriate handler object, but before
@@ -44,10 +47,12 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 
 		final String requestURI = request.getRequestURI();
 		final String requestMethod = request.getMethod();
+		final String authorizationHeaderValue = request.getHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER);
+		final String accessToken = authorizationHeaderValue != null ? authorizationHeaderValue.substring("Bearer ".length()) : null;
 
-        log.warn(requestURI);
-        log.warn(request.getUserPrincipal());
-        log.warn(SecurityContextHolder.getContext().getAuthentication());
+//        log.warn(requestURI);
+//        log.warn(request.getUserPrincipal());
+//        log.warn(SecurityContextHolder.getContext().getAuthentication());
 
 		@SuppressWarnings("unchecked")
 		Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
@@ -65,6 +70,8 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 					return true;
 			}
 			throw new AccessDeniedException("Not logged in.");
+		} else if (authorizationHeaderValue == null || !jwtTokenProvider.validateToken(accessToken)) {
+			throw new AccessDeniedException("Invalid JWT token");
 		}
 		log.info(this.getClass().getSimpleName() + " [PASSED]");
 		return true;
@@ -77,8 +84,10 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 		} else if (HttpMethod.POST.matches(requestMethod)) {
 			if (!requestURI.equals("/api/user"))
 				return false;
+			else if (requestURI.equals("/api/post"))
+				return false;
 		}
-		return true;
+ 		return true;
 	}
 
 }

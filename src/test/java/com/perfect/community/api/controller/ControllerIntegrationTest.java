@@ -94,6 +94,7 @@ public class ControllerIntegrationTest {
                 log.error("[" + status + "] ResponseBody: " + mvcResult.getResponse().getContentAsString()
                         + "\n [" + status + "] Servlet Error: " + mvcResult.getResponse().getErrorMessage());
             }
+            log.info("Header's Authorization = {}", mvcResult.getResponse().getHeader("Authorization"));
         }
     }
 

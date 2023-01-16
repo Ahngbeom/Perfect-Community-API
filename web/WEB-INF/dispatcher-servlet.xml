@@ -22,6 +22,9 @@
     <!--  MyBatis  -->
     <mybatis:scan base-package="com.perfect.community.api.mapper"/>
 
+    <!--  Properties  -->
+    <context:property-placeholder location="classpath:jwt.properties"/>
+
     <!--  Database - MariaDB  -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>

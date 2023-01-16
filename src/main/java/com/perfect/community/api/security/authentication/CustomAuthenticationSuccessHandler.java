@@ -1,28 +1,30 @@
 package com.perfect.community.api.security.authentication;
 
+import com.perfect.community.api.jwt.JwtAuthenticationFilter;
+import com.perfect.community.api.jwt.JwtTokenProvider;
 import com.perfect.community.api.mapper.user.LoginHistoryMapper;
 import com.perfect.community.api.utils.HttpServletCheck;
 import com.perfect.community.api.vo.LoginHistoryVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-
-    private final HttpServletCheck servletCheck = new HttpServletCheck();
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final LoginHistoryMapper loginHistoryMapper;
+
+    private final HttpServletCheck servletCheck = new HttpServletCheck();
 
     /**
      * Called when a user has been successfully authenticated.

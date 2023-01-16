@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="redis_perfect_community" uuid="f2b7b3ff-7769-4a17-8be6-4b729a2eea0a">
-      <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
-      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
-      <jdbc-url>jdbc:redis://localhost:6379/0</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="perfect_community@localhost" uuid="c14774d5-a65d-462e-8c76-c8232b74f758">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>

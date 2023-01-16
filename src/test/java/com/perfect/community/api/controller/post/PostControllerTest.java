@@ -3,16 +3,12 @@ package com.perfect.community.api.controller.post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.perfect.community.api.controller.ControllerIntegrationTest;
 import com.perfect.community.api.dto.post.PostDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostControllerTest extends ControllerIntegrationTest {
-
-    @Autowired
-    protected PostController controller;
 
     @AfterTransaction
     void relocateBoardNumbers() {
