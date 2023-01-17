@@ -15,13 +15,13 @@ public interface PostMapper {
 
     long countPosts(PostFilterDTO options);
 
-    List<PostVO> selectPostList(PostFilterDTO listOpt);
+    List<PostDTO> selectPostList(PostFilterDTO listOpt);
 
-    PostVO selectPostInfoByPno(long pno);
+    PostDTO selectPostInfoByPno(long pno);
 
-    int insertPost(PostDTO post);
+    int insertPost(PostVO postVO);
 
-    int updatePost(PostDTO post);
+    int updatePost(PostVO postVO);
 
     int deletePost(long pno);
 

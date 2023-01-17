@@ -40,7 +40,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 })
 @WebAppConfiguration
 @Transactional
-@WithUserDetails("admin")
+@WithUserDetails(value = "admin")
 public class ControllerIntegrationTest {
 
     protected static final Logger log = LogManager.getLogger(ControllerIntegrationTest.class);

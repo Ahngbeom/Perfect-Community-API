@@ -1,10 +1,8 @@
 package com.perfect.community.api.controller.post;
 
 import com.perfect.community.api.dto.post.PostFilterDTO;
-import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.perfect.community.api.dto.post.PostDTO;
@@ -13,17 +11,16 @@ import com.perfect.community.api.service.post.PostService;
 import javax.naming.AuthenticationException;
 import java.security.Principal;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
 public class PostController {
 
-    private static final Logger log = LogManager.getLogger();
     private final PostService postService;
-    private final UserService userService;
 
-    @GetMapping(value = {""})
-    public ResponseEntity<?> getPostList(@RequestBody PostFilterDTO postListOptions) {
+    @GetMapping
+    public ResponseEntity<?> getPostList(@RequestBody(required = false) PostFilterDTO postListOptions) {
         try {
             return ResponseEntity.ok(postService.getPostList(postListOptions));
         } catch (Exception e) {
@@ -52,26 +49,24 @@ public class PostController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO postDTO) {
         try {
-            postService.registration(principal.getName(), postDTO);
+            return ResponseEntity.ok(postService.registration(principal.getName(), postDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(postDTO.getPostNo());
     }
 
-    @PutMapping("/{postNo}")
-    public ResponseEntity<?> modification(Principal principal, @PathVariable long postNo, @RequestBody PostDTO postDTO) {
+    @PatchMapping("/{postNo}")
+    public ResponseEntity<?> modification(@PathVariable long postNo, @RequestBody PostDTO postDTO) {
         try {
-            postService.modification(postNo, principal.getName(), postDTO);
+            return ResponseEntity.ok(postService.modification(postNo, postDTO));
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(postDTO.getPostNo());
     }
 
     @DeleteMapping("/{postNo}")

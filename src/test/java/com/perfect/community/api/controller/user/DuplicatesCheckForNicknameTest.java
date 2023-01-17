@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("[Nickname Availability]")
 public class DuplicatesCheckForNicknameTest extends UserControllerTest {
     @Test
     @DisplayName("[Nickname Availability] - Duplicate")

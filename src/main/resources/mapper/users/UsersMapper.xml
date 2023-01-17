@@ -27,14 +27,14 @@
     <select id="selectUserByUserId" resultMap="userDtoMap">
         select user_id, password, nickname, enabled, reg_date, update_date
         from users
-        where users.user_id = #{userId};
+        where users.user_id = #{user_id};
     </select>
 
     <select id="selectUserWithAuthoritiesByUserId" resultMap="userWithAuthoritiesMap">
         select users.user_id, password, nickname, enabled, reg_date, update_date, authority
         from users
                  LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
-        where users.user_id = #{userId};
+        where users.user_id = #{user_id};
     </select>
 
     <select id="selectAllUsers" resultMap="userDtoMap">
@@ -71,38 +71,38 @@
         update users
         set password = #{password},
             update_date = now()
-        where user_id = #{userId};
+        where user_id = #{user_id};
     </update>
 
     <update id="updateUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
         update users
         set nickname = #{nickname},
             update_date = now()
-        where user_id = #{userId};
+        where user_id = #{user_id};
     </update>
 
     <delete id="deleteUser">
         delete
         from users
-        where user_id like #{userId};
+        where user_id like #{user_id};
     </delete>
 
     <update id="enableMember">
         update users
         set enabled = true
-        where user_id like #{userId};
+        where user_id like #{user_id};
     </update>
 
     <update id="disableUser">
         update users
         set enabled = false
-        where user_id like #{userId};
+        where user_id like #{user_id};
     </update>
 
     <select id="userIdAvailability" resultType="java.lang.Boolean">
         select if(count(user_id), 0, 1)
         from users
-        where user_id like #{userId};
+        where user_id like #{user_id};
     </select>
 
     <select id="nicknameAvailability" resultType="java.lang.Boolean">

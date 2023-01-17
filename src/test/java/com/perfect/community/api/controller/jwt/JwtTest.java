@@ -1,9 +1,9 @@
 package com.perfect.community.api.controller.jwt;
 
 import com.perfect.community.api.controller.ControllerIntegrationTest;
-import com.perfect.community.api.controller.post.RegistrationTest;
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -14,8 +14,10 @@ import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("[JWT TEST]")
 public class JwtTest extends ControllerIntegrationTest {
 
+    @DisplayName("[JWT TEST] - Login")
     void login() throws Exception {
         Map<String, String> usernamePassword = new HashMap<>();
         usernamePassword.put("username", "admin");
@@ -29,6 +31,7 @@ public class JwtTest extends ControllerIntegrationTest {
 
     }
 
+    @DisplayName("[JWT TEST] - Registration")
     void registration() throws Exception {
         PostDTO postDTO = PostDTO.builder()
                 .boardNo(1)
@@ -44,6 +47,7 @@ public class JwtTest extends ControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("[JWT TEST] - Register after logged in")
     @WithAnonymousUser
     void RegisterPostAfterLogin() throws Exception {
         login();

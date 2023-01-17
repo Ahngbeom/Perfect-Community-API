@@ -1,7 +1,7 @@
 package com.perfect.community.api;
 
-import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.mapper.post.PostMapper;
+import com.perfect.community.api.vo.post.PostVO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,16 +48,16 @@ public class UtilsForTest {
     }
 
     public void addDummyPosts(long boardNo, int amount) {
-        PostDTO postDTO;
+        PostVO postVO;
         while (amount-- > 0) {
-            postDTO = PostDTO.builder()
-                    .boardNo(boardNo)
+            postVO = PostVO.builder()
+                    .board_no(boardNo)
                     .type("normal")
                     .writer("admin")
                     .title(generateRandomTitle())
                     .contents(generateRandomContents())
                     .build();
-            postMapper.insertPost(postDTO);
+            postMapper.insertPost(postVO);
         }
     }
 

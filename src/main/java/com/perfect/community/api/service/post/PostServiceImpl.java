@@ -2,40 +2,36 @@ package com.perfect.community.api.service.post;
 
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.post.PostFilterDTO;
-import com.perfect.community.api.dto.post.PostViewsDTO;
 import com.perfect.community.api.mapper.post.PostInteractionMapper;
 import com.perfect.community.api.vo.post.PostVO;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.mapper.post.PostMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-    private static final Logger log = LogManager.getLogger(PostServiceImpl.class);
     private final PostMapper postMapper;
     private final PostInteractionMapper postInteractionMapper;
     private final PostUtils postUtils;
 
     @Override
     public List<PostDTO> getPostList(PostFilterDTO postListOptions) {
-        List<PostVO> postVoList = postMapper.selectPostList(postListOptions);
-        return postVoList.stream().map(PostVO::toDTO).collect(Collectors.toList());
+        return postMapper.selectPostList(postListOptions);
     }
 
     @Override
     public PostDTO getInfoByPno(long pno) {
         Preconditions.checkState(pno > 0, "Invalid post no.");
-        PostVO postVO = postMapper.selectPostInfoByPno(pno);
-        if (postVO == null)
+        PostDTO postDTO = postMapper.selectPostInfoByPno(pno);
+        if (postDTO == null)
             return null;
-        PostDTO postDTO = postVO.toDTO();
+//        PostDTO postDTO = postDTO.toDTO();
         postDTO.setViews(postInteractionMapper.getViews(pno));
         postDTO.setRecommend(postInteractionMapper.getRecommend(pno));
         postDTO.setNotRecommend(postInteractionMapper.getNotRecommend(pno));
@@ -43,35 +39,34 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void registration(String userId, PostDTO postDTO) throws RuntimeException {
-        Preconditions.checkNotNull(postDTO, "PostDTO must not be null.");
-        Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater than zero.");
-        Preconditions.checkState(postDTO.getType() != null && !postDTO.getType().isEmpty(), "[type] must not be null or empty.");
-        Preconditions.checkState(postDTO.getTitle() != null && !postDTO.getTitle().isEmpty(), "[title] must not be null or empty.");
-        Preconditions.checkState(postDTO.getContents() != null && !postDTO.getContents().isEmpty(), "[contents] must not be null or empty.");
+    public long registration(String userId, PostDTO postDTO) throws RuntimeException {
+        /*  PostDTO fields Validate */
+        validatePostDTO(postDTO);
         postDTO.setWriter(Preconditions.checkNotNull(userId, "[writer] must not be null."));
-        if (postMapper.insertPost(postDTO) != 1)
+
+        /* Register and initialize views, recommend, not recommend */
+        PostVO postVO = new PostVO(postDTO);
+        if (postMapper.insertPost(postVO) != 1)
             throw new RuntimeException("Failed to post registration.");
-        if (postInteractionMapper.initializeViews(postDTO.getPostNo()) != 1)
+        if (postInteractionMapper.initializeViews(postVO.getPost_no()) != 1)
             throw new RuntimeException("Failed to post views initialization.");
-        if (postInteractionMapper.initializeRecommend(postDTO.getPostNo()) != 1)
+        if (postInteractionMapper.initializeRecommend(postVO.getPost_no()) != 1)
             throw new RuntimeException("Failed to post recommend initialization.");
-//        log.info(postDTO);
+        return postVO.getPost_no();
     }
 
     @Override
-    public void modification(long postNo, String userId, PostDTO postDTO) {
-        Preconditions.checkState(postNo > 0, "Invalid post no. [pno] must be greater than zero.");
+    public long modification(long postNo, PostDTO postDTO) {
+        /*  PostDTO fields Validate */
         postDTO.setPostNo(postNo);
-        Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater than zero.");
-        Preconditions.checkState(postDTO.getType() != null, "[type] must not be null.");
-        Preconditions.checkState(postDTO.getTitle() != null, "[title] must not be null.");
-        Preconditions.checkState(postDTO.getContents() != null, "[contents] must not be null.");
-        Preconditions.checkState(userId != null, "[contents] must not be null.");
-        postDTO.setWriter(userId);
-        if (postMapper.updatePost(postDTO) != 1) {
+        validatePostDTO(postDTO);
+
+        /* Register and initialize views, recommend, not recommend */
+        PostVO postVO = new PostVO(postDTO);
+        if (postMapper.updatePost(postVO) != 1) {
             throw new RuntimeException("Failed to post modification.");
         }
+        return postVO.getPost_no();
     }
 
     @Override
@@ -90,6 +85,16 @@ public class PostServiceImpl implements PostService {
     @Override
     public long getPostCount(PostFilterDTO postFilterDTO) {
         return postMapper.countPosts(postFilterDTO);
+    }
+
+    public void validatePostDTO(PostDTO postDTO) {
+        Preconditions.checkNotNull(postDTO, "PostDTO must not be null.");
+//        Preconditions.checkState(postDTO.getPostNo() > 0, "Invalid post no. [pno] must be greater than zero.");
+        Preconditions.checkState(postDTO.getBoardNo() > 0, "Invalid board no. [boardNo] must be greater than zero.");
+//        Preconditions.checkNotNull(postDTO.getWriter(), "[writer] must not be null.");
+        Preconditions.checkNotNull(postDTO.getType(), "[type] must not be null.");
+        Preconditions.checkNotNull(postDTO.getTitle(), "[title] must not be null.");
+        Preconditions.checkNotNull(postDTO.getContents(), "[contents] must not be null.");
     }
 
 }

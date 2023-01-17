@@ -1,7 +1,6 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.controller.ControllerIntegrationTest;
-import com.perfect.community.api.dto.user.UserDTO;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -9,15 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class UserControllerTest extends ControllerIntegrationTest {
 
-    public UserDTO getUserInfo(String userId) throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/info")
-                        .param("userId", userId))
-//                .andDo(print())
-                .andExpect(status().isOk())
+    public String getUserInfo(String userId) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/" + userId))
                 .andReturn();
-        if (mvcResult.getResponse().getContentAsString().isEmpty())
-            return null;
-        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), UserDTO.class);
+        return mvcResult.getResponse().getContentAsString();
     }
 
     public boolean verifyPassword(String password) throws Exception {

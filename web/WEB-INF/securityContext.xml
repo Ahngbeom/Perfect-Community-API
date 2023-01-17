@@ -6,15 +6,20 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <!--  Authentication  -->
-    <bean id="authenticationEntryPoint" class="com.perfect.community.api.security.authentication.CustomAuthenticationEntryPoint"/>
-    <bean id="customAccessDeniedHandler" class="com.perfect.community.api.security.authentication.CustomAccessDeniedHandler"/>
+    <bean id="authenticationEntryPoint"
+          class="com.perfect.community.api.security.authentication.CustomAuthenticationEntryPoint"/>
+    <bean id="customAccessDeniedHandler"
+          class="com.perfect.community.api.security.authentication.CustomAccessDeniedHandler"/>
 
     <!--  Login Handler  -->
-    <bean id="loginSuccessHandler" class="com.perfect.community.api.security.authentication.CustomAuthenticationSuccessHandler"/>
-    <bean id="loginFailureHandler" class="com.perfect.community.api.security.authentication.CustomAuthenticationFailureHandler"/>
+    <bean id="loginSuccessHandler"
+          class="com.perfect.community.api.security.authentication.CustomAuthenticationSuccessHandler"/>
+    <bean id="loginFailureHandler"
+          class="com.perfect.community.api.security.authentication.CustomAuthenticationFailureHandler"/>
 
     <!--  Logout Handler  -->
-    <bean id="logoutSuccessHandler" class="com.perfect.community.api.security.authentication.CustomLogoutSuccessHandler"/>
+    <bean id="logoutSuccessHandler"
+          class="com.perfect.community.api.security.authentication.CustomLogoutSuccessHandler"/>
 
     <!--  Customize UserDetailService  -->
     <bean id="customUserDetailService" class="com.perfect.community.api.security.detail.CustomUserDetailService"/>
@@ -34,7 +39,7 @@
         <constructor-arg name="authenticationFailureHandler" ref="loginFailureHandler"/>
     </bean>
 
-<!--  JWT Authentication  -->
+    <!--  JWT Authentication  -->
     <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider"/>
     <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter">
     </bean>
@@ -53,18 +58,26 @@
         - never: Spring Security가 세션을 생성하지 않음. 단 기존에 존재했다면 사용
         - stateless: Spring Security가 세션을 생성 및 사용하지 않음. (JWT와 같은 토큰 방식을 사용할 때 설정)
     -->
-    <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint" authentication-manager-ref="authenticationManager" create-session="stateless">
+    <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint"
+                   authentication-manager-ref="authenticationManager" create-session="stateless">
 
         <security:csrf disabled="true"/>
 
         <security:access-denied-handler ref="customAccessDeniedHandler"/>
 
-        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
-<!--        <security:custom-filter ref="jwtAuthenticationFilter" after="FORM_LOGIN_FILTER"/>-->
+        <security:headers>
+            <!--     동일한 도메인의 모든 요청을 허용하는 X-Frame-Options       -->
+            <security:frame-options policy="SAMEORIGIN"/>
+            <!--     HTTP 엄격한 전송 보안(HSTS)       -->
+            <security:hsts disabled="true"/>
+        </security:headers>
 
-<!--        <security:session-management session-authentication-error-url="/error">-->
-<!--            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />-->
-<!--        </security:session-management>-->
+        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
+        <!--        <security:custom-filter ref="jwtAuthenticationFilter" after="FORM_LOGIN_FILTER"/>-->
+
+        <!--        <security:session-management session-authentication-error-url="/error">-->
+        <!--            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />-->
+        <!--        </security:session-management>-->
 
         <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
 

@@ -32,6 +32,17 @@ public class PostVO {
         this.update_date = update_date;
     }
 
+    public PostVO(PostDTO postDTO) {
+        this.post_no = postDTO.getPostNo();
+        this.board_no = postDTO.getBoardNo();
+        this.type = postDTO.getType();
+        this.title = postDTO.getTitle();
+        this.contents = postDTO.getContents();
+        this.writer = postDTO.getWriter();
+        this.reg_date = postDTO.getRegDate();
+        this.update_date = postDTO.getUpdateDate();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,16 +56,4 @@ public class PostVO {
         return Objects.hash(post_no, board_no, type, title, contents, writer, reg_date, update_date);
     }
 
-    public PostDTO toDTO() {
-        return PostDTO.builder()
-                .postNo(this.post_no)
-                .boardNo(this.board_no)
-                .writer(this.writer)
-                .type(this.type)
-                .title(this.title)
-                .contents(this.contents)
-                .regDate(this.reg_date)
-                .updateDate(this.update_date)
-                .build();
-    }
 }

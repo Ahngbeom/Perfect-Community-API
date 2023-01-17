@@ -3,23 +3,23 @@ package com.perfect.community.api.controller.board;
 import com.perfect.community.api.dto.board.BoardDTO;
 import com.perfect.community.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 
+
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/board")
 public class BoardController {
 
-    private final Logger log = LogManager.getLogger();
     private final BoardService service;
 
-    @GetMapping({""})
+    @GetMapping
     public ResponseEntity<List<BoardDTO>> getBoardList() {
         return ResponseEntity.ok(service.getBoardList());
     }
@@ -34,7 +34,7 @@ public class BoardController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> createBoard(Principal principal, @RequestBody BoardDTO boardDTO) {
         try {
             return ResponseEntity.ok(service.createBoard(principal.getName(), boardDTO));

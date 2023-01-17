@@ -30,8 +30,8 @@
             </otherwise>
         </choose>
         <where>
-            <if test="boardNo gt 0">
-                board_no = #{boardNo}
+            <if test="board_no gt 0">
+                board_no = #{board_no}
             </if>
             <if test="type != null">
                 and type like #{type}
@@ -40,7 +40,7 @@
 
     </select>
 
-    <select id="selectPostList" resultType="com.perfect.community.api.vo.post.PostVO">
+    <select id="selectPostList" resultMap="postDTOMap">
         select post_no, board_no, type, title, contents, writer, reg_date, update_date
         from posts
         <where>
@@ -60,25 +60,25 @@
         order by reg_date desc
     </select>
 
-    <select id="selectPostInfoByPno" resultType="com.perfect.community.api.vo.post.PostVO">
+    <select id="selectPostInfoByPno" resultMap="postDTOMap">
         select post_no, board_no, type, title, contents, writer, reg_date, update_date
         from posts
-        where post_no = #{pno};
+        where post_no = #{post_no};
     </select>
 
-    <insert id="insertPost" parameterType="com.perfect.community.api.dto.post.PostDTO" useGeneratedKeys="true" keyProperty="postNo">
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_no">
         insert into posts (board_no, type, title, contents, writer)
-        values (#{boardNo}, UPPER(#{type}), #{title}, #{contents}, #{writer});
+        values (#{board_no}, UPPER(#{type}), #{title}, #{contents}, #{writer});
     </insert>
 
     <update id="updatePost">
         update posts
-        set board_no = #{boardNo},
+        set board_no = #{board_no},
             type = UPPER(#{type}),
             title = #{title},
             contents = #{contents},
             update_date = NOW()
-        where post_no = #{pno}
+        where post_no = #{post_no}
     </update>
 
     <delete id="deletePost">
@@ -90,7 +90,7 @@
     <delete id="deletePostByBoardNo">
         delete
         from posts
-        where board_no = #{boardNo};
+        where board_no = #{board_no};
     </delete>
 
     <delete id="deleteAllPosts">

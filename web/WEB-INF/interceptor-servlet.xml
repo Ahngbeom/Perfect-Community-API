@@ -15,33 +15,20 @@
                   class="com.perfect.community.api.interceptor.AuthenticatedInterceptor"/>
         </mvc:interceptor>
 
-        <!-- 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 -->
-        <mvc:interceptor>
-            <mvc:mapping path="/api/user/update/*"/>
-            <mvc:mapping path="/api/user/withdraw/*"/>
-            <mvc:mapping path="/api/user/verify-password"/>
-            <mvc:mapping path="/api/user/enable/*"/>
-            <mvc:mapping path="/api/user/disable/*"/>
+<!--        &lt;!&ndash; 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 &ndash;&gt;-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/api/**"/>-->
+<!--            <bean id="accessDeniedInterceptor"-->
+<!--                  class="com.perfect.community.api.interceptor.AccessDeniedInterceptor"/>-->
+<!--        </mvc:interceptor>-->
 
-            <mvc:mapping path="/api/board/update/*"/>
-            <mvc:mapping path="/api/board/delete/*"/>
+<!--        &lt;!&ndash; 관리자만이 접근할 수 있는 API 제한 &ndash;&gt;-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/api/board/create"/>-->
 
-            <mvc:mapping path="/api/post/modify/*"/>
-            <mvc:mapping path="/api/post/remove/*"/>
-
-            <bean id="accessDeniedInterceptor"
-                  class="com.perfect.community.api.interceptor.AccessDeniedInterceptor"/>
-        </mvc:interceptor>
-
-        <!-- 관리자만이 접근할 수 있는 API 제한 -->
-        <mvc:interceptor>
-<!--            <mvc:mapping path="/api"/>-->
-<!--            <mvc:mapping path="/api/user"/>-->
-            <mvc:mapping path="/api/board/create"/>
-
-            <bean id="onlyAdminAccessInterceptor"
-                  class="com.perfect.community.api.interceptor.OnlyAdminAccessInterceptor"/>
-        </mvc:interceptor>
+<!--            <bean id="onlyAdminAccessInterceptor"-->
+<!--                  class="com.perfect.community.api.interceptor.OnlyAdminAccessInterceptor"/>-->
+<!--        </mvc:interceptor>-->
     </mvc:interceptors>
 
 </beans>

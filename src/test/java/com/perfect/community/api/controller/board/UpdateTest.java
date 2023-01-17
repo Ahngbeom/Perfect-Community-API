@@ -1,22 +1,22 @@
 package com.perfect.community.api.controller.board;
 
 import com.perfect.community.api.dto.board.BoardDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("[Board's Update]")
 class UpdateTest extends BoardControllerTest {
 
     String requestBody;
 
     @Test
+    @DisplayName("[Board's Update] - By created user")
     @WithUserDetails("admin")
     void updateBoard() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -25,7 +25,7 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())
@@ -34,6 +34,7 @@ class UpdateTest extends BoardControllerTest {
     }
 
     @Test
+    @DisplayName("[Board's Update] - Invalid board no")
     @WithUserDetails("admin")
     void updateBoardWithInvalidBoardNo() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -42,14 +43,15 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/100")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/100")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnauthorized())
                 .andReturn();
     }
 
     @Test
+    @DisplayName("[Board's Update] - With null title")
     @WithUserDetails("admin")
     void updateBoardWithNullTitle() {
         try {
@@ -59,7 +61,7 @@ class UpdateTest extends BoardControllerTest {
                             .comment("Updating a board for testing in JUNIT")
                             .build()
             ).toString();
-            mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+            mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))
                     .andExpect(status().isBadRequest())
@@ -70,7 +72,8 @@ class UpdateTest extends BoardControllerTest {
     }
 
     @Test
-    @WithUserDetails("tester1")
+    @DisplayName("[Board's Update] - Access denied by not admin user")
+    @WithUserDetails("tester")
     void updateBoardWithUnauthorizedUser() throws Exception {
         requestBody = objectMapper.valueToTree(
                 BoardDTO.builder()
@@ -78,7 +81,7 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isUnauthorized())
@@ -86,6 +89,7 @@ class UpdateTest extends BoardControllerTest {
     }
 
     @Test
+    @DisplayName("[Board's Update] - Access denied by anonymous")
     @WithAnonymousUser
     void updateBoardWithAnonymous() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -94,7 +98,7 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/update/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isUnauthorized())

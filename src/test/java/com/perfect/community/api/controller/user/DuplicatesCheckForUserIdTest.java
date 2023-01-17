@@ -7,9 +7,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("[ID Availability]")
 public class DuplicatesCheckForUserIdTest extends UserControllerTest {
     @Test
-    @DisplayName("[ID Availability] - Duplicate")
+    @DisplayName("[ID Availability] - Duplicated")
     void DuplicateUserID() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id-availability")
                         .param("userId", "admin"))

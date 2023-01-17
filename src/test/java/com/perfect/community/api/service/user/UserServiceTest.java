@@ -22,7 +22,7 @@ class UserServiceTest {
     private static final Logger log = LogManager.getLogger(UserServiceTest.class);
 
     @Autowired
-    private UserServiceImpl service;
+    private UserService service;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -111,11 +111,7 @@ class UserServiceTest {
 
     @Test
     void verifyPassword() {
-        UserDTO userDTO = UserDTO.builder()
-                .userId("admin")
-                .password("1234")
-                .build();
-        log.warn(service.verifyPassword(userDTO));
+        log.warn(service.verifyPassword("admin", "1234"));
     }
 
     @Test

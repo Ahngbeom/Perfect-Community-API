@@ -4,6 +4,7 @@ import com.perfect.community.api.service.board.BoardService;
 import com.perfect.community.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
@@ -22,7 +23,8 @@ public class AccessDeniedInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String requestURI = request.getRequestURI();
+        final String requestURI = request.getRequestURI();
+        final String requestMethod = request.getMethod();
         @SuppressWarnings("unchecked")
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
@@ -34,12 +36,17 @@ public class AccessDeniedInterceptor implements HandlerInterceptor {
                 }
             }
         } else if (requestURI.startsWith("/api/board")) {
-            if (pathVariables.containsKey("boardNo")) {
-                if (!boardService.isHeTheOwnerOfBoard(request.getUserPrincipal().getName(), Long.parseLong(pathVariables.get("boardNo")))
-                        && !request.isUserInRole("ROLE_ADMIN")) {
-                    throw new AccessDeniedException("Access denied.");
+            if (HttpMethod.GET.matches(requestMethod))
+                return true;
+            if (HttpMethod.POST.matches(requestMethod)) {
+                if (pathVariables.containsKey("boardNo")) {
+                    if (!boardService.isHeTheOwnerOfBoard(request.getUserPrincipal().getName(), Long.parseLong(pathVariables.get("boardNo")))
+                            && !request.isUserInRole("ROLE_ADMIN")) {
+                        throw new AccessDeniedException("Access denied.");
+                    }
                 }
             }
+
         } else if (requestURI.startsWith("/api/post")) {
             if (pathVariables.containsKey("postNo")) {
                 if (!postService.isWriter(Long.parseLong(pathVariables.get("postNo")), request.getUserPrincipal().getName())
@@ -48,6 +55,7 @@ public class AccessDeniedInterceptor implements HandlerInterceptor {
                 }
             }
         }
+        log.info(this.getClass().getSimpleName() + " [PASSED]");
         return true;
     }
 

@@ -1,6 +1,6 @@
 package com.perfect.community.api.mapper.post;
 
-import com.perfect.community.api.vo.post.PostVO;
+import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.mapper.utils.UtilsMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +45,7 @@ class PostMapperTest {
         log.info("auto_increment key: " + utilsMapper.initializeAutoIncrement("posts"));
     }
 
-    public PostVO selectPostInfoByPno(long pno) {
+    public PostDTO selectPostInfoByPno(long pno) {
         return postsMapper.selectPostInfoByPno(pno);
     }
 

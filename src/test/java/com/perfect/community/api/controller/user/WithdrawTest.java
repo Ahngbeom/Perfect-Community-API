@@ -1,68 +1,41 @@
 package com.perfect.community.api.controller.user;
 
-import com.perfect.community.api.dto.user.UserDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.security.auth.login.CredentialException;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("[Withdraw User]")
 public class WithdrawTest extends UserControllerTest {
 
-    String requestBody;
+    @Test
+    @DisplayName("[Withdraw User] - Myself")
+    @WithUserDetails("tester")
+    void withdraw() throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/tester"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+    }
 
     @Test
-    @DisplayName("[Withdraw User] - Not logged in")
-    void notLogin() throws Exception {
-//            if (!verifyPassword("1234"))
-//                throw new CredentialException("Passwords do not match.");
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/withdraw/tester1"))
+    @DisplayName("[Withdraw User] - By other user")
+    @WithUserDetails("tester")
+    void withdrawByOtherUser() throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/admin"))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
-        log.error(mvcResult.getResponse().getErrorMessage());
+    }
+    
+    @Test
+    @DisplayName("[Withdraw User] - By anonymous")
+    @WithAnonymousUser
+    void notLogin() throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/tester"))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
     }
 
-    @Test
-    @DisplayName("[Withdraw User] - Password do not match")
-    @WithUserDetails("tester1")
-    void incorrectPassword() {
-        try {
-            if (!verifyPassword("1234567890"))
-                throw new CredentialException("Passwords do not match.");
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/withdraw/tester1"))
-                    .andExpect(status().isOk())
-                    .andReturn();
-            String deletedUserId = mvcResult.getResponse().getContentAsString();
-            if (getUserInfo(deletedUserId) == null)
-                log.info("[" + deletedUserId + "] is doesn't exist.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-        }
-    }
-
-    @Test
-    @DisplayName("[Withdraw User] - Correct Request")
-    @WithUserDetails("tester1")
-    void correctPassword() {
-        try {
-            if (!verifyPassword("1234"))
-                throw new CredentialException("Passwords do not match.");
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/withdraw/tester1"))
-                    .andExpect(status().isOk())
-                    .andReturn();
-            String deletedUserId = mvcResult.getResponse().getContentAsString();
-            if (getUserInfo(deletedUserId) == null)
-                log.info("[" + deletedUserId + "] is doesn't exist.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-        }
-    }
 }

@@ -31,7 +31,7 @@ public class ModificationTest extends PostServiceTest {
                 .title("JUNIT MODIFICATION TEST")
                 .contents("JUST FOR MODIFICATION")
                 .build();
-        postService.modification(modifyPno, "admin", postDTO);
+        postService.modification(modifyPno, postDTO);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ModificationTest extends PostServiceTest {
                     .title("JUNIT MODIFICATION TEST")
                     .contents("JUST FOR MODIFICATION")
                     .build();
-            postService.modification(-1, "admin", postDTO);
+            postService.modification(-1, postDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class ModificationTest extends PostServiceTest {
                     .title("JUNIT MODIFICATION TEST")
                     .contents("JUST FOR MODIFICATION")
                     .build();
-            postService.modification(modifyPno, "admin", postDTO);
+            postService.modification(modifyPno, postDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,7 +72,7 @@ public class ModificationTest extends PostServiceTest {
                     .title("JUNIT MODIFICATION TEST")
                     .contents("JUST FOR MODIFICATION")
                     .build();
-            postService.modification(modifyPno, "admin", postDTO);
+            postService.modification(modifyPno, postDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,7 +87,7 @@ public class ModificationTest extends PostServiceTest {
                     .title(null)
                     .contents("JUST FOR MODIFICATION")
                     .build();
-            postService.modification(modifyPno, "admin", postDTO);
+            postService.modification(modifyPno, postDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class ModificationTest extends PostServiceTest {
                     .title("JUNIT MODIFICATION TEST")
                     .contents(null)
                     .build();
-            postService.modification(modifyPno, "admin", postDTO);
+            postService.modification(modifyPno, postDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,7 +117,7 @@ public class ModificationTest extends PostServiceTest {
                     .title("JUNIT MODIFICATION TEST")
                     .contents("JUST FOR MODIFICATION")
                     .build();
-            postService.modification(modifyPno, "adminnnnnnn", postDTO);
+            postService.modification(modifyPno, postDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }

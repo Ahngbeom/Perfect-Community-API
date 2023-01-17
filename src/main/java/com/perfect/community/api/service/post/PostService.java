@@ -11,9 +11,9 @@ public interface PostService {
 
     PostDTO getInfoByPno(long pno);
 
-    void registration(String userId, PostDTO postDTO);
+    long registration(String userId, PostDTO postDTO);
 
-    void modification(long postNo, String userId, PostDTO postDTO);
+    long modification(long postNo, PostDTO postDTO);
 
     void remove(String userId, long pno);
 

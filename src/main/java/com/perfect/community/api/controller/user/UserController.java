@@ -1,12 +1,11 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.interceptor.AccessDeniedInterceptor;
+import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.perfect.community.api.service.user.UserService;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<UserDTO>> list() {
         return ResponseEntity.ok(userService.getUserListWithAuthorities());
     }
@@ -33,6 +32,7 @@ public class UserController {
         }
     }
 
+    /* Sign-Up User */
     @PostMapping
     public ResponseEntity<String> signUpUser(@RequestBody UserDTO user) {
         try {
@@ -44,13 +44,7 @@ public class UserController {
         }
     }
 
-    /**
-     * userId를 '@PathVariable'로 분리한 이유
-     * UserDeniedAccessInterceptor에서 userId를 확인 하기 위해 '@RequestBody'에 접근할 경우,
-     * '@RequestBody' 데이터가 소멸되기 때문에 Controller에서는 제대로 처리를 하지 못하게 된다.
-     *
-     * @see AccessDeniedInterceptor
-     **/
+    /* Update User Info */
     @PutMapping("/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO) {
         try {
@@ -74,32 +68,32 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
-//    @PutMapping("/disable/{userId}")
-//    public ResponseEntity<?> disable(@PathVariable String userId) {
-//        try {
-//            userService.disableUser(userId);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//        return ResponseEntity.ok(userId);
-//    }
-//
-//    @PutMapping("/enable/{userId}")
-//    public ResponseEntity<?> enable(@PathVariable String userId) {
-//        try {
-//            userService.enableUser(userId);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//        return ResponseEntity.ok(userId);
-//    }
-
-    @PatchMapping("")
-    public ResponseEntity<Boolean> verifyPassword(@RequestBody UserDTO userDTO) {
+    @PatchMapping("/disable/{userId}")
+    public ResponseEntity<?> disable(@PathVariable String userId) {
         try {
-            return ResponseEntity.ok(userService.verifyPassword(userDTO));
+            userService.disableUser(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(userId);
+    }
+
+    @PatchMapping("/enable/{userId}")
+    public ResponseEntity<?> enable(@PathVariable String userId) {
+        try {
+            userService.enableUser(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(userId);
+    }
+
+    @GetMapping("/verify-password/{userId}")
+    public ResponseEntity<Boolean> verifyPassword(@PathVariable String userId, String password) {
+        try {
+            return ResponseEntity.ok(userService.verifyPassword(userId, password));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.ok(false);

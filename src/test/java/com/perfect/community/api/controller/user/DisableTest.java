@@ -2,55 +2,53 @@ package com.perfect.community.api.controller.user;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("[Disable User]")
 public class DisableTest extends UserControllerTest {
 
     @Test
     @DisplayName("[Disable User] - Not logged in")
-    void notLogin() {
-        try {
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/disable/admin"))
-                    .andReturn();
-            log.error(mvcResult.getResponse().getErrorMessage());
-            log.error(mvcResult.getResponse().getErrorMessage());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+    @WithAnonymousUser
+    void notLogin() throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/admin"))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+        log.info(getUserInfo("admin"));
     }
 
     @Test
     @DisplayName("[Disable User] - By Other User")
-    @WithUserDetails("tester1")
-    void byOtherUser() {
-        try {
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/disable/admin"))
-                    .andExpect(status().isUnauthorized())
-                    .andReturn();
-            log.error(mvcResult.getResponse().getErrorMessage());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+    @WithUserDetails("tester")
+    void byOtherUser() throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/admin"))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+        log.info(getUserInfo("admin"));
     }
 
     @Test
-    @DisplayName("[Disable User] - Correct Request")
+    @DisplayName("[Disable User] - Disable myself")
+    @WithUserDetails("admin")
+    void disableMyself() throws Exception {
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/admin"))
+                .andExpect(status().isOk())
+                .andReturn();
+        log.info(getUserInfo("admin"));
+    }
+
+    @Test
+    @DisplayName("[Disable User] - Disable user by Admin")
     @WithUserDetails("admin")
     void correctRequest() throws Exception {
-        try {
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/disable/tester1"))
-                    .andExpect(status().isOk())
-                    .andReturn();
-            String disabledUserId = mvcResult.getResponse().getContentAsString();
-            log.info(disabledUserId);
-            log.info(getUserInfo(disabledUserId));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/tester"))
+                .andExpect(status().isOk())
+                .andReturn();
+        log.info(getUserInfo("tester"));
     }
 
 }
