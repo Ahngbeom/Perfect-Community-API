@@ -1,5 +1,7 @@
 package com.perfect.community.api.jwt;
 
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,10 +68,15 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String jwt = resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        log.warn("JWT={}", jwt);
-        log.warn("JWT={}", ((HttpServletResponse)response).getHeader(AUTHORIZATION_HEADER));
+        log.warn("Access Token={}", jwt);
 
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+        if (StringUtils.hasText(jwt)) {
+            try {
+                tokenProvider.validateToken(jwt);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                throw new JwtException(e.getMessage());
+            }
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("Stored '{}' authentication information in SecurityContext.\nURI: {}", authentication.getName(), requestURI);

@@ -7,10 +7,12 @@ import com.perfect.community.api.security.detail.CustomUserDetailService;
 import com.perfect.community.api.service.board.BoardService;
 import com.perfect.community.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
@@ -31,8 +33,25 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
     private final BoardService boardService;
     private final PostService postService;
 
-//    @SuppressWarnings("unchecked")
-    private Map<String, String> pathVariables;
+    @ToString()
+    static class REQUEST_DATA {
+        String URI;
+        String METHOD;
+        Map<String, String> PATH_VARIABLES;
+        String ACCESS_TOKEN;
+        String USER_ID;
+        boolean IS_ADMIN;
+
+        public REQUEST_DATA(HttpServletRequest request, Map<String, String> pathVariables, String userId) {
+            this.URI = request.getRequestURI();
+            this.METHOD = request.getMethod();
+            this.PATH_VARIABLES = pathVariables;
+            this.ACCESS_TOKEN = request.getHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER);
+            this.ACCESS_TOKEN = this.ACCESS_TOKEN != null ? this.ACCESS_TOKEN.substring("Bearer ".length()) : null;
+            this.USER_ID = userId;
+            this.IS_ADMIN = request.isUserInRole("ROLE_ADMIN");
+        }
+    }
 
     /**
      * Interception point before the execution of a handler. Called after
@@ -57,92 +76,88 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("{}", authentication);
 
-        final String requestURI = request.getRequestURI();
-        final String requestMethod = request.getMethod();
-        final String authorizationHeaderValue = request.getHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER);
-        final String accessToken = authorizationHeaderValue != null ? authorizationHeaderValue.substring("Bearer ".length()) : null;
-
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.warn("Request URI = {}", requestURI);
-        log.warn("Request Method = {}", requestMethod);
-
-        pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-
-        log.warn("Path variables = {}", pathVariables);
+        @SuppressWarnings("unchecked")
+        Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        REQUEST_DATA requestData = new REQUEST_DATA(request, pathVariables, authentication.getName());
+        log.info("{}", requestData);
 
         if (authentication instanceof AnonymousAuthenticationToken) {
-            if (requestURI.startsWith("/api/user")) {
-                permitAllByUserAPI(requestURI, requestMethod);
-            } else if (requestURI.startsWith("/api/board")) {
-                if (!HttpMethod.GET.matches(requestMethod))
-                    throw new AccessDeniedException("User is not authenticated");
-            } else if (requestURI.startsWith("/api/post")) {
-                if (requestURI.startsWith("/api/post/views") && pathVariables.containsKey("postNo")) // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
-                    return true;
-                if (!HttpMethod.GET.matches(requestMethod))
-                    throw new AccessDeniedException("User is not authenticated");
-            }
-        } else {
-            log.warn("Request username = {}", authentication.getName());
+                if (requestData.URI.startsWith("/api/user")) {
+                    permitAllByUserAPI(requestData);
+                } else if (requestData.URI.startsWith("/api/board")) {
+                    if (!HttpMethod.GET.matches(requestData.METHOD))
+                        throw new AccessDeniedException("User is not authenticated");
+                } else if (requestData.URI.startsWith("/api/post")) {
+                    if (requestData.URI.startsWith("/api/post/views") && requestData.PATH_VARIABLES.containsKey("postNo")) // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
+                        return true;
+                    if (!HttpMethod.GET.matches(requestData.METHOD))
+                        throw new AccessDeniedException("User is not authenticated");
+                }
+            } else {
+                log.warn("Request username = {}", authentication.getName());
 
-            if (requestURI.startsWith("/api/user")) {
-                restrictedUserAPI(requestURI, requestMethod, authentication.getName(), request.isUserInRole("ROLE_ADMIN"));
-            } else if (!HttpMethod.GET.matches(requestMethod)) {
-                if (pathVariables.containsKey("postNo") && !postService.isWriter(Long.parseLong(pathVariables.get("postNo")), request.getUserPrincipal().getName()))
-                    throw new AccessDeniedException("Access denied");
-                if (requestURI.startsWith("/api/board")) {
-                    if (HttpMethod.POST.matches(requestMethod)) {
-                        if (!request.isUserInRole("ROLE_ADMIN"))
-                            throw new AccessDeniedException("Access denied");
-                    } else if (pathVariables.containsKey("boardNo") && !boardService.isHeTheOwnerOfBoard(request.getUserPrincipal().getName(), Long.parseLong(pathVariables.get("boardNo"))))
-                        throw new AccessDeniedException("Access denied");
-                } else if (pathVariables.containsKey("boardNo") && !boardService.isHeTheOwnerOfBoard(request.getUserPrincipal().getName(), Long.parseLong(pathVariables.get("boardNo"))))
-                    throw new AccessDeniedException("Access denied");
+                if (requestData.URI.startsWith("/api/user")) {
+                    restrictedUserAPI(requestData);
+                } else if (requestData.URI.startsWith("/api/post")) {
+                    if (requestData.PATH_VARIABLES.containsKey("postNo") &&
+                            !postService.isWriter(
+                                    Long.parseLong(requestData.PATH_VARIABLES.get("postNo")),
+                                    requestData.USER_ID))
+                        throw new AuthenticationServiceException("Access denied");
+                }
+//            } else if (!HttpMethod.GET.matches(requestData.METHOD)) {
+//                if (requestData.PATH_VARIABLES.containsKey("postNo") && !postService.isWriter(Long.parseLong(requestData.PATH_VARIABLES.get("postNo")), request.getUserPrincipal().getName()))
+//                    throw new AuthenticationServiceException("Access denied");
+//                if (requestData.URI.startsWith("/api/board")) {
+//                    if (HttpMethod.POST.matches(requestData.METHOD)) {
+//                        if (!request.isUserInRole("ROLE_ADMIN"))
+//                            throw new AuthenticationServiceException("Access denied");
+//                    } else if (requestData.PATH_VARIABLES.containsKey("boardNo") && !boardService.isHeTheOwnerOfBoard(request.getUserPrincipal().getName(), Long.parseLong(requestData.PATH_VARIABLES.get("boardNo"))))
+//                        throw new AuthenticationServiceException("Access denied");
+//                } else if (requestData.PATH_VARIABLES.containsKey("boardNo") && !boardService.isHeTheOwnerOfBoard(request.getUserPrincipal().getName(), Long.parseLong(requestData.PATH_VARIABLES.get("boardNo"))))
+//                    throw new AuthenticationServiceException("Access denied");
+//            }
             }
-        }
-//        else if (authorizationHeaderValue == null) {
-//            throw new AccessDeniedException("Not exist JWT token");
-//        } else if (!jwtTokenProvider.validateToken(accessToken)) {
-//            throw new AccessDeniedException("Invalid JWT token");
-//        }
         log.info(this.getClass().getSimpleName() + " [PASSED]");
         return true;
     }
 
-    private void permitAllByUserAPI(String requestURI, String requestMethod) {
-        if (HttpMethod.GET.matches(requestMethod)) {
-            if (!requestURI.equals("/api/user/scraped-posts"))
+    private void permitAllByUserAPI(REQUEST_DATA requestData) {
+        if (HttpMethod.GET.matches(requestData.METHOD)) {
+            if (!requestData.URI.equals("/api/user/scraped-posts"))
                 return;
-        } else if (HttpMethod.POST.matches(requestMethod)) {
-            if (!requestURI.startsWith("/api/user/scrap-post"))
+        } else if (HttpMethod.POST.matches(requestData.METHOD)) {
+            if (!requestData.URI.startsWith("/api/user/scrap-post"))
                 return;
         }
         throw new AccessDeniedException("User is not authenticated");
     }
 
-    private void restrictedUserAPI(String requestURI, String requestMethod, String requestUser, boolean isAdmin) {
-        if (HttpMethod.GET.matches(requestMethod)) {
-            if (requestURI.startsWith("/api/user"))
+    private void restrictedUserAPI(REQUEST_DATA requestData) {
+        if (HttpMethod.GET.matches(requestData.METHOD)) {
+            if (requestData.URI.startsWith("/api/user"))
                 return;
-        } else if (HttpMethod.POST.matches(requestMethod)) {
-            if (requestURI.startsWith("/api/user/scrap-post"))
+        } else if (HttpMethod.POST.matches(requestData.METHOD)) {
+            if (requestData.URI.startsWith("/api/user/scrap-post"))
                 return;
-        } else if (HttpMethod.PUT.matches(requestMethod)) {
-            if (pathVariables.containsKey("userId") && pathVariables.get("userId").equals(requestUser))
+        } else if (HttpMethod.PUT.matches(requestData.METHOD)) {
+            if (requestData.PATH_VARIABLES.containsKey("userId") && requestData.PATH_VARIABLES.get("userId").equals(requestData.USER_ID))
                 return;
-        } else if (HttpMethod.PATCH.matches(requestMethod)) {
-            if (requestURI.startsWith("/api/user/disable") || requestURI.startsWith("/api/user/enable")) {
-                if (isAdmin || (pathVariables.containsKey("userId") && pathVariables.get("userId").equals(requestUser)))
+        } else if (HttpMethod.PATCH.matches(requestData.METHOD)) {
+            if (requestData.URI.startsWith("/api/user/disable") || requestData.URI.startsWith("/api/user/enable")) {
+                if (requestData.IS_ADMIN || (requestData.PATH_VARIABLES.containsKey("userId") && requestData.PATH_VARIABLES.get("userId").equals(requestData.USER_ID)))
                     return;
             }
-        } else if (HttpMethod.DELETE.matches(requestMethod)) {
-            if (requestURI.startsWith("/api/user/release-scraped-post"))
+        } else if (HttpMethod.DELETE.matches(requestData.METHOD)) {
+            if (requestData.URI.startsWith("/api/user/release-scraped-post"))
                 return;
-            else if (pathVariables.containsKey("userId") && pathVariables.get("userId").equals(requestUser))
+            else if (requestData.PATH_VARIABLES.containsKey("userId") && requestData.PATH_VARIABLES.get("userId").equals(requestData.USER_ID))
                 return;
         }
-        throw new AccessDeniedException("Access denied");
+        throw new AuthenticationServiceException("Access denied");
     }
 
 }

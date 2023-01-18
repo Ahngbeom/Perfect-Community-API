@@ -44,11 +44,6 @@ public class ServerInfoController {
         return ResponseEntity.ok(pageInfo);
     }
 
-    @GetMapping("/authentication")
-    public ResponseEntity<UserDetails> myAuthentication(Principal principal) {
-        return ResponseEntity.ok(userDetailService.loadUserByUsername(principal.getName()));
-    }
-
     public static Map<String, String> putRequestData(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, String> info = new LinkedHashMap<>();
         info.put("server_name", request.getServerName());

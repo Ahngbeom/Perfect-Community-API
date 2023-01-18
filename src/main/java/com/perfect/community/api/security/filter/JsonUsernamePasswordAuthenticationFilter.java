@@ -26,6 +26,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -63,9 +64,16 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         // 이미 인증된 유저의 로그인 시도 차단      
-        String authenticationTokenUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
-            throw new AuthenticationServiceException("Already authenticated - " + authenticationTokenUsername);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            throw new AuthenticationServiceException("Already authenticated - " + authentication.getName());
+        }
+        // 이미 Bearer 토큰을 가지고 있는 유저의 로그인 시도 차단
+        if (request.getHeader("Authorization") != null) {
+            throw new AuthenticationServiceException("Already have a bearer token - " + request.getHeader("Authorization"));
+//            if (!jwtTokenProvider.validateToken(request.getHeader("Authorization").substring("Bearer ".length()))) {
+//
+//            }
         }
         // POST 이외의 다른 HTTP 요청 메소드 거부
         if (!HttpMethod.POST.matches(request.getMethod())) {
@@ -86,13 +94,8 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         setDetails(request, authenticationToken);
-        Authentication authentication = this.getAuthenticationManager().authenticate(authenticationToken);
+        authentication = this.getAuthenticationManager().authenticate(authenticationToken);
         logger.info("[Authentication Success]\n" + authentication);
-
-        String jwt = jwtTokenProvider.createToken(authentication);
-
-        response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        logger.info("[Set bearer token to Authorization Header]\n" + response.getHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER));
 
         return authentication;
     }

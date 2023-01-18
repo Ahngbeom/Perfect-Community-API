@@ -1,5 +1,7 @@
 package com.perfect.community.api.security.authentication;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.perfect.community.api.dto.jwt.JwtTokenDTO;
 import com.perfect.community.api.jwt.JwtAuthenticationFilter;
 import com.perfect.community.api.jwt.JwtTokenProvider;
 import com.perfect.community.api.mapper.user.LoginHistoryMapper;
@@ -7,13 +9,13 @@ import com.perfect.community.api.utils.HttpServletCheck;
 import com.perfect.community.api.vo.LoginHistoryVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,9 +24,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final LoginHistoryMapper loginHistoryMapper;
-
     private final HttpServletCheck servletCheck = new HttpServletCheck();
+    private final JwtTokenProvider jwtTokenProvider;
+    private final LoginHistoryMapper loginHistoryMapper;
+    private final ObjectMapper objectMapper;
 
     /**
      * Called when a user has been successfully authenticated.
@@ -42,7 +45,21 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         saveLoginHistory(request, authentication);
         if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(authentication.getName());
+            response.setContentType("application/json");
+
+            String accessToken = jwtTokenProvider.createAccessToken(authentication);
+            String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
+
+            response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+            Cookie cookieForRefreshToken = new Cookie("refresh-token", refreshToken);
+            cookieForRefreshToken.setPath("/");
+            cookieForRefreshToken.setHttpOnly(true); // not accessible from JavaScript
+            response.addCookie(cookieForRefreshToken);
+//            log.info("[Set bearer token to Authorization Header]\n" + response.getHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER));
+
+            response.getWriter().write(
+                    objectMapper.writeValueAsString(
+                            new JwtTokenDTO(authentication.getName(), accessToken, refreshToken)));
         } else {
             redirectToReferer(request, response, authentication);
 //            redirectToSavedRequest(request, response, authentication);

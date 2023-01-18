@@ -41,7 +41,18 @@
 
     <!--  JWT Authentication  -->
     <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider"/>
+    <bean id="jwtExceptionFilter" class="com.perfect.community.api.jwt.JwtExceptionFilter"/>
     <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter">
+    </bean>
+
+    <bean id="jwtFilterOrder" class="org.springframework.web.filter.CompositeFilter">
+        <property name="filters">
+            <list>
+                <ref bean="jwtExceptionFilter"/>
+                <ref bean="jwtAuthenticationFilter"/>
+                <ref bean="jsonUsernamePasswordAuthenticationFilter"/>
+            </list>
+        </property>
     </bean>
 
     <security:authentication-manager id="authenticationManager">
@@ -50,14 +61,6 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <!--
-        Reference: https://fenderist.tistory.com/342
-        create-session: Spring Security Session Policy
-        - always: Spring Security가 항상 세션을 생성
-        - ifRequired: Spring Security가 필요할 때만 세션 생성
-        - never: Spring Security가 세션을 생성하지 않음. 단 기존에 존재했다면 사용
-        - stateless: Spring Security가 세션을 생성 및 사용하지 않음. (JWT와 같은 토큰 방식을 사용할 때 설정)
-    -->
     <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint"
                    authentication-manager-ref="authenticationManager" create-session="stateless">
 
@@ -65,15 +68,15 @@
 
         <security:access-denied-handler ref="customAccessDeniedHandler"/>
 
-        <security:headers>
-            <!--     동일한 도메인의 모든 요청을 허용하는 X-Frame-Options       -->
-            <security:frame-options policy="SAMEORIGIN"/>
-            <!--     HTTP 엄격한 전송 보안(HSTS)       -->
-            <security:hsts disabled="true"/>
-        </security:headers>
+        <!--        <security:headers>-->
+        <!--            &lt;!&ndash;     동일한 도메인의 모든 요청을 허용하는 X-Frame-Options       &ndash;&gt;-->
+        <!--            <security:frame-options policy="SAMEORIGIN"/>-->
+        <!--            &lt;!&ndash;     HTTP 엄격한 전송 보안(HSTS)       &ndash;&gt;-->
+        <!--            <security:hsts disabled="true"/>-->
+        <!--        </security:headers>-->
 
-        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
-        <!--        <security:custom-filter ref="jwtAuthenticationFilter" after="FORM_LOGIN_FILTER"/>-->
+<!--        <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>-->
+        <security:custom-filter ref="jwtFilterOrder" before="FORM_LOGIN_FILTER"/>
 
         <!--        <security:session-management session-authentication-error-url="/error">-->
         <!--            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />-->

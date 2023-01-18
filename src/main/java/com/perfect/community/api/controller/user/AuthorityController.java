@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthorityController {
     private static final Logger log = LogManager.getLogger();
 
     //    private final CustomUserDetailService userDetailsService;
