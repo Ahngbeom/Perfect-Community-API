@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class UserDTO {
 
     private String userId;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String nickname;
     private boolean enabled;

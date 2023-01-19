@@ -27,6 +27,7 @@ public class SignUpTest extends UserControllerTest {
                         .authority("ROLE_USER")
                         .build()
         ).toString();
+        log.info(requestBody);
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))

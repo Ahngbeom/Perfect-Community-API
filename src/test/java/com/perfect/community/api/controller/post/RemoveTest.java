@@ -17,7 +17,7 @@ public class RemoveTest extends PostControllerTest {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/1"))
                 .andExpect(status().isOk())
                 .andReturn();
-        log.info("The post requested to be deleted is now " + getPostInfo(Long.parseLong(mvcResult.getResponse().getContentAsString())));
+//        log.info("The post requested to be deleted is now " + getPostInfo(Long.parseLong(mvcResult.getResponse().getContentAsString())));
     }
 
     @Test
