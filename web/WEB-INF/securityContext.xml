@@ -82,7 +82,7 @@
         <!--            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />-->
         <!--        </security:session-management>-->
 
-        <security:logout success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
+        <security:logout logout-url="/api/logout"  success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
 
         <security:remember-me key="PerfectCommunity-Spring-Security-Remember-Me-By-Ahngbeom"
                               token-validity-seconds="604800"

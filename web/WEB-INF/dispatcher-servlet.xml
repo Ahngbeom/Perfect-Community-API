@@ -4,6 +4,9 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
@@ -45,6 +48,35 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <constructor-arg ref="dataSource"/>
     </bean>
+
+
+<!--    &lt;!&ndash;  Database - Redis  &ndash;&gt;-->
+<!--    <bean id="redisStandaloneConfiguration" class="org.springframework.data.redis.connection.RedisStandaloneConfiguration">-->
+<!--        <property name="hostName" value="localhost"/>-->
+<!--        <property name="port" value="6379"/>-->
+<!--        <property name="database" value="0"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" p:usePool="true">-->
+<!--        <constructor-arg name="standaloneConfig" ref="redisStandaloneConfiguration"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">-->
+<!--        <property name="connectionFactory" ref="jedisConnectionFactory"/>-->
+<!--    </bean>-->
+
+<!--    <cache:annotation-driven />-->
+
+<!--    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">-->
+<!--        <constructor-arg ref="redisTemplate"/>-->
+<!--        <property name="expires">-->
+<!--            <map>-->
+<!--                <entry key="sessionData" value="7200"/>-->
+<!--                <entry key="portalData" value="7200"/>-->
+<!--                <entry key="referenceData" value="60"/>-->
+<!--            </map>-->
+<!--        </property>-->
+<!--    </bean>-->
 
     <!--    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">-->
     <!--    </bean>-->

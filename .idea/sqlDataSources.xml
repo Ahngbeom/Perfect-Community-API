@@ -13,7 +13,7 @@
       <list>
         <State>
           <option name="id" value="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
-          <option name="name" value="DDL data source" />
+          <option name="name" value="Perfect_Community_API_DDL_data_source" />
           <option name="dbmsName" value="MARIADB" />
           <option name="urls">
             <array>

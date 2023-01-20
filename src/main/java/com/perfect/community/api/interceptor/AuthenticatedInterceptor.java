@@ -94,7 +94,7 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
                 permitAllByPostAPI(requestData);
             }
         } else {
-            log.warn("Request username = {}", authentication.getName());
+//            log.warn("Request username = {}", authentication.getName());
 
             if (requestData.URI.startsWith("/api/user")) {
                 restrictedUserAPI(requestData);
@@ -155,8 +155,9 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
         } else if (HttpMethod.POST.matches(requestData.METHOD)) {
             throw new AccessDeniedException("User is not authenticated");
         } else if (HttpMethod.PATCH.matches(requestData.METHOD)) {
-            if (requestData.URI.startsWith("/api/post/views") && requestData.PATH_VARIABLES.containsKey("postNo")) // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
-                return;
+            // 비로그인 유저의 특정 기간 내의 최대 조회 제한 필요
+//            if (requestData.URI.startsWith("/api/post/views") && requestData.PATH_VARIABLES.containsKey("postNo"))
+//                return;
         }
         throw new AccessDeniedException("User is not authenticated");
     }
