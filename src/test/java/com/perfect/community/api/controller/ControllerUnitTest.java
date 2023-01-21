@@ -38,10 +38,11 @@ public class ControllerUnitTest {
     protected MvcResult mvcResult;
     @Autowired
     private FilterChainProxy filterChainProxy;
-    @Autowired
-    private AccessDeniedInterceptor accessDeniedInterceptor;
+//    @Autowired
+//    private AccessDeniedInterceptor accessDeniedInterceptor;
 
-    protected static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    @Autowired
+    protected ObjectMapper objectMapper/* = new ObjectMapper().registerModule(new JavaTimeModule())*/;
 
     protected static final UtilsForTest utilsForTest = new UtilsForTest();
 
@@ -50,7 +51,7 @@ public class ControllerUnitTest {
 
     public void setUp(Object controller) {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .addMappedInterceptors(new String[]{"/**"}, accessDeniedInterceptor)
+//                .addMappedInterceptors(new String[]{"/**"}, accessDeniedInterceptor)
                 .apply(springSecurity(filterChainProxy))
                 .build();
 

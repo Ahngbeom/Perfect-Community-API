@@ -67,35 +67,39 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String accessToken = resolveAccessToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        log.warn("Access Token={}", accessToken);
+        log.warn("Authentication={}\n Access Token={}", SecurityContextHolder.getContext().getAuthentication(), accessToken);
 
         if (StringUtils.hasText(accessToken)) {
             try {
                 tokenProvider.validateAccessToken(accessToken);
+                Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.ACCESS, accessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
             } catch (ExpiredJwtException e) {
-              String refreshToken = resolveRefreshToken(httpServletRequest);
-              if (tokenProvider.validateRefreshToken(refreshToken)) {
-                  HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                  Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.REFRESH, refreshToken);
-                  accessToken = tokenProvider.createAccessToken(authentication);
-                  refreshToken = tokenProvider.createRefreshToken(authentication);
-                  JwtTokenDTO tokenDTO = new JwtTokenDTO(authentication.getName(), accessToken, refreshToken);
-                  tokenProvider.JwtToResponseHeaderAndCookie(httpServletResponse, tokenDTO);
-                  SecurityContextHolder.getContext().setAuthentication(authentication);
-                  log.info("Reissue JWT");
-                  chain.doFilter(request, httpServletResponse);
-                  return;
-              }
+                reissueJWT(httpServletRequest, (HttpServletResponse) response, chain);
+                return;
             } catch (Exception e) {
-                log.error(e.getMessage());
-                SecurityContextHolder.clearContext();
+                log.error("{}:{}",e.getClass().getSimpleName(), e.getMessage());
                 throw new JwtException(e.getMessage());
             }
-            Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.ACCESS, accessToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
         } else {
             log.warn("No valid JWT token.\nURI: {}", requestURI);
+        }
+        chain.doFilter(request, response);
+    }
+
+    private void reissueJWT(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        String refreshToken = resolveRefreshToken(request);
+        if (refreshToken != null && tokenProvider.validateRefreshToken(refreshToken)) {
+//            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.REFRESH, refreshToken);
+            String accessToken = tokenProvider.createAccessToken(authentication);
+            refreshToken = tokenProvider.createRefreshToken(authentication);
+            tokenProvider.JwtToResponseHeaderAndCookie(response, accessToken, refreshToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("Reissue JWT");
+        } else {
+            log.warn("Failed to resolve refresh token.");
         }
         chain.doFilter(request, response);
     }
@@ -110,9 +114,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private String resolveRefreshToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("refresh-token")) {
-                return cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("refresh-token")) {
+                    return cookie.getValue();
+                }
             }
         }
         return null;

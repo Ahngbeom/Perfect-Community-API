@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.http.Cookie;
@@ -21,7 +22,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        log.info("Logout Success - {}", authentication);
+        SecurityContextHolder.clearContext();
         response.setHeader("Authorization", null);
 //        Cookie cookie = new Cookie("refresh_token", null);
 //        cookie.setMaxAge(-1);
@@ -32,6 +33,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("OK");
+        log.info("Logout Success - {}", authentication);
 //        request.getSession().invalidate();
 //        String prevPage = request.getHeader("Referer");
 //        if (prevPage == null)

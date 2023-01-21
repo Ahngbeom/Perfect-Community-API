@@ -40,29 +40,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 //        servletCheck.headerPrint(request);
         String xRequestedWithValue = request.getHeader("x-requested-with");
         String contentType = request.getContentType();
-        saveLoginHistory(request, authentication);
         if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
-
             String accessToken = jwtTokenProvider.createAccessToken(authentication);
             String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
             JwtTokenDTO tokenDTO = new JwtTokenDTO(authentication.getName(), accessToken, refreshToken);
             jwtTokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
-//
-//            response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
-//            Cookie cookieForRefreshToken = new Cookie("refresh-token", refreshToken);
-//            cookieForRefreshToken.setPath("/");
-//            cookieForRefreshToken.setHttpOnly(true); // not accessible from JavaScript
-//            response.addCookie(cookieForRefreshToken);
-
-//            log.info("[Set bearer token to Authorization Header]\n" + response.getHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER));
-
             response.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
         } else {
             redirectToReferer(request, response, authentication);
 //            redirectToSavedRequest(request, response, authentication);
         }
+        saveLoginHistory(request, authentication);
     }
 
     private void saveLoginHistory(HttpServletRequest request, Authentication authentication) {

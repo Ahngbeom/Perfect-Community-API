@@ -1,4 +1,4 @@
-create table users
+create table perfect_community.users
 (
     user_id     varchar(50)                           not null
         primary key,

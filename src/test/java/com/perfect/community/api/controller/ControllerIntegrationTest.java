@@ -59,7 +59,8 @@ public class ControllerIntegrationTest {
 
     protected MvcResult mvcResult;
 
-    protected static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    @Autowired
+    protected ObjectMapper objectMapper/* = new ObjectMapper().registerModule(new JavaTimeModule())*/;
 
     protected static final UtilsForTest utilsForTest = new UtilsForTest();
 

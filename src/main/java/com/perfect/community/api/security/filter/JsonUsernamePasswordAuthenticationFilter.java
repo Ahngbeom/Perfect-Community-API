@@ -95,7 +95,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         setDetails(request, authenticationToken);
         authentication = this.getAuthenticationManager().authenticate(authenticationToken);
-        logger.info("[Authentication Success]\n" + authentication);
+        logger.info("[Authentication Success]\n " + authentication);
 
         return authentication;
     }

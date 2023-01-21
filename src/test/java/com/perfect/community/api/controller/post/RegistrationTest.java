@@ -29,6 +29,7 @@ public class RegistrationTest extends PostControllerTest {
                         .content(objectMapper.valueToTree(postDTO).toString()))
                 .andExpect(status().isOk())
                 .andReturn();
+        log.info(getPostInfo(Long.parseLong(mvcResult.getResponse().getContentAsString())));
     }
 
     @Test

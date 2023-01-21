@@ -18,9 +18,13 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -122,16 +126,15 @@ public class JwtTokenProvider implements InitializingBean {
      */
     public void validateAccessToken(String token) throws JwtException {
         Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token);
-        log.info("[Access Token] JWS Claims = {}", jwsClaims);
-        log.info("[Access Token] Expiration = {}", jwsClaims.getBody().getExpiration());
+        log.info("[Access Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
     }
 
     public boolean validateRefreshToken(String token) {
         try {
             Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(refreshSecretkey).build().parseClaimsJws(token);
-            log.info("[Refresh Token] JWS Claims = {}", jwsClaims);
-            log.info("[Refresh Token] Expiration = {}", jwsClaims.getBody().getExpiration());
+            log.info("[Refresh Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
         } catch (Exception e) {
+
             log.error(e.getMessage());
             return false;
         }
@@ -139,11 +142,16 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public void JwtToResponseHeaderAndCookie(HttpServletResponse response, JwtTokenDTO tokenDTO) {
-//        String accessToken = createAccessToken(authentication);
-//        String refreshToken = createRefreshToken(authentication);
-
         response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDTO.getAccessToken());
         Cookie cookieForRefreshToken = new Cookie("refresh-token", tokenDTO.getRefreshToken());
+        cookieForRefreshToken.setPath("/");
+        cookieForRefreshToken.setHttpOnly(true); // not accessible from JavaScript
+        response.addCookie(cookieForRefreshToken);
+    }
+
+    public void JwtToResponseHeaderAndCookie(HttpServletResponse response, String accessToken, String refreshToken) {
+        response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+        Cookie cookieForRefreshToken = new Cookie("refresh-token", refreshToken);
         cookieForRefreshToken.setPath("/");
         cookieForRefreshToken.setHttpOnly(true); // not accessible from JavaScript
         response.addCookie(cookieForRefreshToken);

@@ -77,12 +77,11 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("{}", authentication);
 
         @SuppressWarnings("unchecked")
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         REQUEST_DATA requestData = new REQUEST_DATA(request, pathVariables, authentication.getName());
-        log.info("{}", requestData);
+        log.info("{}\n {}",  authentication, requestData);
 
         if (authentication instanceof AnonymousAuthenticationToken) {
             if (requestData.URI.startsWith("/api/user")) {
@@ -110,7 +109,7 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
             } else if (requestData.PATH_VARIABLES.containsKey("boardNo") && !boardService.isHeTheOwnerOfBoard(request.getUserPrincipal().getName(), Long.parseLong(requestData.PATH_VARIABLES.get("boardNo"))))
                 throw new AuthenticationServiceException("Access denied");
         }
-        log.info(this.getClass().getSimpleName() + " [PASSED]");
+        log.info("[PASSED] {}", this.getClass().getSimpleName());
         return true;
     }
 
