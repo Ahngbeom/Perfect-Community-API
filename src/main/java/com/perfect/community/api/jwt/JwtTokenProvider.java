@@ -27,6 +27,11 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider implements InitializingBean {
 
+    enum TOKEN_TYPE {
+        ACCESS,
+        REFRESH
+    }
+
     private static final String AUTHORITIES_KEY = "auth";
 
     private final String accessSecretCode;
@@ -81,12 +86,21 @@ public class JwtTokenProvider implements InitializingBean {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(accessSecretkey)
-                .build()
-                .parseClaimsJws(token) // JWS (Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
-                .getBody();
+    public Authentication getAuthenticationByAccessToken(TOKEN_TYPE type, String token) {
+        Claims claims;
+        if (type.equals(TOKEN_TYPE.ACCESS)) {
+            claims = Jwts.parserBuilder()
+                    .setSigningKey(accessSecretkey)
+                    .build()
+                    .parseClaimsJws(token) // JWS (Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
+                    .getBody();
+        } else {
+            claims = Jwts.parserBuilder()
+                    .setSigningKey(refreshSecretkey)
+                    .build()
+                    .parseClaimsJws(token) // JWS (Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
+                    .getBody();
+        }
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))

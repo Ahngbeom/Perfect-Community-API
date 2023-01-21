@@ -76,20 +76,22 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
               String refreshToken = resolveRefreshToken(httpServletRequest);
               if (tokenProvider.validateRefreshToken(refreshToken)) {
                   HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                  Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+                  Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.REFRESH, refreshToken);
                   accessToken = tokenProvider.createAccessToken(authentication);
                   refreshToken = tokenProvider.createRefreshToken(authentication);
                   JwtTokenDTO tokenDTO = new JwtTokenDTO(authentication.getName(), accessToken, refreshToken);
                   tokenProvider.JwtToResponseHeaderAndCookie(httpServletResponse, tokenDTO);
+                  SecurityContextHolder.getContext().setAuthentication(authentication);
                   log.info("Reissue JWT");
                   chain.doFilter(request, httpServletResponse);
+                  return;
               }
             } catch (Exception e) {
                 log.error(e.getMessage());
                 SecurityContextHolder.clearContext();
                 throw new JwtException(e.getMessage());
             }
-            Authentication authentication = tokenProvider.getAuthentication(accessToken);
+            Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.ACCESS, accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
         } else {
