@@ -27,9 +27,6 @@
     <!--  BCryptPasswordEncoder  -->
     <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
-    <!--  ObjectMapper for JSON  -->
-    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
-
     <!--  Customize UsernamePasswordAuthenticationFilter for JSON  -->
     <bean id="jsonUsernamePasswordAuthenticationFilter"
           class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter">
