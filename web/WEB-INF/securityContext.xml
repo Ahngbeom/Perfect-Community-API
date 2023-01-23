@@ -39,8 +39,7 @@
     <!--  JWT Authentication  -->
     <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider"/>
     <bean id="jwtExceptionFilter" class="com.perfect.community.api.jwt.JwtExceptionFilter"/>
-    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter">
-    </bean>
+    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter"/>
 
     <bean id="jwtFilterOrder" class="org.springframework.web.filter.CompositeFilter">
         <property name="filters">

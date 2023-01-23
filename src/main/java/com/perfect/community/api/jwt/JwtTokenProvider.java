@@ -18,20 +18,16 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class JwtTokenProvider implements InitializingBean {
 
-    enum TOKEN_TYPE {
+    public enum TOKEN_TYPE {
         ACCESS,
         REFRESH
     }
@@ -90,28 +86,29 @@ public class JwtTokenProvider implements InitializingBean {
                 .compact();
     }
 
-    public Authentication getAuthenticationByAccessToken(TOKEN_TYPE type, String token) {
+    public Authentication getAuthentication(TOKEN_TYPE type, String token) {
+        if (token == null)
+            return null;
         Claims claims;
         if (type.equals(TOKEN_TYPE.ACCESS)) {
             claims = Jwts.parserBuilder()
                     .setSigningKey(accessSecretkey)
                     .build()
-                    .parseClaimsJws(token) // JWS (Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
+                    .parseClaimsJws(token) // JWS(Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
                     .getBody();
         } else {
             claims = Jwts.parserBuilder()
                     .setSigningKey(refreshSecretkey)
                     .build()
-                    .parseClaimsJws(token) // JWS (Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
+                    .parseClaimsJws(token) // JWS(Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
                     .getBody();
         }
-
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        User principal = new User(claims.getSubject(), "[PROTECTED]", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
@@ -130,14 +127,8 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public boolean validateRefreshToken(String token) {
-        try {
-            Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(refreshSecretkey).build().parseClaimsJws(token);
-            log.info("[Refresh Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
-        } catch (Exception e) {
-
-            log.error(e.getMessage());
-            return false;
-        }
+        Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(refreshSecretkey).build().parseClaimsJws(token);
+        log.info("[Refresh Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
         return true;
     }
 

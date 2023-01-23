@@ -19,11 +19,15 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
             e.printStackTrace();
-            logger.error(e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(e.getMessage());
+            if (request.getRequestURI().startsWith("/api")) {
+                logger.error(e.getMessage());
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write(e.getMessage());
+            } else {
+                filterChain.doFilter(request, response);
+            }
         }
     }
 }

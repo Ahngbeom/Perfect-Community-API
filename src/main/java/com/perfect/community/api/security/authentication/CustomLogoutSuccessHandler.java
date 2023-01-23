@@ -12,7 +12,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,18 +21,18 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+//        log.info("Logout - {}", jwtTokenProvider.getAuthentication(JwtTokenProvider.TOKEN_TYPE.ACCESS, request.getHeader("Authorization")).getName());
         SecurityContextHolder.clearContext();
         response.setHeader("Authorization", null);
-//        Cookie cookie = new Cookie("refresh_token", null);
-//        cookie.setMaxAge(-1);
-//        cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        response.addCookie(cookie);
+        Cookie cookie = new Cookie("refresh-token", null);
+        cookie.setMaxAge(-1);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("OK");
-        log.info("Logout Success - {}", authentication);
 //        request.getSession().invalidate();
 //        String prevPage = request.getHeader("Referer");
 //        if (prevPage == null)

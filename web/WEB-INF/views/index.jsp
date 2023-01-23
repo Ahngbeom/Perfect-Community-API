@@ -15,34 +15,99 @@
         <div id="authentication" style="color: red;">
             Not Authenticated
         </div>
-        <input type="text" name="username">
-        <input type="password" name="password">
-        <button id="loginBtn">Login</button>
-        <div style="border: black"></div>
+        <div id="logoutForm" style="visibility: hidden">
+            <button id="logoutBtn">Logout</button>
+        </div>
+        <div id="loginForm">
+            <label>
+                <input type="text" name="username">
+            </label>
+            <label>
+                <input type="password" name="password">
+            </label>
+            <button id="loginBtn">Login</button>
+        </div>
+        <div style="border: black">
+            <a href="/api/post/1">/api/post/1</a>
+        </div>
     </body>
 </html>
 <script type="application/javascript">
+    window.onload = () => {
+        // const username = localStorage.getItem("username");
+        // if (username !== undefined && username !== null) {
+        //     $("#authentication").html(username).css("color", "green");
+        // }
+        $.ajax({
+            type: 'get',
+            url: '/api/user',
+            contentType: 'application/json',
+            success: (data) => {
+                console.log(data);
+                username = data.userId;
+                $("#authentication").html("Authenticated (" + username + ")").css("color", "green");
+                $("#loginForm").css("visibility", "hidden");
+                $("#logoutForm").css("visibility", "visible");
+            },
+            error: (xhr) => {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    let username;
+    let accessToken;
+
+    // $.ajaxSetup({
+    //     contentType: 'application/json',
+    //     dataType: 'json'
+    // });
+
+    $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
+        if (accessToken !== undefined && accessToken !== null && accessToken !== "")
+            jqXHR.setRequestHeader("Authorization", "Bearer " + accessToken);
+    });
+
+    // $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
+    //     console.log(event);
+    //     console.log(jqXHR);
+    //     console.log(ajaxOptions);
+    // });
+
     $("#loginBtn").on('click', () => {
+        $.ajax({
+            type: 'post',
+            url: '/api/login',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                username: $("input[name='username']").val(),
+                password: $("input[name='password']").val()
+            }),
+            success: (data, status, xhr) => {
+                username = data.username;
+                accessToken = xhr.getResponseHeader("Authorization").substring("Bearer ".length);
+                console.log("Data: ", data);
+                console.log("Status: ", status);
+                console.log("XHR: ", xhr);
+                console.log(accessToken);
+                $("#authentication").html("Authenticated (" + username + ")").css("color", "green");
+                $("#loginForm").css("visibility", "hidden");
+                $("#logoutForm").css("visibility", "visible");
+            },
+            error: (xhr) => {
+                alert(xhr.responseText);
+            }
+        })
+    });
+
+    $("#logoutBtn").on('click', () => {
        $.ajax({
            type: 'post',
-           url: '/api/login',
+           url: '/api/logout',
            contentType: 'application/json',
-           dataType: 'json',
-           data: JSON.stringify({
-               username: $("input[name='username']").val(),
-               password: $("input[name='password']").val()
-           }),
-           success: (data, status, xhr) => {
-               // alert(data);
-               $("#authentication").html("Authenticated").css("color", "green")
-               console.log("Data: ", data);
-               console.log("Status: ", status);
-               console.log("XHR: ", xhr);
-               console.log(xhr.getResponseHeader("Authorization"));
-           },
-           error: (xhr) => {
-               alert(xhr.responseText);
+           success: (data) => {
+               alert(data);
            }
-       })
+       });
     });
 </script>

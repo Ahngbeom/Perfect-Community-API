@@ -1,12 +1,17 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
+import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.service.JwtService;
 import com.perfect.community.api.service.user.UserService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -15,20 +20,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final JwtTokenProvider tokenProvider;
+    private final JwtService jwtService;
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<UserDTO>> list() {
         return ResponseEntity.ok(userService.getUserListWithAuthorities());
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> info(@PathVariable String userId) {
-        try {
-            return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @GetMapping({"", "/{userId}"})
+    public ResponseEntity<?> info(HttpServletRequest request, @PathVariable(required = false) String userId) {
+        if (userId != null) return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
+        else {
+            return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(jwtService.getUsernameByJwt(request)));
         }
     }
 

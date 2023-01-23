@@ -115,7 +115,7 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 
     private void permitAllByUserAPI(REQUEST_DATA requestData) {
         if (HttpMethod.GET.matches(requestData.METHOD)) {
-            if (!requestData.URI.equals("/api/user/scraped-posts"))
+            if (!requestData.URI.equals("/api/user") && !requestData.URI.equals("/api/user/scraped-posts"))
                 return;
         } else if (HttpMethod.POST.matches(requestData.METHOD)) {
             if (!requestData.URI.startsWith("/api/user/scrap-post"))

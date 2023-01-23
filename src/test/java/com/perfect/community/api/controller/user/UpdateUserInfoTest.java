@@ -13,16 +13,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("[Update User Info]")
 public class UpdateUserInfoTest extends UserControllerTest {
 
-    String requestBody = objectMapper.valueToTree(
-            UserDTO.builder()
-                    .nickname("A")
-                    .build()
-    ).toString();
-
     @Test
     @DisplayName("[Update User Info] - Authenticated")
     @WithUserDetails("admin")
     void updateMyself() throws Exception {
+        String requestBody = objectMapper.valueToTree(
+                UserDTO.builder()
+                        .nickname("A")
+                        .build()
+        ).toString();
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -36,6 +35,11 @@ public class UpdateUserInfoTest extends UserControllerTest {
     @DisplayName("[Update User Info] - By Anonymous")
     @WithAnonymousUser
     void notLogin() throws Exception {
+        String requestBody = objectMapper.valueToTree(
+                UserDTO.builder()
+                        .nickname("A")
+                        .build()
+        ).toString();
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -48,6 +52,11 @@ public class UpdateUserInfoTest extends UserControllerTest {
     @DisplayName("[Update User Info] - By Other User")
     @WithUserDetails("tester")
     void byOtherUser() throws Exception {
+        String requestBody = objectMapper.valueToTree(
+                UserDTO.builder()
+                        .nickname("A")
+                        .build()
+        ).toString();
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/user/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))

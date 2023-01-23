@@ -7,6 +7,12 @@
         <node kind="schema" qname="perfect_community" />
       </scope>
     </mapping>
+    <mapping uuid="5ba7d247-3f26-40bf-bc21-9f86d6d190cb" name="perfect_community_redis@localhost (DDL) Mapping">
+      <data-sources db="3301c83d-80e0-4224-abfa-b0da89ecdee9" ddl="1c650e23-8289-4b5e-9e6f-3fc0903a4de9" />
+      <scope>
+        <node kind="database" qname="@" />
+      </scope>
+    </mapping>
   </component>
   <component name="SqlDataSourceStorage">
     <option name="dataSources">
@@ -20,6 +26,15 @@
               <option value="file://$PROJECT_DIR$/db_ddl" />
             </array>
           </option>
+        </State>
+        <State>
+          <option name="id" value="1c650e23-8289-4b5e-9e6f-3fc0903a4de9" />
+          <option name="name" value="perfect_community_redis@localhost (DDL)" />
+          <option name="dbmsName" value="REDIS" />
+          <option name="urls">
+            <array />
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
         </State>
       </list>
     </option>

@@ -61,6 +61,8 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
         this.objectMapper = objectMapper;
     }
 
+    
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         // 이미 인증된 유저의 로그인 시도 차단      

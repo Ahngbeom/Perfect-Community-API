@@ -22,24 +22,24 @@ public class JwtController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping
-    public ResponseEntity<String> Jwt(HttpServletRequest request) {
-        return ResponseEntity.ok(request.getHeader("Authorization"));
-    }
+//    @GetMapping
+//    public ResponseEntity<String> Jwt(HttpServletRequest request) {
+//        return ResponseEntity.ok(request.getHeader("Authorization"));
+//    }
 
-    @GetMapping("/reissue")
-    public ResponseEntity<String> JwtAuthentication(HttpServletRequest request) {
-        try {
-            List<Cookie> refresh_tokens = Arrays.stream(request.getCookies())
-                    .filter(cookie -> cookie.getName().equals("refresh_token")).collect(Collectors.toList());
-            for (Cookie refreshToken : refresh_tokens) {
-                log.info(refreshToken.getValue());
-                log.info(refreshToken.getPath());
-                log.info(String.valueOf(refreshToken.getMaxAge()));
-                jwtTokenProvider.validateAccessToken(refreshToken.getValue());
-            }
-        } catch (Exception e) {
-        }
-        return ResponseEntity.ok(null);
-    }
+//    @GetMapping("/reissue")
+//    public ResponseEntity<String> JwtAuthentication(HttpServletRequest request) {
+//        try {
+//            List<Cookie> refresh_tokens = Arrays.stream(request.getCookies())
+//                    .filter(cookie -> cookie.getName().equals("refresh_token")).collect(Collectors.toList());
+//            for (Cookie refreshToken : refresh_tokens) {
+//                log.info(refreshToken.getValue());
+//                log.info(refreshToken.getPath());
+//                log.info(String.valueOf(refreshToken.getMaxAge()));
+//                jwtTokenProvider.validateAccessToken(refreshToken.getValue());
+//            }
+//        } catch (Exception e) {
+//        }
+//        return ResponseEntity.ok(null);
+//    }
 }

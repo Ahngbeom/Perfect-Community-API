@@ -11,5 +11,6 @@
         <module name="Perfect-Community-API" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
   </component>
 </project>

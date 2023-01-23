@@ -1,15 +1,15 @@
 package com.perfect.community.api.jwt;
 
-import com.perfect.community.api.dto.jwt.JwtTokenDTO;
+import com.perfect.community.api.service.JwtService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,6 +19,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     public static String AUTHORIZATION_HEADER = "Authorization";
     private final JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private JwtService jwtService;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.tokenProvider = jwtTokenProvider;
@@ -64,63 +67,47 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String accessToken = resolveAccessToken(httpServletRequest);
+        String accessToken = jwtService.resolveAccessToken(httpServletRequest);
+        String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        log.warn("Authentication={}\n Access Token={}", SecurityContextHolder.getContext().getAuthentication(), accessToken);
+        log.warn("Authentication={}\n Access Token={}\n Refresh Token={}", SecurityContextHolder.getContext().getAuthentication(), accessToken, refreshToken);
 
-        if (StringUtils.hasText(accessToken)) {
+        if (requestURI.equals("/api/login"))
+            chain.doFilter(request, response);
+        else if (StringUtils.hasText(accessToken)) {
             try {
                 tokenProvider.validateAccessToken(accessToken);
-                Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.ACCESS, accessToken);
+                Authentication authentication = tokenProvider.getAuthentication(JwtTokenProvider.TOKEN_TYPE.ACCESS, accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
             } catch (ExpiredJwtException e) {
                 reissueJWT(httpServletRequest, (HttpServletResponse) response, chain);
                 return;
             } catch (Exception e) {
-                log.error("{}:{}",e.getClass().getSimpleName(), e.getMessage());
+                log.error("{}:{}", e.getClass().getSimpleName(), e.getMessage());
                 throw new JwtException(e.getMessage());
             }
+        } else if (StringUtils.hasText(refreshToken)) {
+            reissueJWT(httpServletRequest, (HttpServletResponse) response, chain);
+            return;
         } else {
-            log.warn("No valid JWT token.\nURI: {}", requestURI);
+            log.warn("No valid JWT token.(URI: {})", requestURI);
         }
         chain.doFilter(request, response);
     }
 
     private void reissueJWT(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String refreshToken = resolveRefreshToken(request);
-        if (refreshToken != null && tokenProvider.validateRefreshToken(refreshToken)) {
-//            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            Authentication authentication = tokenProvider.getAuthenticationByAccessToken(JwtTokenProvider.TOKEN_TYPE.REFRESH, refreshToken);
-            String accessToken = tokenProvider.createAccessToken(authentication);
-            refreshToken = tokenProvider.createRefreshToken(authentication);
-            tokenProvider.JwtToResponseHeaderAndCookie(response, accessToken, refreshToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("Reissue JWT");
-        } else {
-            log.warn("Failed to resolve refresh token.");
-        }
+        String refreshToken = jwtService.resolveRefreshToken(request);
+        /* An exception is thrown by 'validateRefreshToken' if the refresh token validation fails. */
+        tokenProvider.validateRefreshToken(refreshToken);
+        Authentication authentication = tokenProvider.getAuthentication(JwtTokenProvider.TOKEN_TYPE.REFRESH, refreshToken);
+        String accessToken = tokenProvider.createAccessToken(authentication);
+        refreshToken = tokenProvider.createRefreshToken(authentication);
+        tokenProvider.JwtToResponseHeaderAndCookie(response, accessToken, refreshToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        log.info("[SUCCESS] Reissued JWT");
         chain.doFilter(request, response);
     }
 
-    private String resolveAccessToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring("Bearer ".length());
-        }
-        return null;
-    }
-
-    private String resolveRefreshToken(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("refresh-token")) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
 }

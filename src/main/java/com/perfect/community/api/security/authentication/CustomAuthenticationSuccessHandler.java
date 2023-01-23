@@ -38,21 +38,23 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException{
 //        servletCheck.headerPrint(request);
+        saveLoginHistory(request, authentication);
+
         String xRequestedWithValue = request.getHeader("x-requested-with");
         String contentType = request.getContentType();
         if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
             String accessToken = jwtTokenProvider.createAccessToken(authentication);
             String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
             JwtTokenDTO tokenDTO = new JwtTokenDTO(authentication.getName(), accessToken, refreshToken);
             jwtTokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
-            response.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
+            response.getWriter().write(accessToken);
         } else {
             redirectToReferer(request, response, authentication);
 //            redirectToSavedRequest(request, response, authentication);
         }
-        saveLoginHistory(request, authentication);
     }
 
     private void saveLoginHistory(HttpServletRequest request, Authentication authentication) {
