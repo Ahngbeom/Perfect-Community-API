@@ -1,6 +1,9 @@
 package com.perfect.community.api.service;
 
 import com.perfect.community.api.jwt.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,8 @@ public class JwtService {
             return tokenProvider.getAuthentication(JwtTokenProvider.TOKEN_TYPE.REFRESH, token).getName();
         }
     }
+
+
 
     public String resolveAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);

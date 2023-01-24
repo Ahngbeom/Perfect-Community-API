@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -113,6 +114,13 @@ public class JwtTokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
+    public long getExpiration(TOKEN_TYPE type, String token) {
+        if (type.equals(JwtTokenProvider.TOKEN_TYPE.ACCESS))
+            return Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token).getBody().getExpiration().getTime();
+        else
+            return Jwts.parserBuilder().setSigningKey(refreshSecretkey).build().parseClaimsJws(token).getBody().getExpiration().getTime();
+    }
+
     /**
      * @throws UnsupportedJwtException  if the {@code claimsJws} argument does not represent an Claims JWS
      * @throws MalformedJwtException    if the {@code claimsJws} string is not a valid JWS
@@ -126,10 +134,9 @@ public class JwtTokenProvider implements InitializingBean {
         log.info("[Access Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
     }
 
-    public boolean validateRefreshToken(String token) {
+    public void validateRefreshToken(String token) {
         Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(refreshSecretkey).build().parseClaimsJws(token);
         log.info("[Refresh Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
-        return true;
     }
 
     public void JwtToResponseHeaderAndCookie(HttpServletResponse response, JwtTokenDTO tokenDTO) {

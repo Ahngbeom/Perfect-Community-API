@@ -50,7 +50,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
             JwtTokenDTO tokenDTO = new JwtTokenDTO(authentication.getName(), accessToken, refreshToken);
             jwtTokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
-            response.getWriter().write(accessToken);
+            response.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
+//            response.sendRedirect("/");
         } else {
             redirectToReferer(request, response, authentication);
 //            redirectToSavedRequest(request, response, authentication);

@@ -39,14 +39,16 @@
     <!--  JWT Authentication  -->
     <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider"/>
     <bean id="jwtExceptionFilter" class="com.perfect.community.api.jwt.JwtExceptionFilter"/>
-    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter"/>
+    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter">
+        <constructor-arg name="redisTemplate" ref="redisTemplate"/>
+    </bean>
 
     <bean id="jwtFilterOrder" class="org.springframework.web.filter.CompositeFilter">
         <property name="filters">
             <list>
                 <ref bean="jwtExceptionFilter"/>
-                <ref bean="jwtAuthenticationFilter"/>
                 <ref bean="jsonUsernamePasswordAuthenticationFilter"/>
+                <ref bean="jwtAuthenticationFilter"/>
             </list>
         </property>
     </bean>
@@ -78,7 +80,7 @@
         <!--            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />-->
         <!--        </security:session-management>-->
 
-        <security:logout logout-url="/api/logout"  success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
+        <security:logout logout-url="/api/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="false"/>
 
         <security:remember-me key="PerfectCommunity-Spring-Security-Remember-Me-By-Ahngbeom"
                               token-validity-seconds="604800"

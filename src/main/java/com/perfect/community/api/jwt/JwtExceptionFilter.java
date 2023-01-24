@@ -18,7 +18,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             if (request.getRequestURI().startsWith("/api")) {
                 logger.error(e.getMessage());
                 response.setContentType("application/json");

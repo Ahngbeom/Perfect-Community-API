@@ -64,7 +64,14 @@
 <!--        <constructor-arg name="standaloneConfig" ref="redisStandaloneConfiguration"/>-->
     </bean>
 
+    <bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="keySerializer" ref="stringRedisSerializer"/>
+        <property name="valueSerializer" ref="stringRedisSerializer"/>
+        <property name="hashKeySerializer" ref="stringRedisSerializer"/>
+        <property name="hashValueSerializer" ref="stringRedisSerializer"/>
+        <property name="stringSerializer" ref="stringRedisSerializer"/>
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
     </bean>
 
