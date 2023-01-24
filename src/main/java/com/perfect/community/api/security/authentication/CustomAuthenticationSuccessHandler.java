@@ -1,7 +1,7 @@
 package com.perfect.community.api.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.perfect.community.api.dto.jwt.JwtTokenDTO;
+import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.jwt.JwtTokenProvider;
 import com.perfect.community.api.mapper.user.LoginHistoryMapper;
 import com.perfect.community.api.utils.HttpServletCheck;
@@ -46,9 +46,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            String accessToken = jwtTokenProvider.createAccessToken(authentication);
-            String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
-            JwtTokenDTO tokenDTO = new JwtTokenDTO(authentication.getName(), accessToken, refreshToken);
+            TokenDTO tokenDTO = jwtTokenProvider.generateToken(authentication);
             jwtTokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
             response.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
 //            response.sendRedirect("/");

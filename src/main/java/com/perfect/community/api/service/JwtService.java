@@ -1,9 +1,8 @@
 package com.perfect.community.api.service;
 
+import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.jwt.JwtTokenProvider;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -19,16 +18,18 @@ public class JwtService {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private final JwtTokenProvider tokenProvider;
 
-    public String getUsernameByJwt(HttpServletRequest request) {
-        String token = resolveAccessToken(request);
-        if (token != null) {
-            return tokenProvider.getAuthentication(JwtTokenProvider.TOKEN_TYPE.ACCESS, token).getName();
-        } else {
-            token = resolveRefreshToken(request);
-            return tokenProvider.getAuthentication(JwtTokenProvider.TOKEN_TYPE.REFRESH, token).getName();
-        }
+    private final UserService userService;
+
+    public String getUsernameByAccessToken(String accessToken) {
+        return tokenProvider.getAuthentication(accessToken).getName();
     }
 
+    public TokenDTO reissueByPassword(String refreshToken, String password) {
+        Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+        if (userService.verifyPassword(authentication.getName(), password))
+            return tokenProvider.generateToken(authentication);
+        return null;
+    }
 
 
     public String resolveAccessToken(HttpServletRequest request) {

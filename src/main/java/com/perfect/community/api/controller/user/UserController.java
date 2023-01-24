@@ -4,11 +4,9 @@ import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.JwtService;
 import com.perfect.community.api.service.user.UserService;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +31,8 @@ public class UserController {
     public ResponseEntity<?> info(HttpServletRequest request, @PathVariable(required = false) String userId) {
         if (userId != null) return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
         else {
-            return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(jwtService.getUsernameByJwt(request)));
+            String accessToken = jwtService.resolveAccessToken(request);
+            return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(jwtService.getUsernameByAccessToken(accessToken)));
         }
     }
 

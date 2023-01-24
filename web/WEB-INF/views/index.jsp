@@ -9,7 +9,9 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
+                integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <title>Title</title>
     </head>
     <body>
@@ -27,15 +29,18 @@
             </label>
             <button type="button" id="loginBtn">Login</button>
         </div>
-        <div style="border: black">
+        <div>
+            <button type="button" id="reissueTokenBtn">Reissue token</button>
+        </div>
+        <div>
             <a href="/api/post/1">/api/post/1</a>
         </div>
     </body>
 </html>
 <script type="application/javascript">
 
-    let username;
-    let accessToken;
+    let username = undefined;
+    let accessToken = undefined;
 
     $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
         console.log("Access Token", accessToken);
@@ -44,36 +49,27 @@
     });
 
     $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
-        // console.log(event);
-        // console.log(jqXHR);
+        console.log(event);
+        console.log(jqXHR);
         console.log(ajaxOptions);
+        if (jqXHR.status >= 400 && jqXHR.status < 500) {
+            alert(jqXHR.responseText);
+        }
     });
 
     function loadAuthentication() {
-        return $.ajax({
-            type: 'get',
-            url: '/api/user',
-            contentType: 'application/json',
-            dataType: 'json',
-            success: (data) => {
-                console.log(data);
-                username = data.userId;
-                $("#authentication").html("Authenticated (" + username + ")").css("color", "green");
-                $("#loginForm").css("visibility", "hidden");
-                $("#logoutBtn").css("visibility", "visible");
-            },
-            error: (xhr) => {
-                console.error(xhr.responseText);
-                username = undefined;
-                accessToken = undefined;
-                $("#authentication").html("Not Authenticated").css("color", "red");
-                $("#loginForm").css("visibility", "visible");
-                $("#logoutBtn").css("visibility", "hidden");
-            }
-        });
+        if (username !== undefined && accessToken !== undefined) {
+            $("#authentication").html("Authenticated (" + username + ")").css("color", "green");
+            $("#loginForm").css("visibility", "hidden");
+            $("#logoutBtn").css("visibility", "visible");
+        } else {
+            $("#authentication").html("Not Authenticated").css("color", "red");
+            $("#loginForm").css("visibility", "visible");
+            $("#logoutBtn").css("visibility", "hidden");
+        }
     }
 
-    window.onload = loadAuthentication();
+    window.onload = () => loadAuthentication();
 
     $("#loginBtn").on('click', () => {
         $.ajax({
@@ -112,5 +108,26 @@
         }).always((jqXHR) => {
             loadAuthentication();
         });
+    });
+
+    $("#reissueTokenBtn").on('click', () => {
+        const password = prompt("Password");
+        $.ajax({
+            type: 'post',
+            url: '/api/jwt/reissue',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                password: password
+            }),
+            success: (data) => {
+                console.log(data);
+                loadAuthentication();
+            },
+            error: (xhr) => {
+                console.error(xhr);
+            }
+        })
+
     });
 </script>

@@ -1,17 +1,19 @@
 package com.perfect.community.api.controller.jwt;
 
+import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,25 +23,27 @@ import java.util.stream.Collectors;
 public class JwtController {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtService jwtService;
 
 //    @GetMapping
 //    public ResponseEntity<String> Jwt(HttpServletRequest request) {
 //        return ResponseEntity.ok(request.getHeader("Authorization"));
 //    }
 
-//    @GetMapping("/reissue")
-//    public ResponseEntity<String> JwtAuthentication(HttpServletRequest request) {
-//        try {
-//            List<Cookie> refresh_tokens = Arrays.stream(request.getCookies())
-//                    .filter(cookie -> cookie.getName().equals("refresh_token")).collect(Collectors.toList());
-//            for (Cookie refreshToken : refresh_tokens) {
-//                log.info(refreshToken.getValue());
-//                log.info(refreshToken.getPath());
-//                log.info(String.valueOf(refreshToken.getMaxAge()));
-//                jwtTokenProvider.validateAccessToken(refreshToken.getValue());
-//            }
-//        } catch (Exception e) {
-//        }
-//        return ResponseEntity.ok(null);
-//    }
+    @PostMapping("/reissue")
+    public ResponseEntity<?> JwtAuthentication(HttpServletRequest request, @RequestBody Map<String, String> requestBody) {
+        try {
+            log.warn("Password = {}", requestBody.get("password"));
+            String refreshToken = jwtService.resolveRefreshToken(request);
+            TokenDTO tokenDTO = jwtService.reissueByPassword(refreshToken, requestBody.get("password"));
+            if (tokenDTO != null)
+                return ResponseEntity.ok(tokenDTO);
+            else
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Failed");
+        }
+
+    }
 }

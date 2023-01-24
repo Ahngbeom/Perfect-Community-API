@@ -37,7 +37,9 @@
     </bean>
 
     <!--  JWT Authentication  -->
-    <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider"/>
+    <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider">
+        <constructor-arg name="redisTemplate" ref="redisTemplate"/>
+    </bean>
     <bean id="jwtExceptionFilter" class="com.perfect.community.api.jwt.JwtExceptionFilter"/>
     <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter">
         <constructor-arg name="redisTemplate" ref="redisTemplate"/>

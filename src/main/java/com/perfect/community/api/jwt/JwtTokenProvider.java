@@ -1,6 +1,6 @@
 package com.perfect.community.api.jwt;
 
-import com.perfect.community.api.dto.jwt.JwtTokenDTO;
+import com.perfect.community.api.dto.jwt.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -8,6 +8,9 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +21,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -43,11 +45,16 @@ public class JwtTokenProvider implements InitializingBean {
     private Key accessSecretkey;
     private Key refreshSecretkey;
 
-    public JwtTokenProvider(@Value("${jwt.access-key-secret}") String accessSecretCode, @Value("${jwt.refresh-key-secret}") String refreshSecretCode, @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInMilliseconds, @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInMilliseconds) {
+    private final RedisTemplate<String, String> redisTemplate;
+    private final HashOperations<String, String, String> hashOperations;
+
+    public JwtTokenProvider(@Value("${jwt.access-key-secret}") String accessSecretCode, @Value("${jwt.refresh-key-secret}") String refreshSecretCode, @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInMilliseconds, @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInMilliseconds, RedisTemplate<String, String> redisTemplate) {
         this.accessSecretCode = accessSecretCode;
         this.refreshSecretCode = refreshSecretCode;
         this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds * 1000;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds * 1000;
+        this.redisTemplate = redisTemplate;
+        this.hashOperations = this.redisTemplate.opsForHash();
     }
 
     @Override
@@ -56,20 +63,41 @@ public class JwtTokenProvider implements InitializingBean {
         this.refreshSecretkey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshSecretCode));
     }
 
-    public String createAccessToken(Authentication authentication) {
+    public TokenDTO generateToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
         long now = new Date().getTime();
-        Date validity = new Date(now + this.accessTokenValidityInMilliseconds);
-        log.warn("Access token expiration = {}", validity);
+        Date accessTokenValidity = new Date(now + this.accessTokenValidityInMilliseconds);
+        Date refreshTokenValidity = new Date(now + this.refreshTokenValidityInMilliseconds);
 
-        return Jwts.builder()
+//        log.warn("Access token expiration = {}", validity);
+
+        String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
-//                .claim("username", authentication.getName())
                 .signWith(accessSecretkey, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
+                .setExpiration(accessTokenValidity)
                 .compact();
+
+        String refreshToken = Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(accessSecretkey, SignatureAlgorithm.HS512)
+                .setExpiration(refreshTokenValidity)
+                .compact();
+
+        String redisKey = "jwt:" + authentication.getName();
+        hashOperations.put(redisKey, "access_token", accessToken);
+        hashOperations.put(redisKey, "refresh_token", refreshToken);
+        redisTemplate.expireAt(redisKey, refreshTokenValidity);
+
+        return TokenDTO.builder()
+                .username(authentication.getName())
+                .accessToken(accessToken)
+                .accessTokenExpiration(accessTokenValidity)
+                .refreshToken(refreshToken)
+                .refreshTokenExpiration(refreshTokenValidity)
+                .build();
     }
 
     public String createRefreshToken(Authentication authentication) {
@@ -87,23 +115,13 @@ public class JwtTokenProvider implements InitializingBean {
                 .compact();
     }
 
-    public Authentication getAuthentication(TOKEN_TYPE type, String token) {
-        if (token == null)
-            return null;
-        Claims claims;
-        if (type.equals(TOKEN_TYPE.ACCESS)) {
-            claims = Jwts.parserBuilder()
-                    .setSigningKey(accessSecretkey)
-                    .build()
-                    .parseClaimsJws(token) // JWS(Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
-                    .getBody();
-        } else {
-            claims = Jwts.parserBuilder()
-                    .setSigningKey(refreshSecretkey)
-                    .build()
-                    .parseClaimsJws(token) // JWS(Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
-                    .getBody();
-        }
+    public Authentication getAuthentication(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(accessSecretkey)
+                .build()
+                .parseClaimsJws(token) // JWS(Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
+                .getBody();
+
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
@@ -114,11 +132,38 @@ public class JwtTokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    public long getExpiration(TOKEN_TYPE type, String token) {
+//    public Authentication getAuthentication(TOKEN_TYPE type, String token) {
+//        if (token == null)
+//            return null;
+//        Claims claims;
+//        if (type.equals(TOKEN_TYPE.ACCESS)) {
+//            claims = Jwts.parserBuilder()
+//                    .setSigningKey(accessSecretkey)
+//                    .build()
+//                    .parseClaimsJws(token) // JWS(Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
+//                    .getBody();
+//        } else {
+//            claims = Jwts.parserBuilder()
+//                    .setSigningKey(refreshSecretkey)
+//                    .build()
+//                    .parseClaimsJws(token) // JWS(Json Web Signature): 인증 정보를 서버가 보유한 private key로 서명한 것을 토큰화한 객체
+//                    .getBody();
+//        }
+//        Collection<? extends GrantedAuthority> authorities =
+//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+//                        .map(SimpleGrantedAuthority::new)
+//                        .collect(Collectors.toList());
+//
+//        User principal = new User(claims.getSubject(), "[PROTECTED]", authorities);
+//
+//        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+//    }
+
+    public Date getExpiration(TOKEN_TYPE type, String token) {
         if (type.equals(JwtTokenProvider.TOKEN_TYPE.ACCESS))
-            return Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token).getBody().getExpiration().getTime();
+            return Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token).getBody().getExpiration();
         else
-            return Jwts.parserBuilder().setSigningKey(refreshSecretkey).build().parseClaimsJws(token).getBody().getExpiration().getTime();
+            return Jwts.parserBuilder().setSigningKey(refreshSecretkey).build().parseClaimsJws(token).getBody().getExpiration();
     }
 
     /**
@@ -139,7 +184,7 @@ public class JwtTokenProvider implements InitializingBean {
         log.info("[Refresh Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
     }
 
-    public void JwtToResponseHeaderAndCookie(HttpServletResponse response, JwtTokenDTO tokenDTO) {
+    public void JwtToResponseHeaderAndCookie(HttpServletResponse response, TokenDTO tokenDTO) {
         response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDTO.getAccessToken());
         Cookie cookieForRefreshToken = new Cookie("refresh-token", tokenDTO.getRefreshToken());
         cookieForRefreshToken.setPath("/");

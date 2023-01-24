@@ -34,6 +34,7 @@ import java.nio.charset.StandardCharsets;
 
 public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+    public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String SPRING_SECURITY_JSON_USERNAME_KEY = "username";
 
     public static final String SPRING_SECURITY_JSON_PASSWORD_KEY = "password";
@@ -61,21 +62,16 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
         this.objectMapper = objectMapper;
     }
 
-    
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         // 이미 인증된 유저의 로그인 시도 차단      
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            throw new AuthenticationServiceException("Already authenticated - " + authentication.getName());
-        }
+//        Authentication authentication = jwtTokenProvider.getAuthentication(request.getHeader(AUTHORIZATION_HEADER));
+//        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+//            throw new AuthenticationServiceException("Already authenticated - " + authentication.getName());
+//        }
         // 이미 Bearer 토큰을 가지고 있는 유저의 로그인 시도 차단
-        if (request.getHeader("Authorization") != null) {
+        if (request.getHeader(AUTHORIZATION_HEADER) != null) {
             throw new AuthenticationServiceException("Already have a bearer token - " + request.getHeader("Authorization"));
-//            if (!jwtTokenProvider.validateToken(request.getHeader("Authorization").substring("Bearer ".length()))) {
-//
-//            }
         }
         // POST 이외의 다른 HTTP 요청 메소드 거부
         if (!HttpMethod.POST.matches(request.getMethod())) {
@@ -96,7 +92,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         setDetails(request, authenticationToken);
-        authentication = this.getAuthenticationManager().authenticate(authenticationToken);
+        Authentication authentication = this.getAuthenticationManager().authenticate(authenticationToken);
         logger.info("[Authentication Success]\n " + authentication);
 
         return authentication;
