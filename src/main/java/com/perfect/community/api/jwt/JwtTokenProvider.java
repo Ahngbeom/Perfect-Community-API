@@ -8,9 +8,6 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +33,7 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     private static final String AUTHORITIES_KEY = "auth";
-
+    private static final String TOKEN_TYPE_KEY = "type";
     private final String accessSecretCode;
     private final String refreshSecretCode;
     private final long accessTokenValidityInMilliseconds;
@@ -45,16 +42,11 @@ public class JwtTokenProvider implements InitializingBean {
     private Key accessSecretkey;
     private Key refreshSecretkey;
 
-    private final RedisTemplate<String, String> redisTemplate;
-    private final HashOperations<String, String, String> hashOperations;
-
-    public JwtTokenProvider(@Value("${jwt.access-key-secret}") String accessSecretCode, @Value("${jwt.refresh-key-secret}") String refreshSecretCode, @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInMilliseconds, @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInMilliseconds, RedisTemplate<String, String> redisTemplate) {
+    public JwtTokenProvider(@Value("${jwt.access-key-secret}") String accessSecretCode, @Value("${jwt.refresh-key-secret}") String refreshSecretCode, @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInMilliseconds, @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInMilliseconds) {
         this.accessSecretCode = accessSecretCode;
         this.refreshSecretCode = refreshSecretCode;
         this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds * 1000;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds * 1000;
-        this.redisTemplate = redisTemplate;
-        this.hashOperations = this.redisTemplate.opsForHash();
     }
 
     @Override
@@ -74,6 +66,7 @@ public class JwtTokenProvider implements InitializingBean {
 
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
+                .claim(TOKEN_TYPE_KEY, TOKEN_TYPE.ACCESS)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(accessSecretkey, SignatureAlgorithm.HS512)
                 .setExpiration(accessTokenValidity)
@@ -81,15 +74,11 @@ public class JwtTokenProvider implements InitializingBean {
 
         String refreshToken = Jwts.builder()
                 .setSubject(authentication.getName())
+                .claim(TOKEN_TYPE_KEY, TOKEN_TYPE.REFRESH)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(accessSecretkey, SignatureAlgorithm.HS512)
                 .setExpiration(refreshTokenValidity)
                 .compact();
-
-        String redisKey = "jwt:" + authentication.getName();
-        hashOperations.put(redisKey, "access_token", accessToken);
-        hashOperations.put(redisKey, "refresh_token", refreshToken);
-        redisTemplate.expireAt(redisKey, refreshTokenValidity);
 
         return TokenDTO.builder()
                 .username(authentication.getName())
@@ -174,9 +163,9 @@ public class JwtTokenProvider implements InitializingBean {
      *                                  before the time this method is invoked.
      * @throws IllegalArgumentException if the {@code claimsJws} string is {@code null} or empty or only whitespace
      */
-    public void validateAccessToken(String token) throws JwtException {
+    public void validateToken(String token) throws JwtException {
         Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token);
-        log.info("[Access Token]\n JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
+        log.info("JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
     }
 
     public void validateRefreshToken(String token) {

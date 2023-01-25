@@ -1,5 +1,6 @@
 package com.perfect.community.api.controller.jwt;
 
+import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.JwtService;
@@ -31,18 +32,20 @@ public class JwtController {
 //    }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> JwtAuthentication(HttpServletRequest request, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<?> JwtAuthentication(HttpServletRequest request/*, @RequestBody Map<String, String> requestBody*/) {
         try {
-            log.warn("Password = {}", requestBody.get("password"));
             String refreshToken = jwtService.resolveRefreshToken(request);
-            TokenDTO tokenDTO = jwtService.reissueByPassword(refreshToken, requestBody.get("password"));
-            if (tokenDTO != null)
+            Preconditions.checkState(refreshToken != null && !refreshToken.isEmpty(), "Invalid JWT.");
+            TokenDTO tokenDTO = jwtService.reissue(refreshToken);
+            if (tokenDTO != null) {
+                log.info("[SUCCESS] Reissued JWT");
                 return ResponseEntity.ok(tokenDTO);
+            }
             else
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }

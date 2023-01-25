@@ -2,13 +2,11 @@ package com.perfect.community.api.jwt;
 
 import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.service.JwtService;
+import com.perfect.community.api.service.redis.RedisService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -18,8 +16,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class JwtAuthenticationFilter extends GenericFilterBean {
@@ -32,16 +28,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private JwtTokenProvider tokenProvider;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private RedisService redisService;
 
-    private final RedisTemplate<String, String> redisTemplate;
-    private final ValueOperations<String, String> valueOperations;
-    private final ListOperations<String, String> listOperations;
-
-    public JwtAuthenticationFilter(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-        this.valueOperations = redisTemplate.opsForValue();
-        this.listOperations = redisTemplate.opsForList();
-    }
+//    private final RedisTemplate<String, String> redisTemplate;
+//    private final ValueOperations<String, String> valueOperations;
+//    private final ListOperations<String, String> listOperations;
 
     /**
      * The <code>doFilter</code> method of the Filter is called by the
@@ -94,19 +86,19 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         else {
             if (StringUtils.hasText(accessToken)) {
                 try {
-                    tokenProvider.validateAccessToken(accessToken);
+                    tokenProvider.validateToken(accessToken);
                     Authentication authentication = tokenProvider.getAuthentication(accessToken);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
                 } catch (ExpiredJwtException e) {
-                    reissueJWT(httpServletRequest, (HttpServletResponse) response, chain);
+                    reissueJWT(httpServletRequest, (HttpServletResponse) response, chain, refreshToken);
                     return;
                 } catch (Exception e) {
                     log.error("{}:{}", e.getClass().getSimpleName(), e.getMessage());
                     throw new JwtException(e.getMessage());
                 }
             } else if (StringUtils.hasText(refreshToken)) {
-                reissueJWT(httpServletRequest, (HttpServletResponse) response, chain);
+                reissueJWT(httpServletRequest, (HttpServletResponse) response, chain, refreshToken);
                 return;
             } else {
                 log.warn("No valid JWT token.(URI: {})", requestURI);
@@ -115,25 +107,25 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
     }
 
-    private void reissueJWT(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+    private void reissueJWT(HttpServletRequest request, HttpServletResponse response, FilterChain chain, String refreshToken) throws ServletException, IOException {
 //        String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring("Bearer ".length());
-        String refreshToken = jwtService.resolveRefreshToken(request);
-        if (refreshToken == null)
-            throw new JwtException("Invalid refresh token.");
-
         try {
-            /* An exception is thrown by 'validateRefreshToken' if the refresh token validation fails. */
-            tokenProvider.validateRefreshToken(refreshToken);
+            /* An exception is thrown by 'validateToken' if the refresh token validation fails. */
+            tokenProvider.validateToken(refreshToken);
 
-            /* Destroying existing tokens by reissuing tokens */
-//            valueOperations.set("jwt:test", "test");
-////        Objects.requireNonNull(listOperations.range("jwt:destroyed", 0, -1)).forEach(log::info);
-//            long validity = tokenProvider.getExpiration(JwtTokenProvider.TOKEN_TYPE.REFRESH, refreshToken).getTime();
-//            redisTemplate.expire("jwt:test", validity, TimeUnit.MILLISECONDS);
-//            log.info("Refresh Token Expire = {}", new Date(redisTemplate.getExpire("jwt:test")));
 
+            /* Compared to Redis tokens.  */
             Authentication authentication = tokenProvider.getAuthentication(refreshToken);
-            tokenProvider.JwtToResponseHeaderAndCookie(response, tokenProvider.generateToken(authentication));
+            redisService.validateRefreshTokenByUsername(authentication.getName(), refreshToken);
+
+            /* Reissue tokens */
+            TokenDTO tokenDTO = tokenProvider.generateToken(authentication);
+
+            /* Replacing with reissued tokens */
+            redisService.putJWT(tokenDTO);
+
+            /* Reissued JWT to response */
+            tokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("[SUCCESS] Reissued JWT");
             chain.doFilter(request, response);

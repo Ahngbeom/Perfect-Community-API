@@ -1,6 +1,9 @@
 package com.perfect.community.api.security.authentication;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.service.JwtService;
+import com.perfect.community.api.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.C;
@@ -18,12 +21,24 @@ import java.io.IOException;
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtService jwtService;
+    private final RedisService redisService;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         try {
 //        log.info("Access Token - {}", request.getHeader("Authorization"));
-//        log.info("Logout - {}", jwtTokenProvider.getAuthentication(JwtTokenProvider.TOKEN_TYPE.ACCESS, request.getHeader("Authorization")).getName());
+            if (authentication == null) {
+                String accessToken = jwtService.resolveAccessToken(request);
+                if (accessToken != null) {
+                    authentication = jwtTokenProvider.getAuthentication(accessToken);
+                } else {
+                    authentication = jwtTokenProvider.getAuthentication(jwtService.resolveRefreshToken(request));
+                }
+            }
+            log.info("Logout - {}", authentication);
+            redisService.deleteJWT(authentication.getName());
             SecurityContextHolder.clearContext();
             response.setHeader("Authorization", null);
             Cookie cookie = new Cookie("refresh-token", null);
@@ -34,7 +49,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-//            response.getWriter().write("OK");
+            response.getWriter().write(objectMapper.writeValueAsString("OK"));
 //        request.getSession().invalidate();
 //        String prevPage = request.getHeader("Referer");
 //        if (prevPage == null)

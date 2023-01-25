@@ -2,19 +2,18 @@ package com.perfect.community.api.security.filter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.perfect.community.api.jwt.JwtAuthenticationFilter;
 import com.perfect.community.api.jwt.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
+import com.perfect.community.api.service.redis.RedisService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -22,11 +21,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StreamUtils;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,6 +38,8 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
     private final JwtTokenProvider jwtTokenProvider;
     private final ObjectMapper objectMapper;
+//    private final RedisTemplate<String, String> redisTemplate;
+//    private final HashOperations<String, String, String> hashOperations;
 
     /**
      * Creates a new instance with a {@link RequestMatcher} and an
@@ -93,6 +89,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         setDetails(request, authenticationToken);
         Authentication authentication = this.getAuthenticationManager().authenticate(authenticationToken);
+
         logger.info("[Authentication Success]\n " + authentication);
 
         return authentication;

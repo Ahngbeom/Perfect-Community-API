@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.jwt.JwtTokenProvider;
 import com.perfect.community.api.mapper.user.LoginHistoryMapper;
+import com.perfect.community.api.service.redis.RedisService;
 import com.perfect.community.api.utils.HttpServletCheck;
 import com.perfect.community.api.vo.LoginHistoryVO;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private final JwtTokenProvider jwtTokenProvider;
     private final LoginHistoryMapper loginHistoryMapper;
     private final ObjectMapper objectMapper;
+    private final RedisService redisService;
 
     /**
      * Called when a user has been successfully authenticated.
@@ -38,22 +40,27 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException{
 //        servletCheck.headerPrint(request);
-        saveLoginHistory(request, authentication);
 
-        String xRequestedWithValue = request.getHeader("x-requested-with");
-        String contentType = request.getContentType();
-        if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            TokenDTO tokenDTO = jwtTokenProvider.generateToken(authentication);
-            jwtTokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
-            response.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
-//            response.sendRedirect("/");
-        } else {
-            redirectToReferer(request, response, authentication);
+        try {
+            String xRequestedWithValue = request.getHeader("x-requested-with");
+            String contentType = request.getContentType();
+            if ((contentType != null && contentType.equals("application/json")) || (xRequestedWithValue != null && xRequestedWithValue.equals("XMLHttpRequest"))) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                TokenDTO tokenDTO = jwtTokenProvider.generateToken(authentication);
+                redisService.putJWT(tokenDTO);
+                jwtTokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
+                response.getWriter().write(objectMapper.writeValueAsString(tokenDTO));
+            } else {
+                redirectToReferer(request, response, authentication);
 //            redirectToSavedRequest(request, response, authentication);
+            }
+            saveLoginHistory(request, authentication);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     private void saveLoginHistory(HttpServletRequest request, Authentication authentication) {
