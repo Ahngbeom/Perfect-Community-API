@@ -48,9 +48,15 @@ public class PostController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<?> getPostCount(@RequestBody(required = false) PostFilterDTO postListOptions) {
+    public ResponseEntity<?> getPostCount(@RequestParam(required = false) Map<String, String> filterParam) {
         try {
-            return ResponseEntity.ok(postService.getPostCount(postListOptions));
+            PostFilterDTO postFilterDTO = PostFilterDTO.builder()
+                    .boardNo(Long.parseLong(filterParam.getOrDefault("boardNo", "0")))
+                    .page(Integer.parseInt(filterParam.getOrDefault("page", "0")))
+                    .type(filterParam.getOrDefault("type", null))
+                    .keyword(filterParam.getOrDefault("keyword", null))
+                    .build();
+            return ResponseEntity.ok(postService.getPostCount(postFilterDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

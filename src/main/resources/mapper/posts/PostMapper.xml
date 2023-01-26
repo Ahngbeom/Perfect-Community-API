@@ -30,14 +30,13 @@
             </otherwise>
         </choose>
         <where>
-            <if test="board_no gt 0">
-                board_no = #{board_no}
+            <if test="boardNo gt 0">
+                board_no = #{boardNo}
             </if>
             <if test="type != null">
                 and type like #{type}
             </if>
         </where>
-
     </select>
 
     <select id="selectPostList" resultMap="postDTOMap">
