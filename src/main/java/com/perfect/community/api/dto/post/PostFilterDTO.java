@@ -34,11 +34,12 @@ public class PostFilterDTO {
     private String keyword;
 
     @Builder
-    public PostFilterDTO(long boardNo, int page, String type) {
+    public PostFilterDTO(long boardNo, int page, String type, String keyword) {
 //            Preconditions.checkState(boardNo >= 0, "Invalid board no.");
         this.boardNo = boardNo;
         this.page = page;
         this.type = type;
+        this.keyword = keyword;
     }
 
 }
