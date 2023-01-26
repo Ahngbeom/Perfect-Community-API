@@ -18,7 +18,10 @@ $(document).on('click', ".board-title", (e) => {
     });
 
     const paginationNav = $("#postListByBoard").siblings("nav");
-    const paginationPrev = $(paginationNav.find(".pagination li")[0]);
+    const paginationUl = paginationNav.find(".pagination");
+    const paginationPrev = "<li class=\"page-item\"><button class=\"page-link\">Previous</button></li>";
+    const paginationNext = "<li class=\"page-item\"><button class=\"page-link\">Next</button></li>";
+
     console.log(paginationNav);
     console.log(paginationPrev);
     $.ajax({
@@ -30,11 +33,13 @@ $(document).on('click', ".board-title", (e) => {
             boardNo: boardNo
         },
         success: (result) => {
+            paginationUl.html(paginationPrev);
             let page = Math.ceil(result / 10);
             console.log(page);
             for (let i = 1; i <= page; i++) {
-                paginationPrev.after("<li class=\"page-item\"><button class=\"page-link\">" + i + "</button></li>");
+                paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">" + i + "</button></li>");
             }
+            paginationUl.append(paginationNext);
             paginationNav.removeClass("visually-hidden");
         }
     });

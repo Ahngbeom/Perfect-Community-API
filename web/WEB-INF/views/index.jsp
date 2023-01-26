@@ -72,7 +72,7 @@
                     </ul>
                     <nav class="visually-hidden">
                         <ul class="pagination">
-                            <li class="page-item"><button class="page-link">Previous</button></li>
+                            <li class="page-item"><button class="page-link disabled">Previous</button></li>
                             <li class="page-item"><button class="page-link">Next</button></li>
                         </ul>
                     </nav>
