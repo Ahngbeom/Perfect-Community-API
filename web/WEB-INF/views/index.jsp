@@ -55,22 +55,37 @@
                 </label>
                 <button type="button" id="loginBtn">Login</button>
             </div>
-            <div class="d-flex">
-                <div class="col-6">
+            <div class="d-flex gap-2">
+                <div class="d-flex flex-column border border-dark" id="boardList">
+                    <label class="h5">
+                        게시물 목록
+                    </label>
+                    <button type="button" class="btn btn-sm btn-link board-title">전체 게시물</button>
                     <ul>
-                        <li>
-                            <button type="button" class="btn btn-link api-link" data-api-method="get">/api/post/1</button>
-                        </li>
                     </ul>
                 </div>
-                <p class="col-6 border border-dark" id="api-result">
-                </p>
+                <div class="d-flex flex-column border border-info">
+                    <label class="h5">
+                        게시물 목록
+                    </label>
+                    <ul id="postListByBoard">
+                    </ul>
+                    <nav class="visually-hidden">
+                        <ul class="pagination">
+                            <li class="page-item"><button class="page-link">Previous</button></li>
+                            <li class="page-item"><button class="page-link">Next</button></li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </body>
 </html>
+<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jwt.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/authentication.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/board.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post.js"></script>
 <script type="application/javascript">
 
     setInterval(() => {
