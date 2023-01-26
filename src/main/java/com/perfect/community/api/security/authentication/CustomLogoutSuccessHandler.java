@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfect.community.api.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.JwtService;
 import com.perfect.community.api.service.redis.RedisService;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.C;
@@ -32,7 +33,11 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             if (authentication == null) {
                 String accessToken = jwtService.resolveAccessToken(request);
                 if (accessToken != null) {
-                    authentication = jwtTokenProvider.getAuthentication(accessToken);
+                    try {
+                        authentication = jwtTokenProvider.getAuthentication(accessToken);
+                    } catch (ExpiredJwtException e) {
+                        authentication = jwtTokenProvider.getAuthentication(jwtService.resolveRefreshToken(request));
+                    }
                 } else {
                     authentication = jwtTokenProvider.getAuthentication(jwtService.resolveRefreshToken(request));
                 }
