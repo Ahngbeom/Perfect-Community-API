@@ -53,10 +53,10 @@
                 AND (title like concat('%', #{keyword}, '%') OR contents like concat('%', #{keyword}, '%'))
             </if>
         </where>
+        order by reg_date desc
         <if test="page > 0">
             limit ${(page - 1) * 10}, 10
         </if>
-        order by reg_date desc
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postDTOMap">

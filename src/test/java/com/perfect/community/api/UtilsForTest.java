@@ -63,8 +63,8 @@ public class UtilsForTest {
 
     @Test
     void test() {
-        addDummyPosts(2, 10);
-        addDummyPosts(3, 10);
+        addDummyPosts(2, 20);
+        addDummyPosts(3, 30);
     }
 
 }
