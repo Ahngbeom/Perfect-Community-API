@@ -6,7 +6,8 @@ $(document).on('click', ".board-title", (e) => {
         contentType: 'application/json',
         dataType: 'json',
         data: {
-           boardNo: boardNo
+            boardNo: boardNo,
+            page: 1
         },
         success: (data) => {
             console.log(data);
