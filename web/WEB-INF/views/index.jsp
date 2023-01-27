@@ -9,6 +9,9 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
+                integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
               crossorigin="anonymous">
@@ -21,7 +24,7 @@
         <title>Title</title>
     </head>
     <body>
-        <div class="container g-2">
+        <div class="container-fluid g-2">
             <div class="d-flex">
                 <div class="col-6">
                     <div id="authentication">
@@ -56,24 +59,35 @@
                 <button type="button" id="loginBtn">Login</button>
             </div>
             <div class="d-flex gap-2">
-                <div class="d-flex flex-column border border-dark" id="boardList">
-                    <label class="h5">
-                        게시물 목록
+                <div class="d-flex flex-column col-4 border border-dark" id="boardList">
+                    <label class="h5 fw-semibold">
+                        게시판 목록
                     </label>
-                    <button type="button" class="btn btn-sm btn-link board-title">전체 게시물</button>
+                    <button type="button" class="btn btn-link board-title">전체 게시물</button>
                     <ul>
                     </ul>
                 </div>
-                <div class="d-flex flex-column border border-info">
-                    <label class="h5">
-                        게시물 목록
-                    </label>
+                <div class="d-flex gap-2 flex-column w-100 border border-info" id="postsByBoard">
+                    <div class="d-flex gap-3">
+                        <label class="h5 fw-semibold">
+                        </label>
+                        <span id="postCount"></span>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2 visually-hidden" id="boardControl">
+                        <button type='button' class='btn btn-link text-dark'>게시판 정보</button>
+                        <button type='button' class='btn btn-link text-warning'>게시판 수정</button>
+                        <button type='button' class='btn btn-link text-danger'>게시판 삭제</button>
+                    </div>
                     <ul id="postListByBoard">
                     </ul>
                     <nav class="visually-hidden">
                         <ul class="pagination">
-                            <li class="page-item"><button class="page-link disabled">Previous</button></li>
-                            <li class="page-item"><button class="page-link">Next</button></li>
+                            <li class="page-item">
+                                <button class="page-link disabled">Previous</button>
+                            </li>
+                            <li class="page-item">
+                                <button class="page-link">Next</button>
+                            </li>
                         </ul>
                     </nav>
                 </div>
