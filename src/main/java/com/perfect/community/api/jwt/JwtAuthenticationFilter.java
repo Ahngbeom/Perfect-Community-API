@@ -99,14 +99,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
                 } catch (ExpiredJwtException e) {
                     reissueJWT(httpServletRequest, (HttpServletResponse) response, chain, refreshToken);
-                    return;
+//                    return;
                 } catch (Exception e) {
                     log.error("{}:{}", e.getClass().getSimpleName(), e.getMessage());
                     throw new JwtException(e.getMessage());
                 }
             } else if (StringUtils.hasText(refreshToken)) {
                 reissueJWT(httpServletRequest, (HttpServletResponse) response, chain, refreshToken);
-                return;
+//                return;
             } else {
                 log.warn("No valid JWT token.(URI: {})", requestURI);
             }

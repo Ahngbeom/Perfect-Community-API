@@ -115,10 +115,10 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 
     private void permitAllByUserAPI(REQUEST_DATA requestData) {
         if (HttpMethod.GET.matches(requestData.METHOD)) {
-            if (!requestData.URI.equals("/api/user") && !requestData.URI.equals("/api/user/scraped-posts"))
+            if (!requestData.URI.equals("/api/user"))
                 return;
         } else if (HttpMethod.POST.matches(requestData.METHOD)) {
-            if (!requestData.URI.startsWith("/api/user/scrap-post"))
+            if (!requestData.URI.startsWith("/api/post/scrap"))
                 return;
         }
         throw new AccessDeniedException("User is not authenticated");
@@ -129,7 +129,7 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
             if (requestData.URI.startsWith("/api/user"))
                 return;
         } else if (HttpMethod.POST.matches(requestData.METHOD)) {
-            if (requestData.URI.startsWith("/api/user/scrap-post"))
+            if (requestData.URI.startsWith("/api/post/scrap"))
                 return;
         } else if (HttpMethod.PUT.matches(requestData.METHOD)) {
             if (requestData.PATH_VARIABLES.containsKey("userId") && requestData.PATH_VARIABLES.get("userId").equals(requestData.USER_ID))
@@ -140,7 +140,7 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
                     return;
             }
         } else if (HttpMethod.DELETE.matches(requestData.METHOD)) {
-            if (requestData.URI.startsWith("/api/user/release-scraped-post"))
+            if (requestData.URI.startsWith("/api/post/release-scrap"))
                 return;
             else if (requestData.PATH_VARIABLES.containsKey("userId") && requestData.PATH_VARIABLES.get("userId").equals(requestData.USER_ID))
                 return;
@@ -150,7 +150,8 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 
     private void permitAllByPostAPI(REQUEST_DATA requestData) {
         if (HttpMethod.GET.matches(requestData.METHOD)) {
-            return;
+            if (!requestData.URI.equals("/api/post/scraped"))
+                return;
         } else if (HttpMethod.POST.matches(requestData.METHOD)) {
             throw new AccessDeniedException("User is not authenticated");
         } else if (HttpMethod.PATCH.matches(requestData.METHOD)) {

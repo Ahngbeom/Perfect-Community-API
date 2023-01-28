@@ -1,4 +1,4 @@
-package com.perfect.community.api.controller.user;
+package com.perfect.community.api.controller.post;
 
 import com.perfect.community.api.service.post.PostScrapService;
 import lombok.RequiredArgsConstructor;
@@ -7,21 +7,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
-public class UserScrapPostController {
+@RequestMapping("/api/post")
+public class PostScrapController {
 
     private final PostScrapService service;
 
-    @GetMapping("/scraped-posts")
+    @GetMapping("/scraped")
     public ResponseEntity<?> getScrapedPosts(Authentication authentication) {
-        return ResponseEntity.ok(service.getAllScrapedPosts(authentication.getName()));
+        try {
+            return ResponseEntity.ok(service.getAllScrapedPosts(authentication.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.unprocessableEntity().body(null);
+        }
     }
 
-    @PostMapping("/scrap-post/{postNo}")
+    @PostMapping("/scrap/{postNo}")
     public ResponseEntity<?> scrapPost(Authentication authentication, @PathVariable long postNo) {
         try {
             service.scrapePost(authentication.getName(), postNo);
@@ -32,7 +35,7 @@ public class UserScrapPostController {
         }
     }
 
-    @DeleteMapping("/release-scraped-post/{postNo}")
+    @DeleteMapping("/release-scrap/{postNo}")
     public ResponseEntity<?> releaseScrapedPost(Authentication authentication, @PathVariable long postNo) {
         try {
             service.releaseScrapedPost(authentication.getName(), postNo);

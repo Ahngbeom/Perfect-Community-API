@@ -45,7 +45,6 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 })
 @WebAppConfiguration
 @Transactional
-@Import(EmbeddedRedisConfig.class)
 @WithUserDetails(value = "admin")
 public class ControllerIntegrationTest {
 
