@@ -9,6 +9,9 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
+                integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
               crossorigin="anonymous">
@@ -21,7 +24,7 @@
         <title>Title</title>
     </head>
     <body>
-        <div class="container g-2">
+        <div class="container-fluid g-2">
             <div class="d-flex">
                 <div class="col-6">
                     <div id="authentication">
@@ -55,39 +58,76 @@
                 </label>
                 <button type="button" id="loginBtn">Login</button>
             </div>
-            <div class="d-flex">
-                <div class="col-6">
+            <div class="d-flex gap-2">
+                <div class="d-flex flex-column col-4 border border-dark" id="boardList">
+                    <label class="h5 fw-semibold">
+                        게시판 목록
+                    </label>
+                    <button type="button" class="btn btn-link board-title">전체 게시물</button>
                     <ul>
-                        <li>
-                            <button type="button" class="btn btn-link api-link" data-api-method="get">/api/post/1</button>
-                        </li>
                     </ul>
                 </div>
-                <p class="col-6 border border-dark" id="api-result">
-                </p>
+                <div class="d-flex gap-2 flex-column w-100 border border-info" id="postsByBoard">
+                    <div class="d-flex gap-3">
+                        <label class="h5 fw-semibold">
+                        </label>
+                        <span id="postCount"></span>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2 visually-hidden" id="boardControl">
+                        <button type='button' class='btn btn-link text-dark' id="boardInfoBtn">게시판 정보</button>
+                        <button type='button' class='btn btn-link text-warning' id="boardUpdateBtn">게시판 수정</button>
+                        <button type='button' class='btn btn-link text-danger' id="boardRemoveBtn">게시판 삭제</button>
+                    </div>
+                    <ul id="postListByBoard">
+                    </ul>
+                    <nav class="visually-hidden">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <button class="page-link disabled">Previous</button>
+                            </li>
+                            <li class="page-item">
+                                <button class="page-link">Next</button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </body>
 </html>
+<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jwt.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/authentication.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/board.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/post.js"></script>
 <script type="application/javascript">
+    let filterOptions = JSON.parse($.cookie(FILTER_OPTIONS_KEY))
 
+    /* Current time */
     setInterval(() => {
         $("#currentTime").html(new Date());
     }, 1000);
 
-    $(".api-link").on('click', (e) => {
-        const api = $(e.target);
-        $.ajax({
-            type: api.data('api-method'),
-            url: api.html(),
-            contentType: 'application/json',
-            dataType: 'json'
-        }).done((data) => {
-            $("#api-result").addClass("text-wrap").text(JSON.stringify(data));
-        }).fail((xhr) => {
-            $("#api-result").html(xhr.responseText);
-        });
-    })
+    /* Keep page and data after refresh via cookie */
+    console.log(FILTER_OPTIONS_KEY, filterOptions);
+    if (filterOptions.pageType !== undefined) {
+        switch (filterOptions.pageType) {
+            case 'read': {
+                getBoard(JSON.parse($.cookie(FILTER_OPTIONS_KEY)).boardNo)
+                    .done((data) => {
+                        $.cookie(FILTER_OPTIONS_KEY, JSON.stringify({
+                            boardNo: data.bno,
+                            type: 'read'
+                        }))
+                        postsByBoard.html(putBoardFormHTML(data));
+                    });
+                break;
+            }
+            case 'list': {
+                getPostList(filterOptions)
+                    .done((data) => putPostList(data));
+                break;
+            }
+        }
+    }
 </script>

@@ -10,6 +10,7 @@ import com.perfect.community.api.service.post.PostService;
 
 import javax.naming.AuthenticationException;
 import java.security.Principal;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -20,9 +21,16 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<?> getPostList(@RequestBody(required = false) PostFilterDTO postListOptions) {
+    public ResponseEntity<?> getPostList(@RequestParam(required = false) Map<String, String> filterParam) {
         try {
-            return ResponseEntity.ok(postService.getPostList(postListOptions));
+            PostFilterDTO postFilterDTO = PostFilterDTO.builder()
+                    .boardNo(Long.parseLong(filterParam.getOrDefault("boardNo", "0")))
+                    .page(Integer.parseInt(filterParam.getOrDefault("page", "0")))
+                    .type(filterParam.getOrDefault("type", null))
+                    .keyword(filterParam.getOrDefault("keyword", null))
+                    .build();
+            log.info("{}", postFilterDTO);
+            return ResponseEntity.ok(postService.getPostList(postFilterDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -40,9 +48,15 @@ public class PostController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<?> getPostCount(@RequestBody(required = false) PostFilterDTO postListOptions) {
+    public ResponseEntity<?> getPostCount(@RequestParam(required = false) Map<String, String> filterParam) {
         try {
-            return ResponseEntity.ok(postService.getPostCount(postListOptions));
+            PostFilterDTO postFilterDTO = PostFilterDTO.builder()
+                    .boardNo(Long.parseLong(filterParam.getOrDefault("boardNo", "0")))
+                    .page(Integer.parseInt(filterParam.getOrDefault("page", "0")))
+                    .type(filterParam.getOrDefault("type", null))
+                    .keyword(filterParam.getOrDefault("keyword", null))
+                    .build();
+            return ResponseEntity.ok(postService.getPostCount(postFilterDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

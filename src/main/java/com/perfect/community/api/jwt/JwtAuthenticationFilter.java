@@ -86,8 +86,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         else {
             if (StringUtils.hasText(accessToken)) {
                 try {
+                    /* Access token validation */
                     tokenProvider.validateToken(accessToken);
+
                     Authentication authentication = tokenProvider.getAuthentication(accessToken);
+
+                    /* Compared to Redis tokens.  */
+                    redisService.validateAccessTokenByUsername(authentication.getName(), accessToken);
+                    
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
                 } catch (ExpiredJwtException e) {
@@ -112,7 +118,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         try {
             /* An exception is thrown by 'validateToken' if the refresh token validation fails. */
             tokenProvider.validateToken(refreshToken);
-
 
             /* Compared to Redis tokens.  */
             Authentication authentication = tokenProvider.getAuthentication(refreshToken);

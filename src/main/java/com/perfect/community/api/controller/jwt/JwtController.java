@@ -44,7 +44,8 @@ public class JwtController {
             else
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed");
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            log.error(e.getClass().getSimpleName() + "{}", e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 

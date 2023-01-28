@@ -30,14 +30,13 @@
             </otherwise>
         </choose>
         <where>
-            <if test="board_no gt 0">
-                board_no = #{board_no}
+            <if test="boardNo gt 0">
+                board_no = #{boardNo}
             </if>
             <if test="type != null">
                 and type like #{type}
             </if>
         </where>
-
     </select>
 
     <select id="selectPostList" resultMap="postDTOMap">
@@ -54,10 +53,10 @@
                 AND (title like concat('%', #{keyword}, '%') OR contents like concat('%', #{keyword}, '%'))
             </if>
         </where>
+        order by reg_date desc
         <if test="page > 0">
             limit ${(page - 1) * 10}, 10
         </if>
-        order by reg_date desc
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postDTOMap">

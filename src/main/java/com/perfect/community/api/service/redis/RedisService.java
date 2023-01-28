@@ -59,6 +59,13 @@ public class RedisService {
         }
     }
 
+    public void validateAccessTokenByUsername(String username, String accessToken) throws JwtException {
+        try (Jedis jedis = jedisPool.getResource()) {
+            if (!accessToken.equals(jedis.hget(JWT_KEY + username, ACCESS_TOKEN_FIELD)))
+                throw new JwtException("Invalid JWT.");
+        }
+    }
+
     public void validateRefreshTokenByUsername(String username, String refreshToken) throws JwtException {
         try (Jedis jedis = jedisPool.getResource()) {
             if (!refreshToken.equals(jedis.hget(JWT_KEY + username, REFRESH_TOKEN_FIELD)))

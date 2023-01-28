@@ -1,3 +1,5 @@
+loadAuthentication();
+
 function loadAuthentication() {
     console.log("Username", username);
     console.log("Access Token", accessToken);
@@ -49,6 +51,7 @@ $("#logoutBtn").on('click', () => {
         accessToken = undefined;
         clearInterval(accessTokenInterval);
         clearInterval(refreshTokenInterval);
+        loadAuthentication();
     }).fail((xhr) => {
         console.error(xhr);
         console.error(xhr.responseText);
