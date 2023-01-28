@@ -74,9 +74,9 @@
                         <span id="postCount"></span>
                     </div>
                     <div class="d-flex justify-content-end gap-2 visually-hidden" id="boardControl">
-                        <button type='button' class='btn btn-link text-dark'>게시판 정보</button>
-                        <button type='button' class='btn btn-link text-warning'>게시판 수정</button>
-                        <button type='button' class='btn btn-link text-danger'>게시판 삭제</button>
+                        <button type='button' class='btn btn-link text-dark' id="boardInfoBtn">게시판 정보</button>
+                        <button type='button' class='btn btn-link text-warning' id="boardUpdateBtn">게시판 수정</button>
+                        <button type='button' class='btn btn-link text-danger' id="boardRemoveBtn">게시판 삭제</button>
                     </div>
                     <ul id="postListByBoard">
                     </ul>
@@ -101,22 +101,33 @@
 <script src="${pageContext.request.contextPath}/resources/js/board.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/post.js"></script>
 <script type="application/javascript">
+    let filterOptions = JSON.parse($.cookie(FILTER_OPTIONS_KEY))
 
+    /* Current time */
     setInterval(() => {
         $("#currentTime").html(new Date());
     }, 1000);
 
-    $(".api-link").on('click', (e) => {
-        const api = $(e.target);
-        $.ajax({
-            type: api.data('api-method'),
-            url: api.html(),
-            contentType: 'application/json',
-            dataType: 'json'
-        }).done((data) => {
-            $("#api-result").addClass("text-wrap").text(JSON.stringify(data));
-        }).fail((xhr) => {
-            $("#api-result").html(xhr.responseText);
-        });
-    })
+    /* Keep page and data after refresh via cookie */
+    console.log(FILTER_OPTIONS_KEY, filterOptions);
+    if (filterOptions.pageType !== undefined) {
+        switch (filterOptions.pageType) {
+            case 'read': {
+                getBoard(JSON.parse($.cookie(FILTER_OPTIONS_KEY)).boardNo)
+                    .done((data) => {
+                        $.cookie(FILTER_OPTIONS_KEY, JSON.stringify({
+                            boardNo: data.bno,
+                            type: 'read'
+                        }))
+                        postsByBoard.html(putBoardFormHTML(data));
+                    });
+                break;
+            }
+            case 'list': {
+                getPostList(filterOptions)
+                    .done((data) => putPostList(data));
+                break;
+            }
+        }
+    }
 </script>

@@ -1,15 +1,10 @@
 const FILTER_OPTIONS_KEY = "filter-options";
 
-let filterOptions = JSON.parse($.cookie(FILTER_OPTIONS_KEY))
 
 const postsByBoard = $("#postsByBoard");
 const postsListUl = $("#postListByBoard");
 const paginationNav = $("#postListByBoard").siblings("nav");
 const paginationUl = paginationNav.find(".pagination");
-
-getPostList(filterOptions)
-    .done((data) => putPostList(data));
-
 
 function getPostList(option) {
     console.log(option);
@@ -24,12 +19,13 @@ function getPostList(option) {
 }
 
 function putPostList(posts) {
+    console.log(posts);
     postsListUl.html("");
     posts.forEach(post => {
         postsListUl.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
     });
 
-    filterOptions = JSON.parse($.cookie(FILTER_OPTIONS_KEY));
+    const filterOptions = JSON.parse($.cookie(FILTER_OPTIONS_KEY));
     if (filterOptions.boardNo !== undefined) {
         getBoard(filterOptions.boardNo)
             .done((data) => {
@@ -74,6 +70,7 @@ function setPagination(start, end) {
 
 $(document).on('click', ".board-title", (e) => {
     const filter = {
+        pageType: 'list',
         boardNo: $(e.target).data('bno'),
         page: 1
     }
