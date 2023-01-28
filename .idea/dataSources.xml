@@ -8,7 +8,7 @@
       <jdbc-url>jdbc:mariadb://localhost:3306/perfect_community</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="perfect_community_redis@localhost" uuid="3301c83d-80e0-4224-abfa-b0da89ecdee9">
+    <data-source source="LOCAL" name="perfect_community_redis@localhost" single-connection="true" uuid="3301c83d-80e0-4224-abfa-b0da89ecdee9">
       <driver-ref>redis</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>jdbc.RedisDriver</jdbc-driver>

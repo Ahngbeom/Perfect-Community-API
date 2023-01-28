@@ -1,13 +1,14 @@
 package com.perfect.community.api.service.user;
 
 import com.perfect.community.api.service.ServiceTest;
+import com.perfect.community.api.service.post.PostScrapService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class UserScrapPostServiceTest extends ServiceTest {
+class PostScrapServiceTest extends ServiceTest {
 
     @Autowired
-    private UserScrapPostService service;
+    private PostScrapService service;
 
     @Test
     void scrapePost() {

@@ -1,8 +1,8 @@
 package com.perfect.community.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.perfect.community.api.UtilsForTest;
+import com.perfect.community.api.config.EmbeddedRedisConfig;
+import dummy.UtilsForTest;
 import com.perfect.community.api.service.utils.RelocateService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,14 +10,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.event.annotation.PrepareTestInstance;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +28,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import redis.embedded.RedisServer;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.UnsupportedEncodingException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,6 +45,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 })
 @WebAppConfiguration
 @Transactional
+@Import(EmbeddedRedisConfig.class)
 @WithUserDetails(value = "admin")
 public class ControllerIntegrationTest {
 

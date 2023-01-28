@@ -163,9 +163,10 @@ public class JwtTokenProvider implements InitializingBean {
      *                                  before the time this method is invoked.
      * @throws IllegalArgumentException if the {@code claimsJws} string is {@code null} or empty or only whitespace
      */
-    public void validateToken(String token) throws JwtException {
+    public boolean validateToken(String token) throws JwtException {
         Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token);
         log.info("JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
+        return true;
     }
 
     public void validateRefreshToken(String token) {

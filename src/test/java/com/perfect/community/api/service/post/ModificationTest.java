@@ -26,6 +26,7 @@ public class ModificationTest extends PostServiceTest {
     @Test
     void modification() {
         PostDTO postDTO = PostDTO.builder()
+                .postNo(1)
                 .boardNo(boardNoByModifyPost)
                 .type(PostType.NOTICE.name())
                 .title("JUNIT MODIFICATION TEST")
@@ -38,6 +39,7 @@ public class ModificationTest extends PostServiceTest {
     void byInvalidPno() {
         try {
             PostDTO postDTO = PostDTO.builder()
+                    .postNo(1)
                     .boardNo(boardNoByModifyPost)
                     .type(PostType.NOTICE.name())
                     .title("JUNIT MODIFICATION TEST")
@@ -53,6 +55,7 @@ public class ModificationTest extends PostServiceTest {
     void byInvalidBoardNo() {
         try {
             PostDTO postDTO = PostDTO.builder()
+                    .postNo(1)
                     .boardNo(-1)
                     .type(PostType.NOTICE.name())
                     .title("JUNIT MODIFICATION TEST")
@@ -68,6 +71,7 @@ public class ModificationTest extends PostServiceTest {
     void withoutType() {
         try {
             PostDTO postDTO = PostDTO.builder()
+                    .postNo(1)
                     .boardNo(boardNoByModifyPost)
                     .title("JUNIT MODIFICATION TEST")
                     .contents("JUST FOR MODIFICATION")
@@ -82,6 +86,7 @@ public class ModificationTest extends PostServiceTest {
     void byNullTitle() {
         try {
             PostDTO postDTO = PostDTO.builder()
+                    .postNo(1)
                     .boardNo(boardNoByModifyPost)
                     .type(PostType.NOTICE.name())
                     .title(null)
@@ -97,6 +102,7 @@ public class ModificationTest extends PostServiceTest {
     void byNullContents() {
         try {
             PostDTO postDTO = PostDTO.builder()
+                    .postNo(1)
                     .boardNo(boardNoByModifyPost)
                     .type(PostType.NOTICE.name())
                     .title("JUNIT MODIFICATION TEST")
@@ -112,6 +118,7 @@ public class ModificationTest extends PostServiceTest {
     void byOtherUser() {
         try {
             PostDTO postDTO = PostDTO.builder()
+                    .postNo(1)
                     .boardNo(boardNoByModifyPost)
                     .type(PostType.NOTICE.name())
                     .title("JUNIT MODIFICATION TEST")

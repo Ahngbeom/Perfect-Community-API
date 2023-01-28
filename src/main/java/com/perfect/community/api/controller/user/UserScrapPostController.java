@@ -1,6 +1,6 @@
 package com.perfect.community.api.controller.user;
 
-import com.perfect.community.api.service.user.UserScrapPostService;
+import com.perfect.community.api.service.post.PostScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.security.Principal;
 @RequestMapping("/api/user")
 public class UserScrapPostController {
 
-    private final UserScrapPostService service;
+    private final PostScrapService service;
 
     @GetMapping("/scraped-posts")
     public ResponseEntity<?> getScrapedPosts(Authentication authentication) {
@@ -22,21 +22,23 @@ public class UserScrapPostController {
     }
 
     @PostMapping("/scrap-post/{postNo}")
-    public ResponseEntity<?> scrapPost(Principal principal, @PathVariable long postNo) {
+    public ResponseEntity<?> scrapPost(Authentication authentication, @PathVariable long postNo) {
         try {
-            service.scrapePost(principal.getName(), postNo);
+            service.scrapePost(authentication.getName(), postNo);
             return ResponseEntity.ok(postNo);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/release-scraped-post/{postNo}")
-    public ResponseEntity<?> releaseScrapedPost(Principal principal, @PathVariable long postNo) {
+    public ResponseEntity<?> releaseScrapedPost(Authentication authentication, @PathVariable long postNo) {
         try {
-            service.releaseScrapedPost(principal.getName(), postNo);
+            service.releaseScrapedPost(authentication.getName(), postNo);
             return ResponseEntity.ok(postNo);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
     }

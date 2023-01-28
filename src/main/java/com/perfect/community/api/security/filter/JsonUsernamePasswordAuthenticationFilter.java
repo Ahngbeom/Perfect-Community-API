@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -60,13 +61,17 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         // 이미 인증된 유저의 로그인 시도 차단      
-//        Authentication authentication = jwtTokenProvider.getAuthentication(request.getHeader(AUTHORIZATION_HEADER));
-//        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-//            throw new AuthenticationServiceException("Already authenticated - " + authentication.getName());
-//        }
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
+            throw new AuthenticationServiceException("Already authenticated - " + SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+        else if (bearerToken != null && jwtTokenProvider.getAuthentication(bearerToken) instanceof UsernamePasswordAuthenticationToken) {
+            throw new AuthenticationServiceException("Already authenticated - " + jwtTokenProvider.getAuthentication(bearerToken).getName());
+        }
+
         // 이미 Bearer 토큰을 가지고 있는 유저의 로그인 시도 차단
-        if (request.getHeader(AUTHORIZATION_HEADER) != null) {
+        if (bearerToken != null && jwtTokenProvider.validateToken(bearerToken)) {
             throw new AuthenticationServiceException("Already have a bearer token - " + request.getHeader("Authorization"));
         }
         // POST 이외의 다른 HTTP 요청 메소드 거부

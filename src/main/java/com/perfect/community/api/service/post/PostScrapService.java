@@ -1,4 +1,4 @@
-package com.perfect.community.api.service.user;
+package com.perfect.community.api.service.post;
 
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.mapper.user.UserScrapPostMapper;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserScrapPostService {
+public class PostScrapService {
 
     private final UserScrapPostMapper mapper;
 

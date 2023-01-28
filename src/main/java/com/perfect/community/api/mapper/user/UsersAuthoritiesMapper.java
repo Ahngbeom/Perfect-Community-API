@@ -15,7 +15,7 @@ public interface UsersAuthoritiesMapper {
 
     List<UserAuthorityEntity> selectAllUserAuthoritiesByUserId(String userId);
 
-    int insertUserAuthorities(@Param("userId") String userId, @Param("authority") String authority);
+    int insertUserAuthorities(UserAuthoritiesDTO userAuthorities);
 
     int deleteUserAuthorities(UserAuthoritiesDTO userAuthorities);
 

@@ -92,8 +92,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     Authentication authentication = tokenProvider.getAuthentication(accessToken);
 
                     /* Compared to Redis tokens.  */
-                    redisService.validateAccessTokenByUsername(authentication.getName(), accessToken);
-                    
+                    if (redisService.validateAccessTokenByUsername(authentication.getName(), accessToken))
+                        throw new JwtException("Invalid JWT.");
+
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     log.info("Stored '{}' authentication information in SecurityContext. (URI: {})", authentication.getName(), requestURI);
                 } catch (ExpiredJwtException e) {
@@ -121,7 +122,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
             /* Compared to Redis tokens.  */
             Authentication authentication = tokenProvider.getAuthentication(refreshToken);
-            redisService.validateRefreshTokenByUsername(authentication.getName(), refreshToken);
+            if (redisService.validateRefreshTokenByUsername(authentication.getName(), refreshToken))
+                throw new JwtException("Invalid JWT.");
 
             /* Reissue tokens */
             TokenDTO tokenDTO = tokenProvider.generateToken(authentication);

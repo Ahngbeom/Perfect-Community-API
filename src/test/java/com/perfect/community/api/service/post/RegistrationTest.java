@@ -14,8 +14,8 @@ public class RegistrationTest extends PostServiceTest {
                 .title("JUNIT TEST")
                 .contents("THIS POST FOR JUNIT TEST")
                 .build();
-        postService.registration("admin", postDTO);
-        log.info(getInfoByPno(postDTO.getPostNo()));
+        long createdPno = postService.registration("admin", postDTO);
+        log.info(getInfoByPno(createdPno));
     }
 
     @Test

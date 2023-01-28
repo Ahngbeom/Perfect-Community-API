@@ -65,7 +65,7 @@
         where post_no = #{post_no};
     </select>
 
-    <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_no">
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_no" parameterType="com.perfect.community.api.vo.post.PostVO">
         insert into posts (board_no, type, title, contents, writer)
         values (#{board_no}, UPPER(#{type}), #{title}, #{contents}, #{writer});
     </insert>
