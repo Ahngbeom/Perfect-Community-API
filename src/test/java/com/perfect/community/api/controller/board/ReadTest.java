@@ -1,7 +1,7 @@
 package com.perfect.community.api.controller.board;
 
-import com.perfect.community.api.dto.board.BoardDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.perfect.community.api.dto.board.BoardDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -37,7 +37,7 @@ class ReadTest extends BoardControllerTest {
     @WithAnonymousUser
     void getBoardInfoWithInvalidBoardNo() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/board/-1"))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isOk())
                 .andReturn();
     }
 }

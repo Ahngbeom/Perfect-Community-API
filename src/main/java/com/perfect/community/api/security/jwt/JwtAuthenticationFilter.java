@@ -3,7 +3,8 @@ package com.perfect.community.api.security.jwt;
 import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.service.JwtService;
 import com.perfect.community.api.service.redis.RedisService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -81,6 +82,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 + "\n Access Token=" + accessToken
                 + "\n Refresh Token=" + refreshToken);
 
+
         if (requestURI.equals("/api/login") || requestURI.equals("/api/jwt/reissue"))
             chain.doFilter(request, response);
         else {
@@ -97,14 +99,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     logger.info("Stored '" + authentication.getName() + "' authentication information in SecurityContext. (URI: " + requestURI + ")");
                 } catch (ExpiredJwtException e) {
                     reissueJWT(httpServletRequest, (HttpServletResponse) response, chain, refreshToken);
-//                    return;
                 } catch (Exception e) {
                     logger.error(e.getClass().getSimpleName() + " - " + e.getMessage());
                     throw new JwtException(e.getMessage());
                 }
             } else if (StringUtils.hasText(refreshToken) && tokenProvider.validateToken(refreshToken)) {
                 reissueJWT(httpServletRequest, (HttpServletResponse) response, chain, refreshToken);
-//                return;
             } else {
                 logger.warn("No valid JWT token.(URI: " + requestURI + ")");
             }
@@ -113,7 +113,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private void reissueJWT(HttpServletRequest request, HttpServletResponse response, FilterChain chain, String refreshToken) throws ServletException, IOException {
-//        String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring("Bearer ".length());
         try {
             /* An exception is thrown by 'validateToken' if the refresh token validation fails. */
             if (!tokenProvider.validateToken(refreshToken))
@@ -134,7 +133,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             tokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.info("[SUCCESS] Reissued JWT");
-            chain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
             throw new JwtException("Refresh token has expired. Please sign in again.");
         }

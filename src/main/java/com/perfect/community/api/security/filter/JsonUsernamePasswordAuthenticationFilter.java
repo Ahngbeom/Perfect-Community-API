@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.AccessDeniedException;
 
 public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -64,7 +62,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
         String accessToken = bearerToken != null ? bearerToken.substring("Bearer".length()) : null;
         // 이미 인증된 유저의 로그인 시도 차단
         if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
-            throw new AccessDeniedException("Already authenticated - " + SecurityContextHolder.getContext().getAuthentication().getName());
+            throw new AuthenticationServiceException("Already authenticated - " + SecurityContextHolder.getContext().getAuthentication().getName());
         }
         else if (accessToken != null && jwtTokenProvider.getAuthentication(accessToken) instanceof UsernamePasswordAuthenticationToken) {
             throw new AuthenticationServiceException("Already authenticated - " + jwtTokenProvider.getAuthentication(accessToken).getName());
@@ -72,15 +70,15 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
         // 이미 Bearer 토큰을 가지고 있는 유저의 로그인 시도 차단
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
-            throw new AccessDeniedException("Already have a bearer token - " + request.getHeader("Authorization"));
+            throw new AuthenticationServiceException("Already have a bearer token - " + request.getHeader("Authorization"));
         }
         // POST 이외의 다른 HTTP 요청 메소드 거부
         if (!HttpMethod.POST.matches(request.getMethod())) {
-            throw new AccessDeniedException("Authentication method not supported - " + request.getMethod());
+            throw new AuthenticationServiceException("Authentication method not supported - " + request.getMethod());
         }
         // application/json 이외에 ContentType 거부
         if (!request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
-            throw new AccessDeniedException("Authentication content type not supported - " + request.getContentType());
+            throw new AuthenticationServiceException("Authentication content type not supported - " + request.getContentType());
         }
 
         JsonNode requestJSON = objectMapper.readTree(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8));

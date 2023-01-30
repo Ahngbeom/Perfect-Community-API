@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.perfect.community.api.mapper.user.UserPostViewsMapper">
+
+    <resultMap id="UserViewedPostsMap" type="com.perfect.community.api.dto.user.UserViewedPostsDTO">
+        <result column="view_date" property="viewDate"/>
+        <association property="post" resultMap="com.perfect.community.api.mapper.post.PostMapper.postDTOMap"/>
+    </resultMap>
+
+    <select id="getRecentlyViewedPosts" resultMap="UserViewedPostsMap">
+        select view_date,
+               posts.post_no as post_no,
+               board_no,
+               type,
+               title,
+               contents,
+               writer,
+               reg_date,
+               update_date,
+               views,
+               recommend,
+               not_recommend
+        from posts
+                 left join user_recently_viewed_posts urvp on posts.post_no = urvp.post_no
+                 left join post_views pv on posts.post_no = pv.post_no
+                 left join perfect_community.post_recommend pr on posts.post_no = pr.post_no
+        where user_id like #{userId}
+        order by view_date
+        limit 0, #{amount};
+    </select>
+
+    <insert id="addViewedPost">
+        insert into user_recently_viewed_posts(user_id, post_no)
+        values (#{userId}, #{postNo})
+    </insert>
+
+    <update id="updateViewedPost">
+        update user_recently_viewed_posts
+        set view_date = current_timestamp
+        where user_id like #{userId}
+          and post_no = #{postNo};
+    </update>
+
+    <select id="getPostViewedDate" resultType="java.time.LocalDateTime">
+        select view_date
+        from user_recently_viewed_posts
+        where user_id like #{userId}
+          and post_no = #{postNo}
+    </select>
+</mapper>
