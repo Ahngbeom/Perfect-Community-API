@@ -1,8 +1,8 @@
 package com.perfect.community.api.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.perfect.community.api.jwt.JwtAuthenticationFilter;
-import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.security.jwt.JwtAuthenticationFilter;
+import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.security.detail.CustomUserDetailService;
 import com.perfect.community.api.service.board.BoardService;
 import com.perfect.community.api.service.post.PostService;

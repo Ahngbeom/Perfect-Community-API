@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.perfect.community.api.mapper.board.BoardMapper">
 
-    <resultMap id="boardEntityMap" type="com.perfect.community.api.vo.board.BoardEntity">
+    <resultMap id="boardDtoMap" type="com.perfect.community.api.dto.board.BoardDTO">
         <id column="bno" property="bno"/>
         <result column="create_user" property="createUser" />
         <result column="title" property="title"/>
@@ -13,19 +13,19 @@
         <result column="update_date" property="updateDate"/>
     </resultMap>
 
-    <select id="getBoardList" resultMap="boardEntityMap">
+    <select id="getBoardList" resultType="com.perfect.community.api.vo.board.BoardVO">
         select bno, create_user, title, comment, create_date, update_date
         from boards
         order by bno;
     </select>
 
-    <select id="getBoardInfo" resultMap="boardEntityMap" >
+    <select id="getBoardInfo" resultType="com.perfect.community.api.vo.board.BoardVO">
         select bno, create_user, title, comment, create_date, update_date
         from boards
         where bno = #{bno};
     </select>
 
-    <insert id="createBoard" useGeneratedKeys="true" keyProperty="bno">
+    <insert id="createBoard" parameterType="com.perfect.community.api.dto.board.BoardDTO" useGeneratedKeys="true" keyProperty="bno">
         insert into boards (title, comment, create_user)
         values (#{title}, #{comment}, #{createUser})
     </insert>

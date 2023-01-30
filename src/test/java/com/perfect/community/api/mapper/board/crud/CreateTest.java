@@ -1,6 +1,7 @@
 package com.perfect.community.api.mapper.board.crud;
 
-import com.perfect.community.api.vo.board.BoardEntity;
+import com.perfect.community.api.dto.board.BoardDTO;
+import com.perfect.community.api.vo.board.BoardVO;
 import com.perfect.community.api.mapper.board.BoardMapperTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ class CreateTest extends BoardMapperTest {
     void createBoardWithNullTitle() {
         try {
             int result = boardMapper.createBoard(
-                    BoardEntity.builder()
+                    BoardDTO.builder()
                             .createUser("admin")
                             .title(null)
                             .comment("Create test from BoardMapperTest")
@@ -30,7 +31,7 @@ class CreateTest extends BoardMapperTest {
     void createBoard() {
         try {
             int result = boardMapper.createBoard(
-                    BoardEntity.builder()
+                    BoardDTO.builder()
                             .createUser("admin")
                             .title(generateRandomTitle())
                             .comment("Create test from BoardMapperTest")

@@ -1,4 +1,4 @@
-package com.perfect.community.api.security.authentication;
+package com.perfect.community.api.security.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

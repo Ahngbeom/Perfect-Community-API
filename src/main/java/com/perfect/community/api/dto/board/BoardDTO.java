@@ -1,5 +1,8 @@
 package com.perfect.community.api.dto.board;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.perfect.community.api.vo.board.BoardVO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +21,10 @@ public class BoardDTO {
 
     private String comment;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updateDate;
 
 
@@ -42,4 +48,14 @@ public class BoardDTO {
         this.createDate = createDate;
         this.updateDate = updateDate;
     }
+
+    public BoardDTO(BoardVO boardVO) {
+        this.bno = boardVO.getBno();
+        this.createUser = boardVO.getCreate_user();
+        this.title = boardVO.getTitle();
+        this.comment = boardVO.getComment();
+        this.createDate = boardVO.getCreate_date();
+        this.updateDate = boardVO.getUpdate_date();
+    }
+
 }

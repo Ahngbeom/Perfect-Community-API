@@ -1,6 +1,6 @@
 package com.perfect.community.api.mapper.board;
 
-import com.perfect.community.api.vo.board.BoardEntity;
+import com.perfect.community.api.vo.board.BoardVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface BoardCategoryMapper {
 
-    int updateCategory(BoardEntity boardEntity);
+    int updateCategory(BoardVO boardVO);
 }

@@ -2,7 +2,7 @@ package com.perfect.community.api.controller.jwt;
 
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.jwt.TokenDTO;
-import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,12 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
