@@ -12,7 +12,9 @@
 
 [//]: # (![]&#40;https://img.shields.io/badge/Apache%20Tomcat-9-orange&#41;)
 
-## [Notion](https://jr-developer-ahngbeom.notion.site/Perfect-Community-API-87b6d4c45503482786d31f155a40a986)
+### [Notion](https://jr-developer-ahngbeom.notion.site/Perfect-Community-API-87b6d4c45503482786d31f155a40a986)
+
+### [Postman](https://www.postman.com/ahng-beom/workspace/perfect-community-api)
 
 ---
 
@@ -20,7 +22,7 @@
 
 - **Java 8**
 - **Apache Tomcat 9**
-- **Spring Framework 5.3.25**
+- **Spring Framework MVC 5.3.25**
 - **Spring Security 5.7.5**
 - **JWT 0.11.5**
 - **JSON 2.14.0**
