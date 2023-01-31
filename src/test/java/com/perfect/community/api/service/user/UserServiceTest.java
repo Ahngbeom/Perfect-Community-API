@@ -55,7 +55,7 @@ class UserServiceTest {
     @Test
     void createUser() {
         UserDTO user = UserDTO.builder()
-                .userId("aaa")
+                .userId("aaaaa")
                 .password("aaaa")
                 .nickname("AAA")
                 .authority("ROLE_USER")
@@ -91,8 +91,8 @@ class UserServiceTest {
 
     @Test
     void removeUser() {
-        service.removeUser("tester1");
-        log.warn(service.getUserInfoByUserId("tester1"));
+        service.removeUser("tester");
+        log.warn(service.getUserInfoByUserId("tester"));
     }
 
     @Test

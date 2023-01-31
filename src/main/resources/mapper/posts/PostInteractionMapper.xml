@@ -8,7 +8,7 @@
     <select id="getViews" resultType="long">
         select views
         from post_views
-        where post_no = #{post_no}
+        where post_no = #{postNo}
     </select>
     <update id="increaseViews" parameterType="com.perfect.community.api.vo.post.PostViewsVO">
         <selectKey keyProperty="views" resultType="long" order="AFTER">

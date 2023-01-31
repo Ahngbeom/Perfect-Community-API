@@ -13,6 +13,9 @@
         <result property="writer" column="writer"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
+        <result property="views" column="views"/>
+        <result property="recommend" column="recommend"/>
+        <result property="notRecommend" column="not_recommend"/>
     </resultMap>
 
     <select id="countPosts" resultType="long">
@@ -40,8 +43,11 @@
     </select>
 
     <select id="selectPostList" resultMap="postDTOMap">
-        select post_no, board_no, type, title, contents, writer, reg_date, update_date
+        select posts.post_no, board_no, type, title, contents, writer, reg_date, update_date, views, recommend,
+        not_recommend
         from posts
+        left join perfect_community.post_views pv on posts.post_no = pv.post_no
+        left join perfect_community.post_recommend pr on posts.post_no = pr.post_no
         <where>
             <if test="boardNo > 0">
                 board_no = #{boardNo}
@@ -60,22 +66,30 @@
     </select>
 
     <select id="selectPostInfoByPno" resultMap="postDTOMap">
-        select post_no, board_no, type, title, contents, writer, reg_date, update_date
+        select post_no,
+               board_no,
+               type,
+               title,
+               contents,
+               writer,
+               reg_date,
+               update_date
         from posts
         where post_no = #{post_no};
     </select>
 
-    <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_no">
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_no"
+            parameterType="com.perfect.community.api.vo.post.PostVO">
         insert into posts (board_no, type, title, contents, writer)
         values (#{board_no}, UPPER(#{type}), #{title}, #{contents}, #{writer});
     </insert>
 
     <update id="updatePost">
         update posts
-        set board_no = #{board_no},
-            type = UPPER(#{type}),
-            title = #{title},
-            contents = #{contents},
+        set board_no    = #{board_no},
+            type        = UPPER(#{type}),
+            title       = #{title},
+            contents    = #{contents},
             update_date = NOW()
         where post_no = #{post_no}
     </update>
@@ -101,6 +115,7 @@
     <select id="isWriter" resultType="java.lang.Boolean">
         select if(count(*) = 1, 1, 0)
         from posts
-        where post_no = #{pno} and writer like #{userId}
+        where post_no = #{pno}
+          and writer like #{userId}
     </select>
 </mapper>

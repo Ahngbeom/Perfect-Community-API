@@ -1,21 +1,17 @@
 package com.perfect.community.api.service.board;
 
-import com.perfect.community.api.UtilsForTest;
+import dummy.UtilsForTest;
 import com.perfect.community.api.dto.board.BoardDTO;
 import com.perfect.community.api.service.utils.RelocateService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 

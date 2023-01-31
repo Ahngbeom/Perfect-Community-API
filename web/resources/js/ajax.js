@@ -9,7 +9,9 @@ $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
     // console.log(ajaxOptions);
     if (jqXHR.status >= 400) {
         console.error(jqXHR.status, jqXHR.statusText, jqXHR.responseText);
+        console.error();
     }
+    loadAuthentication();
 });
 
 $.ajaxSetup({

@@ -1,6 +1,7 @@
 package com.perfect.community.api.mapper.board.crud;
 
-import com.perfect.community.api.vo.board.BoardEntity;
+import com.perfect.community.api.dto.board.BoardDTO;
+import com.perfect.community.api.vo.board.BoardVO;
 import com.perfect.community.api.mapper.board.BoardMapperTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ class UpdateTest extends BoardMapperTest {
     void updateBoard() {
         try {
            int result = boardMapper.updateBoard(
-                    BoardEntity.builder()
+                    BoardDTO.builder()
                             .createUser("admin")
                             .bno(1)
                             .title("Update")
@@ -31,7 +32,7 @@ class UpdateTest extends BoardMapperTest {
     void updateBoardWithInvalidBoardNo() {
         try {
             int result = boardMapper.updateBoard(
-                    BoardEntity.builder()
+                    BoardDTO.builder()
                             .createUser("admin")
                             .bno(-1)
                             .title("Update")
@@ -49,7 +50,7 @@ class UpdateTest extends BoardMapperTest {
     void updateBoardWithNullTitle() {
         try {
             int result = boardMapper.updateBoard(
-                    BoardEntity.builder()
+                    BoardDTO.builder()
                             .createUser("admin")
                             .bno(1)
                             .title(null)

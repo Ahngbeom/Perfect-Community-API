@@ -1,8 +1,8 @@
-package com.perfect.community.api.security.authentication;
+package com.perfect.community.api.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfect.community.api.dto.jwt.TokenDTO;
-import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.mapper.user.LoginHistoryMapper;
 import com.perfect.community.api.service.redis.RedisService;
 import com.perfect.community.api.utils.HttpServletCheck;

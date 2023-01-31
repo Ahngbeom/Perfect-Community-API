@@ -1,7 +1,7 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.JwtService;
 import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;

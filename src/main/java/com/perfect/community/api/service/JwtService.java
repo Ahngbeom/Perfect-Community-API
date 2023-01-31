@@ -1,8 +1,7 @@
 package com.perfect.community.api.service;
 
-import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.jwt.TokenDTO;
-import com.perfect.community.api.jwt.JwtTokenProvider;
+import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
-package com.perfect.community.api;
+package dummy;
 
-import com.perfect.community.api.mapper.post.PostMapper;
+import com.perfect.community.api.dto.post.PostDTO;
+import com.perfect.community.api.service.post.PostService;
 import com.perfect.community.api.vo.post.PostVO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,7 @@ import java.util.Random;
 public class UtilsForTest {
 
     @Autowired
-    private PostMapper postMapper;
+    private PostService postService;
 
     public String generateRandomTitle() {
         int leftLimit = 48; // numeral '0'
@@ -48,23 +49,24 @@ public class UtilsForTest {
     }
 
     public void addDummyPosts(long boardNo, int amount) {
-        PostVO postVO;
+        PostDTO postDTO;
         while (amount-- > 0) {
-            postVO = PostVO.builder()
-                    .board_no(boardNo)
+            postDTO = PostDTO.builder()
+                    .boardNo(boardNo)
                     .type("normal")
                     .writer("admin")
                     .title(generateRandomTitle())
                     .contents(generateRandomContents())
                     .build();
-            postMapper.insertPost(postVO);
+            postService.registration("admin", postDTO);
         }
     }
 
     @Test
     void test() {
-        addDummyPosts(2, 20);
-        addDummyPosts(3, 30);
+        addDummyPosts(1, 5);
+        addDummyPosts(2, 50);
+        addDummyPosts(3, 100);
     }
 
 }
