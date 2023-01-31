@@ -12,6 +12,17 @@
         </node>
       </scope>
     </mapping>
+    <mapping uuid="8add066f-8fec-49a5-831b-3c425d8627ee" name="perfect_community@localhost Mapping">
+      <data-sources db="c14774d5-a65d-462e-8c76-c8232b74f758" ddl="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
+      <scope>
+        <node negative="1">
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
+          </node>
+          <node kind="schema" qname="perfect_community" />
+        </node>
+      </scope>
+    </mapping>
     <mapping uuid="5ba7d247-3f26-40bf-bc21-9f86d6d190cb" name="perfect_community_redis@localhost (DDL) Mapping">
       <data-sources db="3301c83d-80e0-4224-abfa-b0da89ecdee9" ddl="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
       <scope>
@@ -27,6 +38,7 @@
         <State>
           <option name="id" value="d2b020fa-02f9-49e0-adec-256ce2f13f13" />
           <option name="name" value="Perfect_Community_API_DDL_data_source" />
+          <option name="dbmsName" value="MARIADB" />
           <option name="urls">
             <array>
               <option value="file://$PROJECT_DIR$/db_ddl" />
@@ -36,6 +48,7 @@
         <State>
           <option name="id" value="1c650e23-8289-4b5e-9e6f-3fc0903a4de9" />
           <option name="name" value="perfect_community_redis@localhost (DDL)" />
+          <option name="dbmsName" value="MARIADB" />
           <option name="urls">
             <array />
           </option>
