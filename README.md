@@ -1,4 +1,4 @@
-# Perfect Community API
+[//]: # (# Perfect Community API)
 
 [//]: # (![Java]&#40;https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white&#41;)
 
@@ -18,16 +18,16 @@
 
 ### 기술 스택
 
-- Java 8
-- Apache Tomcat 9
-- Spring Framework 5.3.25
-- Spring Security 5.7.5
-- JWT 0.11.5
-- JSON 2.14.0
-- MariaDB
-- Redis
-- JUnit Test
-- Postman Test
+- **Java 8**
+- **Apache Tomcat 9**
+- **Spring Framework 5.3.25**
+- **Spring Security 5.7.5**
+- **JWT 0.11.5**
+- **JSON 2.14.0**
+- **MariaDB**
+- **Redis**
+- **JUnit Test**
+- **Postman Test**
 
 ---
 ### 게시판
