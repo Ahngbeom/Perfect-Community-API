@@ -45,15 +45,6 @@
             </array>
           </option>
         </State>
-        <State>
-          <option name="id" value="1c650e23-8289-4b5e-9e6f-3fc0903a4de9" />
-          <option name="name" value="perfect_community_redis@localhost (DDL)" />
-          <option name="dbmsName" value="MARIADB" />
-          <option name="urls">
-            <array />
-          </option>
-          <option name="outLayout" value="File per object by schema.groovy" />
-        </State>
       </list>
     </option>
   </component>
