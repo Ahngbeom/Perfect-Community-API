@@ -1,12 +1,12 @@
 package com.perfect.community.api.controller.post;
 
+import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostFilterDTO;
+import com.perfect.community.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.perfect.community.api.dto.post.PostDTO;
-import com.perfect.community.api.service.post.PostService;
 
 import javax.naming.AuthenticationException;
 import java.security.Principal;
@@ -29,7 +29,7 @@ public class PostController {
                     .type(filterParam.getOrDefault("type", null))
                     .keyword(filterParam.getOrDefault("keyword", null))
                     .build();
-            log.info("{}", postFilterDTO);
+//            log.info("{}", postFilterDTO);
             return ResponseEntity.ok(postService.getPostList(postFilterDTO));
         } catch (Exception e) {
             e.printStackTrace();
