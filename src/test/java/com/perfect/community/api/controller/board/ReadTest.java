@@ -11,11 +11,11 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Board's Read]")
+@DisplayName("[Integrated Controller] Read board")
 class ReadTest extends BoardControllerTest {
 
     @Test
-    @DisplayName("[Board's Read] - Get List")
+    @DisplayName("Board's list")
     @WithAnonymousUser
     void getBoardList() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/board"))
@@ -26,14 +26,14 @@ class ReadTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Read] - Get board's details")
+    @DisplayName("Read board details")
     @WithAnonymousUser
     void getBoardInfo() throws Exception {
         log.info(getBoardInfo(1));
     }
 
     @Test
-    @DisplayName("[Board's Read] - Get board's details by invalid board number")
+    @DisplayName("Read board details with invalid board number")
     @WithAnonymousUser
     void getBoardInfoWithInvalidBoardNo() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/board/-1"))

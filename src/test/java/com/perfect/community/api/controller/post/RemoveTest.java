@@ -8,10 +8,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Post's Remove]")
+@DisplayName("[Integrated Controller] Post remove")
 public class RemoveTest extends PostControllerTest {
     @Test
-    @DisplayName("[Post's Remove] - By written user")
+    @DisplayName("By written user")
     @WithUserDetails("admin")
     void remove() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/1"))
@@ -21,7 +21,7 @@ public class RemoveTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Remove] - By anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void byAnonymous() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/1"))
@@ -30,7 +30,7 @@ public class RemoveTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Remove] - By other user")
+    @DisplayName("By unauthorized user")
     @WithUserDetails("tester")
     void byOtherUser() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/1"))
@@ -39,7 +39,7 @@ public class RemoveTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Remove] - invalid post no")
+    @DisplayName("invalid post no")
     @WithUserDetails("admin")
     void byInvalidPno() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/-1"))

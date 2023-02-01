@@ -19,8 +19,6 @@ public class ServiceTest {
 
     protected static final Logger log = LogManager.getLogger(ServiceTest.class);
 
-    protected Object service;
-
     @Autowired
     protected PasswordEncoder passwordEncoder;
 

@@ -5,7 +5,7 @@ import com.perfect.community.api.vo.post.PostViewsVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Board Interaction Test")
+@DisplayName("[Mapper] Post interaction")
 class PostInteractionMapperTest extends PostMapperTest {
 
     @Test
