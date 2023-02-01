@@ -2,7 +2,6 @@ package dummy;
 
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.service.post.PostService;
-import com.perfect.community.api.vo.post.PostVO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
