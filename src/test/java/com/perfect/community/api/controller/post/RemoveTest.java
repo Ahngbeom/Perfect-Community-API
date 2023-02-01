@@ -43,7 +43,7 @@ public class RemoveTest extends PostControllerTest {
     @WithUserDetails("admin")
     void byInvalidPno() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/-1"))
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 }
