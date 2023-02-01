@@ -10,7 +10,8 @@
         http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
         http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd">
 
-    <bean id="requestMappingHandlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <bean id="requestMappingHandlerMapping"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
 
     <mvc:annotation-driven/>
 
@@ -51,6 +52,8 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <constructor-arg ref="dataSource"/>
     </bean>
+
+    <bean id="redisServer" class="redis.embedded.RedisServer"/>
 
     <!--    <cache:annotation-driven />-->
 
