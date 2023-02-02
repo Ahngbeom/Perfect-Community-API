@@ -10,13 +10,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Board's Create]")
+@DisplayName("[Integrated Controller] Create board")
 class CreateTest extends BoardControllerTest {
 
     String requestBody;
 
     @Test
-    @DisplayName("[Board's Create] - By admin")
+    @DisplayName("By administrator")
     @WithUserDetails("admin")
     void createBoard() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -33,7 +33,7 @@ class CreateTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Create] - By anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void createBoardWithAnonymous() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -50,7 +50,7 @@ class CreateTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Create] - With null title")
+    @DisplayName("If title is null")
     @WithUserDetails("admin")
     void createBoardWithNullTitle() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -67,7 +67,7 @@ class CreateTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Create] - By not admin user")
+    @DisplayName("By unauthorized user")
     @WithUserDetails("tester")
     void createBoardWithNotAdmin() throws Exception {
         requestBody = objectMapper.valueToTree(

@@ -9,14 +9,13 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Post's Register]")
+@DisplayName("[Integrated Controller] Post registration")
 public class RegistrationTest extends PostControllerTest {
 
     @Test
-    @DisplayName("[Post's Register] - By authenticated user")
+    @DisplayName("By authenticated user")
     public void registration() throws Exception {
         PostDTO postDTO = PostDTO.builder()
                 .boardNo(1)
@@ -33,7 +32,7 @@ public class RegistrationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Register] - By anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void ByAnonymous() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -50,7 +49,7 @@ public class RegistrationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Register] - Without board no")
+    @DisplayName("if without board no")
     @WithUserDetails("admin")
     void withoutBoardNo() {
         try {
@@ -70,7 +69,7 @@ public class RegistrationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Register] - invalid board no")
+    @DisplayName("if board no is invalid")
     @WithUserDetails("admin")
     void invalidBoardNo() {
         try {
@@ -91,7 +90,7 @@ public class RegistrationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Register] - With null type")
+    @DisplayName("If type is null")
     @WithUserDetails("admin")
     void ByNullType() {
         try {
@@ -112,7 +111,7 @@ public class RegistrationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Register] - With null title")
+    @DisplayName("If title is null")
     @WithUserDetails("admin")
     void ByNullTitle() {
         try {
@@ -134,7 +133,7 @@ public class RegistrationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Register] - With null contents")
+    @DisplayName("If contents is null")
     @WithUserDetails("admin")
     void ByNullContents() {
         try {

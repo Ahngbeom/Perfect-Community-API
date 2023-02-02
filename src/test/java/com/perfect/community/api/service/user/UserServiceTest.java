@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 class UserServiceTest {
 
-    private static final Logger log = LogManager.getLogger(UserServiceTest.class);
+    protected static final Logger log = LogManager.getLogger(UserServiceTest.class);
 
     @Autowired
     private UserService service;
@@ -30,7 +30,9 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        assertNotNull(log);
         assertNotNull(service);
+        assertNotNull(passwordEncoder);
     }
 
     @Test
