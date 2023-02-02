@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 2. 오후 3:55 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,12 +39,12 @@ function getBoard(bno) {
 }
 
 $("#boardInfoBtn").on('click', () => {
-    getBoard(JSON.parse($.cookie(FILTER_OPTIONS_KEY)).boardNo)
+    getBoard(getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo)
         .done((data) => {
-            $.cookie(FILTER_OPTIONS_KEY, JSON.stringify({
+            setCookie(POST_FILTER_OPTIONS_KEY, {
                 boardNo: data.bno,
                 pageType: 'read'
-            }))
+            });
             postsByBoard.html(putBoardFormHTML(data));
         });
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Ahngbeom (bbu0704@gmail.com)
+ * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,33 @@
  * limitations under the License.
  */
 
-const FILTER_OPTIONS_KEY = "filter-options";
-
 const postsByBoard = $("#postsByBoard");
 const postsListUl = $("#postListByBoard");
 const paginationNav = $("#postListByBoard").siblings("nav");
 const paginationUl = paginationNav.find(".pagination");
 
-function getPostList(option) {
-    console.log(option);
-    $.cookie(FILTER_OPTIONS_KEY, JSON.stringify(option));
+putPostList();
+
+function getPosts() {
+    let posts;
+    const getPostsOptions = {
+        boardNo: getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo,
+        page: getCookieToJson(PAGINATION_DATA_KEY).activatedPage
+    }
+    $.ajax({
+        type: 'get',
+        url: '/api/post',
+        async: false,
+        contentType: 'application/json',
+        dataType: 'json',
+        data: getPostsOptions
+    }).done((data) => {
+        posts = data;
+    });
+    return posts;
+}
+
+function getPostAjax(option) {
     return $.ajax({
         type: 'get',
         url: '/api/post',
@@ -34,19 +51,24 @@ function getPostList(option) {
 }
 
 function putPostList(posts) {
-    console.log(posts);
+    let postFilterOptions = getCookieToJson(POST_FILTER_OPTIONS_KEY);
+    let paginationData = getCookieToJson(PAGINATION_DATA_KEY);
+    if (posts === undefined) {
+        console.log(postFilterOptions);
+        console.log(paginationData);
+        posts = getPosts();
+    }
     postsListUl.html("");
     posts.forEach(post => {
         postsListUl.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
     });
 
-    const filterOptions = JSON.parse($.cookie(FILTER_OPTIONS_KEY));
-    if (filterOptions.boardNo !== undefined) {
-        getBoard(filterOptions.boardNo)
+    if (postFilterOptions.boardNo !== undefined) {
+        getBoard(postFilterOptions.boardNo)
             .done((data) => {
                 postsByBoard.find("label").text(data.title);
                 // console.log(filterOptions.boardNo)
-                if (filterOptions.boardNo > 0) {
+                if (postFilterOptions.boardNo > 0) {
                     $("#boardControl").removeClass("visually-hidden");
                 }
             });
@@ -55,80 +77,50 @@ function putPostList(posts) {
         $("#boardControl").addClass("visually-hidden");
     }
 
-    $.ajax({
-        type: 'get',
-        url: '/api/post/count',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: {boardNo: JSON.parse($.cookie(FILTER_OPTIONS_KEY)).boardNo},
-        success: (result) => {
+    if (paginationData.pageAmount === undefined
+        || paginationData.activatedPage === undefined
+        || paginationData.startPage === undefined
+        || paginationData.maximumPage === undefined) {
+        $.ajax({
+            type: 'get',
+            url: '/api/post/count',
+            async: false,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: {boardNo: postFilterOptions.boardNo}
+        }).done((result) => {
             /* Put posts count */
-            $("#postCount").text("(총 게시물 수: " + result + ")");
+            // $("#postCount").text("(총 게시물 수: " + result + ")");
 
             /* Set pagination */
-            setPagination(1, Math.ceil(result / 10));
-        }
-    });
+            setCookie(PAGINATION_DATA_KEY, {
+                pageAmount: Number(result),
+                activatedPage: paginationData.activatedPage !== undefined ? paginationData.activatedPage : 1
+            });
+        });
+    }
+    $("#postCount").text("(총 게시물 수: " + paginationData.pageAmount + ")");
+    initPagination();
 }
 
-function setPagination(start, end) {
-    paginationUl.html("<li class=\"page-item\"><button class=\"page-link\">Previous</button></li>");
-    for (let i = start; i <= end; i++) {
-        if (i === Number(JSON.parse($.cookie(FILTER_OPTIONS_KEY)).page))
-            paginationUl.append("<li class=\"page-item active\"><button class=\"page-link\">" + i + "</button></li>");
-        else
-            paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">" + i + "</button></li>");
-    }
-    paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">Next</button></li>");
-    paginationNav.removeClass("visually-hidden");
-}
+
 
 $(document).on('click', ".board-title", (e) => {
     const filter = {
-        pageType: 'list',
-        boardNo: $(e.target).data('bno'),
-        page: 1
+        postType: undefined,
+        boardNo: $(e.target).data('bno')
     }
-    $.cookie(FILTER_OPTIONS_KEY, JSON.stringify(filter));
-    getPostList(filter)
-        .done((data) => putPostList(data));
+    setCookie(POST_FILTER_OPTIONS_KEY, filter);
+
+    const paginationData = getCookieToJson(PAGINATION_DATA_KEY);
+    console.log(paginationData);
+    paginationData.activatedPage = 1;
+    console.log(paginationData);
+    setCookie(PAGINATION_DATA_KEY, paginationData);
+
+    putPostList();
+    // getPostAjax(filter)
+    //     .done((data) => putPostList(data));
 });
 
-$(document).on('click', '.page-link', (e) => {
-    const activatedPage = Number($(".page-item.active").text());
-    const firstPageNumber = Number($(document).find(paginationUl).children("li:nth-child(2)").text());
-    const lastPageNumber = Number($(document).find(paginationUl).children("li:nth-last-child(2)").text());
-    const boardNo = JSON.parse($.cookie(FILTER_OPTIONS_KEY)).boardNo;
-    let targetPage = $(e.target).text();
 
-    console.log({
-        activatedPage: activatedPage,
-        firstPageNumber: firstPageNumber,
-        lastPageNumber: lastPageNumber,
-        boardNo: boardNo,
-        targetPage: targetPage
-    });
-
-    if (targetPage === 'Previous') {
-        if (activatedPage === firstPageNumber)
-            targetPage = firstPageNumber;
-        else
-            targetPage = activatedPage - 1;
-    } else if (targetPage === 'Next') {
-        if (activatedPage === lastPageNumber)
-            targetPage = lastPageNumber;
-        else
-            targetPage = activatedPage + 1;
-    }
-    $(".page-item.active").removeClass("active");
-    $(".page-item:nth-child(" + (Number(targetPage) + 1) + ")").addClass("active");
-    getPostList({boardNo: boardNo, page: targetPage})
-        .done((data) => {
-            console.log(data);
-
-            $("#postListByBoard").html("");
-            data.forEach(post => {
-                $("#postListByBoard").append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
-            });
-        });
-});

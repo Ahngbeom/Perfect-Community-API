@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Ahngbeom (bbu0704@gmail.com)
+ * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
+const logoutBtn = $("#logoutBtn");
+
 loadAuthentication();
 
 function loadAuthentication() {
-    console.log("Username", username);
-    console.log("Access Token", accessToken);
+    // console.log("Username", username);
+    // console.log("Access Token", accessToken);
     if (username !== undefined && accessToken !== undefined) {
-        $("#authentication span").html("Authenticated (" + username + ")").css("color", "green");
-        $("#jwtInfo").removeClass("visually-hidden");
+        // $("#authentication span").html("Authenticated (" + username + ")").css("color", "green");
+        $("#authenticatedUsername").html("ID: " + username).css("color", "green");
+        $("#authentication").removeClass("visually-hidden");
         $("#loginForm").addClass("visually-hidden");
-        $("#logoutBtn").removeClass("visually-hidden");
+        logoutBtn.removeClass("visually-hidden");
     } else {
-        $("#authentication span").html("Not Authenticated").css("color", "red");
-        $("#jwtInfo").addClass("visually-hidden");
+        // $("#authentication span").html("");
+        $("#authentication").addClass("visually-hidden");
         $("#loginForm").removeClass("visually-hidden");
-        $("#logoutBtn").addClass("visually-hidden");
+        logoutBtn.addClass("visually-hidden");
     }
 }
 
@@ -55,7 +58,7 @@ $("#loginBtn").on('click', () => {
     })
 });
 
-$("#logoutBtn").on('click', () => {
+logoutBtn.on('click', () => {
     $.ajax({
         type: 'post',
         url: '/api/logout',
@@ -67,11 +70,10 @@ $("#logoutBtn").on('click', () => {
         accessToken = undefined;
         clearInterval(accessTokenInterval);
         clearInterval(refreshTokenInterval);
-        loadAuthentication();
     }).fail((xhr) => {
         console.error(xhr);
         console.error(xhr.responseText);
     }).always((jqXHR) => {
-        loadAuthentication();
+        location.reload();
     });
 });
