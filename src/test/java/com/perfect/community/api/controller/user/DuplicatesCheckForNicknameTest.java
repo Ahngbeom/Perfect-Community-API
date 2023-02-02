@@ -7,10 +7,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Nickname Availability]")
+@DisplayName("[Integrated Controller] Duplicate check for nickname")
 public class DuplicatesCheckForNicknameTest extends UserControllerTest {
     @Test
-    @DisplayName("[Nickname Availability] - Duplicate")
+    @DisplayName("Duplicate")
     void DuplicateUserNickname() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/nickname-availability")
                         .param("nickname", "Administrator"))
@@ -20,7 +20,7 @@ public class DuplicatesCheckForNicknameTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Nickname Availability] - Available")
+    @DisplayName("Available")
     void availableUserId() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/nickname-availability")
                         .param("nickname", "ABCDE"))

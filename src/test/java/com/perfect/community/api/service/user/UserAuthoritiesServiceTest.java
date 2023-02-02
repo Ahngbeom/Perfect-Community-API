@@ -1,49 +1,47 @@
 package com.perfect.community.api.service.user;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
-class UserAuthoritiesServiceTest {
-
-    private static final Logger log = LogManager.getLogger();
+@DisplayName("[Service] User authorities")
+class UserAuthoritiesServiceTest extends UserServiceTest {
 
     @Autowired
-    private UserAuthoritiesService service;
+    protected UserAuthoritiesService userAuthoritiesService;
 
     @BeforeEach
     void setUp() {
         assertNotNull(log);
-        assertNotNull(service);
+        assertNotNull(userAuthoritiesService);
     }
 
     @Test
+    @DisplayName("Get all user's authorities")
     void getAllUserAuthorities() {
-        log.warn(service.getAllUserAuthorities());
+        log.warn(userAuthoritiesService.getAllUserAuthorities());
     }
 
     @Test
+    @DisplayName("Get all user's authorities by user id")
     void getAllUserAuthoritiesByUserId() {
     }
 
     @Test
+    @DisplayName("Grant user's authorities")
     void grantUserAuthorities() {
     }
 
     @Test
+    @DisplayName("Revoke user's authorities")
     void revokeUserAuthorities() {
     }
 
     @Test
+    @DisplayName("Revoke user's all authorities")
     void revokeAllUserAuthoritiesByUserId() {
     }
 }

@@ -1,20 +1,15 @@
 package com.perfect.community.api.mapper.user;
 
-import com.perfect.community.api.mapper.MapperTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 @Rollback(value = false)
-public class UserScrapPostMapperTest extends MapperTest {
-
-    @Autowired
-    private UserScrapPostMapper mapper;
+public class UserScrapPostMapperTest extends UsersMapperTest {
 
     @Test
     void scraping() {
         try {
-            log.info(mapper.insertScrapPost("admin", 2));
+            log.info(userScrapPostMapper.insertScrapPost("admin", 2));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -22,12 +17,12 @@ public class UserScrapPostMapperTest extends MapperTest {
 
     @Test
     void getAllScrapedPosts() {
-        log.info(mapper.getAllByUserId("admin"));
+        log.info(userScrapPostMapper.getAllByUserId("admin"));
     }
 
     @Test
     void deleteScrapedPost() {
-        log.info(mapper.deleteByUserIdAndPostNo("tester", 1));
+        log.info(userScrapPostMapper.deleteByUserIdAndPostNo("tester", 1));
     }
 
 }

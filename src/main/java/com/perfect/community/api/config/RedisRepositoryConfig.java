@@ -1,6 +1,6 @@
 package com.perfect.community.api.config;
 
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -9,13 +9,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+@Slf4j
 @Configuration
-@RequiredArgsConstructor
 @EnableRedisRepositories
 public class RedisRepositoryConfig {
 
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
+//    private static final int REDIS_PORT = 49153;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {

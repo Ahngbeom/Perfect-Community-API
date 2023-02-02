@@ -10,11 +10,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Update User Info]")
+@DisplayName("[Integrated Controller] User update")
 public class UpdateUserInfoTest extends UserControllerTest {
 
     @Test
-    @DisplayName("[Update User Info] - Authenticated")
+    @DisplayName("Myself")
     @WithUserDetails("admin")
     void updateMyself() throws Exception {
         String requestBody = objectMapper.valueToTree(
@@ -32,7 +32,7 @@ public class UpdateUserInfoTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Update User Info] - By Anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void notLogin() throws Exception {
         String requestBody = objectMapper.valueToTree(
@@ -49,7 +49,7 @@ public class UpdateUserInfoTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Update User Info] - By Other User")
+    @DisplayName("By unauthorized user")
     @WithUserDetails("tester")
     void byOtherUser() throws Exception {
         String requestBody = objectMapper.valueToTree(

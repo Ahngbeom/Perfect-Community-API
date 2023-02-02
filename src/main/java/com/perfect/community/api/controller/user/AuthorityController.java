@@ -1,12 +1,12 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.dto.authorities.AuthoritiesDTO;
+import com.perfect.community.api.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.perfect.community.api.service.auth.AuthService;
 
 import java.util.List;
 

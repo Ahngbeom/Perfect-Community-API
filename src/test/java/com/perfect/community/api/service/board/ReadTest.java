@@ -5,20 +5,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-@DisplayName("BoardService Test For Read")
+@DisplayName("[Service] Read the board")
 class ReadTest extends BoardServiceTest {
 
     @Test
+    @DisplayName("[Service] Get the board's list")
     void getBoardList() {
         log.info(boardService.getBoardList());
     }
 
     @Test
+    @DisplayName("[Service] Read the board's details")
     void getInfo() throws Exception {
         log.info(getBoardInfo(1));
     }
 
     @Test
+    @DisplayName("[Service] Read the board's details with invalid board no")
     void getBoardInfoWithInvalidBoardNo() {
         try {
             log.info(getBoardInfo(-1));

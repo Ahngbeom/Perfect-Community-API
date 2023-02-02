@@ -11,10 +11,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Post's Modification]")
+@DisplayName("[Integrated Controller] Post modification")
 public class ModificationTest extends PostControllerTest {
     @Test
-    @DisplayName("[Post's Modification] - Modification by written user")
+    @DisplayName("By written user")
     @WithUserDetails("admin")
     void modification() {
         try {
@@ -35,7 +35,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - Modification by anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void byAnonymous() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -52,7 +52,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - Modification by not written user")
+    @DisplayName("By not written user")
     @WithUserDetails("tester")
     void byOtherUser() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -69,7 +69,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - Without board no")
+    @DisplayName("Without board no")
     @WithUserDetails("admin")
     void withoutBoardNo() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -85,7 +85,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - with invalid board no")
+    @DisplayName("With invalid board no")
     @WithUserDetails("admin")
     void byNegativeBoardNo() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -102,7 +102,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - With null type")
+    @DisplayName("With null type")
     @WithUserDetails("admin")
     void byNullType() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -119,7 +119,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - With null title")
+    @DisplayName("With null title")
     @WithUserDetails("admin")
     void byNullTitle() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -136,7 +136,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - With null contents")
+    @DisplayName("With null contents")
     @WithUserDetails("admin")
     void byNullContents() throws Exception {
         PostDTO postDTO = PostDTO.builder()
@@ -153,7 +153,7 @@ public class ModificationTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's Modification] - Invalid post no")
+    @DisplayName("Invalid post no")
     @WithUserDetails("admin")
     void byInvalidPostNo() throws Exception {
         PostDTO postDTO = PostDTO.builder()

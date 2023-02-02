@@ -10,13 +10,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Board's Update]")
+@DisplayName("[Integrated Controller] Update board")
 class UpdateTest extends BoardControllerTest {
 
     String requestBody;
 
     @Test
-    @DisplayName("[Board's Update] - By created user")
+    @DisplayName("By created user")
     @WithUserDetails("admin")
     void updateBoard() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -34,7 +34,7 @@ class UpdateTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Update] - Invalid board no")
+    @DisplayName("If board no invalid")
     @WithUserDetails("admin")
     void updateBoardWithInvalidBoardNo() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -51,7 +51,7 @@ class UpdateTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Update] - With null title")
+    @DisplayName("If title is null")
     @WithUserDetails("admin")
     void updateBoardWithNullTitle() {
         try {
@@ -72,7 +72,7 @@ class UpdateTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Update] - Access denied by not admin user")
+    @DisplayName("By unauthorized user")
     @WithUserDetails("tester")
     void updateBoardWithUnauthorizedUser() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -89,7 +89,7 @@ class UpdateTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Update] - Access denied by anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void updateBoardWithAnonymous() throws Exception {
         requestBody = objectMapper.valueToTree(

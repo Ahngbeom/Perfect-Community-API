@@ -15,13 +15,14 @@ import java.util.Map;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional(readOnly = true)
-@DisplayName("[Login with JSON]")
+@DisplayName("[Integrated Controller] JSON Login")
 public class JsonLoginTest extends ControllerIntegrationTest {
 
     @Test
-    @DisplayName("[Login with JSON] - By not authenticated user")
+    @DisplayName("By not authenticated user")
     @WithAnonymousUser
     void login() throws Exception {
+
         Map<String, String> usernamePassword = new HashMap<>();
         usernamePassword.put("username", "admin");
         usernamePassword.put("password", "admin");
@@ -35,7 +36,7 @@ public class JsonLoginTest extends ControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("[Login with JSON] - By already authenticated user")
+    @DisplayName("By already authenticated user")
     @WithUserDetails("admin")
     void loginByAlreadyAuthenticated() throws Exception {
         Map<String, String> usernamePassword = new HashMap<>();

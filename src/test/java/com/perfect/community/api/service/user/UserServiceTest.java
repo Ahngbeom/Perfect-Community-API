@@ -8,18 +8,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
 @Transactional
 class UserServiceTest {
 
-    private static final Logger log = LogManager.getLogger(UserServiceTest.class);
+    protected static final Logger log = LogManager.getLogger(UserServiceTest.class);
 
     @Autowired
     private UserService service;
@@ -29,7 +30,9 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        assertNotNull(log);
         assertNotNull(service);
+        assertNotNull(passwordEncoder);
     }
 
     @Test
@@ -65,28 +68,30 @@ class UserServiceTest {
     }
 
     @Test
+    @Rollback(value = false)
     void updateUserInfo() {
         service.updateUserInfo(
                 UserDTO.builder()
                         .userId("admin")
-                        .nickname("관리자")
+                        .nickname("Administrator")
                         .build()
         );
         log.warn(service.getUserInfoByUserId("admin"));
     }
 
     @Test
+    @Rollback(value = false)
     void changeUserPassword() {
         service.changeUserPassword(
                 UserDTO.builder()
                         .userId("admin")
-                        .password("abcde")
+                        .password("admin")
                         .build()
         );
         UserDTO user = service.getUserInfoByUserId("admin");
         log.warn(user);
         log.warn(passwordEncoder.matches("abcde", user.getPassword()));
-        log.warn(passwordEncoder.matches("12345", user.getPassword()));
+        log.warn(passwordEncoder.matches("1234", user.getPassword()));
     }
 
     @Test
@@ -102,6 +107,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Rollback(value = false)
     void enableUser() {
         service.disableUser("admin");
         log.warn(service.getUserInfoByUserId("admin"));

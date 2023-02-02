@@ -8,11 +8,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Withdraw User]")
+@DisplayName("[Integrated Controller] Withdraw")
 public class WithdrawTest extends UserControllerTest {
 
     @Test
-    @DisplayName("[Withdraw User] - Myself")
+    @DisplayName("Myself")
     @WithUserDetails("tester")
     void withdraw() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/tester"))
@@ -21,16 +21,16 @@ public class WithdrawTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Withdraw User] - By other user")
+    @DisplayName("By unauthorized user")
     @WithUserDetails("tester")
     void withdrawByOtherUser() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/admin"))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
     }
-    
+
     @Test
-    @DisplayName("[Withdraw User] - By anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void notLogin() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/tester"))
