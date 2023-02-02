@@ -2,7 +2,7 @@ package com.perfect.community.api.service.board;
 
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.board.BoardDTO;
-import com.perfect.community.api.vo.board.BoardEntity;
+import com.perfect.community.api.vo.board.BoardVO;
 import com.perfect.community.api.mapper.board.BoardMapper;
 import com.perfect.community.api.mapper.post.PostMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,13 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardDTO> getBoardList() {
-        return mapper.getBoardList().stream().map(this::entityToDTO).collect(Collectors.toList());
+        return mapper.getBoardList().stream().map(BoardDTO::new).collect(Collectors.toList());
     }
 
     @Override
     public BoardDTO getBoardInfo(long bno) {
-        return entityToDTO(Preconditions.checkNotNull(mapper.getBoardInfo(bno), "Invalid board number."));
+        BoardVO boardVO = mapper.getBoardInfo(bno);
+        return boardVO != null ? new BoardDTO(boardVO) : null;
     }
 
     @Override
@@ -34,11 +35,10 @@ public class BoardServiceImpl implements BoardService {
         Preconditions.checkNotNull(boardDTO.getTitle(), "[title] must not be null");
         Preconditions.checkState(!boardDTO.getTitle().isEmpty(), "[title] must not be empty");
         boardDTO.setCreateUser(createUser);
-        BoardEntity entity = BoardEntity.dtoToEntity(boardDTO);
-        if (mapper.createBoard(entity) != 1) {
+        if (mapper.createBoard(boardDTO) != 1) {
             throw new RuntimeException("Failed to create board.");
         }
-        return entity.getBno();
+        return boardDTO.getBno();
     }
 
     @Override
@@ -47,8 +47,7 @@ public class BoardServiceImpl implements BoardService {
 //        if (notMatchUserIdAndBoardCreator(userId, boardNo))
 //            throw new AccessDeniedException("You do not have permission to edit this board.");
         boardDTO.setBno(boardNo);
-        BoardEntity boardEntity = BoardEntity.dtoToEntity(boardDTO);
-        if (mapper.updateBoard(boardEntity) != 1) {
+        if (mapper.updateBoard(boardDTO) != 1) {
             throw new RuntimeException("Failed to update board. Make sure it's a valid board number");
         }
     }
@@ -71,14 +70,4 @@ public class BoardServiceImpl implements BoardService {
 //        return !userId.equals(getBoardInfo(boardNo).getCreateUser());
 //    }
 
-    public BoardDTO entityToDTO(BoardEntity entity) {
-        return BoardDTO.builder()
-                .bno(entity.getBno())
-                .createUser(entity.getCreateUser())
-                .title(entity.getTitle())
-                .comment(entity.getComment())
-                .createDate(entity.getCreateDate())
-                .updateDate(entity.getUpdateDate())
-                .build();
-    }
 }

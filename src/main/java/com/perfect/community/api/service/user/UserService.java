@@ -1,6 +1,7 @@
 package com.perfect.community.api.service.user;
 
 import com.google.common.base.Preconditions;
+import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.vo.user.UserVO;
 import com.perfect.community.api.mapper.user.UsersAuthoritiesMapper;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -56,7 +58,11 @@ public class UserService {
         if (mapper.insertUser(userVO) != 1) {
             throw new RuntimeException("Failed to create user.");
         }
-        if (usersAuthoritiesMapper.insertUserAuthorities(userDTO.getUserId(), userDTO.getAuthority()) != 1) {
+        if (usersAuthoritiesMapper.insertUserAuthorities(
+                UserAuthoritiesDTO.builder()
+                        .userId(userDTO.getUserId())
+                        .authorities(Collections.singleton(userDTO.getAuthority()))
+                        .build()) != 1) {
             throw new RuntimeException("Failed to grant user authorities.");
         }
         return userVO.getUser_id();

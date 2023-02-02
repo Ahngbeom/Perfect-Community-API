@@ -1,9 +1,11 @@
-package com.perfect.community.api.controller.jwt;
+package jwt;
 
 import com.perfect.community.api.controller.ControllerIntegrationTest;
+import com.perfect.community.api.dto.jwt.TokenDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockCookie;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -47,10 +49,27 @@ public class JwtTest extends ControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("[JWT TEST] - Get JWT token")
-    @WithUserDetails("admin")
-    void GetToken() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/jwt"))
+    @DisplayName("[JWT TEST] - Reissue JWT")
+    @WithAnonymousUser
+    void Reissue() throws Exception {
+        Map<String, String> usernamePassword = new HashMap<>();
+        usernamePassword.put("username", "admin");
+        usernamePassword.put("password", "admin");
+        String jsonData = objectMapper.writeValueAsString(usernamePassword);
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonData))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TokenDTO tokenByLoggedIn = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), TokenDTO.class);
+        log.info(tokenByLoggedIn);
+
+        MockCookie mockCookie = new MockCookie("refresh-token", tokenByLoggedIn.getRefreshToken());
+        mockCookie.setHttpOnly(true);
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/jwt/reissue")
+                        .header("Authorization", tokenByLoggedIn.getAccessToken())
+                        .cookie(mockCookie))
                 .andExpect(status().isOk())
                 .andReturn();
     }

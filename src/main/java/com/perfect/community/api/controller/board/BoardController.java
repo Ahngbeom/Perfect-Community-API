@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +26,8 @@ public class BoardController {
     @GetMapping({"/{boardNo}"})
     public ResponseEntity<?> getBoardInfo(@PathVariable long boardNo) {
         try {
-            return ResponseEntity.ok(service.getBoardInfo(boardNo));
+            BoardDTO boardDTO = service.getBoardInfo(boardNo);
+            return ResponseEntity.ok(boardDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -8,7 +8,7 @@ public class InteractionTest extends PostServiceTest {
 
     @Test
     void increaseViews() {
-        log.info(postInteractionService.increaseViews(1));
+        log.info(postInteractionService.increaseViews("admin", 1));
     }
 
     @Test

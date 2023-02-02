@@ -10,13 +10,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("[User's scrap post]")
-class UserScrapPostControllerTest extends ControllerIntegrationTest {
+class PostScrapControllerTest extends ControllerIntegrationTest {
 
     @Test
     @DisplayName("[User's scrap post] - My scraped posts")
     @WithUserDetails("admin")
     void getScrapedPosts() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/scraped-posts"))
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post/scraped"))
                 .andExpect(status().isOk())
                 .andReturn();
     }
@@ -25,7 +25,7 @@ class UserScrapPostControllerTest extends ControllerIntegrationTest {
     @DisplayName("[User's scrap post] - My scraped posts by Anonymous")
     @WithAnonymousUser
     void getScrapedPostsByAnonymous() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/scraped-posts"))
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post/scraped"))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
     }
@@ -33,7 +33,7 @@ class UserScrapPostControllerTest extends ControllerIntegrationTest {
     @Test
     @DisplayName("[User's scrap post] - Scrap post")
     void scrapPost() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user/scrap-post/2"))
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/post/scrap/3"))
                 .andExpect(status().isOk())
                 .andReturn();
     }
@@ -42,7 +42,7 @@ class UserScrapPostControllerTest extends ControllerIntegrationTest {
     @DisplayName("[User's scrap post] - Scrap post by anonymous")
     @WithAnonymousUser
     void scrapPostByAnonymous() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user/scrap-post/2"))
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/post/scrap/3"))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
     }
@@ -50,7 +50,7 @@ class UserScrapPostControllerTest extends ControllerIntegrationTest {
     @Test
     @DisplayName("[User's scrap post] - Release scraped post")
     void releaseScrapedPost() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/release-scraped-post/1"))
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/release-scrap/1"))
                 .andExpect(status().isOk())
                 .andReturn();
     }
@@ -59,7 +59,7 @@ class UserScrapPostControllerTest extends ControllerIntegrationTest {
     @DisplayName("[User's scrap post] - Release scraped post by anonymous")
     @WithAnonymousUser
     void releaseScrapedPostByAnonymous() throws Exception {
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/release-scraped-post/1"))
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post/release-scrap/1"))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
     }

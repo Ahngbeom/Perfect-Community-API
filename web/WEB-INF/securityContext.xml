@@ -7,19 +7,19 @@
 
     <!--  Authentication  -->
     <bean id="authenticationEntryPoint"
-          class="com.perfect.community.api.security.authentication.CustomAuthenticationEntryPoint"/>
+          class="com.perfect.community.api.security.handler.CustomAuthenticationEntryPoint"/>
     <bean id="customAccessDeniedHandler"
-          class="com.perfect.community.api.security.authentication.CustomAccessDeniedHandler"/>
+          class="com.perfect.community.api.security.handler.CustomAccessDeniedHandler"/>
 
     <!--  Login Handler  -->
     <bean id="loginSuccessHandler"
-          class="com.perfect.community.api.security.authentication.CustomAuthenticationSuccessHandler"/>
+          class="com.perfect.community.api.security.handler.CustomAuthenticationSuccessHandler"/>
     <bean id="loginFailureHandler"
-          class="com.perfect.community.api.security.authentication.CustomAuthenticationFailureHandler"/>
+          class="com.perfect.community.api.security.handler.CustomAuthenticationFailureHandler"/>
 
     <!--  Logout Handler  -->
     <bean id="logoutSuccessHandler"
-          class="com.perfect.community.api.security.authentication.CustomLogoutSuccessHandler"/>
+          class="com.perfect.community.api.security.handler.CustomLogoutSuccessHandler"/>
 
     <!--  Customize UserDetailService  -->
     <bean id="customUserDetailService" class="com.perfect.community.api.security.detail.CustomUserDetailService"/>
@@ -38,9 +38,10 @@
     </bean>
 
     <!--  JWT Authentication  -->
-    <bean id="jwtTokenProvider" class="com.perfect.community.api.jwt.JwtTokenProvider"/>
-    <bean id="jwtExceptionFilter" class="com.perfect.community.api.jwt.JwtExceptionFilter"/>
-    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.jwt.JwtAuthenticationFilter"/>
+    <bean id="jwtSecurityContextHolderFilter" class="com.perfect.community.api.security.jwt.JwtSecurityContextHolderFilter"/>
+    <bean id="jwtExceptionFilter" class="com.perfect.community.api.security.jwt.JwtExceptionFilter"/>
+    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.security.jwt.JwtAuthenticationFilter"/>
+    <bean id="jwtTokenProvider" class="com.perfect.community.api.security.jwt.JwtTokenProvider"/>
 
     <bean id="jwtFilterOrder" class="org.springframework.web.filter.CompositeFilter" depends-on="redisService">
         <property name="filters">
@@ -72,6 +73,8 @@
         <!--            <security:hsts disabled="true"/>-->
         <!--        </security:headers>-->
 
+<!--        <security:custom-filter ref="jwtSecurityContextHolderFilter" before="SECURITY_CONTEXT_FILTER"/>-->
+        <security:custom-filter ref="jwtExceptionFilter" before="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="jwtFilterOrder" before="BASIC_AUTH_FILTER"/>
 

@@ -1,4 +1,4 @@
-package com.perfect.community.api.jwt;
+package com.perfect.community.api.security.jwt;
 
 import io.jsonwebtoken.JwtException;
 import org.springframework.stereotype.Component;

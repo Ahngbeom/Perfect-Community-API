@@ -35,19 +35,24 @@ class UsersAuthoritiesMapperTest {
 
     @Test
     void insertUserAuthorities() {
-        log.warn(mapper.insertUserAuthorities("ahngbeom", "ROLE_MANAGER"));
-        log.warn(mapper.selectAllUserAuthoritiesByUserId("ahngbeom"));
+        log.warn(mapper.insertUserAuthorities(
+                UserAuthoritiesDTO.builder()
+                        .userId("tester")
+                        .authorities(Collections.singleton("ROLE_MANAGER"))
+                        .build()));
+        log.warn(mapper.selectAllUserAuthoritiesByUserId("tester"));
     }
 
     @Test
     void deleteUserAuthorities() {
-        log.warn(mapper.deleteUserAuthorities(
+        log.info(mapper.selectAllUserAuthoritiesByUserId("admin"));
+        log.info(mapper.deleteUserAuthorities(
                 UserAuthoritiesDTO.builder()
                         .userId("admin")
-                        .authority("ROLE_ADMIN")
+                        .authorities(Collections.singleton("ROLE_ADMIN"))
                         .build()
         ));
-        log.warn(mapper.selectAllUserAuthoritiesByUserId("admin"));
+        log.info(mapper.selectAllUserAuthoritiesByUserId("admin"));
     }
 
     @Test

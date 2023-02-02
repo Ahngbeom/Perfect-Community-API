@@ -1,4 +1,4 @@
-package com.perfect.community.api.jwt;
+package com.perfect.community.api.security.jwt;
 
 import com.perfect.community.api.dto.jwt.TokenDTO;
 import io.jsonwebtoken.*;
@@ -163,9 +163,16 @@ public class JwtTokenProvider implements InitializingBean {
      *                                  before the time this method is invoked.
      * @throws IllegalArgumentException if the {@code claimsJws} string is {@code null} or empty or only whitespace
      */
-    public void validateToken(String token) throws JwtException {
-        Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token);
-        log.info("JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
+    public boolean validateToken(String token) throws JwtException {
+        try {
+            Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token);
+            log.info("JWS Claims = {}\n {}", jwsClaims, jwsClaims.getBody().getExpiration());
+            return true;
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | ExpiredJwtException |
+                 IllegalArgumentException e) {
+            log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+            return false;
+        }
     }
 
     public void validateRefreshToken(String token) {

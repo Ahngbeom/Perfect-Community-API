@@ -1,9 +1,7 @@
 package com.perfect.community.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.perfect.community.api.UtilsForTest;
-import com.perfect.community.api.interceptor.AccessDeniedInterceptor;
+import dummy.UtilsForTest;
 import com.perfect.community.api.service.utils.RelocateService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
