@@ -9,10 +9,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Post's List]")
+@DisplayName("[Integrated Controller] Post's list")
 public class ListTest extends PostControllerTest {
     @Test
-    @DisplayName("[Post's List] - By anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void list() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post"))
@@ -29,7 +29,7 @@ public class ListTest extends PostControllerTest {
     }
 
     @Test
-    @DisplayName("[Post's List] - With options for filtering")
+    @DisplayName("With options for filtering")
     void listWithOptions() throws Exception {
         String options = objectMapper.valueToTree(
                 PostFilterDTO.builder()

@@ -2,7 +2,7 @@ package dummy;
 
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.service.post.PostService;
-import com.perfect.community.api.vo.post.PostVO;
+import com.perfect.community.api.service.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,9 @@ public class UtilsForTest {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private UserService userService;
 
     public String generateRandomTitle() {
         int leftLimit = 48; // numeral '0'
@@ -63,10 +66,16 @@ public class UtilsForTest {
     }
 
     @Test
-    void test() {
+    void createPostDummy() {
         addDummyPosts(1, 5);
         addDummyPosts(2, 50);
         addDummyPosts(3, 100);
+    }
+
+
+    @Test
+    void createDefaultUsers() {
+
     }
 
 }

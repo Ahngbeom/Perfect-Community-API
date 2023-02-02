@@ -34,7 +34,6 @@
         <constructor-arg name="objectMapper" ref="objectMapper"/>
         <constructor-arg name="authenticationSuccessHandler" ref="loginSuccessHandler"/>
         <constructor-arg name="authenticationFailureHandler" ref="loginFailureHandler"/>
-<!--        <constructor-arg name="redisTemplate" ref="redisTemplate"/>-->
     </bean>
 
     <!--  JWT Authentication  -->

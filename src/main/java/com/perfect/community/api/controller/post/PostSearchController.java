@@ -2,12 +2,15 @@ package com.perfect.community.api.controller.post;
 
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostFilterDTO;
+import com.perfect.community.api.service.post.PostSearchService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.perfect.community.api.service.post.PostSearchService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

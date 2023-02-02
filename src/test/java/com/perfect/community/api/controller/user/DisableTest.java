@@ -8,11 +8,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Disable User]")
+@DisplayName("[Integrated Controller] Disable User")
 public class DisableTest extends UserControllerTest {
 
     @Test
-    @DisplayName("[Disable User] - Not logged in")
+    @DisplayName("By Anonymous user")
     @WithAnonymousUser
     void notLogin() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/admin"))
@@ -22,7 +22,7 @@ public class DisableTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Disable User] - By Other User")
+    @DisplayName("By unauthorized user")
     @WithUserDetails("tester")
     void byOtherUser() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/admin"))
@@ -32,7 +32,7 @@ public class DisableTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Disable User] - Disable myself")
+    @DisplayName("Myself")
     @WithUserDetails("admin")
     void disableMyself() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/admin"))
@@ -42,7 +42,7 @@ public class DisableTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("[Disable User] - Disable user by Admin")
+    @DisplayName("By administrator")
     @WithUserDetails("admin")
     void correctRequest() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/user/disable/tester"))

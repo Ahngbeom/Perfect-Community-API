@@ -10,14 +10,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName(value = "[Sign-Up]")
+@DisplayName(value = "[Integrated Controller] Sign-up")
 @WithAnonymousUser
 public class SignUpTest extends UserControllerTest {
 
     String requestBody;
 
     @Test
-    @DisplayName(value = "[Sign-Up]")
+    @DisplayName(value = "General user")
     public void signUpAdmin() throws Exception {
         requestBody = objectMapper.valueToTree(
                 UserDTO.builder()
@@ -38,7 +38,7 @@ public class SignUpTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName(value = "[Sign-Up] - By already authenticated user")
+    @DisplayName(value = "By already authenticated user")
     @WithUserDetails("admin")
     public void signUpAdminByAuthenticated() throws Exception {
         requestBody = objectMapper.valueToTree(
@@ -59,7 +59,7 @@ public class SignUpTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName(value = "[Sign-Up] - Duplicate ID")
+    @DisplayName(value = "Duplicate ID")
     public void duplicateUserId() throws Exception {
         requestBody = objectMapper.valueToTree(
                 UserDTO.builder()
@@ -76,7 +76,7 @@ public class SignUpTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName(value = "[Sign-Up] - Duplicate Nickname")
+    @DisplayName(value = "Duplicate Nickname")
     public void duplicateNickname() throws Exception {
         requestBody = objectMapper.valueToTree(
                 UserDTO.builder()
@@ -94,7 +94,7 @@ public class SignUpTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName(value = "[Sign-Up] - Without authorities")
+    @DisplayName(value = "Without authorities")
     public void withoutAuthorities() throws Exception {
         requestBody = objectMapper.valueToTree(
                 UserDTO.builder()
