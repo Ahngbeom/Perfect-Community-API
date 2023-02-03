@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import {PAGINATION_DATA_KEY, POST_FILTER_OPTIONS_KEY} from "../global_variable.js";
 import {initPagination} from "./pagination.js";
+import {getBoard} from "../board/board.js";
+import {getCookieToJson} from "../pageCookie.js";
 
 export const postsByBoard = $("#postsByBoard");
 export const postsListUl = $("#postList");

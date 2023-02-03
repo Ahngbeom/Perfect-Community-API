@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@
   Time: 오후 4:47
   To change this template use File | Settings | File Templates.
 --%>
-<script src="${pageContext.request.contextPath}/resources/js/global_variable.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/pageCookie.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/global_variable.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/pageCookie.js"></script>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
 <%--<script src="${pageContext.request.contextPath}/resources/js/authentication/jwt.js"></script>--%>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/authentication/authentication.js"></script>
-<script type="module" src="${pageContext.request.contextPath}/resources/js/board.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/board/board.js"></script>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/post/list.js"></script>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/post/details.js"></script>
 <script type="application/javascript">
@@ -48,4 +48,5 @@
             $("#api-result").html(xhr.responseText);
         });
     })
+
 </script>

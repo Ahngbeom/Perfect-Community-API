@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {loadAuthentication} from "./authentication/authentication.js";
+import {userData} from "./global_variable.js";
 
 $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
     if (userData.accessToken !== undefined && userData.accessToken !== null && userData.accessToken !== "")
@@ -29,7 +29,7 @@ $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
         console.error(jqXHR.status, jqXHR.statusText, jqXHR.responseText);
         console.error(ajaxOptions);
     }
-    loadAuthentication();
+    // loadAuthentication();
 });
 
 $.ajaxSetup({

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -51,14 +51,17 @@
                             <%--                                    <span id="refreshTokenValidityTimeLeft"></span>--%>
                             <%--                                </div>--%>
                             <%--                            </div>--%>
-                            <div>
-                                <span id="authenticatedUsername"></span>
-                                <button type="button" id="logoutBtn" class="btn btn-sm btn-warning">Logout</button>
-                            </div>
+                                <div>
+                                    <span id="authenticatedUsername"></span>
+                                    <button type="button" id="logoutBtn" class="btn btn-sm btn-warning">Logout</button>
+                                </div>
                         </div>
                     </div>
 
                 </div>
+            </div>
+            <div class="border border-light" id="additionalButtons">
+
             </div>
 
             <div class="d-flex gap-2 m-3">
@@ -100,7 +103,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </body>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+import {additionalButtonsArea, userData} from "../global_variable.js";
+
 const logoutBtn = $("#logoutBtn");
 
 loadAuthentication();
 
 function loadAuthentication() {
-    // console.log("Username", username);
-    // console.log("Access Token", accessToken);
+    console.log(userData);
+    /* Authentication on top */
     if (userData.username !== undefined && userData.accessToken !== undefined) {
         // $("#authentication span").html("Authenticated (" + username + ")").css("color", "green");
         if ($.inArray('ROLE_ADMIN', userData.userRole) >= 0) {
@@ -37,6 +39,14 @@ function loadAuthentication() {
         $("#loginForm").removeClass("visually-hidden");
         logoutBtn.addClass("visually-hidden");
     }
+
+    /* Add control button by user role */
+    additionalButtonsArea.html("");
+    if ($.inArray('ROLE_ADMIN', userData.userRole)) {
+        additionalButtonsArea.append("<button type='button' class='btn btn-sm btn-outline-secondary'>게시판 관리</button>");
+    }
+    additionalButtonsArea.append("<button type='button' class='btn btn-sm btn-outline-secondary'>계정 정보 수정</button>");
+
 }
 
 $("#loginBtn").on('click', () => {
@@ -71,6 +81,7 @@ logoutBtn.on('click', () => {
     }).done((data) => {
         console.log(data);
         userData.username = undefined;
+        userData.userRole = undefined;
         userData.accessToken = undefined;
         // clearInterval(accessTokenInterval);
         // clearInterval(refreshTokenInterval);
@@ -78,7 +89,7 @@ logoutBtn.on('click', () => {
         console.error(xhr);
         console.error(xhr.responseText);
     }).always((jqXHR) => {
-        location.reload();
+        loadAuthentication();
     });
 });
 

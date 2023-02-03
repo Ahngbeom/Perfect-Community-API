@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import {getCookieToJson, setCookie} from "../pageCookie.js"
 
 const POST_DETAILS_COOKIE_NAME = "post-details";
 const postDetailsArea = $("#postDetails");
