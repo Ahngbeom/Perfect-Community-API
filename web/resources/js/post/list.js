@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오후 1:15 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-const postsByBoard = $("#postsByBoard");
-const postsListUl = $("#postListByBoard");
+import {initPagination} from "./pagination.js";
+
+export const postsByBoard = $("#postsByBoard");
+export const postsListUl = $("#postList");
 
 putPostList();
 
@@ -53,6 +55,8 @@ function putPostList() {
     let paginationData = getCookieToJson(PAGINATION_DATA_KEY);
     const posts = getPosts();
 
+    $("#postCount").text("(총 게시물 수: " + paginationData.pageAmount + ")");
+
     postsListUl.html("");
     posts.forEach(post => {
         postsListUl.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
@@ -72,50 +76,8 @@ function putPostList() {
         $("#boardControl").addClass("visually-hidden");
     }
 
-    if (paginationData.pageAmount === undefined
-        || paginationData.activatedPage === undefined
-        || paginationData.startPage === undefined
-        || paginationData.maximumPage === undefined) {
-        $.ajax({
-            type: 'get',
-            url: '/api/post/count',
-            async: false,
-            contentType: 'application/json',
-            dataType: 'json',
-            data: {boardNo: postFilterOptions.boardNo}
-        }).done((result) => {
-            /* Put posts count */
-            // $("#postCount").text("(총 게시물 수: " + result + ")");
-
-            /* Set pagination */
-            setCookie(PAGINATION_DATA_KEY, {
-                pageAmount: Number(result),
-                activatedPage: paginationData.activatedPage !== undefined ? paginationData.activatedPage : 1
-            });
-        });
-    }
-    $("#postCount").text("(총 게시물 수: " + paginationData.pageAmount + ")");
     initPagination();
 }
 
-
-
-$(document).on('click', ".board-title", (e) => {
-    const filter = {
-        postType: undefined,
-        boardNo: $(e.target).data('bno')
-    }
-    setCookie(POST_FILTER_OPTIONS_KEY, filter);
-
-    const paginationData = getCookieToJson(PAGINATION_DATA_KEY);
-    console.log(paginationData);
-    paginationData.activatedPage = 1;
-    console.log(paginationData);
-    setCookie(PAGINATION_DATA_KEY, paginationData);
-
-    putPostList();
-    // getPostAjax(filter)
-    //     .done((data) => putPostList(data));
-});
-
+export {getPostAjax, putPostList};
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import {putPostList} from "./post/list.js";
 
 getBoardList();
 
@@ -38,14 +40,47 @@ function getBoard(bno) {
     });
 }
 
+$(document).on('click', ".board-title", (e) => {
+    const postFilterOptions = {
+        boardNo: $(e.target).data('bno'),
+        type: undefined,
+        keyword: undefined,
+        page: undefined
+    }
+
+    $.ajax({
+        type: 'get',
+        url: '/api/post/count',
+        async: false,
+        contentType: 'application/json',
+        dataType: 'json',
+        data: postFilterOptions
+    }).done((result) => {
+        /* Put posts count */
+        // $("#postCount").text("(총 게시물 수: " + result + ")");
+
+        setCookie(POST_FILTER_OPTIONS_KEY, postFilterOptions);
+
+        /* Set pagination */
+        setCookie(PAGINATION_DATA_KEY, {
+            pageAmount: Number(result),
+            activatedPage: 1
+        });
+    });
+
+    putPostList();
+    console.log(getCookieToJson(PAGINATION_DATA_KEY));
+});
+
 $("#boardInfoBtn").on('click', () => {
     getBoard(getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo)
         .done((data) => {
-            setCookie(POST_FILTER_OPTIONS_KEY, {
-                boardNo: data.bno,
-                pageType: 'read'
-            });
-            postsByBoard.html(putBoardFormHTML(data));
+            console.log(data);
+            // setCookie(POST_FILTER_OPTIONS_KEY, {
+            //     boardNo: data.bno,
+            //     pageType: 'read'
+            // });
+            // postsByBoard.html(putBoardFormHTML(data));
         });
 });
 
@@ -66,3 +101,5 @@ const putBoardFormHTML = ((boardData) => {
         "</div>" +
         "</div>"
 });
+
+export {getBoard};

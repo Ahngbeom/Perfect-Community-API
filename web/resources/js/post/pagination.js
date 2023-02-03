@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오후 1:15 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {getPostAjax} from "./list.js";
 
 // let activePage = $(".page-item.active");
-const paginationNav = $("#postListByBoard").siblings("nav");
+const paginationNav = $("#paginationNav");
 const paginationUl = paginationNav.find(".pagination");
 
 function initPagination() {
@@ -30,13 +31,12 @@ function initPagination() {
         paginationUl.html("<li class=\"page-item\"><button class=\"page-link\">Previous</button></li>");
     }
     for (let i = paginationData.startPage; i <= paginationData.maximumPage && i <= paginationData.startPage + 9; i++) {
-        console.log(i === paginationData.activatedPage);
         if (i === paginationData.activatedPage)
             paginationUl.append("<li class=\"page-item active\"><button class=\"page-link\">" + i + "</button></li>");
         else
             paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">" + i + "</button></li>");
     }
-    if (paginationData.activatedPage === paginationData.maximumPage) {
+    if (paginationData.activatedPage === paginationData.maximumPage || paginationData.maximumPage === 0) {
         paginationUl.append("<li class=\"page-item\"><button class=\"page-link disabled\">Next</button></li>");
     } else {
         paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">Next</button></li>");
@@ -104,6 +104,8 @@ $(document).on('click', '.page-link', (e) => {
             });
         });
 });
+
+export {initPagination};
 
 /*
 * 1. Set cookie for pagination

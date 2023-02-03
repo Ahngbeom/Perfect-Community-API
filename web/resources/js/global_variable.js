@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-const POST_FILTER_OPTIONS_KEY = "post-filter-options";
-const PAGINATION_DATA_KEY = "pagination";
-
-function getCookieToJson(cookieName) {
-    return $.cookie(cookieName) !== undefined ? JSON.parse($.cookie(cookieName)) : {};
+let userData = {
+    username: undefined,
+    userRole: undefined,
+    accessToken: undefined
 }
 
-function setCookie(name, jsonData) {
-    // console.log("Set Cookie - " + name, jsonData);
-    $.cookie(name, JSON.stringify(jsonData));
-}
+const mainContents = $("#mainContents");
+

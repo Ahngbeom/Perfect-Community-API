@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 3. 오후 6:38 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,13 @@ loadAuthentication();
 function loadAuthentication() {
     // console.log("Username", username);
     // console.log("Access Token", accessToken);
-    if (username !== undefined && accessToken !== undefined) {
+    if (userData.username !== undefined && userData.accessToken !== undefined) {
         // $("#authentication span").html("Authenticated (" + username + ")").css("color", "green");
-        $("#authenticatedUsername").html("ID: " + username).css("color", "green");
+        if ($.inArray('ROLE_ADMIN', userData.userRole) >= 0) {
+            $("#authenticatedUsername").html("ID: " + userData.username).css("color", "goldenrod");
+        } else {
+            $("#authenticatedUsername").html("ID: " + userData.username).css("color", "green");
+        }
         $("#authentication").removeClass("visually-hidden");
         $("#loginForm").addClass("visually-hidden");
         logoutBtn.removeClass("visually-hidden");
@@ -47,10 +51,10 @@ $("#loginBtn").on('click', () => {
             password: $("input[name='password']").val()
         }),
         success: (data, status, xhr) => {
-            username = data.username;
-            accessToken = xhr.getResponseHeader("Authorization").substring("Bearer ".length);
+            userData.username = data.username;
+            userData.accessToken = xhr.getResponseHeader("Authorization").substring("Bearer ".length);
             loadAuthentication();
-            putJwtInfo(data);
+            // putJwtInfo(data);
         },
         error: (xhr) => {
             alert(xhr.responseText);
@@ -66,10 +70,10 @@ logoutBtn.on('click', () => {
         contentType: 'application/json',
     }).done((data) => {
         console.log(data);
-        username = undefined;
-        accessToken = undefined;
-        clearInterval(accessTokenInterval);
-        clearInterval(refreshTokenInterval);
+        userData.username = undefined;
+        userData.accessToken = undefined;
+        // clearInterval(accessTokenInterval);
+        // clearInterval(refreshTokenInterval);
     }).fail((xhr) => {
         console.error(xhr);
         console.error(xhr.responseText);
@@ -77,3 +81,5 @@ logoutBtn.on('click', () => {
         location.reload();
     });
 });
+
+export {loadAuthentication};
