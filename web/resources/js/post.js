@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 3. 오후 1:15 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 const postsByBoard = $("#postsByBoard");
 const postsListUl = $("#postListByBoard");
-const paginationNav = $("#postListByBoard").siblings("nav");
-const paginationUl = paginationNav.find(".pagination");
 
 putPostList();
 
@@ -50,14 +48,11 @@ function getPostAjax(option) {
     });
 }
 
-function putPostList(posts) {
+function putPostList() {
     let postFilterOptions = getCookieToJson(POST_FILTER_OPTIONS_KEY);
     let paginationData = getCookieToJson(PAGINATION_DATA_KEY);
-    if (posts === undefined) {
-        console.log(postFilterOptions);
-        console.log(paginationData);
-        posts = getPosts();
-    }
+    const posts = getPosts();
+
     postsListUl.html("");
     posts.forEach(post => {
         postsListUl.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")

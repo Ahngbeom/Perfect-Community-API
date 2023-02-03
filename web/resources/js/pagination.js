@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 3. 오후 1:15 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,45 @@
  */
 
 // let activePage = $(".page-item.active");
+const paginationNav = $("#postListByBoard").siblings("nav");
+const paginationUl = paginationNav.find(".pagination");
 
 function initPagination() {
     const paginationData = getCookieToJson(PAGINATION_DATA_KEY);
     paginationData.maximumPage = Math.ceil(paginationData.pageAmount / 10);
-    paginationData.startPage = Math.floor(paginationData.activatedPage / 10) * 10 + 1;
-    paginationUl.html("<li class=\"page-item\"><button class=\"page-link\">Previous</button></li>");
+    paginationData.startPage = Math.floor(paginationData.activatedPage / 11) * 10 + 1;
+    paginationData.endPage = (paginationData.maximumPage - paginationData.startPage) >= 10 ? paginationData.startPage + 9 : paginationData.maximumPage;
+
+    if (paginationData.activatedPage === 1) {
+        paginationUl.html("<li class=\"page-item\"><button class=\"page-link disabled\">Previous</button></li>");
+    } else {
+        paginationUl.html("<li class=\"page-item\"><button class=\"page-link\">Previous</button></li>");
+    }
     for (let i = paginationData.startPage; i <= paginationData.maximumPage && i <= paginationData.startPage + 9; i++) {
+        console.log(i === paginationData.activatedPage);
         if (i === paginationData.activatedPage)
             paginationUl.append("<li class=\"page-item active\"><button class=\"page-link\">" + i + "</button></li>");
         else
             paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">" + i + "</button></li>");
     }
-    setCookie(PAGINATION_DATA_KEY, paginationData);
-    paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">Next</button></li>");
+    if (paginationData.activatedPage === paginationData.maximumPage) {
+        paginationUl.append("<li class=\"page-item\"><button class=\"page-link disabled\">Next</button></li>");
+    } else {
+        paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">Next</button></li>");
+    }
     paginationNav.removeClass("visually-hidden");
+    setCookie(PAGINATION_DATA_KEY, paginationData);
 }
 
-$(document).on('click', '.page-link', () => {
-    // console.log(Number(activePage.text()));
-    // activePage = $(".page-item.active");
-});
+/* Activation page replacement */
+function activePagination(selectedPageElem) {
+    $(".page-item.active").removeClass("active");
+    if (selectedPageElem.text() !== 'Previous' && selectedPageElem.text() !== 'Next') {
+        selectedPageElem.parent(".page-item").addClass('active');
+    }
+}
 
+/* Set cookie by selected page */
 $(document).on('click', '.page-link', (e) => {
     const beforePageItem = $(".page-item.active");
     const beforePageNumber = Number(beforePageItem.text());
@@ -55,22 +72,28 @@ $(document).on('click', '.page-link', (e) => {
     // });
 
     if (selectedPageItemText === 'Previous') {
-        if (beforePageNumber > 1)
+        if (beforePageNumber > 1) {
             paginationData.activatedPage = paginationData.activatedPage - 1;
+            // if (beforePageNumber % 10 === 1) {
+            //     setCookie(PAGINATION_DATA_KEY, paginationData);
+            //     initPagination();
+            // }
+        }
     } else if (selectedPageItemText === 'Next') {
         if (beforePageNumber < paginationData.maximumPage) {
             paginationData.activatedPage = paginationData.activatedPage + 1;
-            if (beforePageNumber % 10 === 0) {
-                initPagination();
-            }
+            // if (beforePageNumber % 10 === 0) {
+            //     setCookie(PAGINATION_DATA_KEY, paginationData);
+            //     initPagination();
+            // }
         }
     } else {
         paginationData.activatedPage = Number(selectedPageItemText);
     }
     setCookie(PAGINATION_DATA_KEY, paginationData);
+    initPagination();
 
-    beforePageItem.removeClass("active");
-    $(".page-item:nth-child(" + (paginationData.activatedPage + 1) + ")").addClass("active");
+    // $(".page-item:nth-child(" + (paginationData.activatedPage % 12 + 1) + ")").addClass("active");
     getPostAjax({boardNo: boardNo, page: paginationData.activatedPage})
         .done((data) => {
             // console.log(data);
