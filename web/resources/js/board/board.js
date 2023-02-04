@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 import {putPostList} from "../post/list.js";
 import {getCookieToJson, setCookie} from "../pageCookie.js";
-import {PAGINATION_DATA_KEY, POST_FILTER_OPTIONS_KEY} from "../global_variable.js";
 
 getBoardList();
 
@@ -71,7 +70,6 @@ $(document).on('click', ".board-title", (e) => {
     });
 
     putPostList();
-    console.log(getCookieToJson(PAGINATION_DATA_KEY));
 });
 
 $("#boardInfoBtn").on('click', () => {

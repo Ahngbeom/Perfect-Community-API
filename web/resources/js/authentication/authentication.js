@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-import {additionalButtonsArea, userData} from "../global_variable.js";
+import {addButtonsByUserRole} from "../user/user.js";
 
 const logoutBtn = $("#logoutBtn");
 
-loadAuthentication();
-
 function loadAuthentication() {
-    console.log(userData);
+    console.log("userData", userData);
     /* Authentication on top */
-    if (userData.username !== undefined && userData.accessToken !== undefined) {
+    if (!$.isEmptyObject(userData)) {
         // $("#authentication span").html("Authenticated (" + username + ")").css("color", "green");
         if ($.inArray('ROLE_ADMIN', userData.userRole) >= 0) {
             $("#authenticatedUsername").html("ID: " + userData.username).css("color", "goldenrod");
@@ -33,19 +31,16 @@ function loadAuthentication() {
         $("#authentication").removeClass("visually-hidden");
         $("#loginForm").addClass("visually-hidden");
         logoutBtn.removeClass("visually-hidden");
+        additionalButtonsArea.html("<button type='button' class='btn btn-sm btn-outline-secondary' id='accountPreferences'>계정 정보 수정</button>");
     } else {
         // $("#authentication span").html("");
         $("#authentication").addClass("visually-hidden");
         $("#loginForm").removeClass("visually-hidden");
         logoutBtn.addClass("visually-hidden");
+        additionalButtonsArea.html("<button type='button' class='btn btn-sm btn-outline-secondary'>회원 가입</button>");
     }
 
-    /* Add control button by user role */
-    additionalButtonsArea.html("");
-    if ($.inArray('ROLE_ADMIN', userData.userRole)) {
-        additionalButtonsArea.append("<button type='button' class='btn btn-sm btn-outline-secondary'>게시판 관리</button>");
-    }
-    additionalButtonsArea.append("<button type='button' class='btn btn-sm btn-outline-secondary'>계정 정보 수정</button>");
+    addButtonsByUserRole(userData.userRole);
 
 }
 
@@ -62,6 +57,7 @@ $("#loginBtn").on('click', () => {
         }),
         success: (data, status, xhr) => {
             userData.username = data.username;
+            userData.userRole = data.authorities;
             userData.accessToken = xhr.getResponseHeader("Authorization").substring("Bearer ".length);
             loadAuthentication();
             // putJwtInfo(data);
@@ -79,10 +75,8 @@ logoutBtn.on('click', () => {
         async: false,
         contentType: 'application/json',
     }).done((data) => {
-        console.log(data);
-        userData.username = undefined;
-        userData.userRole = undefined;
-        userData.accessToken = undefined;
+        console.log("Logout", data);
+        userData = {};
         // clearInterval(accessTokenInterval);
         // clearInterval(refreshTokenInterval);
     }).fail((xhr) => {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (C) 23. 2. 3. 오후 6:40 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="redisServer" class="redis.embedded.RedisServer"/>
+<!--    <bean id="redisServer" class="redis.embedded.RedisServer"/>-->
 
     <!--    <cache:annotation-driven />-->
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import {PAGINATION_DATA_KEY, POST_FILTER_OPTIONS_KEY} from "../global_variable.js";
 import {getCookieToJson, setCookie} from "../pageCookie.js";
-import {getPostAjax} from "./list.js";
+import {putPostList} from "./list.js";
 
-// let activePage = $(".page-item.active");
 const paginationNav = $("#paginationNav");
 const paginationUl = paginationNav.find(".pagination");
 
@@ -60,62 +58,22 @@ function activePagination(selectedPageElem) {
 $(document).on('click', '.page-link', (e) => {
     const beforePageItem = $(".page-item.active");
     const beforePageNumber = Number(beforePageItem.text());
-    // const firstPageNumber = Number($(document).find(paginationUl).children("li:nth-child(2)").text());
-    // const lastPageNumber = Number($(document).find(paginationUl).children("li:nth-last-child(2)").text());
-    const boardNo = getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo;
     const selectedPageItemText = $(e.target).text();
     const paginationData = getCookieToJson(PAGINATION_DATA_KEY);
-
-    // console.log({
-    //     activatedPage: beforePageNumber,
-    //     firstPageNumber: firstPageNumber,
-    //     lastPageNumber: lastPageNumber,
-    //     boardNo: boardNo,
-    //     targetPage: targetPage
-    // });
 
     if (selectedPageItemText === 'Previous') {
         if (beforePageNumber > 1) {
             paginationData.activatedPage = paginationData.activatedPage - 1;
-            // if (beforePageNumber % 10 === 1) {
-            //     setCookie(PAGINATION_DATA_KEY, paginationData);
-            //     initPagination();
-            // }
         }
     } else if (selectedPageItemText === 'Next') {
         if (beforePageNumber < paginationData.maximumPage) {
             paginationData.activatedPage = paginationData.activatedPage + 1;
-            // if (beforePageNumber % 10 === 0) {
-            //     setCookie(PAGINATION_DATA_KEY, paginationData);
-            //     initPagination();
-            // }
         }
     } else {
         paginationData.activatedPage = Number(selectedPageItemText);
     }
     setCookie(PAGINATION_DATA_KEY, paginationData);
-    initPagination();
-
-    // $(".page-item:nth-child(" + (paginationData.activatedPage % 12 + 1) + ")").addClass("active");
-    getPostAjax({boardNo: boardNo, page: paginationData.activatedPage})
-        .done((data) => {
-            // console.log(data);
-
-            $("#postListByBoard").html("");
-            data.forEach(post => {
-                $("#postListByBoard").append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
-            });
-        });
+    putPostList();
 });
 
 export {initPagination};
-
-/*
-* 1. Set cookie for pagination
-* 2. Put pagination to HTML
-* 3. Get and put posts by activated page
-*
-*
-*
-*
-* */

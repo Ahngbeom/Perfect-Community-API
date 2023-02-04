@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-import {PAGINATION_DATA_KEY, POST_FILTER_OPTIONS_KEY} from "../global_variable.js";
 import {initPagination} from "./pagination.js";
 import {getBoard} from "../board/board.js";
 import {getCookieToJson} from "../pageCookie.js";
-
-export const postsByBoard = $("#postsByBoard");
-export const postsListUl = $("#postList");
 
 putPostList();
 
@@ -60,9 +56,9 @@ function putPostList() {
 
     $("#postCount").text("(총 게시물 수: " + paginationData.pageAmount + ")");
 
-    postsListUl.html("");
+    unorderedListForPosts.html("");
     posts.forEach(post => {
-        postsListUl.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
+        unorderedListForPosts.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
     });
 
     if (postFilterOptions.boardNo !== undefined) {
@@ -82,5 +78,5 @@ function putPostList() {
     initPagination();
 }
 
-export {getPostAjax, putPostList};
+export {putPostList};
 

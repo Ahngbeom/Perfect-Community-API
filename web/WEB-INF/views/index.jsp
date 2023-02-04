@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -60,8 +60,8 @@
 
                 </div>
             </div>
-            <div class="border border-light" id="additionalButtons">
-
+            <div class="d-flex justify-content-end gap-1 border border-light" id="additionalButtons">
+                <button type='button' class='btn btn-sm btn-outline-secondary' id='accountPreferences'>회원 정보</button>
             </div>
 
             <div class="d-flex gap-2 m-3">
@@ -84,10 +84,15 @@
                     </div>
                     <div class="border border-success">
                         <div id="postsByBoard">
-                            <label class="h4">
-                                게시물
-                            </label>
-                            <span id="postCount"></span>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <label class="h4" id="postsByBoardTitle">
+                                    </label>
+                                    <span id="postCount"></span>
+                                </div>
+                                <div id="boardControlButtons">
+                                </div>
+                            </div>
                             <ul id="postList">
                             </ul>
                             <nav class="d-flex justify-content-center visually-hidden" id="paginationNav">
