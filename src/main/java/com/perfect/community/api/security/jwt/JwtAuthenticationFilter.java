@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 3. 오후 6:40 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 4. 오후 8:53 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,15 +108,15 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     Authentication authentication = tokenProvider.getAuthentication(accessToken);
 
                     /* Compared to Redis tokens.  */
-                    if (!redisService.validateAccessTokenByUsername(authentication.getName(), accessToken))
-                        throw new JwtException("Invalid JWT.");
+                    if (!redisService.validateAccessTokenByUsernameOnRedis(authentication.getName(), accessToken))
+                        throw new JwtException("Invalid JWT (Access Token).");
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     logger.info("Stored '" + authentication.getName() + "' authentication information in SecurityContext. (URI: " + requestURI + ")");
                 } catch (ExpiredJwtException e) {
                     reissueJWT(httpServletRequest, (HttpServletResponse) response, chain, refreshToken);
                 } catch (Exception e) {
-                    logger.error(e.getClass().getSimpleName() + " - " + e.getMessage());
+//                    logger.error(e.getClass().getSimpleName() + " - " + e.getMessage());
                     throw new JwtException(e.getMessage());
                 }
             } else if (StringUtils.hasText(refreshToken) && tokenProvider.validateToken(refreshToken)) {
@@ -132,19 +132,15 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         try {
             /* An exception is thrown by 'validateToken' if the refresh token validation fails. */
             if (!tokenProvider.validateToken(refreshToken))
-                throw new JwtException("Invalid JWT.");
+                throw new JwtException("Invalid JWT (Refresh Token).");
 
             /* Compared to Redis tokens.  */
             Authentication authentication = tokenProvider.getAuthentication(refreshToken);
-            if (!redisService.validateRefreshTokenByUsername(authentication.getName(), refreshToken))
-                throw new JwtException("Invalid JWT.");
-
+            if (!redisService.validateRefreshTokenByUsernameOnRedis(authentication.getName(), refreshToken))
+                throw new JwtException("Does not match Redis JWT (Refresh Token).");
 
             /* Reissue tokens */
-            TokenDTO tokenDTO = tokenProvider.generateToken(authentication);
-
-            /* Replacing with reissued tokens */
-            redisService.putJWT(tokenDTO);
+            TokenDTO tokenDTO = jwtService.reissue(refreshToken);
 
             /* Reissued JWT to response */
             tokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
