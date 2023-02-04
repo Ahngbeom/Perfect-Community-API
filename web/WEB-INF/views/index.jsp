@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 5. 오전 4:24 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -65,13 +65,20 @@
             </div>
 
             <div class="d-flex gap-2 m-3">
-                <div class="d-flex flex-column col-3 border border-dark" id="boardList">
-                    <label class="h5">
-                        게시판
-                    </label>
-                    <button type="button" class="btn btn-sm btn-link board-title">전체 게시물</button>
-                    <ul>
-                    </ul>
+                <div class="d-flex flex-column col-3 border border-dark gap-3" id="boardList">
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <label class="h5">
+                            게시판
+                        </label>
+                        <div id="boardControlButtonsOnSideBar">
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-link board-title">전체 게시물</button>
+                        <ul>
+                        </ul>
+                    </div>
+
                 </div>
                 <div class="d-flex flex-column col-9 gap-2" id="mainContents">
                     <div id="additionalArea" class="border border-dark visually-hidden">

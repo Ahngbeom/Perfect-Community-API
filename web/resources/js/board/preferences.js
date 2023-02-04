@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오전 4:24 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ $(document).on('click', "#boardPreferences", (e) => {
     const selectedBoardNo = getCookieToJson(POST_FILTER_OPTIONS_KEY);
     const boardData = getBoard(selectedBoardNo.boardNo);
     console.log(boardData);
-    additionalArea.html("<h3>게시판 관리</h3>");
+    additionalArea.html("<h4>게시판 관리</h4>");
     additionalArea.append(getBoardFormHTML(boardData));
     additionalArea.toggleClass("visually-hidden");
 });
@@ -59,3 +59,4 @@ $(document).on('click', "#boardForm #boardClosureBtn", () => {
         alert(jqXHR.responseText);
     });
 });
+

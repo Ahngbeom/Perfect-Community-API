@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오전 4:24 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import {getCookieToJson} from "../pageCookie.js";
 function addButtonsByUserRole(userRoles) {
     if ($.inArray('ROLE_ADMIN', userRoles) >= 0) {
         // additionalButtonsArea.append("<button type='button' class='btn btn-sm btn-outline-secondary' id='boardPreferences'>게시판 관리</button>");
+        $("#boardControlButtonsOnSideBar").html("<button type=\"button\" class=\"btn btn-sm btn-outline-secondary\" id=\"showBoardCreateFormBtn\">게시물 생성</button>");
         if (getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo !== undefined)
             $("#boardControlButtons").html("<button type='button' class='btn btn-sm btn-outline-secondary' id='boardPreferences'>게시판 관리</button>");
         else
@@ -27,8 +28,10 @@ function addButtonsByUserRole(userRoles) {
     } else if ($.inArray('ROLE_MANAGER', userRoles) >= 0) {
 
     } else if ($.inArray('ROLE_USER', userRoles) >= 0) {
+        $("#boardControlButtonsOnSideBar").html("");
         $("#boardControlButtons").html("");
     } else {
+        $("#boardControlButtonsOnSideBar").html("");
         $("#boardControlButtons").html("");
     }
 }
