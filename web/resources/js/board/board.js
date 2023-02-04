@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,11 +34,16 @@ function getBoardList() {
 
 function getBoard(bno) {
     if (bno === undefined)
-        return;
-    return $.ajax({
+        return null;
+    let result = null;
+    $.ajax({
         type: 'get',
-        url: '/api/board/' + bno
+        url: '/api/board/' + bno,
+        async: false
+    }).done((data) => {
+        result = data;
     });
+    return result;
 }
 
 $(document).on('click', ".board-title", (e) => {
@@ -84,22 +89,25 @@ $("#boardInfoBtn").on('click', () => {
         });
 });
 
-const putBoardFormHTML = ((boardData) => {
-    console.log(boardData);
-    return "<div class='p-3'>" +
+const getBoardFormHTML = ((boardData) => {
+    return "<form class='p-3' id='boardForm' data-bno='" + boardData.bno + "'>" +
         "<div class=\"mb-3\">\n" +
-        "  <label for=\"exampleFormControlInput1\" class=\"form-label\">Title</label>\n" +
-        "  <input type=\"text\" class=\"form-control\" id=\"exampleFormControlInput1\" value='" + boardData.title + "'>\n" +
+        "  <label class=\"form-label\">Bulletin board created user</label>\n" +
+        "  <input type=\"text\" class=\"form-control\" name='createUser' value='" + boardData.createUser + "'>\n" +
         "</div>\n" +
         "<div class=\"mb-3\">\n" +
-        "  <label for=\"exampleFormControlTextarea1\" class=\"form-label\">Comment</label>\n" +
-        "  <textarea class=\"form-control\" id=\"exampleFormControlTextarea1\" rows=\"3\">" + boardData.comment + "</textarea>\n" +
+        "  <label class=\"form-label\">Title</label>\n" +
+        "  <input type=\"text\" class=\"form-control\" name='title' value='" + boardData.title + "'>\n" +
+        "</div>\n" +
+        "<div class=\"mb-3\">\n" +
+        "  <label class=\"form-label\">Comment</label>\n" +
+        "  <textarea class=\"form-control\" rows=\"3\" name='comment'>" + boardData.comment + "</textarea>\n" +
         "</div>" +
         "<div class=\"mb-3\">\n" +
-        "  <button class=\"btn btn-warning\">Update</button>\n" +
-        "  <button class=\"btn btn-danger\">Remove</button>\n" +
+        "  <button type='button' class=\"btn btn-warning\" id='boardUpdateBtn'>Update</button>\n" +
+        "  <button type='button' class=\"btn btn-danger\" id='boardClosureBtn'>Closure</button>\n" +
         "</div>" +
-        "</div>"
+        "</form>";
 });
 
-export {getBoard};
+export {getBoard, getBoardFormHTML};

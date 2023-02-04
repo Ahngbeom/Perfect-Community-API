@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,13 @@ function addButtonsByUserRole(userRoles) {
         // additionalButtonsArea.append("<button type='button' class='btn btn-sm btn-outline-secondary' id='boardPreferences'>게시판 관리</button>");
         if (getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo !== undefined)
             $("#boardControlButtons").html("<button type='button' class='btn btn-sm btn-outline-secondary' id='boardPreferences'>게시판 관리</button>");
+        else
+            $("#boardControlButtons").html("");
     } else if ($.inArray('ROLE_MANAGER', userRoles) >= 0) {
 
     } else if ($.inArray('ROLE_USER', userRoles) >= 0) {
+        $("#boardControlButtons").html("");
+    } else {
         $("#boardControlButtons").html("");
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ const POST_FILTER_OPTIONS_KEY = "post-filter-options";
 const PAGINATION_DATA_KEY = "pagination";
 
 /* Additional buttons in page */
+const additionalArea = $("#additionalArea");
 const additionalButtonsArea = $("#additionalButtons");
 
 /* Main contents in page */

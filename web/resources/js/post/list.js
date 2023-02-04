@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 import {initPagination} from "./pagination.js";
 import {getBoard} from "../board/board.js";
-import {getCookieToJson} from "../pageCookie.js";
+import {getCookieToJson, setCookie} from "../pageCookie.js";
 
 putPostList();
 
@@ -61,15 +61,18 @@ function putPostList() {
         unorderedListForPosts.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
     });
 
+    console.log(postFilterOptions)
     if (postFilterOptions.boardNo !== undefined) {
-        getBoard(postFilterOptions.boardNo)
-            .done((data) => {
-                postsByBoard.find("label").text(data.title);
-                // console.log(filterOptions.boardNo)
-                if (postFilterOptions.boardNo > 0) {
-                    $("#boardControl").removeClass("visually-hidden");
-                }
-            });
+        const boardData = getBoard(postFilterOptions.boardNo);
+        if (boardData === null) {
+            setCookie(POST_FILTER_OPTIONS_KEY, {});
+            return;
+        }
+        postsByBoard.find("label").text(boardData.title);
+        // console.log(filterOptions.boardNo)
+        if (postFilterOptions.boardNo > 0) {
+            $("#boardControl").removeClass("visually-hidden");
+        }
     } else {
         postsByBoard.find("label").text("전체 게시물");
         $("#boardControl").addClass("visually-hidden");

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -74,6 +74,8 @@
                     </ul>
                 </div>
                 <div class="d-flex flex-column col-9 gap-2" id="mainContents">
+                    <div id="additionalArea" class="border border-dark visually-hidden">
+                    </div>
                     <div id="postDetails" class="border border-info visually-hidden">
                         <div class="d-flex justify-content-between">
                             <span id="postTitle" class="h3"></span>
