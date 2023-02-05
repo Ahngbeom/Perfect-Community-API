@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Ahngbeom (bbu0704@gmail.com)
+ * Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
-function setPageCookie(pageType, boardNo, page) {
+package com.perfect.community.view.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+    @GetMapping("/")
+    public String home() {
+        return "index";
+    }
 }

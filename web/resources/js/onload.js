@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Ahngbeom (bbu0704@gmail.com)
+ * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import {reissueJWT} from "./authentication/jwt.js";
+
 $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
-    if (accessToken !== undefined && accessToken !== null && accessToken !== "")
-        jqXHR.setRequestHeader("Authorization", "Bearer " + accessToken);
+    if (!$.isEmptyObject(userData) && userData.accessToken !== undefined)
+        jqXHR.setRequestHeader("Authorization", "Bearer " + userData.accessToken);
 });
 
 $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
@@ -25,12 +27,16 @@ $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
     // console.log(ajaxOptions);
     if (jqXHR.status >= 400) {
         console.error(jqXHR.status, jqXHR.statusText, jqXHR.responseText);
-        console.error();
+        console.error(ajaxOptions);
     }
-    loadAuthentication();
 });
 
 $.ajaxSetup({
-    contentType: 'application/json; chrset=utf-8',
+    contentType: 'application/json; charset=utf-8',
     dataType: 'json'
 });
+
+/* Authentication by JWT reissue. */
+window.onload = reissueJWT();
+
+// $(document).on('click', loadAuthentication);

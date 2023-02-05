@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 23. 2. 4. 오후 8:53 Ahngbeom (https://github.com/Ahngbeom)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.perfect.community.api.service.redis;
 
 import com.perfect.community.api.dto.jwt.TokenDTO;
@@ -27,9 +43,17 @@ public class RedisService {
 
     public void putJWT(TokenDTO tokenDTO) {
         String key = JWT_KEY + tokenDTO.getUsername();
-        redisTemplate.opsForHash().put(key, ACCESS_TOKEN_FIELD, tokenDTO.getAccessToken());
-        redisTemplate.opsForHash().put(key, REFRESH_TOKEN_FIELD, tokenDTO.getRefreshToken());
-        redisTemplate.expireAt(key, tokenDTO.getRefreshTokenExpiration());
+        try {
+            redisTemplate.opsForHash().put(key, ACCESS_TOKEN_FIELD, tokenDTO.getAccessToken());
+            redisTemplate.opsForHash().put(key, REFRESH_TOKEN_FIELD, tokenDTO.getRefreshToken());
+            redisTemplate.expireAt(key, tokenDTO.getRefreshTokenExpiration());
+            log.info("[Save to Redis Successful]\n ACCESS_TOKEN: {}\n REFRESH_TOKEN: {}\n Expire: {}",
+                    redisTemplate.opsForHash().get(key, ACCESS_TOKEN_FIELD),
+                    redisTemplate.opsForHash().get(key, REFRESH_TOKEN_FIELD),
+                    redisTemplate.getExpire(key));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteJWT(String username) {
@@ -42,11 +66,15 @@ public class RedisService {
         redisTemplate.expireAt(key, date);
     }
 
-    public boolean validateAccessTokenByUsername(String username, String accessToken) throws JwtException {
+    public boolean validateAccessTokenByUsernameOnRedis(String username, String accessToken) throws JwtException {
+        log.info("Redis access token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, ACCESS_TOKEN_FIELD));
+        log.info("Requested access token: {}", accessToken);
         return accessToken.equals(redisTemplate.opsForHash().get(JWT_KEY + username, ACCESS_TOKEN_FIELD));
     }
 
-    public boolean validateRefreshTokenByUsername(String username, String refreshToken) throws JwtException {
+    public boolean validateRefreshTokenByUsernameOnRedis(String username, String refreshToken) throws JwtException {
+        log.info("Redis refresh token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
+        log.info("Requested refresh token: {}", refreshToken);
         return refreshToken.equals(redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
     }
 
