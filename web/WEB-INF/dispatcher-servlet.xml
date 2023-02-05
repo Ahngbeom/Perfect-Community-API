@@ -27,7 +27,7 @@
     <mybatis:scan base-package="com.perfect.community.api.mapper"/>
 
     <!--  Resources mapping for js  -->
-<!--    <mvc:resources mapping="/resources/**" location="/resources/"/>-->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <!--  Properties  -->
     <context:property-placeholder location="classpath:jwt.properties"/>
@@ -68,9 +68,9 @@
     <!--        </property>-->
     <!--    </bean>-->
 
-<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-<!--        <property name="prefix" value="/WEB-INF/views/"/>-->
-<!--        <property name="suffix" value=".jsp"/>-->
-<!--    </bean>-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
 
 </beans>

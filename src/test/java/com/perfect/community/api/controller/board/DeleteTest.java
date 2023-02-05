@@ -8,11 +8,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("[Board's Delete]")
+@DisplayName("[Integrated Controller] Delete board")
 class DeleteTest extends BoardControllerTest {
 
     @Test
-    @DisplayName("[Board's Delete] - By anonymous")
+    @DisplayName("By anonymous user")
     @WithAnonymousUser
     void deleteBoardByAnonymous() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/board/1"))
@@ -21,7 +21,7 @@ class DeleteTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Delete] - By not created user")
+    @DisplayName("By unauthorized user")
     @WithUserDetails("tester")
     void deleteBoardWithUnauthorizedUser() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/board/1"))
@@ -30,7 +30,7 @@ class DeleteTest extends BoardControllerTest {
     }
 
     @Test
-    @DisplayName("[Board's Delete] - By admin")
+    @DisplayName("By administrator")
     @WithUserDetails("admin")
     void deleteBoard() throws Exception {
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/board/1"))
