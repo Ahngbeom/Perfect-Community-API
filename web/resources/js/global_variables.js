@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ let userData = {};
 /* Constant Cookie names */
 const POST_FILTER_OPTIONS_KEY = "post-filter-options";
 const PAGINATION_DATA_KEY = "pagination";
+const POST_DETAILS_COOKIE_NAME = "post-details";
 
 /* Additional buttons in page */
 const additionalArea = $("#additionalArea");
@@ -39,3 +40,13 @@ const mainContents = $("#mainContents");
 /* Elements related to the post */
 const postsByBoard = $("#postsByBoard");
 const unorderedListForPosts = $("#postList");
+
+const postForm = $("#postForm");
+const postFormBoardTypeSelectElem = postForm.find("select[name='boardNo']");
+const postFormTypeSelectElem = postForm.find("select[name='postType']");
+const postFormTitleElem = postForm.find("#postTitle");
+const postFormLabelForTitleElem = postForm.find("label[for='" + postFormTitleElem.attr("id") + "']");
+const postFormContentsElem = postForm.find("#postContents");
+const postFormLabelForContentsElem = postForm.find("label[for='" + postFormContentsElem.attr("id") + "']");
+
+const postFormCloseBtn = postForm.find(".btn-close");

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오전 4:24 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,22 @@
 import {putPostList} from "../post/list.js";
 import {setCookie} from "../pageCookie.js";
 
-getBoardList();
+export let boardDataList = getBoardList();
 
 function getBoardList() {
-    return $.ajax({
+    let result = null;
+    $.ajax({
         type: 'get',
         url: '/api/board',
-        success: (data) => {
-            // console.log(data);
-            data.forEach(board => {
-                $("#boardList ul").append("<li><button type='button' class='btn btn-link board-title' data-bno='" + board.bno + "'>" + board.title + "</button></li>")
-            });
-        }
+        async: false
+    }).done((data) => {
+        // console.log(data);
+        data.forEach(board => {
+            $("#boardList ul").append("<li><button type='button' class='btn btn-link board-title' data-bno='" + board.bno + "'>" + board.title + "</button></li>")
+        });
+        result = data;
     });
+    return result;
 }
 
 function getBoard(bno) {

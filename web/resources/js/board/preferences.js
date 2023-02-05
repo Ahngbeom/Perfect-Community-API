@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오전 4:24 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 import {getBoard, getBoardFormHTML} from "./board.js";
-import {getCookieToJson} from "../pageCookie.js";
+import {getCookieToJson, setCookie} from "../pageCookie.js";
 
 $(document).on('click', "#boardPreferences", (e) => {
     const selectedBoardNo = getCookieToJson(POST_FILTER_OPTIONS_KEY);
@@ -48,12 +48,15 @@ $(document).on('click', "#boardForm #boardUpdateBtn", () => {
 
 $(document).on('click', "#boardForm #boardClosureBtn", () => {
     const boardForm = $("#boardForm");
-    const updateBoardNo = boardForm.data("bno");
+    const deleteBoardNo = boardForm.data("bno");
 
     $.ajax({
         type: 'delete',
-        url: '/api/board/' + updateBoardNo
+        url: '/api/board/' + deleteBoardNo
     }).done(() => {
+        if (getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo === deleteBoardNo) {
+            setCookie(POST_FILTER_OPTIONS_KEY, {});
+        }
         location.reload();
     }).fail((jqXHR) => {
         alert(jqXHR.responseText);

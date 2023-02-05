@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 5. 오전 4:24 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -83,12 +83,39 @@
                 <div class="d-flex flex-column col-9 gap-2" id="mainContents">
                     <div id="additionalArea" class="border border-dark visually-hidden">
                     </div>
-                    <div id="postDetails" class="border border-info visually-hidden">
-                        <div class="d-flex justify-content-between">
-                            <span id="postTitle" class="h3"></span>
+                    <div id="postForm" class="border border-info p-2 visually-hidden">
+                        <div class="d-flex justify-content-end p-0">
                             <button type="button" class="btn-close" aria-label="Close"></button>
                         </div>
-                        <div class='text-break' id="postContents">
+                        <label>Board where this post was registered</label>
+                        <select name="boardNo" class="form-select w-50" aria-label="Default select example" disabled>
+                        </select>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <label for="postTitle"></label>
+                                <input id="postTitle" class="form-control-plaintext h4"/>
+                            </div>
+                            <div>
+                                <select name="postType" class="form-select" disabled>
+                                    <option value="NOTICE">공지</option>
+                                    <option value="NORMAL">일반</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label for="postContents">
+                        </label>
+                        <textarea class='form-control-plaintext text-break' id="postContents">
+                        </textarea>
+                        <div class="d-flex justify-content-end gap-1 mt-2">
+                            <button type="button" id="postCreateBtn"
+                                    class="btn btn-outline-info rounded-0 visually-hidden">게시
+                            </button>
+                            <button type="button" id="showPostUpdateFormBtn"
+                                    class="btn btn-outline-warning rounded-0 visually-hidden">수정
+                            </button>
+                            <button type="button" id="postRemoveBtn"
+                                    class="btn btn-outline-danger rounded-0 visually-hidden">삭제
+                            </button>
                         </div>
                     </div>
                     <div class="border border-success">
@@ -99,8 +126,12 @@
                                     </label>
                                     <span id="postCount"></span>
                                 </div>
-                                <div id="boardControlButtons">
+                                <div id="boardControlButtonsOnMain">
                                 </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-info rounded-0" id="showPostCreateFormBtn">게시물 작성
+                                </button>
                             </div>
                             <ul id="postList">
                             </ul>

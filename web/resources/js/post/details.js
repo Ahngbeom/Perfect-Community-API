@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오전 2:55 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,42 +15,70 @@
  */
 
 import {getCookieToJson, setCookie} from "../pageCookie.js"
+import {boardDataList} from "../board/board.js";
 
-const POST_DETAILS_COOKIE_NAME = "post-details";
-const postDetailsArea = $("#postDetails");
-const postDetailsTitleElem = postDetailsArea.find("#postTitle");
-const postDetailsContentsElem = postDetailsArea.find("#postContents");
-const postDetailsCloseBtn = postDetailsArea.find(".btn-close");
 let postDetailsCookieData = getCookieToJson(POST_DETAILS_COOKIE_NAME);
 
 if (!$.isEmptyObject(postDetailsCookieData)) {
-    getPostDetailsAjax(postDetailsCookieData.postNo).done((data) => putPostDetails(data));
+    putPostDetailsForm(getPost(postDetailsCookieData.postNo));
 }
 
-function getPostDetailsAjax(postNo) {
-    return $.ajax({
+function getPost(postNo) {
+    if (postNo === undefined)
+        return null;
+    let result = null;
+    $.ajax({
         type: 'get',
-        url: '/api/post/' + postNo
+        url: '/api/post/' + postNo,
+        async: false
+    }).done((data) => {
+        result = data;
     });
+    return result;
 }
 
-function putPostDetails(post) {
-    postDetailsTitleElem.text(post.title);
-    postDetailsContentsElem.text(post.contents);
-    postDetailsArea.removeClass("visually-hidden");
+function putPostDetailsForm(post) {
+    boardDataList.forEach((board) => {
+        if (board.bno === post.boardNo) {
+            postFormBoardTypeSelectElem.append("<option value='" + board.bno + "' selected>" + board.title + "</option>");
+        } else {
+            postFormBoardTypeSelectElem.append("<option value='" + board.bno + "'>" + board.title + "</option>");
+        }
+    });
+    for (const option of postFormTypeSelectElem.find("option")) {
+        if (post.type === $(option).val()) {
+            $(option).attr("selected", true);
+        }
+    }
+    postForm.data("post-no", post.postNo);
+    postFormLabelForTitleElem.text("");
+    postFormTitleElem.removeClass("form-control").addClass("form-control-plaintext")
+        .val(post.title)
+        .attr("readonly", true);
+    postFormLabelForContentsElem.text("");
+    postFormContentsElem.removeClass("form-control").addClass("form-control-plaintext")
+        .text(post.contents)
+        .attr("readonly", true);
+    postForm.removeClass("visually-hidden");
+
+    if (userData.username === post.writer) {
+        $("#postCreateBtn").addClass("visually-hidden");
+        $("#showPostUpdateFormBtn").removeClass("visually-hidden");
+        $("#postRemoveBtn").removeClass("visually-hidden");
+    }
+
     setCookie(POST_DETAILS_COOKIE_NAME, {postNo: post.postNo});
 }
 
 function clearPostDetails() {
-    postDetailsTitleElem.text("");
-    postDetailsContentsElem.text("");
-    postDetailsArea.addClass("visually-hidden");
+    postFormTitleElem.text("");
+    postFormLabelForTitleElem.text("");
+    postFormContentsElem.text("");
+    postFormLabelForContentsElem.text("");
+    postForm.addClass("visually-hidden");
     setCookie(POST_DETAILS_COOKIE_NAME, {});
 }
 
-$(document).on('click', '#postList button', (e) => {
-    const postNo = $(e.target).data('pno');
-    getPostDetailsAjax(postNo).done((data) => putPostDetails(data));
-});
+postFormCloseBtn.on('click', clearPostDetails);
 
-postDetailsCloseBtn.on('click', clearPostDetails);
+export {getPost, putPostDetailsForm, clearPostDetails}

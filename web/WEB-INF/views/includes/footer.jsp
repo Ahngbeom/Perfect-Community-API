@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -27,26 +27,13 @@
 <script type="module" src="${pageContext.request.contextPath}/resources/js/authentication/authentication.js"></script>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/board/board.js"></script>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/board/preferences.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/post/post.js"></script>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/post/list.js"></script>
 <script type="module" src="${pageContext.request.contextPath}/resources/js/post/details.js"></script>
 <script type="application/javascript">
 
-    setInterval(() => {
-        $("#currentTime").html(new Date());
-    }, 1000);
-
-    $(".api-link").on('click', (e) => {
-        const api = $(e.target);
-        $.ajax({
-            type: api.data('api-method'),
-            url: api.html(),
-            contentType: 'application/json',
-            dataType: 'json'
-        }).done((data) => {
-            $("#api-result").addClass("text-wrap").text(JSON.stringify(data));
-        }).fail((xhr) => {
-            $("#api-result").html(xhr.responseText);
-        });
-    })
+    // setInterval(() => {
+    //     $("#currentTime").html(new Date());
+    // }, 1000);
 
 </script>

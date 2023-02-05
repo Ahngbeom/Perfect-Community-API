@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,10 +58,13 @@ function putPostList() {
 
     unorderedListForPosts.html("");
     posts.forEach(post => {
-        unorderedListForPosts.append("<li><button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button></li>")
+        unorderedListForPosts.append("<li>" +
+            "<button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button>" +
+            "<span> " + post.regDate + " </span>" +
+            "<span> " + post.updateDate + " </span>" +
+            "</li>")
     });
 
-    console.log(postFilterOptions)
     if (postFilterOptions.boardNo !== undefined) {
         const boardData = getBoard(postFilterOptions.boardNo);
         if (boardData === null) {

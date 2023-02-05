@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오전 12:07 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 
 import {reissueJWT} from "./authentication/jwt.js";
-import {loadAuthentication} from "./authentication/authentication.js";
 
 $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
     if (!$.isEmptyObject(userData) && userData.accessToken !== undefined)
@@ -38,6 +37,6 @@ $.ajaxSetup({
 });
 
 /* Authentication by JWT reissue. */
-reissueJWT();
+window.onload = reissueJWT();
 
-$(document).on('click', loadAuthentication);
+// $(document).on('click', loadAuthentication);
