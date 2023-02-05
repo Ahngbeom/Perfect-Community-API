@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ const postForm = $("#postForm");
 const postFormBoardTypeSelectElem = postForm.find("select[name='boardNo']");
 const postFormTypeSelectElem = postForm.find("select[name='postType']");
 const postFormTitleElem = postForm.find("#postTitle");
-const postFormLabelForTitleElem = postForm.find("label[for='" + postFormTitleElem.attr("id") + "']");
+// const postFormLabelForTitleElem = postForm.find("label[for='" + postFormTitleElem.attr("id") + "']");
 const postFormContentsElem = postForm.find("#postContents");
-const postFormLabelForContentsElem = postForm.find("label[for='" + postFormContentsElem.attr("id") + "']");
+// const postFormLabelForContentsElem = postForm.find("label[for='" + postFormContentsElem.attr("id") + "']");
 
 const postFormCloseBtn = postForm.find(".btn-close");

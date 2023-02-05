@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
+import {getCookieToJson, setCookie} from "../pageCookie.js";
+
 function putPostCreateForm() {
+    postFormBoardTypeSelectElem.attr("disabled", false);
+    postFormTypeSelectElem.attr("disabled", false);
     $(postForm).find("label[for='" + postFormTitleElem.attr("id") + "']").text("Title");
     postFormTitleElem.removeClass("form-control-plaintext").addClass("form-control")
         .attr("readonly", false)
@@ -30,5 +34,27 @@ function putPostCreateForm() {
 
     postForm.removeClass("visually-hidden");
 }
+
+$("#postCreateBtn").on('click', () => {
+    const createPostData = {
+        boardNo: postFormBoardTypeSelectElem.val(),
+        type: postFormTypeSelectElem.val(),
+        title: postFormTitleElem.val(),
+        contents: postFormContentsElem.val()
+    }
+    console.log(createPostData);
+    $.ajax({
+        type: 'post',
+        url: '/api/post',
+        data: JSON.stringify(createPostData)
+    }).done((data) => {
+        let postDetailsCookieData = getCookieToJson(POST_DETAILS_COOKIE_NAME);
+        postDetailsCookieData.postNo = data;
+        setCookie(POST_DETAILS_COOKIE_NAME, postDetailsCookieData)
+        location.reload();
+    }).fail((jqXHR) => {
+        alert(jqXHR.responseText);
+    });
+});
 
 export {putPostCreateForm}

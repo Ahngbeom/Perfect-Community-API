@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
         <title>Title</title>
     </head>
     <body>
-        <div class="container-fluid g-2">
+        <div class="container-fluid g-2 h-auto ">
             <div class="d-flex justify-content-between">
                 <div class="col" id="currentTime">
                 </div>
@@ -51,10 +51,10 @@
                             <%--                                    <span id="refreshTokenValidityTimeLeft"></span>--%>
                             <%--                                </div>--%>
                             <%--                            </div>--%>
-                                <div>
-                                    <span id="authenticatedUsername"></span>
-                                    <button type="button" id="logoutBtn" class="btn btn-sm btn-warning">Logout</button>
-                                </div>
+                            <div>
+                                <span id="authenticatedUsername"></span>
+                                <button type="button" id="logoutBtn" class="btn btn-sm btn-warning">Logout</button>
+                            </div>
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                 <button type='button' class='btn btn-sm btn-outline-secondary' id='accountPreferences'>회원 정보</button>
             </div>
 
-            <div class="d-flex gap-2 m-3">
+            <div class="d-flex gap-2 m-3 h-auto">
                 <div class="d-flex flex-column col-3 border border-dark gap-3" id="boardList">
                     <div class="d-flex flex-wrap justify-content-between">
                         <label class="h5">
@@ -80,32 +80,37 @@
                     </div>
 
                 </div>
-                <div class="d-flex flex-column col-9 gap-2" id="mainContents">
+                <div class="d-flex flex-column col-9 gap-2 h-auto" id="mainContents">
                     <div id="additionalArea" class="border border-dark visually-hidden">
                     </div>
-                    <div id="postForm" class="border border-info p-2 visually-hidden">
+                    <div id="postForm" class="border border-info p-2 gap-2 visually-hidden">
                         <div class="d-flex justify-content-end p-0">
                             <button type="button" class="btn-close" aria-label="Close"></button>
                         </div>
-                        <label>Board where this post was registered</label>
-                        <select name="boardNo" class="form-select w-50" aria-label="Default select example" disabled>
-                        </select>
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <label for="postTitle"></label>
+                        <div class="form-floating mb-3">
+                            <select name="boardNo" class="form-select w-50"
+                                    aria-label="Default select example" disabled>
+                            </select>
+                            <label>Board where this post was registered</label>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="form-floating">
                                 <input id="postTitle" class="form-control-plaintext h4"/>
+                                <label for="postTitle">Title</label>
                             </div>
-                            <div>
+                            <div class="form-floating col-3">
                                 <select name="postType" class="form-select" disabled>
                                     <option value="NOTICE">공지</option>
                                     <option value="NORMAL">일반</option>
                                 </select>
+                                <label>Post Type</label>
                             </div>
                         </div>
-                        <label for="postContents">
-                        </label>
-                        <textarea class='form-control-plaintext text-break' id="postContents">
-                        </textarea>
+                        <div class="form-floating">
+                            <textarea class='form-control-plaintext _min-vh-100' id="postContents">
+                            </textarea>
+                            <label for="postContents">Contents</label>
+                        </div>
                         <div class="d-flex justify-content-end gap-1 mt-2">
                             <button type="button" id="postCreateBtn"
                                     class="btn btn-outline-info rounded-0 visually-hidden">게시

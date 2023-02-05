@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 import {putPostList} from "../post/list.js";
 import {setCookie} from "../pageCookie.js";
 
-export let boardDataList = getBoardList();
+// export let boardDataList = getBoardList();
+
+putBoardList(getBoardList());
 
 function getBoardList() {
     let result = null;
@@ -26,10 +28,6 @@ function getBoardList() {
         url: '/api/board',
         async: false
     }).done((data) => {
-        // console.log(data);
-        data.forEach(board => {
-            $("#boardList ul").append("<li><button type='button' class='btn btn-link board-title' data-bno='" + board.bno + "'>" + board.title + "</button></li>")
-        });
         result = data;
     });
     return result;
@@ -47,6 +45,13 @@ function getBoard(bno) {
         result = data;
     });
     return result;
+}
+
+function putBoardList(boards) {
+    boards.forEach(board => {
+        $("#boardList ul").append("<li><button type='button' class='btn btn-link board-title' data-bno='" + board.bno + "'>" + board.title + "</button></li>")
+        postFormBoardTypeSelectElem.append("<option value='" + board.bno + "'>" + board.title + "</option>");
+    });
 }
 
 $(document).on('click', ".board-title", (e) => {
