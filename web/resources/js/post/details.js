@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 7. 오후 11:25 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,15 @@ function getPost(postNo) {
 }
 
 function putPostDetailsForm(post) {
+
+    console.log(post);
+
+    postFormRegDateElem.val(new Date(post.regDate).toLocaleString());
+    postFormUpdateDateElem.val(new Date(post.updateDate).toLocaleString());
+    postFormViewsElem.val(post.views);
+    postFormRecommendElem.val(post.recommend);
+    postFormNotRecommendElem.val(post.notRecommend);
+
     for (const optionElem of postFormBoardTypeSelectElem.find("option")) {
         if (post.boardNo === $(optionElem).val()) {
             $(optionElem).attr("selected", true);

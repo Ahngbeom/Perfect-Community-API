@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-import {getPost, putPostDetailsForm} from "./details.js"
-import {putPostCreateForm} from "./create.js";
-import {putPostUpdateForm} from "./update.js";
-import {increaseViews} from "./interaction.js";
+function increaseViews(postNo) {
+    $.ajax({
+        type: 'patch',
+        url: '/api/post/views/' + postNo,
+        async: false
+    });
+}
 
-const postUpdateBtn = $("#postUpdateBtn");
-
-$("#showPostCreateFormBtn").on('click', putPostCreateForm);
-
-$(document).on('click', "#showPostUpdateFormBtn", putPostUpdateForm);
-
-$(document).on('click', '#postList button', (e) => {
-    const postNo = $(e.target).data('pno');
-    postUpdateBtn.off("click");
-    postUpdateBtn.attr("id", "showPostUpdateFormBtn");
-    increaseViews(postNo);
-    putPostDetailsForm(getPost(postNo));
-});
+export {increaseViews}

@@ -1,9 +1,30 @@
+/*
+ * Copyright (C) 23. 2. 7. 오후 11:25 Ahngbeom (https://github.com/Ahngbeom)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.perfect.community.api.vo.post;
 
 import com.perfect.community.api.dto.post.PostDTO;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 
 @Getter
@@ -39,8 +60,8 @@ public class PostVO {
         this.title = postDTO.getTitle();
         this.contents = postDTO.getContents();
         this.writer = postDTO.getWriter();
-        this.reg_date = postDTO.getRegDate();
-        this.update_date = postDTO.getUpdateDate();
+        this.reg_date = LocalDateTime.ofInstant(Instant.ofEpochMilli(postDTO.getRegDate()), ZoneId.systemDefault());
+        this.update_date = LocalDateTime.ofInstant(Instant.ofEpochMilli(postDTO.getUpdateDate()), ZoneId.systemDefault());
     }
 
     @Override
