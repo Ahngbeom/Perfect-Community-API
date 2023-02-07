@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 7. 오후 11:25 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 7. 오후 11:51 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -99,19 +99,13 @@
                                 </div>
                             </div>
                             <div class="d-flex col-4">
-                                <div class="form-floating mb-3">
+                                <div class="form-floating mb-3 col-4">
                                     <input id="postViews" class="form-control-sm form-control-plaintext" readonly/>
                                     <label for="postViews">Views</label>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <input id="postRecommend" class="form-control-sm form-control-plaintext" readonly/>
-                                    <label for="postRecommend">👍</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input id="postNotRecommend" class="form-control-sm form-control-plaintext"
-                                           readonly/>
-                                    <label for="postNotRecommend">👎</label>
-                                </div>
+                                <button id="postRecommend" class="btn btn-outline-info col-4">👍<span></span></button>
+                                <button id="postNotRecommend" class="btn btn-outline-danger col-4">👎<span></span>
+                                </button>
                             </div>
                         </div>
                         <div class="form-floating mb-3">
