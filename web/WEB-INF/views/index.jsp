@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (C) 23. 2. 7. 오후 11:51 Ahngbeom (https://github.com/Ahngbeom)
+  ~ Copyright (C) 23. 2. 7. 오후 11:57 Ahngbeom (https://github.com/Ahngbeom)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@
                         <div class="d-flex justify-content-end p-0">
                             <button type="button" class="btn-close" aria-label="Close"></button>
                         </div>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between" id="postDetailsAdditionalInfo">
                             <div class="d-flex col-8">
                                 <div class="form-floating mb-3">
                                     <input id="postRegDate" class="form-control-sm form-control-plaintext" readonly/>

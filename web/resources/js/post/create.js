@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 7. 오후 11:57 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,10 @@
 
 import {getCookieToJson, setCookie} from "../pageCookie.js";
 
+const postCreateBtn = $("#postCreateBtn");
+
 function putPostCreateForm() {
+    postDetailsAdditionalInfo.addClass("visually-hidden");
     postFormBoardTypeSelectElem.attr("disabled", false);
     postFormTypeSelectElem.attr("disabled", false);
     $(postForm).find("label[for='" + postFormTitleElem.attr("id") + "']").text("Title");
@@ -28,14 +31,15 @@ function putPostCreateForm() {
         .attr("readonly", false)
         .text("");
 
-    $("#postCreateBtn").removeClass("visually-hidden");
+    postCreateBtn.removeClass("visually-hidden");
     $("#showPostUpdateFormBtn").addClass("visually-hidden");
     $("#postRemoveBtn").addClass("visually-hidden");
 
     postForm.removeClass("visually-hidden");
 }
 
-$("#postCreateBtn").on('click', () => {
+postCreateBtn.on('click', () => {
+
     const createPostData = {
         boardNo: postFormBoardTypeSelectElem.val(),
         type: postFormTypeSelectElem.val(),
