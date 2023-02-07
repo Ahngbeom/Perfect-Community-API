@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 4. 오후 8:53 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 7. 오후 9:19 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,14 +67,14 @@ public class RedisService {
     }
 
     public boolean validateAccessTokenByUsernameOnRedis(String username, String accessToken) throws JwtException {
-        log.info("Redis access token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, ACCESS_TOKEN_FIELD));
-        log.info("Requested access token: {}", accessToken);
+//        log.info("Redis access token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, ACCESS_TOKEN_FIELD));
+//        log.info("Requested access token: {}", accessToken);
         return accessToken.equals(redisTemplate.opsForHash().get(JWT_KEY + username, ACCESS_TOKEN_FIELD));
     }
 
     public boolean validateRefreshTokenByUsernameOnRedis(String username, String refreshToken) throws JwtException {
-        log.info("Redis refresh token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
-        log.info("Requested refresh token: {}", refreshToken);
+//        log.info("Redis refresh token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
+//        log.info("Requested refresh token: {}", refreshToken);
         return refreshToken.equals(redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
     }
 

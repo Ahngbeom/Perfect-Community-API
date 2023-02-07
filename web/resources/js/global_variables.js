@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 7. 오후 11:25 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,11 @@ const postsByBoard = $("#postsByBoard");
 const unorderedListForPosts = $("#postList");
 
 const postForm = $("#postForm");
+const postFormRegDateElem = postForm.find("#postRegDate");
+const postFormUpdateDateElem = postForm.find("#postUpdateDate");
+const postFormViewsElem = postForm.find("#postViews");
+const postFormRecommendElem = postForm.find("#postRecommend");
+const postFormNotRecommendElem = postForm.find("#postNotRecommend");
 const postFormBoardTypeSelectElem = postForm.find("select[name='boardNo']");
 const postFormTypeSelectElem = postForm.find("select[name='postType']");
 const postFormTitleElem = postForm.find("#postTitle");

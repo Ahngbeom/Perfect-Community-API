@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 23. 2. 5. 오후 11:36 Ahngbeom (https://github.com/Ahngbeom)
+ * Copyright (C) 23. 2. 7. 오후 11:25 Ahngbeom (https://github.com/Ahngbeom)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 import {initPagination} from "./pagination.js";
 import {getBoard} from "../board/board.js";
 import {getCookieToJson, setCookie} from "../pageCookie.js";
+import {toLocaleDateTimeWithUpdateDate} from "../utils/date.js";
 
 putPostList();
 
@@ -58,10 +59,10 @@ function putPostList() {
 
     unorderedListForPosts.html("");
     posts.forEach(post => {
+
         unorderedListForPosts.append("<li>" +
             "<button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button>" +
-            "<span> " + post.regDate + " </span>" +
-            "<span> " + post.updateDate + " </span>" +
+            "<span> " + toLocaleDateTimeWithUpdateDate(post.regDate, post.updateDate) + " </span>" +
             "</li>")
     });
 
