@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+        http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd">
+
+    <mvc:annotation-driven/>
+
+    <!--  View  -->
+    <context:component-scan base-package="com.perfect.community.view.controller"/>
+
+    <!--  API   -->
+    <context:component-scan base-package="com.perfect.community.api.controller"/>
+    <context:component-scan base-package="com.perfect.community.api.service"/>
+    <context:component-scan base-package="com.perfect.community.api.mapper"/>
+    <context:component-scan base-package="com.perfect.community.api.dto"/>
+    <context:component-scan base-package="com.perfect.community.api.security"/>
+    <context:component-scan base-package="com.perfect.community.api.config"/>
+
+    <!--  MyBatis  -->
+    <mybatis:scan base-package="com.perfect.community.api.mapper"/>
+
+    <!--  Properties  -->
+    <context:property-placeholder location="classpath:jwt.properties"/>
+
+</beans>

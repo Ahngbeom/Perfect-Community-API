@@ -1,95 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (C) 23. 2. 4. 오후 8:58 Ahngbeom (https://github.com/Ahngbeom)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-        http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
-        http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd">
+       http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <bean id="requestMappingHandlerMapping"
-          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <!--    <mvc:interceptors>-->
 
-    <mvc:annotation-driven/>
+    <!--        &lt;!&ndash; 로그인 검증 &ndash;&gt;-->
+    <!--        <mvc:interceptor>-->
+    <!--            <mvc:mapping path="/api/**"/>-->
+    <!--            <bean id="authenticatedInterceptor"-->
+    <!--                  class="com.perfect.community.api.interceptor.AuthenticatedInterceptor"/>-->
+    <!--        </mvc:interceptor>-->
 
-    <!--  View  -->
-    <context:component-scan base-package="com.perfect.community.view.controller"/>
+    <!--        &lt;!&ndash; 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 &ndash;&gt;-->
+    <!--        <mvc:interceptor>-->
+    <!--            <mvc:mapping path="/api/**"/>-->
+    <!--            <bean id="accessDeniedInterceptor"-->
+    <!--                  class="com.perfect.community.api.interceptor.AccessDeniedInterceptor"/>-->
+    <!--        </mvc:interceptor>-->
 
-    <!--  API   -->
-    <context:component-scan base-package="com.perfect.community.api.controller"/>
-    <context:component-scan base-package="com.perfect.community.api.service"/>
-    <context:component-scan base-package="com.perfect.community.api.mapper"/>
-    <context:component-scan base-package="com.perfect.community.api.dto"/>
-    <context:component-scan base-package="com.perfect.community.api.security"/>
-    <context:component-scan base-package="com.perfect.community.api.config"/>
+    <!--        &lt;!&ndash; 관리자만이 접근할 수 있는 API 제한 &ndash;&gt;-->
+    <!--        <mvc:interceptor>-->
+    <!--            <mvc:mapping path="/api/board/create"/>-->
 
-    <!--  MyBatis  -->
-    <mybatis:scan base-package="com.perfect.community.api.mapper"/>
+    <!--            <bean id="onlyAdminAccessInterceptor"-->
+    <!--                  class="com.perfect.community.api.interceptor.OnlyAdminAccessInterceptor"/>-->
+    <!--        </mvc:interceptor>-->
+    <!--    </mvc:interceptors>-->
 
     <!--  Resources mapping for js  -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
-
-    <!--  Properties  -->
-    <context:property-placeholder location="classpath:jwt.properties"/>
-
-    <!--  Database - MariaDB  -->
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
-        <property name="url"
-                  value="jdbc:mariadb://localhost:3306/perfect_community?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>
-        <!--                <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>-->
-        <!--                <property name="url" value="jdbc:log4jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>-->
-        <property name="username" value="ahngbeom"/>
-        <property name="password" value="1234"/>
-    </bean>
-
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:/mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath:/mapper/**/*.xml"/>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <constructor-arg ref="dataSource"/>
-    </bean>
-
-<!--    <bean id="redisServer" class="redis.embedded.RedisServer"/>-->
-
-    <!--    <cache:annotation-driven />-->
-
-    <!--    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">-->
-    <!--        <constructor-arg ref="redisTemplate"/>-->
-    <!--        <property name="expires">-->
-    <!--            <map>-->
-    <!--                <entry key="sessionData" value="7200"/>-->
-    <!--                <entry key="portalData" value="7200"/>-->
-    <!--                <entry key="referenceData" value="60"/>-->
-    <!--            </map>-->
-    <!--        </property>-->
-    <!--    </bean>-->
-
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
 
 </beans>

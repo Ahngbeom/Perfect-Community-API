@@ -2,12 +2,10 @@ package com.perfect.community.api.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfect.community.api.dto.jwt.TokenDTO;
-import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.mapper.user.LoginHistoryMapper;
+import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.redis.RedisService;
-import com.perfect.community.api.utils.HttpServletCheck;
 import com.perfect.community.api.vo.LoginHistoryVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -20,14 +18,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final HttpServletCheck servletCheck = new HttpServletCheck();
+    //    private final HttpServletCheck servletCheck = new HttpServletCheck();
     private final JwtTokenProvider jwtTokenProvider;
     private final LoginHistoryMapper loginHistoryMapper;
     private final ObjectMapper objectMapper;
     private final RedisService redisService;
+
+    public CustomAuthenticationSuccessHandler(JwtTokenProvider jwtTokenProvider, LoginHistoryMapper loginHistoryMapper, ObjectMapper objectMapper, RedisService redisService) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.loginHistoryMapper = loginHistoryMapper;
+        this.objectMapper = objectMapper;
+        this.redisService = redisService;
+    }
 
     /**
      * Called when a user has been successfully authenticated.

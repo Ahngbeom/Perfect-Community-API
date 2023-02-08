@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <!--  Authentication  -->
+    <!--  Authentication EntryPoint -->
     <bean id="authenticationEntryPoint"
           class="com.perfect.community.api.security.handler.CustomAuthenticationEntryPoint"/>
+    <!-- Authentication AccessDenied -->
     <bean id="customAccessDeniedHandler"
           class="com.perfect.community.api.security.handler.CustomAccessDeniedHandler"/>
 
+    <!--  JWT Authentication  -->
+    <bean id="jwtSecurityContextHolderFilter"
+          class="com.perfect.community.api.security.jwt.JwtSecurityContextHolderFilter">
+        <constructor-arg name="jwtService" ref="jwtService"/>
+        <constructor-arg name="tokenProvider" ref="jwtTokenProvider"/>
+    </bean>
+    <bean id="jwtExceptionFilter" class="com.perfect.community.api.security.jwt.JwtExceptionFilter"/>
+    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.security.jwt.JwtAuthenticationFilter"/>
+    <bean id="jwtTokenProvider" class="com.perfect.community.api.security.jwt.JwtTokenProvider"/>
+
+    <bean id="jwtFilterOrder" class="org.springframework.web.filter.CompositeFilter" depends-on="redisService">
+        <property name="filters">
+            <list>
+                <ref bean="jwtExceptionFilter"/>
+                <!--                <ref bean="jsonUsernamePasswordAuthenticationFilter"/>-->
+                <ref bean="jwtAuthenticationFilter"/>
+            </list>
+        </property>
+    </bean>
+
     <!--  Login Handler  -->
     <bean id="loginSuccessHandler"
-          class="com.perfect.community.api.security.handler.CustomAuthenticationSuccessHandler"/>
+          class="com.perfect.community.api.security.handler.CustomAuthenticationSuccessHandler">
+        <constructor-arg name="jwtTokenProvider" ref="jwtTokenProvider"/>
+        <constructor-arg name="loginHistoryMapper" ref="loginHistoryMapper"/>
+        <constructor-arg name="objectMapper" ref="objectMapper"/>
+        <constructor-arg name="redisService" ref="redisService"/>
+    </bean>
+
     <bean id="loginFailureHandler"
           class="com.perfect.community.api.security.handler.CustomAuthenticationFailureHandler"/>
 
@@ -29,29 +58,14 @@
 
     <!--  Customize UsernamePasswordAuthenticationFilter for JSON  -->
     <bean id="jsonUsernamePasswordAuthenticationFilter"
-          class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter" depends-on="redisService">
+          class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter">
         <constructor-arg name="jwtTokenProvider" ref="jwtTokenProvider"/>
         <constructor-arg name="objectMapper" ref="objectMapper"/>
         <constructor-arg name="authenticationSuccessHandler" ref="loginSuccessHandler"/>
         <constructor-arg name="authenticationFailureHandler" ref="loginFailureHandler"/>
     </bean>
 
-    <!--  JWT Authentication  -->
-    <bean id="jwtSecurityContextHolderFilter" class="com.perfect.community.api.security.jwt.JwtSecurityContextHolderFilter"/>
-    <bean id="jwtExceptionFilter" class="com.perfect.community.api.security.jwt.JwtExceptionFilter"/>
-    <bean id="jwtAuthenticationFilter" class="com.perfect.community.api.security.jwt.JwtAuthenticationFilter"/>
-    <bean id="jwtTokenProvider" class="com.perfect.community.api.security.jwt.JwtTokenProvider"/>
-
-    <bean id="jwtFilterOrder" class="org.springframework.web.filter.CompositeFilter" depends-on="redisService">
-        <property name="filters">
-            <list>
-                <ref bean="jwtExceptionFilter"/>
-<!--                <ref bean="jsonUsernamePasswordAuthenticationFilter"/>-->
-                <ref bean="jwtAuthenticationFilter"/>
-            </list>
-        </property>
-    </bean>
-
+    <!-- Authentication Manager -->
     <security:authentication-manager id="authenticationManager">
         <security:authentication-provider user-service-ref="customUserDetailService">
             <security:password-encoder ref="bCryptPasswordEncoder"/>
@@ -72,7 +86,7 @@
         <!--            <security:hsts disabled="true"/>-->
         <!--        </security:headers>-->
 
-<!--        <security:custom-filter ref="jwtSecurityContextHolderFilter" before="SECURITY_CONTEXT_FILTER"/>-->
+        <!--        <security:custom-filter ref="jwtSecurityContextHolderFilter" before="SECURITY_CONTEXT_FILTER"/>-->
         <security:custom-filter ref="jwtExceptionFilter" before="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="jsonUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
         <security:custom-filter ref="jwtFilterOrder" before="BASIC_AUTH_FILTER"/>
@@ -92,5 +106,4 @@
         <!--        <security:oauth2-login login-processing-url="/login/oauth2/code/google" />-->
 
     </security:http>
-
 </beans>
