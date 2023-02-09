@@ -1,25 +1,5 @@
-/*
- * Copyright (C) 23. 2. 6. 오전 3:30 Ahngbeom (https://github.com/Ahngbeom)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import {putPostList} from "../post/list.js";
 import {setCookie} from "../pageCookie.js";
-
-// export let boardDataList = getBoardList();
-
-putBoardList(getBoardList());
 
 function getBoardList() {
     let result = null;
@@ -49,7 +29,12 @@ function getBoard(bno) {
 
 function putBoardList(boards) {
     boards.forEach(board => {
-        $("#boardList ul").append("<li><button type='button' class='btn btn-link board-title' data-bno='" + board.bno + "'>" + board.title + "</button></li>")
+        $("#boardList ul").append(
+            "<li>" +
+            "<button type='button' class='btn btn-link board-title' data-bno='" + board.bno + "'>" +
+            board.title +
+            "</button>" +
+            "</li>")
         postFormBoardTypeSelectElem.append("<option value='" + board.bno + "'>" + board.title + "</option>");
     });
 }
@@ -73,10 +58,10 @@ $(document).on('click', ".board-title", (e) => {
         /* Put posts count */
         // $("#postCount").text("(총 게시물 수: " + result + ")");
 
-        setCookie(POST_FILTER_OPTIONS_KEY, postFilterOptions);
+        setCookie(POST_FILTER_OPTIONS_COOKIE_NAME, postFilterOptions);
 
         /* Set pagination */
-        setCookie(PAGINATION_DATA_KEY, {
+        setCookie(PAGINATION_DATA_COOKIE_NAME, {
             pageAmount: Number(result),
             activatedPage: 1
         });
@@ -150,4 +135,4 @@ function getBoardFormHTML(boardData) {
     }
 }
 
-export {getBoard, getBoardFormHTML};
+export {getBoardList, putBoardList, getBoard, getBoardFormHTML};

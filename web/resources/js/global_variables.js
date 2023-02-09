@@ -26,8 +26,8 @@
 let userData = {};
 
 /* Constant Cookie names */
-const POST_FILTER_OPTIONS_KEY = "post-filter-options";
-const PAGINATION_DATA_KEY = "pagination";
+const POST_FILTER_OPTIONS_COOKIE_NAME = "post-filter-options";
+const PAGINATION_DATA_COOKIE_NAME = "pagination";
 const POST_DETAILS_COOKIE_NAME = "post-details";
 
 /* Additional buttons in page */
@@ -39,7 +39,7 @@ const mainContents = $("#mainContents");
 
 /* Elements related to the post */
 const postsByBoard = $("#postsByBoard");
-const unorderedListForPosts = $("#postList");
+const postList = $("#postList");
 
 const postForm = $("#postForm");
 const postDetailsAdditionalInfo = $("#postDetailsAdditionalInfo")

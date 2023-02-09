@@ -1,27 +1,5 @@
-<%--
-  ~ Copyright (C) 23. 2. 3. 오전 12:17 Ahngbeom (https://github.com/Ahngbeom)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  --%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: bbu0704
-  Date: 2023-01-18
-  Time: 오후 4:47
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -37,7 +15,42 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
                 integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
                 crossorigin="anonymous"></script>
-        <title>Title</title>
+        <title>Perfect Community</title>
     </head>
-</html>
+    <body>
+        <div class="container-fluid g-2">
+            <div class="d-flex justify-content-between">
+                <div class="col text-end">
+                    <div id="authentication" class="d-flex justify-content-end gap-2">
+                        <%-- When user is authenticated --%>
+                        <div id="isAuthenticated" class="visually-hidden">
+                            <span id="authenticatedUsername"></span>
+                            <button type="button" id="logoutBtn" class="btn btn-sm btn-warning">Logout</button>
+                        </div>
 
+                        <%-- When user is not authenticated --%>
+                        <div class="d-flex justify-content-end align-items-center gap-2" id="isAnonymous">
+                            <label>
+                                <input type="text" name="username" class="form-control form-control-sm"
+                                       placeholder="ID">
+                            </label>
+                            <label>
+                                <input type="password" name="password" class="form-control form-control-sm"
+                                       placeholder="Password">
+                            </label>
+                            <button type="button" id="loginBtn" class="btn btn-sm btn-outline-secondary">Login
+                            </button>
+                            <button type='button' class='btn btn-sm btn-outline-secondary'>회원 가입</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-1 border border-light visually-hidden" id="additionalButtons">
+                <button type='button' class='btn btn-sm btn-outline-secondary' id='scrapedPosts'>게시물 스크랩 목록</button>
+                <button type='button' class='btn btn-sm btn-outline-secondary' id='userListBtn'>유저 목록</button>
+                <button type='button' class='btn btn-sm btn-outline-secondary' id='accountPreferencesBtn'>계정 관리
+                </button>
+            </div>
+        </div>
+    </body>
+</html>

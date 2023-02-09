@@ -19,13 +19,11 @@ import {getBoard} from "../board/board.js";
 import {getCookieToJson, setCookie} from "../pageCookie.js";
 import {toLocaleDateTimeWithUpdateDate} from "../utils/date.js";
 
-putPostList();
-
 function getPosts() {
     let posts;
     const getPostsOptions = {
-        boardNo: getCookieToJson(POST_FILTER_OPTIONS_KEY).boardNo,
-        page: getCookieToJson(PAGINATION_DATA_KEY).activatedPage
+        boardNo: getCookieToJson(POST_FILTER_OPTIONS_COOKIE_NAME).boardNo,
+        page: getCookieToJson(PAGINATION_DATA_COOKIE_NAME).activatedPage
     }
     $.ajax({
         type: 'get',
@@ -51,25 +49,29 @@ function getPostAjax(option) {
 }
 
 function putPostList() {
-    let postFilterOptions = getCookieToJson(POST_FILTER_OPTIONS_KEY);
-    let paginationData = getCookieToJson(PAGINATION_DATA_KEY);
+    let postFilterOptions = getCookieToJson(POST_FILTER_OPTIONS_COOKIE_NAME);
+    let paginationData = getCookieToJson(PAGINATION_DATA_COOKIE_NAME);
     const posts = getPosts();
+
+    // console.log(postFilterOptions);
+    // console.log(paginationData);
+    // console.log(posts);
+    // console.log(postList);
 
     $("#postCount").text("(총 게시물 수: " + paginationData.pageAmount + ")");
 
-    unorderedListForPosts.html("");
+    postList.html("");
     posts.forEach(post => {
-
-        unorderedListForPosts.append("<li>" +
+        postList.append("<li>" +
             "<button type='button' class='btn btn-link' data-pno='" + post.postNo + "'>" + post.title + "</button>" +
             "<span> " + toLocaleDateTimeWithUpdateDate(post.regDate, post.updateDate) + " </span>" +
-            "</li>")
+            "</li>");
     });
 
     if (postFilterOptions.boardNo !== undefined) {
         const boardData = getBoard(postFilterOptions.boardNo);
         if (boardData === null) {
-            setCookie(POST_FILTER_OPTIONS_KEY, {});
+            setCookie(POST_FILTER_OPTIONS_COOKIE_NAME, {});
             return;
         }
         postsByBoard.find("label").text(boardData.title);
