@@ -21,7 +21,7 @@ const paginationNav = $("#paginationNav");
 const paginationUl = paginationNav.find(".pagination");
 
 function initPagination() {
-    const paginationData = getCookieToJson(PAGINATION_DATA_KEY);
+    const paginationData = getCookieToJson(PAGINATION_DATA_COOKIE_NAME);
     paginationData.maximumPage = Math.ceil(paginationData.pageAmount / 10);
     paginationData.startPage = Math.floor(paginationData.activatedPage / 11) * 10 + 1;
     paginationData.endPage = (paginationData.maximumPage - paginationData.startPage) >= 10 ? paginationData.startPage + 9 : paginationData.maximumPage;
@@ -43,7 +43,7 @@ function initPagination() {
         paginationUl.append("<li class=\"page-item\"><button class=\"page-link\">Next</button></li>");
     }
     paginationNav.removeClass("visually-hidden");
-    setCookie(PAGINATION_DATA_KEY, paginationData);
+    setCookie(PAGINATION_DATA_COOKIE_NAME, paginationData);
 }
 
 /* Activation page replacement */
@@ -59,7 +59,7 @@ $(document).on('click', '.page-link', (e) => {
     const beforePageItem = $(".page-item.active");
     const beforePageNumber = Number(beforePageItem.text());
     const selectedPageItemText = $(e.target).text();
-    const paginationData = getCookieToJson(PAGINATION_DATA_KEY);
+    const paginationData = getCookieToJson(PAGINATION_DATA_COOKIE_NAME);
 
     if (selectedPageItemText === 'Previous') {
         if (beforePageNumber > 1) {
@@ -72,7 +72,7 @@ $(document).on('click', '.page-link', (e) => {
     } else {
         paginationData.activatedPage = Number(selectedPageItemText);
     }
-    setCookie(PAGINATION_DATA_KEY, paginationData);
+    setCookie(PAGINATION_DATA_COOKIE_NAME, paginationData);
     putPostList();
 });
 

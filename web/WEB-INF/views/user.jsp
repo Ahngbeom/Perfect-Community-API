@@ -2,20 +2,25 @@
     <body>
         <div class="container-fluid g-2 h-auto ">
             <div class="d-flex gap-2 m-3 h-auto">
-                <div class="d-flex flex-column col-3 border border-dark gap-3" id="boardList">
+                <div class="d-flex flex-column col-3 border border-dark gap-3" id="accountPreferences">
                     <div class="d-flex flex-wrap justify-content-between">
                         <label class="h5">
-                            게시판
+                            계정 관리
                         </label>
-                        <div id="boardControlButtonsOnSideBar">
-                        </div>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-sm btn-link board-title">전체 게시물</button>
                         <ul>
+                            <li>
+                                <button type="button" class="btn btn-link">계정 정보</button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-link">계정 정보 수정</button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-link">계정 탈퇴</button>
+                            </li>
                         </ul>
                     </div>
-
                 </div>
                 <div class="d-flex flex-column col-9 gap-2 h-auto" id="mainContents">
                     <div id="additionalArea" class="border border-dark visually-hidden">
@@ -91,8 +96,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%-- Posts by board --%>
                     <div class="border border-success">
                         <div id="postsByBoard">
                             <div class="d-flex justify-content-between">
@@ -127,3 +130,8 @@
         </div>
     </body>
 </html>
+<script>
+    $.removeCookie(POST_FILTER_OPTIONS_COOKIE_NAME);
+    $.removeCookie(POST_DETAILS_COOKIE_NAME);
+    $.removeCookie(PAGINATION_DATA_COOKIE_NAME);
+</script>

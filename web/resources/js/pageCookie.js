@@ -23,4 +23,8 @@ function setCookie(name, jsonData) {
     $.cookie(name, JSON.stringify(jsonData));
 }
 
-export {getCookieToJson, setCookie}
+function clearCookie(name) {
+    $.removeCookie(name);
+}
+
+export {getCookieToJson, setCookie, clearCookie}
