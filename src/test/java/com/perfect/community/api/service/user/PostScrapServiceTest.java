@@ -13,21 +13,24 @@ class PostScrapServiceTest extends ServiceTest {
     private PostScrapService service;
 
     @Test
-    @DisplayName("[Service] Post's scrap")
+    @DisplayName("Scrap")
     void scrapePost() {
         try {
-            service.scrapePost("aaaaa", 1);
+            service.scrapePost("admin", 3);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
         }
     }
 
     @Test
+    @DisplayName("Get scraped posts")
     void getAllScrapedPosts() {
         log.info(service.getAllScrapedPosts("admin"));
     }
 
     @Test
+    @DisplayName("Release scraped post")
     void releaseScrapedPost() {
         try {
             service.releaseScrapedPost("admin", 1);

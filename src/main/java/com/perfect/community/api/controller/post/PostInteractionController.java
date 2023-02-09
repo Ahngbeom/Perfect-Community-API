@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/post")
 @RequiredArgsConstructor
@@ -17,10 +19,20 @@ public class PostInteractionController {
     private final PostInteractionService postInteractionService;
 
     @PatchMapping("/views/{postNo}")
-    public ResponseEntity<?> increaseViews(Authentication authentication, @PathVariable long postNo) {
+    public ResponseEntity<?> increaseViews(HttpServletRequest request, Authentication authentication, @PathVariable long postNo) {
         try {
-            return ResponseEntity.ok(postInteractionService.increaseViews(authentication.getName(), postNo));
+            String username;
+            if (authentication == null) {
+//                /* Anonymous user IP Address */
+                username = request.getHeader("X-Forwarded-For");
+                if (username == null)
+                    username = request.getRemoteAddr();
+            } else {
+                username = authentication.getName();
+            }
+            return ResponseEntity.ok(postInteractionService.increaseViews(username, postNo));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

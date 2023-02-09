@@ -1,61 +1,39 @@
 package com.perfect.community.api.service.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.BeforeEach;
+import com.perfect.community.api.service.ServiceTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
-@Transactional
-class UserServiceTest {
-
-    protected static final Logger log = LogManager.getLogger(UserServiceTest.class);
-
-    @Autowired
-    private UserService service;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @BeforeEach
-    void setUp() {
-        assertNotNull(log);
-        assertNotNull(service);
-        assertNotNull(passwordEncoder);
-    }
+@DisplayName("[Service] User")
+class UserServiceTest extends ServiceTest {
 
     @Test
+    @DisplayName("User list")
     void getUserList() {
         log.warn(service.getUserList());
     }
 
     @Test
+    @DisplayName("User list with authorities")
     void getUserListWithAuthorities() {
         log.warn(service.getUserListWithAuthorities());
     }
 
     @Test
+    @DisplayName("User's details")
     void getUserInfoByUserId() {
         log.warn(service.getUserInfoByUserId("admin"));
     }
 
     @Test
+    @DisplayName("User's details with authorities")
     void getUserInfoWithAuthoritiesByUserId() {
         log.warn(service.getUserInfoWithAuthoritiesByUserId("admin"));
     }
 
     @Test
+    @DisplayName("Create user")
     void createUser() {
         UserDTO user = UserDTO.builder()
                 .userId("aaaaa")
@@ -68,7 +46,8 @@ class UserServiceTest {
     }
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
+    @DisplayName("Update user")
     void updateUserInfo() {
         service.updateUserInfo(
                 UserDTO.builder()
@@ -80,7 +59,8 @@ class UserServiceTest {
     }
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
+    @DisplayName("Change user's password")
     void changeUserPassword() {
         service.changeUserPassword(
                 UserDTO.builder()
@@ -95,19 +75,22 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Remove user")
     void removeUser() {
         service.removeUser("tester");
         log.warn(service.getUserInfoByUserId("tester"));
     }
 
     @Test
+    @DisplayName("Disable user")
     void disableUser() {
         service.disableUser("admin");
         log.warn(service.getUserInfoByUserId("admin"));
     }
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
+    @DisplayName("enable user")
     void enableUser() {
         service.disableUser("admin");
         log.warn(service.getUserInfoByUserId("admin"));
@@ -116,17 +99,20 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("User's password verify")
     void verifyPassword() {
         log.warn(service.verifyPassword("admin", "1234"));
     }
 
     @Test
+    @DisplayName("User id availability")
     void userIdAvailability() {
         log.warn(service.isValidUserId("admin"));
         log.warn(service.isValidUserId("ahngbeom"));
     }
 
     @Test
+    @DisplayName("Nickname availability")
     void nicknameAvailability() {
         log.warn(service.isValidNickname("Administrator"));
         log.warn(service.isValidNickname("AHNGBEOM"));

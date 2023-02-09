@@ -3,4 +3,43 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--  Database  -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mariadb://localhost:3306/perfect_community?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>
+        <!--                <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>-->
+        <!--                <property name="url" value="jdbc:log4jdbc:mariadb://localhost:3306/board_db?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"/>-->
+        <property name="username" value="ahngbeom"/>
+        <property name="password" value="1234"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:/mapper/**/*.xml"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <!--    <bean id="redisServer" class="redis.embedded.RedisServer"/>-->
+
+    <!--    <cache:annotation-driven />-->
+
+    <!--    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">-->
+    <!--        <constructor-arg ref="redisTemplate"/>-->
+    <!--        <property name="expires">-->
+    <!--            <map>-->
+    <!--                <entry key="sessionData" value="7200"/>-->
+    <!--                <entry key="portalData" value="7200"/>-->
+    <!--                <entry key="referenceData" value="60"/>-->
+    <!--            </map>-->
+    <!--        </property>-->
+    <!--    </bean>-->
+
+    <bean id="requestMappingHandlerMapping"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+
 </beans>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.perfect.community.api.mapper.post.PostScrapMapper">
+
+    <insert id="insertScrapPost">
+        insert into user_post_scrap(user_id, post_no)
+        VALUES (#{userId}, #{postNo})
+    </insert>
+
+    <select id="getAllByUserId" parameterType="string"
+            resultMap="com.perfect.community.api.mapper.post.PostMapper.postDTOMap">
+        select posts.post_no                      as post_no,
+               board_no,
+               type,
+               writer,
+               title,
+               contents,
+               UNIX_TIMESTAMP(reg_date) * 1000    as reg_date,
+               UNIX_TIMESTAMP(update_date) * 1000 as update_date
+        from user_post_scrap
+                 left join posts on user_post_scrap.post_no = posts.post_no
+        where user_post_scrap.user_id like #{userId};
+    </select>
+
+    <delete id="deleteByUserIdAndPostNo">
+        delete
+        from user_post_scrap
+        where user_id like #{userId}
+          and post_no = #{postNo}
+    </delete>
+
+    <select id="isScraped" resultType="java.lang.Boolean">
+        select EXISTS(
+                       select *
+                       from user_post_scrap
+                       where user_id like #{userId}
+                         and post_no = #{postNo}
+                   )
+    </select>
+</mapper>

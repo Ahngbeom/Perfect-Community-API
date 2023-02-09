@@ -21,7 +21,6 @@ import com.perfect.community.api.security.detail.CustomUserDetailService;
 import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.board.BoardService;
 import com.perfect.community.api.service.post.PostService;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -40,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Slf4j
-@RequiredArgsConstructor
 public class AuthenticatedInterceptor implements HandlerInterceptor {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -48,6 +46,14 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
     private final CustomUserDetailService userDetailService;
     private final BoardService boardService;
     private final PostService postService;
+
+    public AuthenticatedInterceptor(JwtTokenProvider jwtTokenProvider, ObjectMapper objectMapper, CustomUserDetailService userDetailService, BoardService boardService, PostService postService) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.objectMapper = objectMapper;
+        this.userDetailService = userDetailService;
+        this.boardService = boardService;
+        this.postService = postService;
+    }
 
     @ToString()
     static class REQUEST_DATA {

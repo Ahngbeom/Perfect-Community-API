@@ -1,12 +1,12 @@
 package com.perfect.community.api.controller.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.security.jwt.JwtTokenProvider;
 import com.perfect.community.api.service.JwtService;
 import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final JwtTokenProvider tokenProvider;
     private final JwtService jwtService;
     private final UserService userService;
 
@@ -36,7 +35,7 @@ public class UserController {
         }
     }
 
-    /* Sign-Up User */
+    @PreAuthorize("isAnonymous()")
     @PostMapping
     public ResponseEntity<String> signUpUser(@RequestBody UserDTO user) {
         try {
@@ -49,6 +48,7 @@ public class UserController {
     }
 
     /* Update User Info */
+    @PreAuthorize("isAuthenticated() and principal.username == #userId")
     @PutMapping("/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO) {
         try {
@@ -61,6 +61,7 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
+    @PreAuthorize("isAuthenticated() and principal.username == #userId")
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> withdrawUser(@PathVariable String userId) {
         try {
@@ -72,6 +73,7 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
+    @PreAuthorize("isAuthenticated() and (principal.username == #userId or hasAnyRole('ADMIN', 'MANAGER'))")
     @PatchMapping("/disable/{userId}")
     public ResponseEntity<?> disable(@PathVariable String userId) {
         try {
@@ -83,6 +85,7 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
+    @PreAuthorize("isAuthenticated() and (principal.username == #userId or hasAnyRole('ADMIN', 'MANAGER'))")
     @PatchMapping("/enable/{userId}")
     public ResponseEntity<?> enable(@PathVariable String userId) {
         try {
@@ -94,6 +97,7 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
+    @PreAuthorize("isAuthenticated() and principal.username == #userId")
     @GetMapping("/verify-password/{userId}")
     public ResponseEntity<Boolean> verifyPassword(@PathVariable String userId, String password) {
         try {

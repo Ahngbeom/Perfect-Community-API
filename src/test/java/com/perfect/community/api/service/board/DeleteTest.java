@@ -3,7 +3,7 @@ package com.perfect.community.api.service.board;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("BoardService Test For Delete")
+@DisplayName("[Service] Delete board")
 class DeleteTest extends BoardServiceTest {
 
     @Test

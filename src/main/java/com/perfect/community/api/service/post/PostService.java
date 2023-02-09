@@ -5,6 +5,7 @@ import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostFilterDTO;
 import com.perfect.community.api.mapper.post.PostInteractionMapper;
 import com.perfect.community.api.mapper.post.PostMapper;
+import com.perfect.community.api.mapper.post.PostScrapMapper;
 import com.perfect.community.api.vo.post.PostVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +19,14 @@ import java.util.List;
 public class PostService {
     private final PostMapper postMapper;
     private final PostInteractionMapper postInteractionMapper;
+    private final PostScrapMapper postScrapMapper;
     private final PostUtils postUtils;
 
     public List<PostDTO> getPostList(PostFilterDTO postListOptions) {
         return postMapper.selectPostList(postListOptions);
     }
 
-    public PostDTO getInfoByPno(long pno) {
+    public PostDTO getInfoByPno(String userId, long pno) {
         Preconditions.checkState(pno > 0, "Invalid post no.");
         PostDTO postDTO = postMapper.selectPostInfoByPno(pno);
         if (postDTO == null)
@@ -33,6 +35,8 @@ public class PostService {
         postDTO.setViews(postInteractionMapper.getViews(pno));
         postDTO.setRecommend(postInteractionMapper.getRecommend(pno));
         postDTO.setNotRecommend(postInteractionMapper.getNotRecommend(pno));
+
+        postDTO.setScraped(postScrapMapper.isScraped(userId, pno));
         return postDTO;
     }
 
@@ -65,9 +69,9 @@ public class PostService {
         return postVO.getPost_no();
     }
 
-    public void remove(String userId, long pno) {
+    public void remove(long pno) {
         Preconditions.checkState(pno > 0, "Invalid post no.");
-        Preconditions.checkState(postUtils.checkPostVerification(userId, pno), "You do not have permission to remove the post.");
+//        Preconditions.checkState(postUtils.checkPostVerification(userId, pno), "You do not have permission to remove the post.");
         postMapper.deletePost(pno);
     }
 

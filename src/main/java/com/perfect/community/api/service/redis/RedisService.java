@@ -23,6 +23,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -31,14 +32,22 @@ public class RedisService {
     private static final String ACCESS_TOKEN_FIELD = "access_token";
     private static final String REFRESH_TOKEN_FIELD = "refresh_token";
 
+    public static final String POST_VIEWS_RECORD_BY_ANONYMOUS_KEY = "post_views_record_by_anonymous:";
+    public static final String IP_ADDRESS_FIELD = "ip_address";
+    public static final String POST_NO_FIELD = "post_no";
+
     private final RedisTemplate<String, String> redisTemplate;
 
     public RedisService(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    public void put(String key, String hashKey, String hashValue) {
-        redisTemplate.opsForHash().put(key, hashKey, hashValue);
+    public Long add(String key, String... values) {
+        return redisTemplate.opsForSet().add(key, values);
+    }
+
+    public Boolean putIfAbsent(String key, String hashKey, String hashValue) {
+        return redisTemplate.opsForHash().putIfAbsent(key, hashKey, hashValue);
     }
 
     public void putJWT(TokenDTO tokenDTO) {
@@ -64,6 +73,10 @@ public class RedisService {
 
     public void expire(String key, Date date) {
         redisTemplate.expireAt(key, date);
+    }
+
+    public void expire(String key, long timeout, TimeUnit timeUnit) {
+        redisTemplate.expire(key, timeout, timeUnit);
     }
 
     public boolean validateAccessTokenByUsernameOnRedis(String username, String accessToken) throws JwtException {

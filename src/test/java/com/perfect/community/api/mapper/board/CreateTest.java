@@ -1,13 +1,12 @@
-package com.perfect.community.api.mapper.board.crud;
+package com.perfect.community.api.mapper.board;
 
 import com.perfect.community.api.dto.board.BoardDTO;
-import com.perfect.community.api.vo.board.BoardVO;
-import com.perfect.community.api.mapper.board.BoardMapperTest;
+import com.perfect.community.api.mapper.MapperTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("BoardMapper Test for Create")
-class CreateTest extends BoardMapperTest {
+@DisplayName("[Mapper] Create board")
+class CreateTest extends MapperTest {
 
     @Test
     @DisplayName("Create with null title")

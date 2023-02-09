@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 23. 2. 7. 오후 11:25 Ahngbeom (https://github.com/Ahngbeom)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.perfect.community.api.dto.post;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -37,9 +19,6 @@ public class PostDTO {
     private String title;
     private String contents;
     private String writer;
-    private Long views;
-    private Long recommend;
-    private Long notRecommend;
 
     //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -49,6 +28,12 @@ public class PostDTO {
     //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long updateDate;
+
+    private Long views;
+    private Long recommend;
+    private Long notRecommend;
+
+    private boolean scraped;
 
     /**
      * All Arguments Constructor
@@ -66,7 +51,7 @@ public class PostDTO {
      * @param updateDate    {@link LocalDateTime}: 게시물의 수정 날짜.
      */
     @Builder
-    public PostDTO(long postNo, long boardNo, String type, String title, String contents, String writer, Long views, Long recommend, Long notRecommend, LocalDateTime regDate, LocalDateTime updateDate) {
+    public PostDTO(long postNo, long boardNo, String type, String title, String contents, String writer, long regDate, long updateDate, Long views, Long recommend, Long notRecommend, boolean scraped) {
         this.postNo = postNo;
         this.boardNo = boardNo;
         this.type = type;
@@ -76,8 +61,9 @@ public class PostDTO {
         this.views = views;
         this.recommend = recommend;
         this.notRecommend = notRecommend;
-        this.regDate = ZonedDateTime.of(regDate, ZoneId.systemDefault()).toInstant().toEpochMilli();
-        this.updateDate = ZonedDateTime.of(updateDate, ZoneId.systemDefault()).toInstant().toEpochMilli();
+        this.regDate = regDate;
+        this.updateDate = updateDate;
+        this.scraped = scraped;
     }
 
     @Override
