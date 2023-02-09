@@ -38,9 +38,9 @@ public class PostController {
     }
 
     @GetMapping("/{postNo}")
-    public ResponseEntity<?> getPost(@PathVariable long postNo) {
+    public ResponseEntity<?> getPost(Principal principal, @PathVariable long postNo) {
         try {
-            return ResponseEntity.ok(postService.getInfoByPno(postNo));
+            return ResponseEntity.ok(postService.getInfoByPno((principal != null ? principal.getName() : null), postNo));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

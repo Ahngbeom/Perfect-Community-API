@@ -19,9 +19,6 @@ public class PostDTO {
     private String title;
     private String contents;
     private String writer;
-    private Long views;
-    private Long recommend;
-    private Long notRecommend;
 
     //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -31,6 +28,12 @@ public class PostDTO {
     //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long updateDate;
+
+    private Long views;
+    private Long recommend;
+    private Long notRecommend;
+
+    private boolean scraped;
 
     /**
      * All Arguments Constructor
@@ -48,7 +51,7 @@ public class PostDTO {
      * @param updateDate    {@link LocalDateTime}: 게시물의 수정 날짜.
      */
     @Builder
-    public PostDTO(long postNo, long boardNo, String type, String title, String contents, String writer, Long views, Long recommend, Long notRecommend, long regDate, long updateDate) {
+    public PostDTO(long postNo, long boardNo, String type, String title, String contents, String writer, long regDate, long updateDate, Long views, Long recommend, Long notRecommend, boolean scraped) {
         this.postNo = postNo;
         this.boardNo = boardNo;
         this.type = type;
@@ -60,6 +63,7 @@ public class PostDTO {
         this.notRecommend = notRecommend;
         this.regDate = regDate;
         this.updateDate = updateDate;
+        this.scraped = scraped;
     }
 
     @Override

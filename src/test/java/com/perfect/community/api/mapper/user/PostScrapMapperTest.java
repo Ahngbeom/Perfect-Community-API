@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 
 //@Rollback(value = false)
 @DisplayName("[Mapper] User's scrap post")
-public class UserScrapPostMapperTest extends MapperTest {
+public class PostScrapMapperTest extends MapperTest {
 
     @Test
     @DisplayName("Scraping")
     void scraping() {
         try {
-            log.info(userScrapPostMapper.insertScrapPost("admin", 2));
+            log.info(postScrapMapper.insertScrapPost("admin", 2));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -21,13 +21,13 @@ public class UserScrapPostMapperTest extends MapperTest {
     @Test
     @DisplayName("Scraped posts")
     void getAllScrapedPosts() {
-        log.info(userScrapPostMapper.getAllByUserId("admin"));
+        log.info(postScrapMapper.getAllByUserId("admin"));
     }
 
     @Test
     @DisplayName("delete scraped post")
     void deleteScrapedPost() {
-        log.info(userScrapPostMapper.deleteByUserIdAndPostNo("tester", 1));
+        log.info(postScrapMapper.deleteByUserIdAndPostNo("tester", 1));
     }
 
 }

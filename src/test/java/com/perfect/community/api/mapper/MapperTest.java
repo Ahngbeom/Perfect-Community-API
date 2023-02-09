@@ -1,7 +1,7 @@
 package com.perfect.community.api.mapper;
 
 import com.perfect.community.api.mapper.board.BoardMapper;
-import com.perfect.community.api.mapper.user.UserScrapPostMapper;
+import com.perfect.community.api.mapper.post.PostScrapMapper;
 import com.perfect.community.api.mapper.user.UsersMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +33,7 @@ public class MapperTest {
     protected UsersMapper usersMapper;
 
     @Autowired
-    protected UserScrapPostMapper userScrapPostMapper;
+    protected PostScrapMapper postScrapMapper;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
@@ -43,7 +43,7 @@ public class MapperTest {
         assertNotNull(log);
         assertNotNull(boardMapper);
         assertNotNull(usersMapper);
-        assertNotNull(userScrapPostMapper);
+        assertNotNull(postScrapMapper);
         assertNotNull(passwordEncoder);
     }
 

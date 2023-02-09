@@ -41,7 +41,7 @@ class PostServiceTest extends ServiceTest {
     }
 
     public PostDTO getInfoByPno(long pno) {
-        return postService.getInfoByPno(pno);
+        return postService.getInfoByPno("admin", pno);
     }
 
     public long countPosts(PostFilterDTO options) {

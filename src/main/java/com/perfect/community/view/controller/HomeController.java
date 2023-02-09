@@ -26,4 +26,9 @@ public class HomeController {
     public String home() {
         return "index";
     }
+
+    @GetMapping("/user")
+    public String user() {
+        return "user";
+    }
 }
