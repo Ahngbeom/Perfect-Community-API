@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration({"file:web/WEB-INF/dispatcher-servlet.xml", "file:web/WEB-INF/securityContext.xml"})
+@ContextConfiguration({"file:web/WEB-INF/applicationContext.xml", "file:web/WEB-INF/dispatcher-context.xml", "file:web/WEB-INF/security-context.xml"})
 public class MemberTests {
 
     private static final Logger log = LogManager.getLogger();
@@ -30,7 +30,7 @@ public class MemberTests {
     @Test
     public void testInsertMember() {
 
-        String sql = "insert into users(user_id, password, username) values(?,?,?)";
+        String sql = "insert into users(user_id, password, nickname) values(?,?,?)";
 
         for (int i = 0; i < 10; i++) {
             Connection con = null;

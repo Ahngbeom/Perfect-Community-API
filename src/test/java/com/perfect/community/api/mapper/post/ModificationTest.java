@@ -5,6 +5,7 @@ import com.perfect.community.api.vo.post.PostVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("[Mapper] Post modification")
 public class ModificationTest extends PostMapperTest {
     @Test
     @DisplayName("Modification")

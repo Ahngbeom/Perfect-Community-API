@@ -25,7 +25,7 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/board/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())
@@ -43,10 +43,10 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/100")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/board/100")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
@@ -61,7 +61,7 @@ class UpdateTest extends BoardControllerTest {
                             .comment("Updating a board for testing in JUNIT")
                             .build()
             ).toString();
-            mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
+            mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/board/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestBody))
                     .andExpect(status().isBadRequest())
@@ -81,7 +81,7 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/board/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isUnauthorized())
@@ -98,7 +98,7 @@ class UpdateTest extends BoardControllerTest {
                         .comment("Updating a board for testing in JUNIT")
                         .build()
         ).toString();
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/board/1")
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/board/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isUnauthorized())

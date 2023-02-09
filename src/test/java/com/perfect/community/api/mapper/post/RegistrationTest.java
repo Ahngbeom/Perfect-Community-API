@@ -2,12 +2,13 @@ package com.perfect.community.api.mapper.post;
 
 import com.perfect.community.api.dto.post.PostType;
 import com.perfect.community.api.vo.post.PostVO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.annotation.Rollback;
 
+@DisplayName("[Mapper] Post registration")
 public class RegistrationTest extends PostMapperTest {
     @Test
-    @Rollback(value = false)
+    @DisplayName("Post registration")
     void registration() {
         PostVO postVO = PostVO.builder()
                 .board_no(1)
@@ -21,7 +22,8 @@ public class RegistrationTest extends PostMapperTest {
     }
 
     @Test
-    void byWithoutBoardNo() {
+    @DisplayName("Without board no")
+    void withoutBoardNo() {
         try {
             PostVO postVO = PostVO.builder()
                     .type(PostType.NORMAL.name())
@@ -37,7 +39,8 @@ public class RegistrationTest extends PostMapperTest {
     }
 
     @Test
-    void byNullType() {
+    @DisplayName("With null type")
+    void withNullType() {
         try {
             PostVO postVO = PostVO.builder()
                     .board_no(1)
@@ -54,7 +57,8 @@ public class RegistrationTest extends PostMapperTest {
     }
 
     @Test
-    void byNullWriter() {
+    @DisplayName("With null writer")
+    void withNullWriter() {
         try {
             PostVO postVO = PostVO.builder()
                     .board_no(1)
@@ -72,7 +76,8 @@ public class RegistrationTest extends PostMapperTest {
     }
 
     @Test
-    void byNullTitle() {
+    @DisplayName("With null title")
+    void withNullTitle() {
         try {
             PostVO postVO = PostVO.builder()
                     .board_no(1)
@@ -89,7 +94,8 @@ public class RegistrationTest extends PostMapperTest {
     }
 
     @Test
-    void byNullContents() {
+    @DisplayName("With null contents")
+    void withNullContents() {
         try {
             PostVO postVO = PostVO.builder()
                     .board_no(1)
@@ -106,7 +112,8 @@ public class RegistrationTest extends PostMapperTest {
     }
 
     @Test
-    void byNullEntity() {
+    @DisplayName("With null entity")
+    void withNullEntity() {
         try {
             log.info(postsMapper.insertPost(null));
         } catch (Exception e) {

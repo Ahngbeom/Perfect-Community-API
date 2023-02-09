@@ -3,9 +3,9 @@ package com.perfect.community.api.service.user;
 import com.google.common.base.Preconditions;
 import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.vo.user.UserVO;
 import com.perfect.community.api.mapper.user.UsersAuthoritiesMapper;
 import com.perfect.community.api.mapper.user.UsersMapper;
+import com.perfect.community.api.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -99,7 +99,7 @@ public class UserService {
 
     @Transactional
     public void enableUser(String userId) {
-        if (mapper.enableMember(userId) != 1)
+        if (mapper.enableUser(userId) != 1)
             throw new RuntimeException("User activation failed.");
     }
 

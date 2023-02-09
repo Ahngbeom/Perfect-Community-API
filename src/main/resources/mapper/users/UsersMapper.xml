@@ -87,7 +87,7 @@
         where user_id like #{user_id};
     </delete>
 
-    <update id="enableMember">
+    <update id="enableUser">
         update users
         set enabled = true
         where user_id like #{user_id};

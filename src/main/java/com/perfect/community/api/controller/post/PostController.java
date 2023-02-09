@@ -6,9 +6,9 @@ import com.perfect.community.api.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import java.security.Principal;
 import java.util.Map;
 
@@ -63,6 +63,7 @@ public class PostController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<?> register(Principal principal, @RequestBody PostDTO postDTO) {
         try {
@@ -73,6 +74,7 @@ public class PostController {
         }
     }
 
+    @PreAuthorize("isAuthenticated() and @postService.isWriter(#postNo, authentication.name)")
     @PatchMapping("/{postNo}")
     public ResponseEntity<?> modification(@PathVariable long postNo, @RequestBody PostDTO postDTO) {
         try {
@@ -83,12 +85,11 @@ public class PostController {
         }
     }
 
+    @PreAuthorize("isAuthenticated() and @postService.isWriter(#postNo, authentication.name)")
     @DeleteMapping("/{postNo}")
-    public ResponseEntity<?> remove(Principal principal, @PathVariable int postNo) {
+    public ResponseEntity<?> remove(@PathVariable int postNo) {
         try {
-            if (principal == null)
-                throw new AuthenticationException("Not logged in");
-            postService.remove(principal.getName(), postNo);
+            postService.remove(postNo);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());

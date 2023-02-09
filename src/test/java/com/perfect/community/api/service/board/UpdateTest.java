@@ -4,7 +4,7 @@ import com.perfect.community.api.dto.board.BoardDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("BoardService Test For Update")
+@DisplayName("[Service] Update board")
 class UpdateTest extends BoardServiceTest {
 
     @Test

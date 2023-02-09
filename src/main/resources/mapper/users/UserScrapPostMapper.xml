@@ -7,8 +7,16 @@
     </insert>
 
     <select id="getAllByUserId" parameterType="string" resultMap="com.perfect.community.api.mapper.post.PostMapper.postDTOMap">
-        select posts.post_no as post_no, board_no, type, writer, title, contents, reg_date, update_date
-        from user_post_scrap left join posts on user_post_scrap.post_no = posts.post_no
+        select posts.post_no                      as post_no,
+               board_no,
+               type,
+               writer,
+               title,
+               contents,
+               UNIX_TIMESTAMP(reg_date) * 1000    as reg_date,
+               UNIX_TIMESTAMP(update_date) * 1000 as update_date
+        from user_post_scrap
+                 left join posts on user_post_scrap.post_no = posts.post_no
         where user_post_scrap.user_id like #{userId};
     </select>
 

@@ -65,9 +65,9 @@ public class PostService {
         return postVO.getPost_no();
     }
 
-    public void remove(String userId, long pno) {
+    public void remove(long pno) {
         Preconditions.checkState(pno > 0, "Invalid post no.");
-        Preconditions.checkState(postUtils.checkPostVerification(userId, pno), "You do not have permission to remove the post.");
+//        Preconditions.checkState(postUtils.checkPostVerification(userId, pno), "You do not have permission to remove the post.");
         postMapper.deletePost(pno);
     }
 
