@@ -2,11 +2,14 @@ package com.perfect.community.api.service.post;
 
 import com.perfect.community.api.dto.post.PostDTO;
 import com.perfect.community.api.dto.post.PostType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.annotation.Rollback;
 
+@DisplayName("[Service] Post's registration")
 public class RegistrationTest extends PostServiceTest {
+
     @Test
+    @DisplayName("Registration")
     void registration() {
         PostDTO postDTO = PostDTO.builder()
                 .boardNo(1)
@@ -19,6 +22,7 @@ public class RegistrationTest extends PostServiceTest {
     }
 
     @Test
+    @DisplayName("userId is null")
     void byNullUserId() {
         try {
             PostDTO postDTO = PostDTO.builder()
@@ -35,6 +39,7 @@ public class RegistrationTest extends PostServiceTest {
     }
 
     @Test
+    @DisplayName("Invalid board no")
     void byInvalidBoardNo() {
         try {
             PostDTO postDTO = PostDTO.builder()
@@ -51,6 +56,7 @@ public class RegistrationTest extends PostServiceTest {
     }
 
     @Test
+    @DisplayName("Without post type")
     void withoutType() {
         try {
             PostDTO postDTO = PostDTO.builder()
@@ -67,6 +73,7 @@ public class RegistrationTest extends PostServiceTest {
     }
 
     @Test
+    @DisplayName("title is null")
     void byNullTitle() {
         try {
             PostDTO postDTO = PostDTO.builder()
@@ -83,6 +90,7 @@ public class RegistrationTest extends PostServiceTest {
     }
 
     @Test
+    @DisplayName("contents is null")
     void byNullContents() {
         try {
             PostDTO postDTO = PostDTO.builder()
@@ -99,6 +107,7 @@ public class RegistrationTest extends PostServiceTest {
     }
 
     @Test
+    @DisplayName("PostDTO is null")
     void byNullPostDTO() {
         try {
             postService.registration("admin", null);

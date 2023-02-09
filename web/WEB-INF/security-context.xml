@@ -72,6 +72,9 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
+    <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"
+                                     proxy-target-class="true"/>
+
     <security:http auto-config="false" use-expressions="true" entry-point-ref="authenticationEntryPoint"
                    authentication-manager-ref="authenticationManager" create-session="stateless">
 

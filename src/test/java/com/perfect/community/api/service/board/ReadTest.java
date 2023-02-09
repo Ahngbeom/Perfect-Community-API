@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-@DisplayName("[Service] Read the board")
+@DisplayName("[Service] Read board")
 class ReadTest extends BoardServiceTest {
 
     @Test

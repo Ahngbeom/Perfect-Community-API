@@ -13,9 +13,7 @@ import java.util.Random;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({
-        "file:web/WEB-INF/dispatcher-servlet.xml",
-        "file:web/WEB-INF/securityContext.xml",
-        "file:web/WEB-INF/interceptor-servlet.xml"
+        "file:web/WEB-INF/applicationContext.xml", "file:web/WEB-INF/dispatcher-context.xml", "file:web/WEB-INF/security-context.xml"
 })
 public class UtilsForTest {
 

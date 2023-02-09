@@ -21,6 +21,8 @@ import com.perfect.community.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -50,16 +52,19 @@ public class BoardController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PostMapping
-    public ResponseEntity<?> createBoard(Principal principal, @RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<?> createBoard(Authentication authentication, @RequestBody BoardDTO boardDTO) {
         try {
-            return ResponseEntity.ok(service.createBoard(principal.getName(), boardDTO));
+            log.warn("{}", authentication);
+            return ResponseEntity.ok(service.createBoard(authentication.getName(), boardDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PatchMapping("/{boardNo}")
     public ResponseEntity<?> updateBoard(Principal principal, @PathVariable long boardNo, @RequestBody BoardDTO boardDTO) {
         try {
@@ -71,6 +76,7 @@ public class BoardController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @DeleteMapping("/{boardNo}")
     public ResponseEntity<?> deleteBoard(Principal principal, @PathVariable long boardNo) {
         try {

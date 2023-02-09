@@ -1,8 +1,8 @@
 package com.perfect.community.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dummy.UtilsForTest;
 import com.perfect.community.api.service.utils.RelocateService;
+import dummy.UtilsForTest;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,9 +21,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({
-        "file:web/WEB-INF/interceptor-servlet.xml",
-        "file:web/WEB-INF/securityContext.xml",
-        "file:web/WEB-INF/dispatcher-servlet.xml"
+        "file:web/WEB-INF/applicationContext.xml", "file:web/WEB-INF/dispatcher-context.xml", "file:web/WEB-INF/security-context.xml"
 })
 @RequiredArgsConstructor
 @Transactional
@@ -34,7 +32,6 @@ public class ControllerUnitTest {
     protected MockMvc mockMvc;
 
     protected MvcResult mvcResult;
-    @Autowired
     private FilterChainProxy filterChainProxy;
 //    @Autowired
 //    private AccessDeniedInterceptor accessDeniedInterceptor;

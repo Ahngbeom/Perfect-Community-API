@@ -26,7 +26,7 @@ public interface UsersMapper {
 
     int deleteUser(String userId);
 
-    int enableMember(String userId);
+    int enableUser(String userId);
 
     int disableUser(String userId);
 
