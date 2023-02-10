@@ -3,30 +3,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!--    <mvc:interceptors>-->
-
     <!--        &lt;!&ndash; 로그인 검증 &ndash;&gt;-->
     <!--        <mvc:interceptor>-->
     <!--            <mvc:mapping path="/api/**"/>-->
     <!--            <bean id="authenticatedInterceptor"-->
     <!--                  class="com.perfect.community.api.interceptor.AuthenticatedInterceptor"/>-->
     <!--        </mvc:interceptor>-->
-
     <!--        &lt;!&ndash; 대상 객체의 소유자 또는 관리자만이 접근할 수 있는 API 제한 &ndash;&gt;-->
     <!--        <mvc:interceptor>-->
     <!--            <mvc:mapping path="/api/**"/>-->
     <!--            <bean id="accessDeniedInterceptor"-->
     <!--                  class="com.perfect.community.api.interceptor.AccessDeniedInterceptor"/>-->
     <!--        </mvc:interceptor>-->
-
     <!--        &lt;!&ndash; 관리자만이 접근할 수 있는 API 제한 &ndash;&gt;-->
     <!--        <mvc:interceptor>-->
     <!--            <mvc:mapping path="/api/board/create"/>-->
-
     <!--            <bean id="onlyAdminAccessInterceptor"-->
     <!--                  class="com.perfect.community.api.interceptor.OnlyAdminAccessInterceptor"/>-->
     <!--        </mvc:interceptor>-->

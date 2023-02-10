@@ -57,18 +57,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-oxm:5.3.25" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:5.3.25" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.32" />
-          <element id="library" level="project" name="Maven: io.lettuce:lettuce-core:6.2.2.RELEASE" />
-          <element id="library" level="project" name="Maven: io.netty:netty-common:4.1.85.Final" />
-          <element id="library" level="project" name="Maven: io.netty:netty-handler:4.1.85.Final" />
-          <element id="library" level="project" name="Maven: io.netty:netty-resolver:4.1.85.Final" />
-          <element id="library" level="project" name="Maven: io.netty:netty-buffer:4.1.85.Final" />
-          <element id="library" level="project" name="Maven: io.netty:netty-transport-native-unix-common:4.1.85.Final" />
-          <element id="library" level="project" name="Maven: io.netty:netty-codec:4.1.85.Final" />
-          <element id="library" level="project" name="Maven: io.netty:netty-transport:4.1.85.Final" />
-          <element id="library" level="project" name="Maven: io.projectreactor:reactor-core:3.4.25" />
-          <element id="library" level="project" name="Maven: org.reactivestreams:reactive-streams:1.0.4" />
-          <element id="library" level="project" name="Maven: it.ozimov:embedded-redis:0.7.3" />
-          <element id="library" level="project" name="Maven: commons-io:commons-io:2.5" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.24" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:31.1-jre" />
           <element id="library" level="project" name="Maven: com.google.guava:failureaccess:1.0.1" />
@@ -95,6 +83,20 @@
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.19.0" />
           <element id="library" level="project" name="Maven: ch.qos.reload4j:reload4j:1.2.22" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-reload4j:2.0.6" />
+          <element id="library" level="project" name="Maven: io.netty:netty-common:4.1.85.Final" />
+          <element id="library" level="project" name="Maven: io.projectreactor:reactor-core:3.4.25" />
+          <element id="library" level="project" name="Maven: io.netty:netty-resolver:4.1.85.Final" />
+          <element id="library" level="project" name="Maven: it.ozimov:embedded-redis:0.7.3" />
+          <element id="library" level="project" name="Maven: io.netty:netty-buffer:4.1.85.Final" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.5" />
+          <element id="library" level="project" name="Maven: io.lettuce:lettuce-core:6.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport:4.1.85.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-handler:4.1.85.Final" />
+          <element id="library" level="project" name="Maven: org.reactivestreams:reactive-streams:1.0.4" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport-native-unix-common:4.1.85.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec:4.1.85.Final" />
+          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.10.9.2" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Perfect-Community-API/web/Web" />

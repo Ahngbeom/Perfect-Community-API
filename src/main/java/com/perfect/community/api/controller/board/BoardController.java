@@ -20,6 +20,8 @@ import com.perfect.community.api.dto.board.BoardDTO;
 import com.perfect.community.api.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -36,6 +38,7 @@ public class BoardController {
 
     private final BoardService service;
 
+    @Cacheable("boards")
     @GetMapping
     public ResponseEntity<List<BoardDTO>> getBoardList() {
         return ResponseEntity.ok(service.getBoardList());
@@ -52,8 +55,9 @@ public class BoardController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @CacheEvict("boards")
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<?> createBoard(Authentication authentication, @RequestBody BoardDTO boardDTO) {
         try {
             log.warn("{}", authentication);
@@ -64,8 +68,9 @@ public class BoardController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @CacheEvict("boards")
     @PatchMapping("/{boardNo}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<?> updateBoard(Principal principal, @PathVariable long boardNo, @RequestBody BoardDTO boardDTO) {
         try {
             service.updateBoard(principal.getName(), boardNo, boardDTO);
@@ -76,8 +81,9 @@ public class BoardController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @CacheEvict("boards")
     @DeleteMapping("/{boardNo}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<?> deleteBoard(Principal principal, @PathVariable long boardNo) {
         try {
             service.deleteBoard(principal.getName(), boardNo);
