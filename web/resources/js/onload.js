@@ -7,7 +7,13 @@ $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
     if (!$.isEmptyObject(userData) && userData.accessToken !== undefined)
         jqXHR.setRequestHeader("Authorization", "Bearer " + userData.accessToken);
 });
-
+$(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+    if (jqxhr.status === 200) {
+        alert(jqxhr.statusText);
+    } else {
+        alert(jqxhr.responseText);
+    }
+});
 $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
     // console.log(event);
     // console.log(jqXHR);

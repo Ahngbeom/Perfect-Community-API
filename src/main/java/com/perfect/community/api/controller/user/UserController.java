@@ -104,8 +104,8 @@ public class UserController {
     }
 
     @PreAuthorize("isAuthenticated() and principal.username == #userId")
-    @GetMapping("/verify-password/{userId}")
-    public ResponseEntity<Boolean> verifyPassword(@PathVariable String userId, String password) {
+    @PostMapping("/verify-password/{userId}")
+    public ResponseEntity<Boolean> verifyPassword(@PathVariable String userId, @RequestBody String password) {
         try {
             return ResponseEntity.ok(userService.verifyPassword(userId, password));
         } catch (Exception e) {
