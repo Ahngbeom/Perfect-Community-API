@@ -57,7 +57,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
-        logger.info(SecurityContextHolder.getContext().getAuthentication());
+//        logger.info(SecurityContextHolder.getContext().getAuthentication());
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         String accessToken = bearerToken != null ? bearerToken.substring("Bearer".length()) : null;
         // 이미 인증된 유저의 로그인 시도 차단
@@ -91,6 +91,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         setDetails(request, authenticationToken);
+        logger.info(authenticationToken);
         Authentication authentication = this.getAuthenticationManager().authenticate(authenticationToken);
 
         logger.info("[Authentication Success]\n " + authentication);

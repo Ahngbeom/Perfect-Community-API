@@ -46,7 +46,8 @@
                             </label>
                             <button type="button" id="loginBtn" class="btn btn-sm btn-outline-secondary">Login
                             </button>
-                            <button type='button' class='btn btn-sm btn-outline-secondary'>회원 가입</button>
+                            <button type='button' id="signUpFormBtn" class='btn btn-sm btn-outline-secondary'>회원 가입
+                            </button>
                         </div>
                     </div>
                 </div>

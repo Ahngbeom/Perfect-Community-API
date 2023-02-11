@@ -59,6 +59,7 @@
     <!--  Customize UsernamePasswordAuthenticationFilter for JSON  -->
     <bean id="jsonUsernamePasswordAuthenticationFilter"
           class="com.perfect.community.api.security.filter.JsonUsernamePasswordAuthenticationFilter">
+<!--        <constructor-arg name="authenticationManager" ref="authenticationManager"/>-->
         <constructor-arg name="jwtTokenProvider" ref="jwtTokenProvider"/>
         <constructor-arg name="objectMapper" ref="objectMapper"/>
         <constructor-arg name="authenticationSuccessHandler" ref="loginSuccessHandler"/>
