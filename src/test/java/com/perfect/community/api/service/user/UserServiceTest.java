@@ -5,6 +5,8 @@ import com.perfect.community.api.service.ServiceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 @DisplayName("[Service] User")
 class UserServiceTest extends ServiceTest {
 
@@ -39,7 +41,7 @@ class UserServiceTest extends ServiceTest {
                 .userId("aaaaa")
                 .password("aaaa")
                 .nickname("AAA")
-                .authority("ROLE_USER")
+                .authorities(Collections.singleton("ROLE_USER"))
                 .build();
         service.createUser(user);
         log.warn(service.getUserListWithAuthorities());

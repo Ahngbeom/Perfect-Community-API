@@ -19,9 +19,9 @@
         <result property="enabled" column="enabled"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
-        <result property="authority" column="authority"/>
+<!--        <result property="authority" column="authority"/>-->
 <!--        <collection property="authority" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">-->
-<!--        </collection>-->
+        <!--        <collection property="authority" javaType="List" ofType="string" select="selectUserAuthorities"/>-->
     </resultMap>
 
     <select id="selectUserByUserId" resultMap="userDtoMap">
@@ -35,6 +35,12 @@
         from users
                  LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
         where users.user_id = #{user_id};
+    </select>
+
+    <select id="selectUserAuthorities">
+        select authority
+        from users_authorities
+        where user_id like #{userId};
     </select>
 
     <select id="selectAllUsers" resultMap="userDtoMap">

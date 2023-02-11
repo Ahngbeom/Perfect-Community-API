@@ -1,23 +1,8 @@
-/*
- * Copyright (C) 23. 2. 7. 오후 11:25 Ahngbeom (https://github.com/Ahngbeom)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import {initPagination} from "./pagination.js";
 import {getBoard} from "../board/board.js";
 import {getCookieToJson, setCookie} from "../pageCookie.js";
 import {toLocaleDateTimeWithUpdateDate} from "../utils/date.js";
+import {postList, postsByBoard} from "./post.js";
 
 function getPosts() {
     let posts;
@@ -38,24 +23,36 @@ function getPosts() {
     return posts;
 }
 
-function getPostAjax(option) {
-    return $.ajax({
+function getPostAmount(option) {
+    let result;
+    $.ajax({
         type: 'get',
-        url: '/api/post',
-        contentType: 'application/json',
-        dataType: 'json',
+        url: '/api/post/count',
+        async: false,
         data: option
+    }).done((data) => {
+        result = data;
     });
+    return result;
 }
 
 function putPostList() {
     let postFilterOptions = getCookieToJson(POST_FILTER_OPTIONS_COOKIE_NAME);
     let paginationData = getCookieToJson(PAGINATION_DATA_COOKIE_NAME);
+
+    if ($.isEmptyObject(paginationData)) {
+        paginationData = {
+            pageAmount: getPostAmount(),
+            activatedPage: 1
+        }
+        setCookie(PAGINATION_DATA_COOKIE_NAME, paginationData);
+    }
     const posts = getPosts();
 
     // console.log(postFilterOptions);
     // console.log(paginationData);
     // console.log(posts);
+    // console.log(postsByBoard);
     // console.log(postList);
 
     $("#postCount").text("(총 게시물 수: " + paginationData.pageAmount + ")");

@@ -127,3 +127,19 @@
         </div>
     </body>
 </html>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/board/board.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/board/preferences.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/post/post.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/post/list.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/post/details.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/post/scrap.js"></script>
+<script type="module">
+    import {getBoardList, putBoardList} from "../../resources/js/board/board.js";
+    import {putPostList} from "../../resources/js/post/list.js";
+
+    window.onload = () => {
+        putBoardList(getBoardList());
+        putPostList();
+    };
+
+</script>

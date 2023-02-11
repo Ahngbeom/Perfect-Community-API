@@ -1,12 +1,11 @@
 package com.perfect.community.api.security.detail;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.vo.user.UserVO;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Getter
 public class CustomUserDetails extends User {
@@ -17,7 +16,7 @@ public class CustomUserDetails extends User {
         super(user.getUserId(), user.getPassword(),
                 user.isEnabled(), true,
                 true, true,
-                Collections.singleton(new SimpleGrantedAuthority(user.getAuthority())));
+                user.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
         this.user = user;
     }
 

@@ -94,7 +94,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        logger.warn("Authentication by SecurityContextHolder="+ SecurityContextHolder.getContext().getAuthentication()
+        logger.warn("Authentication by SecurityContextHolder=" + SecurityContextHolder.getContext().getAuthentication()
                 + "\n Access Token=" + accessToken
                 + "\n Refresh Token=" + refreshToken);
 
@@ -143,6 +143,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             TokenDTO tokenDTO = jwtService.reissue(refreshToken);
 
             /* Reissued JWT to response */
+
             tokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.info("[SUCCESS] Reissued JWT");

@@ -8,6 +8,8 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Collections;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName(value = "[Integrated Controller] Sign-up")
@@ -24,7 +26,7 @@ public class SignUpTest extends UserControllerTest {
                         .userId("abcde")
                         .password("abcde")
                         .nickname("ABCDE")
-                        .authority("ROLE_USER")
+                        .authorities(Collections.singleton("ROLE_USER"))
                         .build()
         ).toString();
         log.info(requestBody);
@@ -46,7 +48,7 @@ public class SignUpTest extends UserControllerTest {
                         .userId("abcde")
                         .password("abcde")
                         .nickname("ABCDE")
-                        .authority("ROLE_USER")
+                        .authorities(Collections.singleton("ROLE_USER"))
                         .build()
         ).toString();
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
@@ -83,7 +85,7 @@ public class SignUpTest extends UserControllerTest {
                         .userId("aaaaa")
                         .password("1234")
                         .nickname("Administrator")
-                        .authority("ROLE_USER")
+                        .authorities(Collections.singleton("ROLE_USER"))
                         .build()
         ).toString();
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user")

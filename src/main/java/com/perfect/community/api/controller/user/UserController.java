@@ -28,10 +28,16 @@ public class UserController {
 
     @GetMapping({"", "/{userId}"})
     public ResponseEntity<?> info(HttpServletRequest request, @PathVariable(required = false) String userId) {
-        if (userId != null) return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
-        else {
-            String accessToken = jwtService.resolveAccessToken(request);
-            return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(jwtService.getUsernameByAccessToken(accessToken)));
+        try {
+            if (userId != null)
+                return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
+            else {
+                String accessToken = jwtService.resolveAccessToken(request);
+                return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(jwtService.getUsernameByAccessToken(accessToken)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
     }
 
@@ -49,7 +55,7 @@ public class UserController {
 
     /* Update User Info */
     @PreAuthorize("isAuthenticated() and principal.username == #userId")
-    @PutMapping("/{userId}")
+    @PatchMapping("/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO) {
         try {
             userDTO.setUserId(userId);
@@ -58,6 +64,7 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+        log.info("{}", userDTO);
         return ResponseEntity.ok(userId);
     }
 

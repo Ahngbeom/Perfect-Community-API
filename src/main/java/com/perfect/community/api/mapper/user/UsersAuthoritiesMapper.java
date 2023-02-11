@@ -7,13 +7,14 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @Mapper
 public interface UsersAuthoritiesMapper {
     List<UserAuthorityEntity> selectAllUserAuthorities();
 
-    List<UserAuthorityEntity> selectAllUserAuthoritiesByUserId(String userId);
+    Set<String> selectAllUserAuthoritiesByUserId(String userId);
 
     int insertUserAuthorities(UserAuthoritiesDTO userAuthorities);
 

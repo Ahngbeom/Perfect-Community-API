@@ -1,6 +1,7 @@
 import {reissueJWT} from "./authentication/jwt.js";
-import {getBoardList, putBoardList} from "./board/board.js";
-import {putPostList} from "./post/list.js";
+import {getCookieToJson} from "./pageCookie.js";
+import {getPost, putPostDetailsForm} from "./post/details.js";
+import {putAuthentication} from "./authentication/authentication.js";
 
 $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
     if (!$.isEmptyObject(userData) && userData.accessToken !== undefined)
@@ -22,9 +23,17 @@ $.ajaxSetup({
     dataType: 'json'
 });
 
+function reloadLayout() {
+    putAuthentication();
+
+    const postDetailsData = getCookieToJson(POST_DETAILS_COOKIE_NAME);
+    if (!$.isEmptyObject(postDetailsData))
+        putPostDetailsForm(getPost(postDetailsData.postNo));
+}
+
 /* Page initialization */
 // window.onload = () => {
 reissueJWT();
-putBoardList(getBoardList());
-putPostList();
 // }
+
+export {reloadLayout};

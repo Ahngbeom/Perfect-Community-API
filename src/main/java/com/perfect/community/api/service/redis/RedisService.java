@@ -86,8 +86,8 @@ public class RedisService {
     }
 
     public boolean validateRefreshTokenByUsernameOnRedis(String username, String refreshToken) throws JwtException {
-//        log.info("Redis refresh token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
-//        log.info("Requested refresh token: {}", refreshToken);
+        log.info("Redis refresh token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
+        log.info("Requested refresh token: {}", refreshToken);
         return refreshToken.equals(redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
     }
 

@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -41,7 +40,9 @@ public class UserService {
     }
 
     public UserDTO getUserInfoWithAuthoritiesByUserId(String userId) {
-        return mapper.selectUserWithAuthoritiesByUserId(userId);
+        UserDTO userDTO = mapper.selectUserByUserId(userId);
+        userDTO.setAuthorities(usersAuthoritiesMapper.selectAllUserAuthoritiesByUserId(userId));
+        return userDTO;
     }
 
     @Transactional
@@ -61,7 +62,7 @@ public class UserService {
         if (usersAuthoritiesMapper.insertUserAuthorities(
                 UserAuthoritiesDTO.builder()
                         .userId(userDTO.getUserId())
-                        .authorities(Collections.singleton(userDTO.getAuthority()))
+                        .authorities(userDTO.getAuthorities())
                         .build()) != 1) {
             throw new RuntimeException("Failed to grant user authorities.");
         }
@@ -130,7 +131,7 @@ public class UserService {
         Preconditions.checkState(!user.getNickname().isEmpty(), "User nickname must be not empty.");
         Preconditions.checkState(user.getNickname().length() >= 2, "User nickname must be at least 2 characters long.");
 
-        Preconditions.checkNotNull(user.getAuthority(), "User authority must be not null");
-        Preconditions.checkState(!user.getAuthority().isEmpty(), "User nickname must be not empty.");
+        Preconditions.checkNotNull(user.getAuthorities(), "User authority must be not null");
+        Preconditions.checkState(!user.getAuthorities().isEmpty(), "User nickname must be not empty.");
     }
 }
