@@ -64,7 +64,6 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        log.info("{}", userDTO);
         return ResponseEntity.ok(userId);
     }
 

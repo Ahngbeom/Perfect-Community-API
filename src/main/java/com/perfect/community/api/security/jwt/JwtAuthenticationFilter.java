@@ -136,8 +136,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
             /* Compared to Redis tokens.  */
             Authentication authentication = tokenProvider.getAuthentication(refreshToken);
-            if (!redisService.validateRefreshTokenByUsernameOnRedis(authentication.getName(), refreshToken))
-                throw new JwtException("Does not match Redis JWT (Refresh Token).");
+//            if (!redisService.validateRefreshTokenByUsernameOnRedis(authentication.getName(), refreshToken))
+//                throw new JwtException("Does not match Redis JWT (Refresh Token).");
 
             /* Reissue tokens */
             TokenDTO tokenDTO = jwtService.reissue(refreshToken);

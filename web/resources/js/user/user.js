@@ -57,6 +57,7 @@ function putUserInfoUpdateForm() {
         $.ajax({
             type: 'patch',
             url: '/api/user/' + userData.username,
+            dataType: 'text',
             data: JSON.stringify({
                 nickname: nicknameInputElem.val(),
                 authorities: authoritiesCheckboxesElem.find("input:checked").toArray().map(elem => $(elem).val()),
@@ -65,7 +66,11 @@ function putUserInfoUpdateForm() {
         }).done(() => {
             location.reload();
         }).fail((jqXHR) => {
-            alert(jqXHR.responseText);
+            console.error(jqXHR);
+            if (jqXHR.status === 200)
+                alert(jqXHR.statusText);
+            else
+                alert(jqXHR.responseText);
         })
     });
 }
