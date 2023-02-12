@@ -1,11 +1,11 @@
 package com.perfect.community.api.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -17,12 +17,14 @@ public class UserDTO {
     private String password;
     private String nickname;
     private boolean enabled;
-    private LocalDateTime regDate;
-    private LocalDateTime updateDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private long regDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private long updateDate;
     private Set<String> authorities;
 
     @Builder
-    public UserDTO(String userId, String password, String nickname, boolean enabled, LocalDateTime regDate, LocalDateTime updateDate, Set<String> authorities) {
+    public UserDTO(String userId, String password, String nickname, boolean enabled, long regDate, long updateDate, Set<String> authorities) {
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;

@@ -1,6 +1,5 @@
-package com.perfect.community.api.security.jwt;
+package com.perfect.community.api.interceptor;
 
-import io.jsonwebtoken.JwtException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -11,23 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtExceptionFilter extends OncePerRequestFilter {
-
-    private JwtTokenProvider tokenProvider;
+public class ExceptionFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (JwtException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            if (request.getRequestURI().startsWith("/api") || request.getRequestURI().startsWith(".js")) {
+            if (request.getRequestURI().startsWith("/api")) {
                 logger.error(e.getMessage());
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write(e.getMessage());
-                tokenProvider.clearJwtToResponseHeaderAndCookie(response);
             } else {
                 filterChain.doFilter(request, response);
             }

@@ -207,9 +207,9 @@ public class JwtTokenProvider implements InitializingBean {
         response.addCookie(cookieForRefreshToken);
     }
 
-    public void JwtToResponseHeaderAndCookie(HttpServletResponse response, String accessToken, String refreshToken) {
-        response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
-        Cookie cookieForRefreshToken = new Cookie("refresh-token", refreshToken);
+    public void clearJwtToResponseHeaderAndCookie(HttpServletResponse response) {
+        response.setHeader(JwtAuthenticationFilter.AUTHORIZATION_HEADER, null);
+        Cookie cookieForRefreshToken = new Cookie("refresh-token", null);
         cookieForRefreshToken.setPath("/");
         cookieForRefreshToken.setHttpOnly(true); // not accessible from JavaScript
         response.addCookie(cookieForRefreshToken);

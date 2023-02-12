@@ -81,7 +81,7 @@ class UserServiceTest extends ServiceTest {
     @Test
     @DisplayName("Remove user")
     void removeUser() {
-        service.removeUser("tester");
+        service.secessionUser("tester");
         log.warn(service.getUserInfoByUserId("tester"));
     }
 

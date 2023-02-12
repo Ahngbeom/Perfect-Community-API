@@ -5,6 +5,7 @@ import com.perfect.community.api.dto.user.UserAuthoritiesDTO;
 import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.mapper.user.UsersAuthoritiesMapper;
 import com.perfect.community.api.mapper.user.UsersMapper;
+import com.perfect.community.api.service.redis.RedisService;
 import com.perfect.community.api.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,12 +29,15 @@ public class UserService {
 
     private final BCryptPasswordEncoder encoder;
 
+    private final RedisService redisService;
+
     public List<UserDTO> getUserList() {
         return mapper.selectAllUsers();
     }
 
     public List<UserDTO> getUserListWithAuthorities() {
-        return mapper.selectAllUsersWithAuthorities();
+        List<UserDTO> userDTOList = mapper.selectAllUsers();
+        return userDTOList.stream().peek(userDTO -> userDTO.setAuthorities(usersAuthoritiesMapper.selectAllUserAuthoritiesByUserId(userDTO.getUserId()))).collect(Collectors.toList());
     }
 
     public UserDTO getUserInfoByUserId(String userId) {
@@ -78,7 +83,7 @@ public class UserService {
     }
 
     @Transactional
-    public void removeUser(String userId) {
+    public void secessionUser(String userId) {
         if (mapper.deleteUser(userId) != 1)
             throw new RuntimeException("That user doesn't exist.");
     }
@@ -104,6 +109,11 @@ public class UserService {
             throw new RuntimeException("User activation failed.");
     }
 
+    @Transactional(readOnly = true)
+    public void isAdmin(String userId) {
+        usersAuthoritiesMapper.hasAuthority(userId, "ROLE_ADMIN");
+    }
+
     public boolean verifyPassword(String userId, String password) {
         Preconditions.checkNotNull(userId, "userId must be not null.");
         Preconditions.checkNotNull(password, "password must be not null.");
@@ -111,25 +121,42 @@ public class UserService {
     }
 
     public boolean isValidUserId(String userId) {
+        userIdPolicyValidation(userId);
         return mapper.userIdAvailability(userId);
     }
 
+    public boolean isValidPassword(String password) {
+        passwordPolicyValidation(password);
+        return true;
+    }
+
     public boolean isValidNickname(String nickname) {
+        nicknamePolicyValidation(nickname);
         return mapper.nicknameAvailability(nickname);
     }
 
+    public void userIdPolicyValidation(String userId) {
+        Preconditions.checkNotNull(userId, "User ID must be not null");
+        Preconditions.checkState(!userId.isEmpty(), "User ID must be not empty.");
+        Preconditions.checkState(userId.length() >= 5, "User ID must be at least 5 characters long.");
+    }
+
+    public void passwordPolicyValidation(String password) {
+        Preconditions.checkNotNull(password, "User PW must be not null");
+        Preconditions.checkState(!password.isEmpty(), "User PW must be not empty.");
+        Preconditions.checkState(password.length() >= 4, "User PW must be at least 4 characters long.");
+    }
+
+    public void nicknamePolicyValidation(String nickname) {
+        Preconditions.checkNotNull(nickname, "User nickname must be not null");
+        Preconditions.checkState(!nickname.isEmpty(), "User nickname must be not empty.");
+        Preconditions.checkState(nickname.length() >= 2, "User nickname must be at least 2 characters long.");
+    }
+
     public void accountPolicyValidation(UserDTO user) {
-        Preconditions.checkNotNull(user.getUserId(), "User ID must be not null");
-        Preconditions.checkState(!user.getUserId().isEmpty(), "User ID must be not empty.");
-        Preconditions.checkState(user.getUserId().length() >= 5, "User ID must be at least 5 characters long.");
-
-        Preconditions.checkNotNull(user.getPassword(), "User PW must be not null");
-        Preconditions.checkState(!user.getPassword().isEmpty(), "User PW must be not empty.");
-        Preconditions.checkState(user.getPassword().length() >= 4, "User PW must be at least 4 characters long.");
-
-        Preconditions.checkNotNull(user.getNickname(), "User nickname must be not null");
-        Preconditions.checkState(!user.getNickname().isEmpty(), "User nickname must be not empty.");
-        Preconditions.checkState(user.getNickname().length() >= 2, "User nickname must be at least 2 characters long.");
+        userIdPolicyValidation(user.getUserId());
+        passwordPolicyValidation(user.getPassword());
+        nicknamePolicyValidation(user.getNickname());
 
         Preconditions.checkNotNull(user.getAuthorities(), "User authority must be not null");
         Preconditions.checkState(!user.getAuthorities().isEmpty(), "User nickname must be not empty.");

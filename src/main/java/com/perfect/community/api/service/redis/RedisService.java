@@ -68,8 +68,7 @@ public class RedisService {
 
     public void deleteJWT(String username) {
         String key = JWT_KEY + username;
-        redisTemplate.opsForHash().delete(key, ACCESS_TOKEN_FIELD);
-        redisTemplate.opsForHash().delete(key, REFRESH_TOKEN_FIELD);
+        redisTemplate.opsForHash().delete(key, ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD);
     }
 
     public void expire(String key, Date date) {
