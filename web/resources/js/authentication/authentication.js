@@ -19,11 +19,11 @@ function putAuthentication() {
             }
             isAuthenticatedElem.removeClass("visually-hidden");
             isAnonymousElem.addClass("visually-hidden");
-            $("#additionalButtons").removeClass("visually-hidden");
+            $("#additionalButtons #accessRestrictedButtons").removeClass("visually-hidden");
         } else {
             isAuthenticatedElem.addClass("visually-hidden");
             isAnonymousElem.removeClass("visually-hidden");
-            $("#additionalButtons").addClass("visually-hidden");
+            $("#additionalButtons #accessRestrictedButtons").addClass("visually-hidden");
         }
         addButtonsByUserRole(userData.userRole);
     });

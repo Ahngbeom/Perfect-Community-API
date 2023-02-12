@@ -8,18 +8,19 @@ $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
         jqXHR.setRequestHeader("Authorization", "Bearer " + userData.accessToken);
 });
 $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
-    if (jqxhr.status === 200) {
-        alert(jqxhr.statusText);
-    } else {
-        if (jqxhr.responseText !== 'Invalid JWT.') {
-            alert(jqxhr.responseText);
-        }
-    }
+    // if (jqxhr.status === 200) {
+    //     alert(jqxhr.statusText);
+    // } else {
+    //     if (jqxhr.responseText !== 'Invalid JWT.') {
+    //         alert(jqxhr.responseText);
+    //     }
+    // }
 });
 $(document).ajaxComplete((event, jqXHR, ajaxOptions) => {
-    // console.log(event);
-    // console.log(jqXHR);
-    // console.log(ajaxOptions);
+    console.log(event);
+    console.log(jqXHR);
+    console.log(ajaxOptions);
+
     if (jqXHR.status >= 400) {
         console.error(jqXHR.status, jqXHR.statusText, jqXHR.responseText);
         console.error(ajaxOptions);

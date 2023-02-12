@@ -6,7 +6,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!--    <mvc:interceptors>-->
+    <!--        <mvc:interceptors>-->
+    <!--            <mvc:interceptor>-->
+    <!--                <mvc:mapping path="/**"/>-->
+    <!--                <bean class="com.perfect.community.api.interceptor.ExceptionFilter"/>-->
+    <!--            </mvc:interceptor>-->
     <!--        &lt;!&ndash; 로그인 검증 &ndash;&gt;-->
     <!--        <mvc:interceptor>-->
     <!--            <mvc:mapping path="/api/**"/>-->
@@ -25,7 +29,7 @@
     <!--            <bean id="onlyAdminAccessInterceptor"-->
     <!--                  class="com.perfect.community.api.interceptor.OnlyAdminAccessInterceptor"/>-->
     <!--        </mvc:interceptor>-->
-    <!--    </mvc:interceptors>-->
+    <!--        </mvc:interceptors>-->
 
     <!--  Resources mapping for js  -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>

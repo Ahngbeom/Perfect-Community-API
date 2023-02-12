@@ -1,7 +1,7 @@
 <html>
     <body>
-        <div class="container-fluid g-2 h-auto ">
-            <div class="d-flex gap-2 m-3 h-auto">
+        <div class="container-fluid g-2">
+            <div class="d-flex gap-2 m-3">
                 <div class="d-flex flex-column col-3 border border-dark gap-3" id="accountPreferences">
                     <div class="d-flex flex-wrap justify-content-between">
                         <label class="h5">
@@ -89,11 +89,11 @@
                                 <button type="button" class="btn btn-info col-4 mb-3">Confirm</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="d-flex flex-column visually-hidden" id="userSecessionConfirm">
-                        <div class="h4 text-center">계정을 탈퇴하시겠습니까?</div>
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-danger col-4 mb-3">Confirm</button>
+                        <div class="d-flex flex-column visually-hidden" id="userSecessionConfirm">
+                            <div class="h4 text-center">계정을 탈퇴하시겠습니까?</div>
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-danger col-4 mb-3">Confirm</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,6 +103,7 @@
     </body>
 </html>
 <script src="${pageContext.request.contextPath}/resources/js/user/user.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/user/list.js"></script>
 <script type="module">
     import {clearCookie} from "../../resources/js/pageCookie.js";
 

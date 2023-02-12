@@ -46,21 +46,24 @@
                             </label>
                             <button type="button" id="loginBtn" class="btn btn-sm btn-outline-secondary">Login
                             </button>
-                            <button type='button' id="signUpFormBtn" class='btn btn-sm btn-outline-secondary'>회원 가입
+                            <button type='button' id="signUpFormBtn" class='btn btn-sm btn-outline-secondary'
+                                    onclick="location.href='/sign-up'">회원 가입
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between gap-1 border border-light visually-hidden"
+            <div class="d-flex justify-content-between gap-1 border border-light"
                  id="additionalButtons">
-                <div>
+                <div id="publicButtons">
                     <button type='button' class='btn btn-sm btn-outline-secondary' onclick="location.href='/'">메인 페이지
                     </button>
                 </div>
-                <div>
+                <div id="accessRestrictedButtons" class="visually-hidden">
                     <button type='button' class='btn btn-sm btn-outline-secondary' id='scrapedPosts'>게시물 스크랩 목록</button>
-                    <button type='button' class='btn btn-sm btn-outline-secondary' id='userListBtn'>유저 목록</button>
+                    <button type='button' class='btn btn-sm btn-outline-secondary' id='userListBtn'
+                            onclick="location.href='/user/list'">유저 목록
+                    </button>
                     <button type='button' class='btn btn-sm btn-outline-secondary' id='accountPreferencesBtn'
                             onclick="location.href='/user'">계정 관리
                     </button>

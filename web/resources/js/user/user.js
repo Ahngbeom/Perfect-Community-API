@@ -107,7 +107,6 @@ function putUserPasswordVerifyForm() {
 function userPasswordVerify(callback) {
     userPasswordVerifyForm.on('click', 'button', () => {
         const password = userPasswordVerifyForm.find("input[type='password']").val();
-        console.log(password);
         $.ajax({
             type: 'post',
             url: '/api/user/verify-password/' + userData.username,
@@ -116,8 +115,6 @@ function userPasswordVerify(callback) {
             if (data === false) {
                 alert("비밀번호가 일치하지 않습니다.");
             } else {
-                console.log(data);
-                console.log(typeof callback);
                 callback();
             }
         });
@@ -133,4 +130,16 @@ $("#showUserPasswordChangeFormBtn").on('click', () => {
 $("#showUserSecessionFormBtn").on('click', () => {
     putUserPasswordVerifyForm();
     userPasswordVerify(putUserSecessionConfirm);
+});
+
+userSecessionConfirm.on('click', 'button', () => {
+    $.ajax({
+        type: 'delete',
+        url: '/api/user'
+    }).done((data) => {
+        console.log(data);
+        location.href = "/";
+    }).fail(() => {
+        location.reload();
+    });
 });
