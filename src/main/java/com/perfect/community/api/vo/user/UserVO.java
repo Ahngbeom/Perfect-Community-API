@@ -1,10 +1,13 @@
 package com.perfect.community.api.vo.user;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.TimeZone;
 
 @Getter
 public class UserVO {
@@ -31,8 +34,8 @@ public class UserVO {
         this.password = userDTO.getPassword();
         this.nickname = userDTO.getNickname();
         this.enabled = userDTO.isEnabled();
-        this.reg_date = userDTO.getRegDate();
-        this.update_date = userDTO.getUpdateDate();
+        this.reg_date = LocalDateTime.ofInstant(Instant.ofEpochMilli(userDTO.getRegDate()), TimeZone.getDefault().toZoneId());
+        this.update_date = LocalDateTime.ofInstant(Instant.ofEpochMilli(userDTO.getUpdateDate()), TimeZone.getDefault().toZoneId());
     }
 
     @Override

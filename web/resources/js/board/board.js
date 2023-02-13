@@ -1,5 +1,6 @@
 import {putPostList} from "../post/list.js";
 import {setCookie} from "../pageCookie.js";
+import {addButtonsByUserRole} from "../authentication/authentication.js";
 
 function getBoardList() {
     let result = null;
@@ -35,7 +36,7 @@ function putBoardList(boards) {
             board.title +
             "</button>" +
             "</li>")
-        postFormBoardTypeSelectElem.append("<option value='" + board.bno + "'>" + board.title + "</option>");
+        ;
     });
 }
 
@@ -66,7 +67,7 @@ $(document).on('click', ".board-title", (e) => {
             activatedPage: 1
         });
     });
-
+    addButtonsByUserRole(userData.userRole);
     putPostList();
 });
 

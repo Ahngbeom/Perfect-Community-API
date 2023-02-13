@@ -15,8 +15,8 @@
         from users_authorities;
     </select>
 
-    <select id="selectAllUserAuthoritiesByUserId" resultMap="usersAuthoritiesDTOMap">
-        select user_id, authority
+    <select id="selectAllUserAuthoritiesByUserId" resultType="string">
+        select authority
         from users_authorities
         where user_id like #{userId};
     </select>

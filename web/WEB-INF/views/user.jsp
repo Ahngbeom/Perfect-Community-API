@@ -1,7 +1,7 @@
 <html>
     <body>
-        <div class="container-fluid g-2 h-auto ">
-            <div class="d-flex gap-2 m-3 h-auto">
+        <div class="container-fluid g-2">
+            <div class="d-flex gap-2 m-3">
                 <div class="d-flex flex-column col-3 border border-dark gap-3" id="accountPreferences">
                     <div class="d-flex flex-wrap justify-content-between">
                         <label class="h5">
@@ -11,127 +11,105 @@
                     <div>
                         <ul>
                             <li>
-                                <button type="button" class="btn btn-link">계정 정보</button>
+                                <button type="button" class="btn btn-link" id="shoUserInfoFormBtn">계정 정보</button>
                             </li>
                             <li>
-                                <button type="button" class="btn btn-link">계정 정보 수정</button>
+                                <button type="button" class="btn btn-link" id="showUserUpdateFormBtn">계정 정보 수정</button>
                             </li>
                             <li>
-                                <button type="button" class="btn btn-link">계정 탈퇴</button>
+                                <button type="button" class="btn btn-link" id="showUserPasswordChangeFormBtn">비밀번호 변경
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-link" id="showUserSecessionFormBtn">계정 탈퇴</button>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="d-flex flex-column col-9 gap-2 h-auto" id="mainContents">
-                    <div id="additionalArea" class="border border-dark visually-hidden">
-                    </div>
-                    <div id="postForm" class="border border-info p-2 gap-2 visually-hidden">
-                        <div class="d-flex justify-content-end p-0">
-                            <button type="button" class="btn-close" aria-label="Close"></button>
-                        </div>
-                        <div class="d-flex justify-content-between" id="postDetailsAdditionalInfo">
-                            <div class="d-flex col-8">
-                                <div class="form-floating mb-3">
-                                    <input id="postRegDate" class="form-control-sm form-control-plaintext" readonly/>
-                                    <label for="postRegDate">Posted on</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input id="postUpdateDate" class="form-control-sm form-control-plaintext" readonly/>
-                                    <label for="postUpdateDate">Updated on</label>
-                                </div>
+                <div class="d-flex flex-column col-9" id="mainContents">
+                    <div class="border border-success p-3 gap-2">
+                        <div id="userForm">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control-plaintext" id="userId">
+                                <label for="userId">ID</label>
                             </div>
-                            <div class="d-flex col-4">
-                                <div class="form-floating mb-3 col-4">
-                                    <input id="postViews" class="form-control-sm form-control-plaintext" readonly/>
-                                    <label for="postViews">Views</label>
-                                </div>
-                                <button id="postRecommend" class="btn btn-outline-info col-4">👍<span></span></button>
-                                <button id="postNotRecommend" class="btn btn-outline-danger col-4">👎<span></span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select name="boardNo" class="form-select w-50"
-                                    aria-label="Default select example" disabled>
-                            </select>
-                            <label>Board where this post was registered</label>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
                             <div class="form-floating">
-                                <input id="postTitle" class="form-control-plaintext h4"/>
-                                <label for="postTitle">Title</label>
+                                <input type="text" class="form-control-plaintext" id="nickname">
+                                <label for="nickname">Nickname</label>
                             </div>
-                            <div class="form-floating col-3">
-                                <select id="postTypeOnPostForm" name="postType" class="form-select" disabled>
-                                    <option value="NOTICE">공지</option>
-                                    <option value="NORMAL">일반</option>
-                                </select>
-                                <label for="postTypeOnPostForm">Post Type</label>
+                            <div id="authorities">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">ROLE_ADMIN
+                                        <input class="form-check-input" type="checkbox" value="ROLE_ADMIN">
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">ROLE_MANAGER
+                                        <input class="form-check-input" type="checkbox" value="ROLE_MANAGER">
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">ROLE_USER
+                                        <input class="form-check-input" type="checkbox" value="ROLE_USER">
+                                    </label>
+                                </div>
                             </div>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="enabled">Enabled</label>
+                                <input class="form-check-input" type="checkbox" role="switch" id="enabled">
+                            </div>
+                            <button type='button' class="btn btn-warning visually-hidden" id="userUpdateBtn">변경 사항 적용
+                            </button>
                         </div>
-                        <div class="form-floating">
-                            <textarea class='form-control-plaintext _min-vh-100' id="postContents">
-                            </textarea>
-                            <label for="postContents">Contents</label>
-                        </div>
-                        <div class="d-flex justify-content-between gap-1 mt-2">
+                        <div class="d-flex justify-content-center visually-hidden" id="userPasswordVerifyForm">
                             <div class="col-6">
                                 <div class="form-floating">
-                                    <button id="postScrapBtn" class="btn btn-outline-info"><label for="postScrapBtn"
-                                                                                                  class="small text-dark">Scrap</label>⭐
-                                    </button>
-
+                                    <input type="password" class="form-control" id="password"/>
+                                    <label for="password">Password</label>
                                 </div>
-                            </div>
-                            <div>
-                                <button type="button" id="postCreateBtn"
-                                        class="btn btn-outline-info rounded-0 visually-hidden">게시
-                                </button>
-                                <button type="button" id="showPostUpdateFormBtn"
-                                        class="btn btn-outline-warning rounded-0 visually-hidden">수정
-                                </button>
-                                <button type="button" id="postRemoveBtn"
-                                        class="btn btn-outline-danger rounded-0 visually-hidden">삭제
-                                </button>
+                                <div class="d-flex justify-content-center mt-3">
+                                    <button type="button" class="btn btn-primary mb-3">Confirm identity</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="border border-success">
-                        <div id="postsByBoard">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <label class="h4" id="postsByBoardTitle">
-                                    </label>
-                                    <span id="postCount"></span>
-                                </div>
-                                <div id="boardControlButtonsOnMain">
+                        <div class="d-flex flex-column gap-3 visually-hidden" id="userPasswordChangeForm">
+                            <div class="d-flex justify-content-center">
+                                <div class="form-floating col-6">
+                                    <input type="password" class="form-control" id="newPassword"/>
+                                    <label for="newPassword">새로운 비밀번호</label>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-info rounded-0" id="showPostCreateFormBtn">게시물 작성
-                                </button>
+                            <div class="d-flex justify-content-center">
+                                <div class="form-floating col-6">
+                                    <input type="password" class="form-control" id="newPasswordReconfirm"/>
+                                    <label for="newPasswordReconfirm">새로운 비밀번호 확인</label>
+                                </div>
                             </div>
-                            <ul id="postList">
-                            </ul>
-                            <nav class="d-flex justify-content-center visually-hidden" id="paginationNav">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <button class="page-link disabled">Previous</button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link">Next</button>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-info col-4 mb-3">Confirm</button>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column visually-hidden" id="userSecessionConfirm">
+                            <div class="h4 text-center">계정을 탈퇴하시겠습니까?</div>
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-danger col-4 mb-3">Confirm</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </div>
     </body>
 </html>
-<script>
-    $.removeCookie(POST_FILTER_OPTIONS_COOKIE_NAME);
-    $.removeCookie(POST_DETAILS_COOKIE_NAME);
-    $.removeCookie(PAGINATION_DATA_COOKIE_NAME);
+<script src="${pageContext.request.contextPath}/resources/js/user/user.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/user/list.js"></script>
+<script type="module">
+    import {clearCookie} from "../../resources/js/pageCookie.js";
+
+    clearCookie(POST_FILTER_OPTIONS_COOKIE_NAME);
+    clearCookie(POST_DETAILS_COOKIE_NAME);
+    clearCookie(PAGINATION_DATA_COOKIE_NAME);
+
+    putUserInfo();
 </script>

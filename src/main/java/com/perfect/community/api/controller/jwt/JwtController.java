@@ -45,7 +45,7 @@ public class JwtController {
 //    }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> JwtAuthentication(HttpServletRequest request/*, @RequestBody Map<String, String> requestBody*/) {
+    public ResponseEntity<?> reissueJWT(HttpServletRequest request/*, @RequestBody Map<String, String> requestBody*/) {
         try {
             String refreshToken = jwtService.resolveRefreshToken(request);
             Preconditions.checkState(refreshToken != null && !refreshToken.isEmpty(), "Invalid JWT.");

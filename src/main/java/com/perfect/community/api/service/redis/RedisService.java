@@ -60,6 +60,7 @@ public class RedisService {
                     redisTemplate.opsForHash().get(key, ACCESS_TOKEN_FIELD),
                     redisTemplate.opsForHash().get(key, REFRESH_TOKEN_FIELD),
                     redisTemplate.getExpire(key));
+//            log.info("keys: {}", redisTemplate.keys("*"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,8 +68,7 @@ public class RedisService {
 
     public void deleteJWT(String username) {
         String key = JWT_KEY + username;
-        redisTemplate.opsForHash().delete(key, ACCESS_TOKEN_FIELD);
-        redisTemplate.opsForHash().delete(key, REFRESH_TOKEN_FIELD);
+        redisTemplate.opsForHash().delete(key, ACCESS_TOKEN_FIELD, REFRESH_TOKEN_FIELD);
     }
 
     public void expire(String key, Date date) {
@@ -86,6 +86,7 @@ public class RedisService {
     }
 
     public boolean validateRefreshTokenByUsernameOnRedis(String username, String refreshToken) throws JwtException {
+//        log.info("keys: {}", redisTemplate.keys("*"));
 //        log.info("Redis refresh token: {}", redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));
 //        log.info("Requested refresh token: {}", refreshToken);
         return refreshToken.equals(redisTemplate.opsForHash().get(JWT_KEY + username, REFRESH_TOKEN_FIELD));

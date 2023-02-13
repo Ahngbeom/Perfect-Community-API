@@ -31,4 +31,14 @@ public class HomeController {
     public String user() {
         return "user";
     }
+
+    @GetMapping("/user/list")
+    public String userList() {
+        return "userList";
+    }
+
+    @GetMapping("/sign-up")
+    public String signUp() {
+        return "sign-up";
+    }
 }

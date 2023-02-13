@@ -1,5 +1,17 @@
 import {getCookieToJson, setCookie} from "../pageCookie.js"
-import {postScrapBtn} from "./scrap.js";
+import {
+    postForm,
+    postFormBoardTypeSelectElem,
+    postFormContentsElem,
+    postFormNotRecommendElem,
+    postFormRecommendElem,
+    postFormRegDateElem,
+    postFormTitleElem,
+    postFormTypeSelectElem,
+    postFormUpdateDateElem,
+    postFormViewsElem,
+    postScrapBtn
+} from "./post.js";
 
 let postDetailsCookieData = getCookieToJson(POST_DETAILS_COOKIE_NAME);
 
@@ -22,17 +34,19 @@ function getPost(postNo) {
 }
 
 function putPostDetailsForm(post) {
-    // console.log(post);
+    console.log(post);
 
-    postFormRegDateElem.val(new Date(post.regDate).toLocaleString());
-    postFormUpdateDateElem.val(new Date(post.updateDate).toLocaleString());
-    postFormViewsElem.val(post.views);
-    postFormRecommendElem.find("span").text(post.recommend);
-    postFormNotRecommendElem.find("span").text(post.notRecommend);
-    if (post.scraped)
-        postScrapBtn.addClass('active');
-    else
-        postScrapBtn.removeClass('active');
+    $(document).ready(() => {
+
+        postFormRegDateElem.val(new Date(post.regDate).toLocaleString());
+        postFormUpdateDateElem.val(new Date(post.updateDate).toLocaleString());
+        postFormViewsElem.val(post.views);
+        postFormRecommendElem.find("span").text(post.recommend);
+        postFormNotRecommendElem.find("span").text(post.notRecommend);
+        if (post.scraped)
+            postScrapBtn.addClass('active');
+        else
+            postScrapBtn.removeClass('active');
     for (const optionElem of postFormBoardTypeSelectElem.find("option")) {
         if (post.boardNo === $(optionElem).val()) {
             $(optionElem).attr("selected", true);
@@ -54,15 +68,16 @@ function putPostDetailsForm(post) {
         .text(post.contents)
         .attr("readonly", true);
 
-    postForm.removeClass("visually-hidden");
+        postForm.removeClass("visually-hidden");
 
-    if (userData.username === post.writer) {
-        $("#postCreateBtn").addClass("visually-hidden");
-        $("#showPostUpdateFormBtn").removeClass("visually-hidden");
-        $("#postRemoveBtn").removeClass("visually-hidden");
-    }
+        if (userData.username === post.writer) {
+            $("#postCreateBtn").addClass("visually-hidden");
+            $("#showPostUpdateFormBtn").removeClass("visually-hidden");
+            $("#postRemoveBtn").removeClass("visually-hidden");
+        }
 
-    setCookie(POST_DETAILS_COOKIE_NAME, {postNo: post.postNo});
+        setCookie(POST_DETAILS_COOKIE_NAME, {postNo: post.postNo});
+    });
 }
 
 function clearPostDetails() {
@@ -73,7 +88,5 @@ function clearPostDetails() {
     postForm.addClass("visually-hidden");
     setCookie(POST_DETAILS_COOKIE_NAME, {});
 }
-
-postFormCloseBtn.on('click', clearPostDetails);
 
 export {getPost, putPostDetailsForm, clearPostDetails}

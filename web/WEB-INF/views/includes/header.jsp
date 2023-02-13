@@ -16,6 +16,12 @@
                 integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
                 crossorigin="anonymous"></script>
         <title>Perfect Community</title>
+
+        <script src="${pageContext.request.contextPath}/resources/js/global_variables.js"></script>
+        <script type="module" src="${pageContext.request.contextPath}/resources/js/onload.js"></script>
+        <script type="module" src="${pageContext.request.contextPath}/resources/js/pageCookie.js"></script>
+        <script type="module"
+                src="${pageContext.request.contextPath}/resources/js/authentication/authentication.js"></script>
     </head>
     <body>
         <div class="container-fluid g-2">
@@ -40,16 +46,28 @@
                             </label>
                             <button type="button" id="loginBtn" class="btn btn-sm btn-outline-secondary">Login
                             </button>
-                            <button type='button' class='btn btn-sm btn-outline-secondary'>회원 가입</button>
+                            <button type='button' id="signUpFormBtn" class='btn btn-sm btn-outline-secondary'
+                                    onclick="location.href='/sign-up'">회원 가입
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end gap-1 border border-light visually-hidden" id="additionalButtons">
-                <button type='button' class='btn btn-sm btn-outline-secondary' id='scrapedPosts'>게시물 스크랩 목록</button>
-                <button type='button' class='btn btn-sm btn-outline-secondary' id='userListBtn'>유저 목록</button>
-                <button type='button' class='btn btn-sm btn-outline-secondary' id='accountPreferencesBtn'>계정 관리
-                </button>
+            <div class="d-flex justify-content-between gap-1 border border-light"
+                 id="additionalButtons">
+                <div id="publicButtons">
+                    <button type='button' class='btn btn-sm btn-outline-secondary' onclick="location.href='/'">메인 페이지
+                    </button>
+                </div>
+                <div id="accessRestrictedButtons" class="visually-hidden">
+                    <button type='button' class='btn btn-sm btn-outline-secondary' id='scrapedPosts'>게시물 스크랩 목록</button>
+                    <button type='button' class='btn btn-sm btn-outline-secondary' id='userListBtn'
+                            onclick="location.href='/user/list'">유저 목록
+                    </button>
+                    <button type='button' class='btn btn-sm btn-outline-secondary' id='accountPreferencesBtn'
+                            onclick="location.href='/user'">계정 관리
+                    </button>
+                </div>
             </div>
         </div>
     </body>

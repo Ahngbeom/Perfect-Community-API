@@ -24,7 +24,8 @@ function setCookie(name, jsonData) {
 }
 
 function clearCookie(name) {
-    $.removeCookie(name);
+    $.removeCookie(name, {path: '/'});
+    // $.cookie(name, {});
 }
 
 export {getCookieToJson, setCookie, clearCookie}

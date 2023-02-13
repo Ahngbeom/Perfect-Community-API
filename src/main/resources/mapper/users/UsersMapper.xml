@@ -19,31 +19,48 @@
         <result property="enabled" column="enabled"/>
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
-        <result property="authority" column="authority"/>
-<!--        <collection property="authority" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">-->
-<!--        </collection>-->
+        <!--        <result property="authority" column="authority"/>-->
+        <!--        <collection property="authority" resultMap="com.perfect.community.api.mapper.authorities.AuthoritiesMapper.authoritiesMap">-->
+        <!--        <collection property="authorities" column="userId = user_id" javaType="List" ofType="string" select="selectUserAuthorities"/>-->
     </resultMap>
 
     <select id="selectUserByUserId" resultMap="userDtoMap">
-        select user_id, password, nickname, enabled, reg_date, update_date
+        select user_id,
+               password,
+               nickname,
+               enabled,
+               UNIX_TIMESTAMP(reg_date) * 1000    as reg_date,
+               UNIX_TIMESTAMP(update_date) * 1000 as update_date
         from users
         where users.user_id = #{user_id};
     </select>
 
     <select id="selectUserWithAuthoritiesByUserId" resultMap="userWithAuthoritiesMap">
-        select users.user_id, password, nickname, enabled, reg_date, update_date, authority
+        select users.user_id,
+               password,
+               nickname,
+               enabled,
+               UNIX_TIMESTAMP(reg_date) * 1000    as reg_date,
+               UNIX_TIMESTAMP(update_date) * 1000 as update_date,
+               authority
         from users
                  LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
         where users.user_id = #{user_id};
     </select>
+
+    <!--    <select id="selectUserAuthorities">-->
+    <!--        select authority as authorities-->
+    <!--        from users_authorities-->
+    <!--        where user_id like #{userId};-->
+    <!--    </select>-->
 
     <select id="selectAllUsers" resultMap="userDtoMap">
         select user_id,
                password,
                nickname,
                enabled,
-               reg_date,
-               update_date
+               UNIX_TIMESTAMP(reg_date) * 1000    as reg_date,
+               UNIX_TIMESTAMP(update_date) * 1000 as update_date
         from users
         order by reg_date;
     </select>
@@ -53,10 +70,8 @@
                password,
                nickname,
                enabled,
-               reg_date,
-               update_date,
-               authority,
-               users_authorities.user_id
+               UNIX_TIMESTAMP(reg_date) * 1000    as reg_date,
+               UNIX_TIMESTAMP(update_date) * 1000 as update_date
         from users
                  LEFT OUTER JOIN users_authorities on users.user_id = users_authorities.user_id
         order by field(authority, 'ROLE_ADMIN', 'ROLE_MEMBER') DESC, reg_date;
@@ -69,14 +84,14 @@
 
     <update id="updatePassword">
         update users
-        set password = #{password},
+        set password    = #{password},
             update_date = now()
         where user_id = #{user_id};
     </update>
 
     <update id="updateUser" parameterType="com.perfect.community.api.dto.user.UserDTO">
         update users
-        set nickname = #{nickname},
+        set nickname    = #{nickname},
             update_date = now()
         where user_id = #{user_id};
     </update>

@@ -1,29 +1,28 @@
 package com.perfect.community.api.security.detail;
 
 import com.perfect.community.api.dto.user.UserDTO;
-import com.perfect.community.api.vo.user.UserVO;
-import com.perfect.community.api.mapper.user.UsersMapper;
+import com.perfect.community.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
-    private static final Logger log = LogManager.getLogger();
-
-    private final UsersMapper mapper;
+    private final UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserDTO userDTO = mapper.selectUserWithAuthoritiesByUserId(userName);
+        UserDTO userDTO = userService.getUserInfoWithAuthoritiesByUserId(userName);
         if (userDTO == null)
             throw new UsernameNotFoundException(userName);
-        return new CustomUserDetails(userDTO);
+        UserDetails userDetails = new CustomUserDetails(userDTO);
+        log.info("{}", userDetails);
+        return userDetails;
     }
 }

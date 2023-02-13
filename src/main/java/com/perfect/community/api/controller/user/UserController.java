@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -28,10 +29,16 @@ public class UserController {
 
     @GetMapping({"", "/{userId}"})
     public ResponseEntity<?> info(HttpServletRequest request, @PathVariable(required = false) String userId) {
-        if (userId != null) return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
-        else {
-            String accessToken = jwtService.resolveAccessToken(request);
-            return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(jwtService.getUsernameByAccessToken(accessToken)));
+        try {
+            if (userId != null)
+                return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(userId));
+            else {
+                String accessToken = jwtService.resolveAccessToken(request);
+                return ResponseEntity.ok(userService.getUserInfoWithAuthoritiesByUserId(jwtService.getUsernameByAccessToken(accessToken)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
     }
 
@@ -49,7 +56,7 @@ public class UserController {
 
     /* Update User Info */
     @PreAuthorize("isAuthenticated() and principal.username == #userId")
-    @PutMapping("/{userId}")
+    @PatchMapping("/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserDTO userDTO) {
         try {
             userDTO.setUserId(userId);
@@ -61,11 +68,15 @@ public class UserController {
         return ResponseEntity.ok(userId);
     }
 
-    @PreAuthorize("isAuthenticated() and principal.username == #userId")
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<String> withdrawUser(@PathVariable String userId) {
+    @PreAuthorize(
+            "isAuthenticated() and (" +
+                    "(#userId == null) or " +
+                    "(#userId != null && userService.isAdmin(principal.name)))"
+    )
+    @DeleteMapping({"", "/{userId}"})
+    public ResponseEntity<String> secessionUser(Principal principal, @PathVariable(required = false) String userId) {
         try {
-            userService.removeUser(userId);
+            userService.secessionUser(userId == null ? principal.getName() : userId);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -98,8 +109,8 @@ public class UserController {
     }
 
     @PreAuthorize("isAuthenticated() and principal.username == #userId")
-    @GetMapping("/verify-password/{userId}")
-    public ResponseEntity<Boolean> verifyPassword(@PathVariable String userId, String password) {
+    @PostMapping("/verify-password/{userId}")
+    public ResponseEntity<Boolean> verifyPassword(@PathVariable String userId, @RequestBody String password) {
         try {
             return ResponseEntity.ok(userService.verifyPassword(userId, password));
         } catch (Exception e) {
@@ -108,13 +119,30 @@ public class UserController {
         }
     }
 
-    @GetMapping("/id-availability")
-    public boolean userIdDuplicatesChecking(String userId) {
-        return userService.isValidUserId(userId);
+    @PostMapping("/id-availability")
+    public ResponseEntity<?> userIdAvailability(@RequestBody(required = false) String userId) {
+        try {
+            return ResponseEntity.ok(userService.isValidUserId(userId));
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
+        }
     }
 
-    @GetMapping("/nickname-availability")
-    public boolean usernameDuplicatesChecking(String nickname) {
-        return userService.isValidNickname(nickname);
+    @PostMapping("/password-availability")
+    public ResponseEntity<?> passwordAvailability(@RequestBody(required = false) String password) {
+        try {
+            return ResponseEntity.ok(userService.isValidPassword(password));
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/nickname-availability")
+    public ResponseEntity<?> usernameDuplicatesChecking(@RequestBody(required = false) String nickname) {
+        try {
+            return ResponseEntity.ok(userService.isValidNickname(nickname));
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
+        }
     }
 }

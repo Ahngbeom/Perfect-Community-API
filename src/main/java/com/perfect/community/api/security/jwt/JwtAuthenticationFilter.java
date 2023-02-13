@@ -19,6 +19,7 @@ package com.perfect.community.api.security.jwt;
 import com.perfect.community.api.dto.jwt.TokenDTO;
 import com.perfect.community.api.service.JwtService;
 import com.perfect.community.api.service.redis.RedisService;
+import com.perfect.community.api.service.user.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +46,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private JwtService jwtService;
     @Autowired
     private RedisService redisService;
-
-//    private final RedisTemplate<String, String> redisTemplate;
-//    private final ValueOperations<String, String> valueOperations;
-//    private final ListOperations<String, String> listOperations;
+    @Autowired
+    private UserService userService;
 
     /**
      * The <code>doFilter</code> method of the Filter is called by the
@@ -94,10 +93,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String refreshToken = jwtService.resolveRefreshToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        logger.warn("Authentication by SecurityContextHolder="+ SecurityContextHolder.getContext().getAuthentication()
+        logger.warn("Request URI=" + requestURI
+                + "\n Authentication by SecurityContextHolder=" + SecurityContextHolder.getContext().getAuthentication()
                 + "\n Access Token=" + accessToken
                 + "\n Refresh Token=" + refreshToken);
-
 
         if (requestURI.equals("/api/login") || requestURI.equals("/api/jwt/reissue"))
             chain.doFilter(request, response);
@@ -129,26 +128,27 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private void reissueJWT(HttpServletRequest request, HttpServletResponse response, FilterChain chain, String refreshToken) throws ServletException, IOException {
-        try {
-            /* An exception is thrown by 'validateToken' if the refresh token validation fails. */
-            if (!tokenProvider.validateToken(refreshToken))
-                throw new JwtException("Invalid JWT (Refresh Token).");
+//        try {
+        /* An exception is thrown by 'validateToken' if the refresh token validation fails. */
+        if (!tokenProvider.validateToken(refreshToken))
+            throw new JwtException("Invalid Refresh Token.");
 
-            /* Compared to Redis tokens.  */
-            Authentication authentication = tokenProvider.getAuthentication(refreshToken);
-            if (!redisService.validateRefreshTokenByUsernameOnRedis(authentication.getName(), refreshToken))
-                throw new JwtException("Does not match Redis JWT (Refresh Token).");
+        /* Compared to Redis tokens.  */
+        Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+        if (!redisService.validateRefreshTokenByUsernameOnRedis(authentication.getName(), refreshToken))
+            throw new JwtException("Does not match refresh token in Redis.");
 
-            /* Reissue tokens */
-            TokenDTO tokenDTO = jwtService.reissue(refreshToken);
+        /* Reissue tokens */
+        TokenDTO tokenDTO = jwtService.reissue(refreshToken);
 
-            /* Reissued JWT to response */
-            tokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.info("[SUCCESS] Reissued JWT");
-        } catch (ExpiredJwtException e) {
-            throw new JwtException("Refresh token has expired. Please sign in again.");
-        }
+        /* Reissued JWT to response */
+
+        tokenProvider.JwtToResponseHeaderAndCookie(response, tokenDTO);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        logger.info("[SUCCESS] Reissued JWT");
+//        } catch (ExpiredJwtException e) {
+//            throw new JwtException("Refresh token has expired. Please sign in again.");
+//        }
     }
 
 }

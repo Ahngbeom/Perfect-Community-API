@@ -4,6 +4,9 @@ import com.perfect.community.api.dto.user.UserDTO;
 import com.perfect.community.api.service.ServiceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.annotation.Rollback;
+
+import java.util.Collections;
 
 @DisplayName("[Service] User")
 class UserServiceTest extends ServiceTest {
@@ -39,7 +42,7 @@ class UserServiceTest extends ServiceTest {
                 .userId("aaaaa")
                 .password("aaaa")
                 .nickname("AAA")
-                .authority("ROLE_USER")
+                .authorities(Collections.singleton("ROLE_USER"))
                 .build();
         service.createUser(user);
         log.warn(service.getUserListWithAuthorities());
@@ -59,7 +62,7 @@ class UserServiceTest extends ServiceTest {
     }
 
     @Test
-//    @Rollback(value = false)
+    @Rollback(value = false)
     @DisplayName("Change user's password")
     void changeUserPassword() {
         service.changeUserPassword(
@@ -70,6 +73,7 @@ class UserServiceTest extends ServiceTest {
         );
         UserDTO user = service.getUserInfoByUserId("admin");
         log.warn(user);
+        log.warn(passwordEncoder.matches("admin", user.getPassword()));
         log.warn(passwordEncoder.matches("abcde", user.getPassword()));
         log.warn(passwordEncoder.matches("1234", user.getPassword()));
     }
@@ -77,7 +81,7 @@ class UserServiceTest extends ServiceTest {
     @Test
     @DisplayName("Remove user")
     void removeUser() {
-        service.removeUser("tester");
+        service.secessionUser("tester");
         log.warn(service.getUserInfoByUserId("tester"));
     }
 
@@ -101,7 +105,7 @@ class UserServiceTest extends ServiceTest {
     @Test
     @DisplayName("User's password verify")
     void verifyPassword() {
-        log.warn(service.verifyPassword("admin", "1234"));
+        log.warn(service.verifyPassword("admin", "admin"));
     }
 
     @Test
